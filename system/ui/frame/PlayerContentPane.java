@@ -1,6 +1,7 @@
 package system.ui.frame;
 
 import system.ui.panels.*;
+import system.domain.Player;
 
 import javax.swing.JPanel;
 
@@ -14,10 +15,14 @@ public class PlayerContentPane extends JPanel {
 
 
     // this should take player objects in the initialization and create dashboards here in itself
-    public PlayerContentPane() { 
+    public PlayerContentPane(Player p1, Player p2) { 
         super();
         this.cards = new CardLayout();
         setLayout(cards);
+        player1 = new PlayerDashboard(p1);
+        player2 = new PlayerDashboard(p2);
+        add(player1, "player1");
+        add(player2, "player2");
     }
 
     public void changeView(String cardName) {
