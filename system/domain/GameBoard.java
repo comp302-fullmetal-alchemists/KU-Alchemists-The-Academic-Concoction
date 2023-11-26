@@ -13,8 +13,10 @@ public class GameBoard {
         this.players = new ArrayList<Player>();
     }
 
-    public void calculateFinalScore() {
-        return;
+    public double calculateFinalScore() {
+    //to do: get rep, gold, artifact from player's inventory
+    	int finalScore = 0;
+        return finalScore;
     }
 
     public void startGame() {

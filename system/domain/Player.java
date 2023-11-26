@@ -16,8 +16,24 @@ public class Player {
     public String getName(){
         return name;
     }
+    
+    public void setName(String name) {
+		this.name = name;
+	}
 
-    public Boolean isInTurn() {
+    public Boolean getTurn() {
+		return turn;
+	}
+
+	public void setTurn(Boolean turn) {
+		this.turn = turn;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Boolean isInTurn() {
         return turn;
     }
 
@@ -29,4 +45,5 @@ public class Player {
     public String getToken() {
         return token;
     }
+   
 }
