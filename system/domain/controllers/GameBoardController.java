@@ -1,7 +1,9 @@
-package system.domain;
+package system.domain.controllers;
 import java.util.ArrayList;
 import java.util.List;
-public class GameBoard {
+
+import system.domain.Player;
+public class GameBoardController {
 
     //GameBoard	players: List<Players>	calculateFinalScore()
     //startGame()
@@ -9,8 +11,17 @@ public class GameBoard {
 
     private List<Player> players;
 
-    public GameBoard() {
+    public GameBoardController() {
         this.players = new ArrayList<Player>();
+    }
+
+    public void initializeTheBoard(Player player1, Player player2) {
+        players.add(player1);
+        players.add(player2);
+    }
+    
+    public Player getPlayer(int index) {
+        return players.get(index);
     }
 
     public double calculateFinalScore() {

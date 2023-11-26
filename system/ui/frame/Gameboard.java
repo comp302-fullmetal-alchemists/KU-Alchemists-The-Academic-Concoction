@@ -1,6 +1,7 @@
 package system.ui.frame;
 
 import system.domain.Player;
+import system.domain.controllers.GameBoardController;
 import system.ui.interfaces.*;
 import system.ui.panels.AuthenticationPanel;
 
@@ -14,9 +15,12 @@ public class Gameboard extends JFrame{
     PlayerContentPane playerPane;
     GameContentPane gamePane;
     PlayerMediator mediator;
+    GameBoardController gameController;
     
     public Gameboard() {
         super();
+        this.gameController = new GameBoardController();
+
         this.authPanel = new AuthenticationPanel(this);
         add(authPanel);
         this.mediator = new Mediator();
@@ -26,14 +30,18 @@ public class Gameboard extends JFrame{
         validate();
     }
 
-    public void initializeTheBoard(Player p1, Player p2) {
+    public void initializeTheBoard() {
         remove(authPanel);
         setLayout(new GridLayout(1, 2));
-        this.playerPane = new PlayerContentPane(p1, p2, mediator);
+        this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1), mediator);
         this.gamePane = new GameContentPane(mediator);
         add(gamePane);
         add(playerPane);
         revalidate();
+    }
+
+    public GameBoardController getController() {
+        return gameController;
     }
 
 }

@@ -4,8 +4,10 @@ import system.domain.Player;
 
 public class AuthenticationController {
  
-    public AuthenticationController() {
-    
+    private GameBoardController gameController;
+
+    public AuthenticationController(GameBoardController gameController) {
+        this.gameController = gameController;
     }
 
     public String login(String username1, String token1, String username2, String token2) {
@@ -16,8 +18,7 @@ public class AuthenticationController {
             return "Please fill all the fields";
         }
         else{
-            Player p1 = new Player(username1, token1);
-            Player p2 = new Player(username2, token2);
+            gameController.initializeTheBoard(new Player(username1, token1), new Player(username2, token2));
             return "Welcome to the KuAlchemists";
     }
 }

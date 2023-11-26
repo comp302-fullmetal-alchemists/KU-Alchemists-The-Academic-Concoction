@@ -1,8 +1,8 @@
 package system.ui.panels;
 
 import system.domain.controllers.AuthenticationController;
-import system.ui.frame.Gameboard;
 import system.domain.Player;
+import system.ui.frame.Gameboard;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -14,8 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-
-
 public class AuthenticationPanel extends JPanel{
     private Gameboard game;
     private JButton loginButton;
@@ -25,11 +23,12 @@ public class AuthenticationPanel extends JPanel{
     private JTextField tokenField2;
     private JLabel usernameLabel;
     private JLabel tokenLabel;
-    
+    private AuthenticationController authController;
 
     public AuthenticationPanel(Gameboard game){
         super();
         this.game = game;
+        this.authController = new AuthenticationController(game.getController());
         this.usernameLabel = new JLabel("Usernames");
         add(usernameLabel);
         this.usernameField1 = new JTextField(23);
@@ -51,13 +50,13 @@ public class AuthenticationPanel extends JPanel{
                 String username2 = usernameField2.getText();
                 String token1 = new String(tokenField1.getText());
                 String token2 = new String(tokenField2.getText());
-                AuthenticationController authController = new AuthenticationController();
-                if (authController.login(username1, token1, username2, token2) == "Welcome to the KuAlchemists"){
-                    game.initializeTheBoard(new Player(username1, token1), new Player(username2, token2));
+                String response = authController.login(username1, token1, username2, token2);
+                if (response == "Welcome to the KuAlchemists"){
+                    game.initializeTheBoard();
                     
                 }
                 else{
-                    JOptionPane.showMessageDialog(AuthenticationPanel.this, (authController.login(username1, token1, username2, token2)));
+                    JOptionPane.showMessageDialog(AuthenticationPanel.this, response);
                 }
                 
             }
