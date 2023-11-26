@@ -10,4 +10,8 @@ public abstract class Cards{
         this.cardName = cardName;
     }
 
+    public String getCardName() {
+        return cardName;
+    }
+    
 }

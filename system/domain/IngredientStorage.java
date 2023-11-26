@@ -23,4 +23,9 @@ public class IngredientStorage {
     public void buyArtifact() {
         return;
     }
+
+    public void drawIngredient() {
+        return;
+    }
+
 }

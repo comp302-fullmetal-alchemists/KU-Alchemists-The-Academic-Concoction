@@ -2,17 +2,10 @@ package system.domain;
 
 public class DeductionBoard {
 
-    //DeductionBoard	deduction grid?	+ operation1(params):returnType
-    //- operation2(params)
-    //- operation3()
+    //build: deduction grid
 
-    public void publishTheory(AlchemyMarker alchemy, IngredientCard ingredient) {
-        return;
-    }
+    //function: markDeductionGrid() when user learns an alchemy formula
 
-    public void debunkTheory(AlchemyMarker alchemy, IngredientCard ingredient) {
-        return;
-    }
 
 
 }

@@ -24,9 +24,9 @@ public class IngredientStorage extends JPanel {
         super();
         this.mediator = mediator;
         ingredientPile = new ArrayList<IngredientCard>();
-        ingredientPile.add(new IngredientCard("Ingredient1"));
-        ingredientPile.add(new IngredientCard("Ingredient2"));
-        ingredientPile.add(new IngredientCard("Ingredient3"));
+        ingredientPile.add(new IngredientCard("Ingredient1",  null));
+        ingredientPile.add(new IngredientCard("Ingredient2", null));
+        ingredientPile.add(new IngredientCard("Ingredient3", null));
         this.back = createNavButton("environment", "Back to environment");
         add(back);
         this.ingredientButton = new JButton("Draw an Ingredient Card");
