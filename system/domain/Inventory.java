@@ -48,5 +48,10 @@ public class Inventory {
     public void updateInventory(Cards card) {
         return;
     }
+    
+    public void removePotion(Potion potion) {
+    	//potions.remove(potion);
+        return;
+    }
 
 }
