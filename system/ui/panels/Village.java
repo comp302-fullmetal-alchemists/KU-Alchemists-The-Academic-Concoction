@@ -19,9 +19,9 @@ public class Village extends JPanel {
     public Village() {
         super();
         this.ingButton = createNavButton("ingredientStorage", "Ingredient Storage");
-        this.potionButton = new JButton("Potion Brewing Area");
-        this.publicationButton = new JButton("Publication Area");
-        this.deductionButton = new JButton("Deduction Board");
+        this.potionButton = createNavButton("potionBrewingArea", "Potion Brewing Area");
+        this.publicationButton = createNavButton("publicationArea", "Publication Area");
+        this.deductionButton = createNavButton("deductionBoard", "Deduction Board");
         add(ingButton);
         add(potionButton);
         add(publicationButton);
