@@ -5,7 +5,7 @@ public class Player {
     private String name;
     private Boolean turn;
     private String token;
-
+    private String denemeString;
 
     public Player(String name, String token) {
         this.name = name;
