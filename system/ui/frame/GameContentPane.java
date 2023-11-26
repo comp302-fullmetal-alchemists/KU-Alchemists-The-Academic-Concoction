@@ -9,7 +9,7 @@ import java.awt.CardLayout;
 
 public class GameContentPane extends JPanel {
     
-    private GameEnvironment gameEnvironment;
+    private Village gameEnvironment;
     private IngredientStorage ingredientStorage;
     private CardLayout cards;
     private PlayerMediator mediator;
@@ -17,7 +17,7 @@ public class GameContentPane extends JPanel {
     public GameContentPane(PlayerMediator mediator) {
         super();
         this.mediator = mediator;
-        this.gameEnvironment = new GameEnvironment();
+        this.gameEnvironment = new Village();
         this.ingredientStorage = new IngredientStorage(mediator);
         this.cards = new CardLayout();
         setLayout(cards);

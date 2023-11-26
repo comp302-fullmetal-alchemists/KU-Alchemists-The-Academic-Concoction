@@ -1,11 +1,15 @@
 package system.domain;
 
+import java.util.List;
+import java.util.Map;
+
 public class GameLog {
 
     //GameLog	gameAction :Map<Player, ArrayList<gameAction>>
     //	showGameLog(player)
     //recordLog(gameAction)
-
+    private Map<Player, List<GameAction>> gameActions;
+    
     public void showGameLog(Player player) {
         return;
     }

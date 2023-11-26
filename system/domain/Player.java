@@ -5,7 +5,8 @@ public class Player {
     private String name;
     private Boolean turn;
     private String token;
-    private String denemeString;
+    private int reputationPoint;
+    private int sicknessPoint;
 
     public Player(String name, String token) {
         this.name = name;
@@ -32,6 +33,14 @@ public class Player {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+    public void updateReputation(int updateVal) {
+        reputationPoint = reputationPoint + updateVal;
+    }
+
+    public void updateSickness(int updateVal) {
+        sicknessPoint = sicknessPoint + updateVal;
+    }
 
 	public Boolean isInTurn() {
         return turn;

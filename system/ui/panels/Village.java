@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class GameEnvironment extends JPanel {
+public class Village extends JPanel {
     
     private JButton ingButton;
     private JButton potionButton;
@@ -16,7 +16,7 @@ public class GameEnvironment extends JPanel {
     private JButton deductionButton;
 
 
-    public GameEnvironment() {
+    public Village() {
         super();
         this.ingButton = createNavButton("ingredientStorage", "Ingredient Storage");
         this.potionButton = new JButton("Potion Brewing Area");
@@ -34,7 +34,7 @@ public class GameEnvironment extends JPanel {
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ((GameContentPane) GameEnvironment.this.getParent()).changeView(nav);
+                    ((GameContentPane) Village.this.getParent()).changeView(nav);
                 }
 
             }
