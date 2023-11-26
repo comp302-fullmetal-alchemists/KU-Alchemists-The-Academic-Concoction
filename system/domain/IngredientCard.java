@@ -10,10 +10,6 @@ public class IngredientCard extends Cards{
     private AlchemyMarker alchemy;
     private static Map<String, AlchemyMarker> formula;
 
-    public IngredientCard(String name) {
-        super(name);
-        this.name = name;
-    }
 
     public IngredientCard(String name, AlchemyMarker alchemy) {
         super(name);
