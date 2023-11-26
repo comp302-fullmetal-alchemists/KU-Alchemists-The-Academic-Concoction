@@ -3,6 +3,8 @@ package system.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import Domain.Player;
+
 
 public class Inventory {
     // Inventory	gold : int
@@ -26,18 +28,29 @@ public class Inventory {
     }
 
     public void giveIngredient(IngredientCard card) {
-        return;
+    	//delete card from ingredient card list of the corresponding players inventory
+        
+    	return;
     }
+    
 
     public void showInventory(Player player) {
         return;
     }
 
-    public void updateGold(int amount) {
-        return;
+    public int updateGold(int amount) {
+    	
+    	//player.setGold(player.getGold() + amount) ;
+       
+    	return amount;
     }
 
     public void updateInventory(Cards card) {
+        return;
+    }
+    
+    public void removePotion(Potion potion) {
+    	//potions.remove(potion);
         return;
     }
 

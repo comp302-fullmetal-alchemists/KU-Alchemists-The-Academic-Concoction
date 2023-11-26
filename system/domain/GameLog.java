@@ -10,6 +10,7 @@ public class GameLog {
         return;
     }
 
+    //Used in a while loop until recorded click(gameLog)
     public void recordLog(GameAction gameAction) {
         return;
     }
