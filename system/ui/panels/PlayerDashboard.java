@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import Domain.GameLog;
+import system.domain.GameLog;
 
 import javax.swing.JLabel;
 

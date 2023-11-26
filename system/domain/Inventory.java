@@ -3,7 +3,7 @@ package system.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import Domain.Player;
+import system.domain.Player;
 
 
 public class Inventory {
