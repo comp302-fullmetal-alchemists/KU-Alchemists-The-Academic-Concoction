@@ -2,6 +2,7 @@ package system.ui.frame;
 
 import system.domain.Player;
 import system.ui.interfaces.*;
+import system.ui.panels.AuthenticationPanel;
 
 import javax.swing.JFrame;
 
@@ -33,6 +34,6 @@ public class Gameboard extends JFrame{
         add(gamePane);
         add(playerPane);
         revalidate();
-}
+    }
 
 }

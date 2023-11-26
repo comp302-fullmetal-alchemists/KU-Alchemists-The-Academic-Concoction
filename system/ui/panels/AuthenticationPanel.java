@@ -1,6 +1,7 @@
-package system.ui.frame;
+package system.ui.panels;
 
 import system.domain.controllers.AuthenticationController;
+import system.ui.frame.Gameboard;
 import system.domain.Player;
 
 import javax.swing.JPanel;
