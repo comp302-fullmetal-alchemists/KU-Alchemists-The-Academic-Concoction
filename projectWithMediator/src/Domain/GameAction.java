@@ -7,7 +7,7 @@ public class GameAction {
     //action:
     //score:	toString()
 
-    public void toString() {
-        return;
+    public String toString() {
+        return "";
     }
 }

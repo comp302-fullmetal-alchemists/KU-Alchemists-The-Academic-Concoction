@@ -6,6 +6,9 @@ import system.domain.IngredientCard;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import Domain.GameLog;
+
 import javax.swing.JLabel;
 
 public class PlayerDashboard extends JPanel {
@@ -24,6 +27,15 @@ public class PlayerDashboard extends JPanel {
         inventory.addItemToInventory(ingCard.getName());
         inventory.update();
     } 
+    
+    private void click(GameLog gameLog) {
+        //OR CLICK GAMELOG PANEL
+	}
+    
+    private void get(GameLog gameLog, Player player) {
+    	player = this.player;
+    	//return gameLog actions
+    }
     
     private class inventoryPanel extends JPanel {
         private ArrayList<JLabel> items = new ArrayList<JLabel>();
