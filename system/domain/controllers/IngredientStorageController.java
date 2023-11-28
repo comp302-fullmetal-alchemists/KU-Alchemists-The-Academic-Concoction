@@ -1,9 +1,12 @@
-package system.domain;
+package system.domain.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientStorage {
+import system.domain.ArtifactCard;
+import system.domain.IngredientCard;
+
+public class IngredientStorageController {
     //IngredientStorage	ingredient pile: List<ingredientCard>
     //artifact pile: List<artifactCard>	transmuteIngredient(ingredientCard)
     //buyArtifact()
@@ -11,9 +14,12 @@ public class IngredientStorage {
     private List<IngredientCard> ingredientPile;
     private List<ArtifactCard> artifactPile;
 
-    public IngredientStorage() {
+    public IngredientStorageController() {
         this.ingredientPile = new ArrayList<IngredientCard>();
         this.artifactPile = new ArrayList<ArtifactCard>();
+        ingredientPile.add(new IngredientCard("Ingredient1",  null));
+        ingredientPile.add(new IngredientCard("Ingredient2", null));
+        ingredientPile.add(new IngredientCard("Ingredient3", null));
     }
 
     public void transmuteIngredient(IngredientCard card) {
@@ -24,8 +30,11 @@ public class IngredientStorage {
         return;
     }
 
-    public void drawIngredient() {
-        return;
+    public IngredientCard drawIngredient() {
+        if (ingredientPile.isEmpty()) {
+            return null;
+        }
+        return ingredientPile.remove(0);
     }
 
 }

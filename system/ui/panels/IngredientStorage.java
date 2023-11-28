@@ -2,6 +2,7 @@ package system.ui.panels;
 
 import system.ui.frame.GameContentPane;
 import system.domain.IngredientCard;
+import system.domain.controllers.IngredientStorageController;
 import system.ui.interfaces.PlayerMediator;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.awt.event.ActionEvent;
 
 public class IngredientStorage extends JPanel {
     
-    private ArrayList<IngredientCard> ingredientPile;
+    private IngredientStorageController ingController;
     private PlayerMediator mediator;
     private JButton back;
     private JButton ingredientButton;
@@ -23,24 +24,28 @@ public class IngredientStorage extends JPanel {
     public IngredientStorage(PlayerMediator mediator) {
         super();
         this.mediator = mediator;
-        ingredientPile = new ArrayList<IngredientCard>();
-        ingredientPile.add(new IngredientCard("Ingredient1",  null));
-        ingredientPile.add(new IngredientCard("Ingredient2", null));
-        ingredientPile.add(new IngredientCard("Ingredient3", null));
+        this.ingController = new IngredientStorageController(); 
+        ////there will be problems about who should create controller,
+        ////should it be gameboard controller or ingredient storage??
         this.back = createNavButton("environment", "Back to environment");
         add(back);
-        this.ingredientButton = new JButton("Draw an Ingredient Card");
-        this.ingredientButton.addActionListener(
+        this.ingredientButton = createIngButton("Draw Ingredient");
+        add(ingredientButton);
+    }
+
+    public JButton createIngButton(String text) {
+        JButton ingButton = new JButton(text);
+        ingButton.addActionListener(
             new ActionListener() {
                 @Override 
                 public void actionPerformed(ActionEvent e) {
-                    IngredientCard drawn = ingredientPile.remove(0);
+                    IngredientCard drawn = ingController.drawIngredient();
                     JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!",drawn.getName()));
                     mediator.sendIngredientsToPlayer(drawn);
                 }
             }
         );
-        add(ingredientButton);
+        return ingButton;
     }
 
     public JButton createNavButton(String nav, String text) {
