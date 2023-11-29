@@ -39,7 +39,7 @@ public class Mediator implements PlayerMediator{
     }
 
     @Override
-    public void sendIngredientsToActionSpace(String ingredients) {
+    public void sendIngredientsToActionSpace(IngredientCard card) {
         
     }
 

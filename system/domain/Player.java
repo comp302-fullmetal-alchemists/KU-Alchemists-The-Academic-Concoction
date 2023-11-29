@@ -7,11 +7,13 @@ public class Player {
     private String token;
     private int reputationPoint;
     private int sicknessPoint;
+    private Inventory inventory;
 
     public Player(String name, String token) {
         this.name = name;
         this.turn = false;
         this.token = token;
+      
     }
 
     public String getName(){
@@ -55,4 +57,7 @@ public class Player {
         return token;
     }
    
+   public Inventory getInventory() {
+        return inventory;
+   }
 }

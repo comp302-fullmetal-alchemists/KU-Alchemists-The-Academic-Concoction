@@ -23,7 +23,9 @@ public class IngredientStorageController {
     }
 
     public void transmuteIngredient(IngredientCard card) {
+        
         return;
+
     }
 
     public void buyArtifact() {

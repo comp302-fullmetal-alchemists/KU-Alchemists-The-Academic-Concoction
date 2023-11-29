@@ -16,7 +16,7 @@ public interface PlayerMediator {
     
     void sendPotionToPlayer(String potion);
 
-    void sendIngredientsToActionSpace(String ingredients);
+    void sendIngredientsToActionSpace(IngredientCard card);
 
     void sendPotionToActionSpace(String potion);
 }
