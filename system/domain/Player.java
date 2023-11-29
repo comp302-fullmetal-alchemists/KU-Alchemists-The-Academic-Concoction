@@ -1,5 +1,7 @@
 package system.domain;
 
+import system.domain.controllers.InventoryController;
+
 public class Player {
     
     private String name;
@@ -7,7 +9,7 @@ public class Player {
     private String token;
     private int reputationPoint;
     private int sicknessPoint;
-    private Inventory inventory;
+    private InventoryController inventory;
 
     public Player(String name, String token) {
         this.name = name;
@@ -36,6 +38,10 @@ public class Player {
 		this.token = token;
 	}
 
+    public int getReputation() {
+        return reputationPoint;
+    }
+
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
     }
@@ -57,7 +63,7 @@ public class Player {
         return token;
     }
    
-   public Inventory getInventory() {
+   public InventoryController getInventory() {
         return inventory;
    }
 }

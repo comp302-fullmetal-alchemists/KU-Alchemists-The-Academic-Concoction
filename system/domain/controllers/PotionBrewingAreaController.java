@@ -1,7 +1,10 @@
-package system.domain;
+package system.domain.controllers;
 import java.util.ArrayList;
 
-public class PotionBrewingArea {
+import system.domain.IngredientCard;
+import system.domain.Potion;
+
+public class PotionBrewingAreaController {
 
     //students : ArrayList<String>
     //PotionBrewingArea	students: ArrayList<String>

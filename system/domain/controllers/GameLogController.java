@@ -1,9 +1,12 @@
-package system.domain;
+package system.domain.controllers;
 
 import java.util.List;
 import java.util.Map;
 
-public class GameLog {
+import system.domain.GameAction;
+import system.domain.Player;
+
+public class GameLogController {
 
     //GameLog	gameAction :Map<Player, ArrayList<gameAction>>
     //	showGameLog(player)

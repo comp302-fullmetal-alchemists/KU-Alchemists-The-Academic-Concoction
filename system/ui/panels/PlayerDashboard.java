@@ -1,12 +1,11 @@
 package system.ui.panels;
 
 import system.domain.Player;
+import system.domain.controllers.GameLogController;
 import system.domain.IngredientCard;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-
-import system.domain.GameLog;
 
 public class PlayerDashboard extends JPanel {
     
@@ -28,11 +27,11 @@ public class PlayerDashboard extends JPanel {
         inventory.update();
     } 
     
-    private void click(GameLog gameLog) {
+    private void click(GameLogController gameLog) {
         //OR CLICK GAMELOG PANEL
 	}
     
-    private void get(GameLog gameLog, Player player) {
+    private void get(GameLogController gameLog, Player player) {
     	player = this.player;
     	//return gameLog actions
     }

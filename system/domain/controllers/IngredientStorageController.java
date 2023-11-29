@@ -22,9 +22,11 @@ public class IngredientStorageController {
         ingredientPile.add(new IngredientCard("Ingredient3", null));
     }
 
-    public void transmuteIngredient(IngredientCard card) {
+    public IngredientCard transmuteIngredient(IngredientCard card) {
+        giveIngredient(card);
+        updateGold(2);
         
-        return;
+        return card;
 
     }
 

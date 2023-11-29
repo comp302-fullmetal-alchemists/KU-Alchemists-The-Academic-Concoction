@@ -1,6 +1,6 @@
 package system.domain;
 
-public class DeductionBoard {
+public class DeductionBoardController {
 
     //build: deduction grid
 

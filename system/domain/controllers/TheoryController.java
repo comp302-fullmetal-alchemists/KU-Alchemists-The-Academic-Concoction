@@ -13,7 +13,7 @@ public class TheoryController {
         return;
     }
 
-    public void debunkTheory(AlchemyMarker alchemy, Theory theory) {
+    public void debunkTheory(AlchemyMarker alchemy, TheoryController theory) {
         return;
     }
     

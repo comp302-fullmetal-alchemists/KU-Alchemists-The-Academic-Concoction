@@ -31,6 +31,7 @@ public class InventoryController {
         this.potions = new ArrayList<Potion>();
     }
 
+
     public int getGold(){
         return gold;
     }
@@ -39,21 +40,20 @@ public class InventoryController {
 		this.gold = gold;
 	}
 
-    
+    public ArrayList getArtifactCards(){
+        return artifactCards;
+    }
 
-
-    public IngredientCard giveIngredient(IngredientCard card) {
+    public void giveIngredient(IngredientCard card) {
     	//delete card from ingredient card list of the corresponding players inventory
         for(IngredientCard icard : ingredientCards){
             if(icard == card){
                 ingredientCards.remove(card);
-                return card;
+                
             }
         }
-        return ; //???
-        
+
     }
-    
 
     public void showInventory(Player player) {
        //observer will use this
@@ -68,8 +68,14 @@ public class InventoryController {
     }
 
     public void updateInventory(Cards card) {
+        //sanırım bu da uı için bir method tekrar bakalım.
+        if(card.instanceOf(IngredientCard)){
+            ingredientCards.add(card);
+        }
+        else if (card.instanceOf(ArtifactCard)){
+            artifactCards.add(card);
+        }
         
-        return;
     }
     
     public void removePotion(Potion potion) {
