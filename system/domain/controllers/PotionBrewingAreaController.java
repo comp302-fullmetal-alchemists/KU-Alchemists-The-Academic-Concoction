@@ -15,7 +15,7 @@ public class PotionBrewingAreaController {
     //removePotion(potion)
 
     private ArrayList<String> students;
-    private ArrayList<String> adventurers;
+    //private ArrayList<String> adventurers; //Removed the list of adventurers
 
     public void makePotion(IngredientCard card1, IngredientCard card2) {
         return;
@@ -29,12 +29,15 @@ public class PotionBrewingAreaController {
         return;
     }
 
+    
+
     public String giveOffer(int offer, int potionType) {
         //Add to UI
         String potionTypeStr;
         if (potionType>0){
             potionTypeStr = "positive";
         }
+
         else {
             potionTypeStr = "negative";
         }
