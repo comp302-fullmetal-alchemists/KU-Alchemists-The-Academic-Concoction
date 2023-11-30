@@ -9,10 +9,10 @@ public class GameBoardController {
     //startGame()
     //changePlayer(player)
 
-    private List<Player> players;
+     static List<Player> players;
 
     public GameBoardController() {
-        this.players = new ArrayList<Player>();
+        GameBoardController.players = new  ArrayList<Player>();
     }
 
     public void initializeTheBoard(Player player1, Player player2) {
@@ -20,19 +20,35 @@ public class GameBoardController {
         players.add(player2);
     }
     
-    public Player getPlayer(int index) {
+    public static Player getPlayer(int index) {
         return players.get(index);
     }
 
+    public Player changePlayer(Player currentPlayer) {
+        if (currentPlayer == players.get(0)) {
+            return players.get(1);
+        } else {
+            return players.get(0);
+        }
+    }
+
+    public Player getCurrentPlayer() {
+        if (players.get(0).getTurn()) {
+            return players.get(0);
+        } else {
+            return players.get(1);
+        }
+    }
+
     
-    public int calculateFinalScore(Player player) {
+    /*  public int calculateFinalScore(Player player) {
     //to do: get rep, gold, artifact from player's inventory
     	int finalScore = 0;
         
         //10 points for each rep points
         finalScore += (player.getReputation() * 10) ;
        //trade each artifact with 2 golds
-        for(ArtifactCard a : player.getInventory().getArtifactCards()) {
+         for(ArtifactCard a : player.getInventory().getArtifactCards()) {
                 player.getInventory.updateGold(2);
         }
         //1 point for 3 gold  
@@ -71,7 +87,8 @@ public class GameBoardController {
         }
         }
        
-    }
+    }*/
+
 
 
     public void startGame() {
