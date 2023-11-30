@@ -10,16 +10,12 @@ public class GameBoardController {
     //startGame()
     //changePlayer(player)
 
-<<<<<<< HEAD
     private static List<Player> players;
-=======
-    private List<Player> players;
     GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
 
     public GameLogController getGameLog(){
         return gameLog;
     }
->>>>>>> fb4def72bc26188c649210edbcd250b1afe93d4e
 
     public GameBoardController() {
         this.players = new ArrayList<Player>();
@@ -46,13 +42,15 @@ public class GameBoardController {
                 player.getInventory().updateGold(2);
         }
         //1 point for 3 gold  
-        finalScore += (player.getGold() / 3) ;
+        finalScore += (player.getInventory().getGold() / 3) ;
 
         return finalScore;
     }
 
 
     public Player winner(){
+        Player player1 = players.get(0);
+        Player player2 = players.get(1);
         int score1 = calculateFinalScore(player1); 
         int score2 = calculateFinalScore(player2);
 
@@ -62,7 +60,7 @@ public class GameBoardController {
         else if(score1 == score2){
             
             for(Player p: players){
-                p.getInventory().updateGold(- (p.getGold() / 3)) ;
+                p.getInventory().updateGold(- (p.getInventory().getGold() / 3)) ;
             }
 
             if(player1.getInventory().getGold() > player2.getInventory().getGold()) {
@@ -80,11 +78,10 @@ public class GameBoardController {
             return player2; 
         }
         }
-       
-    }
 
 
     public void startGame() {
 
         return;
     }
+}
