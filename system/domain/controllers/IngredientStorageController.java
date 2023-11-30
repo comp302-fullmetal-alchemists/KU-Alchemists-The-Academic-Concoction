@@ -22,9 +22,9 @@ public class IngredientStorageController {
         ingredientPile.add(new IngredientCard("Ingredient3", null));
     }
 
-    public IngredientCard transmuteIngredient(int index, IngredientCard card) {
-        GameBoardController.getPlayer(index).getInventory().giveIngredient(card);
-        GameBoardController.getPlayer(index).getInventory().updateGold(2);
+    public IngredientCard transmuteIngredient(IngredientCard card) {
+        GameBoardController.getCurrPlayer().getInventory().giveIngredient(card);
+        GameBoardController.getCurrPlayer().getInventory().updateGold(2);
         
         return card;
 
@@ -38,7 +38,6 @@ public class IngredientStorageController {
         if (ingredientPile.isEmpty()) {
             return null;
         }
-        //this function actually in the inventory controller I want to use it here but I don't know how to call it
         GameBoardController.getCurrPlayer().getInventory().updateInventory(ingredientPile.get(0));
         return ingredientPile.remove(0);
     }
