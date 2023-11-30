@@ -30,7 +30,7 @@ public class PotionBrewingAreaController {
     }
 
     
-
+    //T0D0 create this as offer creator with no input and offer output with random
     public String giveOffer(int offer, int potionType) {
         //Add to UI
         String potionTypeStr;
