@@ -75,7 +75,7 @@ public class GameBoardController {
 
 
     public void startGame() {
+        GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+
         return;
     }
-
-}
