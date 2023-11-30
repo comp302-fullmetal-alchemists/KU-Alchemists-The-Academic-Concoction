@@ -3,6 +3,7 @@ package system.ui.panels;
 import system.ui.frame.GameContentPane;
 import system.domain.IngredientCard;
 import system.domain.controllers.IngredientStorageController;
+import system.domain.controllers.GameBoardController;
 import system.ui.interfaces.PlayerMediator;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class IngredientStorage extends JPanel {
     public IngredientStorage(PlayerMediator mediator) {
         super();
         this.mediator = mediator;
-        this.ingController = new IngredientStorageController(); 
+        this.ingController = GameBoardController.getInstance().getIngredientStorageController(); 
         ////there will be problems about who should create controller,
         ////should it be gameboard controller or ingredient storage??
         this.back = createNavButton("environment", "Back to environment");

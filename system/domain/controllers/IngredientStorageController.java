@@ -17,14 +17,18 @@ public class IngredientStorageController {
     public IngredientStorageController() {
         this.ingredientPile = new ArrayList<IngredientCard>();
         this.artifactPile = new ArrayList<ArtifactCard>();
+    }
+
+    public void initializePiles() {
         ingredientPile.add(new IngredientCard("Ingredient1",  null));
         ingredientPile.add(new IngredientCard("Ingredient2", null));
         ingredientPile.add(new IngredientCard("Ingredient3", null));
+        // pick cards from the pile and send them to each player
     }
 
     public IngredientCard transmuteIngredient(int index, IngredientCard card) {
-        GameBoardController.getPlayer(index).getInventory().giveIngredient(card);
-        GameBoardController.getPlayer(index).getInventory().updateGold(2);
+        GameBoardController.getInstance().getPlayer(index).getInventory().giveIngredient(card);
+        GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
         
         return card;
 
@@ -39,7 +43,7 @@ public class IngredientStorageController {
             return null;
         }
         //this function actually in the inventory controller I want to use it here but I don't know how to call it
-        GameBoardController.getPlayer(index).getInventory().updateInventory(ingredientPile.get(0));
+        GameBoardController.getInstance().getPlayer(index).getInventory().updateInventory(ingredientPile.get(0));
         return ingredientPile.remove(0);
     }
 

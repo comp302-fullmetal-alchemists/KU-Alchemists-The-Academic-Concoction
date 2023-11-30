@@ -27,8 +27,7 @@ public class AuthenticationPanel extends JPanel{
 
     public AuthenticationPanel(Gameboard game){
         super();
-        this.game = game;
-        this.authController = new AuthenticationController(game.getController());
+        this.authController = new AuthenticationController();
         this.usernameLabel = new JLabel("Usernames");
         add(usernameLabel);
         this.usernameField1 = new JTextField(23);
