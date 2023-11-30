@@ -29,8 +29,16 @@ public class PotionBrewingAreaController {
         return;
     }
 
-    public void giveOffer(Integer offer) {
-        return;
+    public String giveOffer(int offer, int potionType) {
+        //Add to UI
+        String potionTypeStr;
+        if (potionType>0){
+            potionTypeStr = "positive";
+        }
+        else {
+            potionTypeStr = "negative";
+        }
+        return String.format("The Adventurer offers %d golds for a %s potion\n", offer, potionTypeStr);
     }
 
     public void removePotion(Potion potion) {

@@ -61,8 +61,7 @@ public class InventoryController {
     }
 
     public int updateGold(int amount) {
-    	
-    	setGold(player.getGold() + amount) ;
+    	setGold(player.getGold() + amount); //gets the gold of the player, adds the amount wanted.
         
     	return amount;
     }
@@ -79,7 +78,7 @@ public class InventoryController {
     }
     
     public void removePotion(Potion potion) {
-    	//potions.remove(potion);
+    	potions.remove(potion);
         return;
     }
 
