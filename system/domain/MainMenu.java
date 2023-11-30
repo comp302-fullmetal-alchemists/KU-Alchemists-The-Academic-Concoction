@@ -12,7 +12,7 @@ public class MainMenu {
         return;
     }
 
-    public String helpScreen() {
+    public static String helpScreen() {
         String helpString = "We are here to help you!";
         return helpString;
     }
