@@ -11,6 +11,7 @@ public class GameBoardController {
     //changePlayer(player)
 
     private static List<Player> players;
+    private static GameBoardController instance;
 
     //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
 
@@ -22,16 +23,23 @@ public class GameBoardController {
         GameBoardController.players = new ArrayList<Player>();
     }
 
+    public static GameBoardController getInstance() {
+        if (instance == null) {
+            instance = new GameBoardController();
+        }
+        return instance;
+    }
+
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2);
     }
     
-    public static Player getPlayer(int index) {
+    public Player getPlayer(int index) {
         return players.get(index);
     }
 
-    public static Player getCurrPlayer() {
+    public Player getCurrPlayer() {
         if (players.get(0).getTurn()) {
             return players.get(0);
         }

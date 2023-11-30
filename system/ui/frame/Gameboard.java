@@ -19,7 +19,7 @@ public class Gameboard extends JFrame{
     
     public Gameboard() {
         super();
-        this.gameController = new GameBoardController();
+        this.gameController = GameBoardController.getInstance();
 
         this.authPanel = new AuthenticationPanel(this);
         add(authPanel);
