@@ -9,25 +9,42 @@ public class GameBoardController {
     //startGame()
     //changePlayer(player)
 
-     static List<Player> players;
+    private static GameBoardController instance;
+    private List<Player> players;
+    private IngredientStorageController ingredientStorage;
+    private PotionBrewingAreaController potionBrewingArea;
+    private DeductionBoardController deductionBoard;
+    //private PublicationAreaController publicationArea;
 
-    public GameBoardController() {
-        GameBoardController.players = new  ArrayList<Player>();
+
+    private GameBoardController() {
+        this.players = new  ArrayList<Player>();
     }
 
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2);
     }
-    
-    public static Player getPlayer(int index) {
+
+    public static GameBoardController getInstance() {
+        if (instance == null) {
+            instance = new GameBoardController();
+        }
+        return instance;
+    }
+
+    public Player getPlayer(int index) {
         return players.get(index);
     }
 
-    public Player changePlayer(Player currentPlayer) {
+    public Player changeCurrentPlayer(Player currentPlayer) {
         if (currentPlayer == players.get(0)) {
+            currentPlayer.changeTurn();
+            players.get(1).changeTurn();
             return players.get(1);
         } else {
+            currentPlayer.changeTurn();
+            players.get(0).changeTurn();
             return players.get(0);
         }
     }

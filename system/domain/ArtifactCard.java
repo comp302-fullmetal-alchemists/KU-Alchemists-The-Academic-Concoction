@@ -15,7 +15,11 @@ public class ArtifactCard extends Cards{
         this.name = name;
         this.effect = effect;
     }
-    public String chooseEffectUsage() {
+    /*public String chooseEffectUsage() {
+        return this.effect;
+    }*/
+    public String getEffect() {
         return this.effect;
     }
+    
 }

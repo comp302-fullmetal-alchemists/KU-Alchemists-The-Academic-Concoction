@@ -29,7 +29,7 @@ public class InventoryController {
 
     private int gold;
     private List<IngredientCard> ingredientCards;
-    private ArrayList<ArtifactCard> artifactCards;
+    public ArrayList<ArtifactCard> artifactCards;
     private List<Potion> potions;
     public InventoryController() {
         this.gold = 0;
@@ -78,9 +78,9 @@ public class InventoryController {
 
     public int updateGold(int amount) {
     	
-    	setGold(player.getGold() + amount) ;
+    	setGold(gold + amount) ;
         
-    	return amount;
+    	return gold;
     }
 
     public void updateInventory(Cards card) {

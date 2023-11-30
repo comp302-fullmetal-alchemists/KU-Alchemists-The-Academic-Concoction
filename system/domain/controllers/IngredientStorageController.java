@@ -25,17 +25,24 @@ public class IngredientStorageController {
     }
 
     public IngredientCard transmuteIngredient(IngredientCard card) {
-        giveIngredient(card);
-        updateGold(2);
-        
+        GameBoardController.getInstance().getCurrentPlayer().getInventory().giveIngredient(card);
+        GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
         return card;
 
     }
 
     public ArtifactCard buyArtifact() {
+        // control if the player has enough gold
+        if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 3) {
+            return null;
+        }
         //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
         ArtifactCard artifact = drawArtifact();
-        GameBoardController.getCurrentPlayer().getInventory().getArtifactCards().add(artifact);
+        if (artifact == null) {
+            return null;
+        }
+        GameBoardController.getInstance().getCurrentPlayer().getInventory().getArtifactCards().add(artifact);
+        useArtifact(artifact);
         return artifact;
     }
 
@@ -52,6 +59,22 @@ public class IngredientStorageController {
         }
         ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
         return drawed;
+    }
+
+    public ArrayList<IngredientCard> useArtifact(ArtifactCard card) {
+        if (card.getEffect().equals("Elixir of Insight")) {
+            // player can see 3 ingredient cards from the pile
+            ArrayList<IngredientCard> cards = new ArrayList<IngredientCard>();
+            if (ingredientPile.size() < 3) {
+                return null;
+            }
+            for (int i = 1; i <= 3; i++) {
+                cards.add(ingredientPile.get(ingredientPile.size() - i));
+            }
+            
+            return cards;
+        }
+        return null;
     }
 
 }

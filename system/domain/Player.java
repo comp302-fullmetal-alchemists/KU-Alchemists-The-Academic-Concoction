@@ -66,4 +66,5 @@ public class Player {
    public InventoryController getInventory() {
         return inventory;
    }
+   
 }
