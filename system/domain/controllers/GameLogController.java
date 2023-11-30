@@ -23,7 +23,7 @@ public class GameLogController {
     }
 
     public void showGameLog(Player player) {
-        List<GameAction> tail = gameActions.get(player).subList(Math.max(l.size() - 3, 0), l.size()); //gets the players list and then takes the last 3 elements as tail.
+        List<GameAction> tail = gameActions.get(player).subList(Math.max(gameActions.get(player).size() - 3, 0), gameActions.get(player).size()); //gets the players list and then takes the last 3 elements as tail.
         
         for (int i = 0; i < tail.size(); i++) 
         {
