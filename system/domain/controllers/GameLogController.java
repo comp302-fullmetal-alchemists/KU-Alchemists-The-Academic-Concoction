@@ -14,8 +14,8 @@ public class GameLogController {
     private Map<Player, List<GameAction>> gameActions;
     
     public GameLogController GameLogController(Player player1, Player player2){
-        gameAction startAction1 = new gameAction("Game", player1.getName(), "Game Start", 0);
-        gameAction startAction2 = new gameAction("Game", player2.getName(), "Game Start", 0);
+        gameAction startAction1 = new gameAction("Game", player1.getName(), "GameLog Start", 0);
+        gameAction startAction2 = new gameAction("Game", player2.getName(), "GameLog Start", 0);
 
         gameActions.put(player1, startAction1);
         gameActions.put(player1, startAction2);

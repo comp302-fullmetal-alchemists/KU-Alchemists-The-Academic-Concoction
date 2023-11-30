@@ -10,6 +10,11 @@ public class GameBoardController {
     //changePlayer(player)
 
     private List<Player> players;
+    GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+
+    public GameLogController getGameLog(){
+        return gameLog;
+    }
 
     public GameBoardController() {
         this.players = new ArrayList<Player>();
@@ -75,7 +80,6 @@ public class GameBoardController {
 
 
     public void startGame() {
-        GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
 
         return;
     }
