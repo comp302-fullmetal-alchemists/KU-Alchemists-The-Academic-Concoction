@@ -62,18 +62,20 @@ public class InventoryController {
 
     public int updateGold(int amount) {
     	
-    	setGold(player.getGold() + amount) ;
+    	setGold(gold + amount) ;
         
     	return amount;
     }
 
     public void updateInventory(Cards card) {
         //sanırım bu da uı için bir method tekrar bakalım.
-        if(card.instanceOf(IngredientCard)){
-            ingredientCards.add(card);
-        }
-        else if (card.instanceOf(ArtifactCard)){
-            artifactCards.add(card);
+        if(card instanceof IngredientCard){
+            IngredientCard ICard = (IngredientCard) card;
+            ingredientCards.add(ICard);
+        } 
+        else if (card instanceof ArtifactCard){
+            ArtifactCard ACard = (ArtifactCard) card;
+            artifactCards.add(ACard);
         }
         
     }
