@@ -23,8 +23,8 @@ public class IngredientStorageController {
     }
 
     public IngredientCard transmuteIngredient(IngredientCard card) {
-        giveIngredient(card);
-        updateGold(2);
+        GameBoardController.getCurrPlayer().getInventory().giveIngredient(card);
+        GameBoardController.getCurrPlayer().getInventory().updateGold(2);
         
         return card;
 
@@ -38,6 +38,7 @@ public class IngredientStorageController {
         if (ingredientPile.isEmpty()) {
             return null;
         }
+        GameBoardController.getCurrPlayer().getInventory().updateInventory(ingredientPile.get(0));
         return ingredientPile.remove(0);
     }
 
