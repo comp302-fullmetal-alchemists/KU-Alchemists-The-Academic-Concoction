@@ -34,12 +34,12 @@ public class IngredientStorageController {
         return;
     }
 
-    public IngredientCard drawIngredient(int index) {
+    public IngredientCard drawIngredient() {
         if (ingredientPile.isEmpty()) {
             return null;
         }
         //this function actually in the inventory controller I want to use it here but I don't know how to call it
-        GameBoardController.getPlayer(index).getInventory().updateInventory(ingredientPile.get(0));
+        GameBoardController.getCurrPlayer().getInventory().updateInventory(ingredientPile.get(0));
         return ingredientPile.remove(0);
     }
 
