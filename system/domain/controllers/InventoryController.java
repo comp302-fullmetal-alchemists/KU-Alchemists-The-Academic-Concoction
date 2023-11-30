@@ -40,7 +40,7 @@ public class InventoryController {
 		this.gold = gold;
 	}
 
-    public ArrayList getArtifactCards(){
+    public List<ArtifactCard> getArtifactCards(){
         return artifactCards;
     }
 

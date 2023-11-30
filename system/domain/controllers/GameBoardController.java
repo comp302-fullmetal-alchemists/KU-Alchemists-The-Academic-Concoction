@@ -3,13 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import system.domain.Player;
+import system.domain.ArtifactCard;
 public class GameBoardController {
 
     //GameBoard	players: List<Players>	calculateFinalScore()
     //startGame()
     //changePlayer(player)
 
-    private List<Player> players;
+    private static List<Player> players;
 
     public GameBoardController() {
         this.players = new ArrayList<Player>();
@@ -20,7 +21,7 @@ public class GameBoardController {
         players.add(player2);
     }
     
-    public Player getPlayer(int index) {
+    public static Player getPlayer(int index) {
         return players.get(index);
     }
 
@@ -33,10 +34,10 @@ public class GameBoardController {
         finalScore += (player.getReputation() * 10) ;
        //trade each artifact with 2 golds
         for(ArtifactCard a : player.getInventory().getArtifactCards()) {
-                player.getInventory.updateGold(2);
+                player.getInventory().updateGold(2);
         }
         //1 point for 3 gold  
-        finalScore += (player.getGold / 3) ;
+        finalScore += (player.getGold() / 3) ;
 
         return finalScore;
     }
