@@ -19,7 +19,7 @@ public class Gameboard extends JFrame{
     
     public Gameboard() {
         super();
-        this.gameController = new GameBoardController();
+        this.gameController = GameBoardController.getInstance();
 
         this.authPanel = new AuthenticationPanel(this);
         add(authPanel);
@@ -27,7 +27,7 @@ public class Gameboard extends JFrame{
         setSize(600, 600);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        validate(); 
+        validate();
     }
 
     public void initializeTheBoard() {
