@@ -49,7 +49,7 @@ public class GameBoardController {
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.ingredientStorage.initializePiles();
-        gameboardUI.update("initializeTheBoard");
+        gameboardUI.update("INITIALIZE_BOARD");
     }
 
 
@@ -64,6 +64,7 @@ public class GameBoardController {
     public void changePlayer() {
         players.get(0).changeTurn();
         players.get(1).changeTurn();
+        gameboardUI.update("CHANGE_PLAYER");
     }
     
     public Player getCurrentPlayer() {

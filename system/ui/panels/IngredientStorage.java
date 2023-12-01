@@ -28,7 +28,7 @@ public class IngredientStorage extends JPanel implements Observer {
         this.mediator = mediator;
         this.ingController = GameBoardController.getInstance().getIngredientStorageController(); 
         ingController.setObserver(this);
-        this.back = createNavButton("environment", "Back to environment");
+        this.back = createNavButton("village", "Back to the village");
         add(back);
         this.ingredientButton = createIngButton("Draw Ingredient");
         add(ingredientButton);

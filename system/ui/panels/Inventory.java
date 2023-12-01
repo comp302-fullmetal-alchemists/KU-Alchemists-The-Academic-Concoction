@@ -42,6 +42,7 @@ public class Inventory extends JPanel implements Observer {
             add(j);
         }
         revalidate();
+        repaint();
     }
 
     @Override
