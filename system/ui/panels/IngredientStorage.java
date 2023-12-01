@@ -5,6 +5,7 @@ import system.domain.IngredientCard;
 import system.domain.controllers.IngredientStorageController;
 import system.domain.controllers.GameBoardController;
 import system.ui.interfaces.PlayerMediator;
+import system.domain.interfaces.Observer;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class IngredientStorage extends JPanel {
+public class IngredientStorage extends JPanel implements Observer {
     
     private IngredientStorageController ingController;
     private PlayerMediator mediator;
@@ -26,8 +27,7 @@ public class IngredientStorage extends JPanel {
         super();
         this.mediator = mediator;
         this.ingController = GameBoardController.getInstance().getIngredientStorageController(); 
-        ////there will be problems about who should create controller,
-        ////should it be gameboard controller or ingredient storage??
+        ingController.setObserver(this);
         this.back = createNavButton("environment", "Back to environment");
         add(back);
         this.ingredientButton = createIngButton("Draw Ingredient");
@@ -40,9 +40,7 @@ public class IngredientStorage extends JPanel {
             new ActionListener() {
                 @Override 
                 public void actionPerformed(ActionEvent e) {
-                    IngredientCard drawn = ingController.drawIngredient();
-                    JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!",drawn.getName()));
-                    mediator.sendIngredientsToPlayer(drawn);
+                    ingController.drawIngredient();
                 }
             }
         );
@@ -57,9 +55,18 @@ public class IngredientStorage extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     ((GameContentPane) IngredientStorage.this.getParent()).changeView(nav);
                 }
-
             }
         );
         return button;
+    }
+
+    @Override
+    public void update(String msg) {
+        if (msg.equals("Pile is empty!")) {
+            JOptionPane.showMessageDialog(IngredientStorage.this, "Pile is empty!");
+        }
+        else if (msg.contains("CARDREMOVAL")) {
+            JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!", msg.substring(13)));
+        }
     }
 }

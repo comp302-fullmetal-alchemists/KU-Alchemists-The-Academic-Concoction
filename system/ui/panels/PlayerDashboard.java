@@ -16,7 +16,7 @@ public class PlayerDashboard extends JPanel {
     public PlayerDashboard(Player player){
         super();
         this.player = player;
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(player.getInventory());
         this.playerLabel = new JLabel(player.getName());
         add(playerLabel);
         add(inventory);
@@ -24,7 +24,6 @@ public class PlayerDashboard extends JPanel {
 
     public void takeIngredients(IngredientCard ingCard) {
         inventory.addItemToInventory(ingCard.getName());
-        inventory.update();
     } 
     
     private void click(GameLogController gameLog) {

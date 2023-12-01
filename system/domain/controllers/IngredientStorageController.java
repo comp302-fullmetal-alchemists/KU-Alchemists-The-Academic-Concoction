@@ -5,6 +5,8 @@ import java.util.List;
 
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
+import system.domain.interfaces.Observer;
+import system.domain.Cards;
 
 public class IngredientStorageController {
     //IngredientStorage	ingredient pile: List<ingredientCard>
@@ -13,10 +15,15 @@ public class IngredientStorageController {
 
     private List<IngredientCard> ingredientPile;
     private List<ArtifactCard> artifactPile;
+    private Observer ingredientStorageUI;
 
     public IngredientStorageController() {
         this.ingredientPile = new ArrayList<IngredientCard>();
         this.artifactPile = new ArrayList<ArtifactCard>();
+    }
+
+    public void setObserver(Observer observer) {
+        this.ingredientStorageUI = observer;
     }
 
     public void initializePiles() {
@@ -36,6 +43,17 @@ public class IngredientStorageController {
 
     public void buyArtifact() {
         return;
+    }
+
+    public void drawIngredient() {
+        if (ingredientPile.isEmpty()) {
+            ingredientStorageUI.update("Pile is empty!");
+        }
+        else {
+            IngredientCard drawn = ingredientPile.remove(0);
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateIngredients(drawn);
+            ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
+        }
     }
 
     public IngredientCard drawIngredient(int index) {

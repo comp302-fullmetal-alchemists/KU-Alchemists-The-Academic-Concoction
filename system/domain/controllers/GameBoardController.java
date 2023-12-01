@@ -6,6 +6,9 @@ import java.util.Random;
 
 import system.domain.Player;
 import system.domain.ArtifactCard;
+import system.domain.interfaces.Observer;
+
+
 public class GameBoardController {
 
     private static GameBoardController instance;
@@ -14,8 +17,10 @@ public class GameBoardController {
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
+    private Observer gameboardUI;
 
-    GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+    GameLogController gameLog;
 
     private GameBoardController() {
         this.players = new ArrayList<Player>();
@@ -26,6 +31,10 @@ public class GameBoardController {
             instance = new GameBoardController();
         }
         return instance;
+    }
+
+    public void setObserver(Observer observer) {
+        this.gameboardUI = observer;
     }
 
 
@@ -40,6 +49,7 @@ public class GameBoardController {
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.ingredientStorage.initializePiles();
+        gameboardUI.update("initializeTheBoard");
     }
 
 

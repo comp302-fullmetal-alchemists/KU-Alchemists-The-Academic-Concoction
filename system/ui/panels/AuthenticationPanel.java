@@ -27,6 +27,7 @@ public class AuthenticationPanel extends JPanel{
 
     public AuthenticationPanel(Gameboard game){
         super();
+        this.game = game;
         this.authController = new AuthenticationController();
         this.usernameLabel = new JLabel("Usernames");
         add(usernameLabel);
@@ -51,7 +52,7 @@ public class AuthenticationPanel extends JPanel{
                 String token2 = new String(tokenField2.getText());
                 String response = authController.login(username1, token1, username2, token2);
                 if (response == "Welcome to the KuAlchemists"){
-                    game.initializeTheBoard();
+                    //game.initializeTheBoard();
                     
                 }
                 else{

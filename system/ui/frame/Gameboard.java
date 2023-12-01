@@ -2,6 +2,7 @@ package system.ui.frame;
 
 import system.domain.Player;
 import system.domain.controllers.GameBoardController;
+import system.domain.interfaces.Observer;
 import system.ui.interfaces.*;
 import system.ui.panels.AuthenticationPanel;
 
@@ -9,7 +10,7 @@ import javax.swing.JFrame;
 
 import java.awt.GridLayout;
 
-public class Gameboard extends JFrame{
+public class Gameboard extends JFrame implements Observer{
 
     AuthenticationPanel authPanel;
     PlayerContentPane playerPane;
@@ -20,7 +21,7 @@ public class Gameboard extends JFrame{
     public Gameboard() {
         super();
         this.gameController = GameBoardController.getInstance();
-
+        gameController.setObserver(this);
         this.authPanel = new AuthenticationPanel(this);
         add(authPanel);
         this.mediator = new Mediator();
@@ -40,8 +41,11 @@ public class Gameboard extends JFrame{
         revalidate();
     }
 
-    public GameBoardController getController() {
-        return gameController;
+    @Override
+    public void update(String msg) {
+        if (msg.equals("initializeTheBoard")) {
+            initializeTheBoard();
+        }
     }
 
 }

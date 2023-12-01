@@ -4,7 +4,6 @@ import system.domain.Player;
 
 public class AuthenticationController {
  
-
     public AuthenticationController() {
     }
 
