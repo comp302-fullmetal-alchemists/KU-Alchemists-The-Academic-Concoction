@@ -2,7 +2,8 @@ package system.domain;
 
 public class MainMenu {
 
-    //MainMenu		exitGame()
+    //MainMenu		
+    //exitGame()
     //helpScreen()
     //pauseGame()
     //resumeGame()

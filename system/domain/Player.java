@@ -1,16 +1,22 @@
 package system.domain;
 
+import system.domain.controllers.InventoryController;
+
 public class Player {
     
     private String name;
     private Boolean turn;
     private String token;
-
+    private int reputationPoint;
+    private int sicknessPoint;
+    private InventoryController inventory;
 
     public Player(String name, String token) {
         this.name = name;
         this.turn = false;
         this.token = token;
+        this.inventory = new InventoryController();
+
     }
 
     public String getName(){
@@ -33,6 +39,18 @@ public class Player {
 		this.token = token;
 	}
 
+    public int getReputation() {
+        return reputationPoint;
+    }
+
+    public void updateReputation(int updateVal) {
+        reputationPoint = reputationPoint + updateVal;
+    }
+
+    public void updateSickness(int updateVal) {
+        sicknessPoint = sicknessPoint + updateVal;
+    }
+
 	public Boolean isInTurn() {
         return turn;
     }
@@ -46,4 +64,7 @@ public class Player {
         return token;
     }
    
+   public InventoryController getInventory() {
+        return inventory;
+   }
 }

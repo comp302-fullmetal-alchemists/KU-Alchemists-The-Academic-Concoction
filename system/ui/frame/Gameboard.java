@@ -1,38 +1,51 @@
 package system.ui.frame;
 
 import system.domain.Player;
-import system.ui.interfaces.PlayerMediator;
+import system.domain.controllers.GameBoardController;
+import system.domain.interfaces.Observer;
+import system.ui.interfaces.*;
+import system.ui.panels.AuthenticationPanel;
 
 import javax.swing.JFrame;
 
 import java.awt.GridLayout;
 
-public class Gameboard extends JFrame{
+public class Gameboard extends JFrame implements Observer{
 
     AuthenticationPanel authPanel;
     PlayerContentPane playerPane;
     GameContentPane gamePane;
-    PlayerMediator playerMediator;
+    PlayerMediator mediator;
+    GameBoardController gameController;
     
     public Gameboard() {
         super();
-        this.authPanel = new AuthenticationPanel(this);
+        this.gameController = GameBoardController.getInstance();
+        gameController.setObserver(this);
+        this.authPanel = new AuthenticationPanel();
         add(authPanel);
-
+        this.mediator = new Mediator();
         setSize(600, 600);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         validate();
     }
 
-    public void initializeTheBoard(Player p1, Player p2) {
+    public void initializeTheBoard() {
         remove(authPanel);
         setLayout(new GridLayout(1, 2));
-        this.playerPane = new PlayerContentPane(p1, p2);
-        this.gamePane = new GameContentPane();
+        this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1), mediator);
+        this.gamePane = new GameContentPane(mediator);
         add(gamePane);
         add(playerPane);
         revalidate();
-}
+    }
+
+    @Override
+    public void update(String msg) {
+        if (msg.equals("initializeTheBoard")) {
+            initializeTheBoard();
+        }
+    }
 
 }

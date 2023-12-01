@@ -19,5 +19,9 @@ public class Potion {
         return this.status;
     }
 
+    public ArrayList<IngredientCard> getFormula() {
+        return this.formula;
+    }
+
 
 }
