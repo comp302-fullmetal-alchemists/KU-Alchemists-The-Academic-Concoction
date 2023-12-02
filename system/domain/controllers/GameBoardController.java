@@ -58,7 +58,6 @@ public class GameBoardController {
     //public GameLogController getGameLog(){
      //   return gameLog;
     //}
-
     public Player getPlayer(int index) {
         return players.get(index);
     }
@@ -141,7 +140,7 @@ public class GameBoardController {
         else{
             return player2; 
         }
-        }
+    }
 
 
     public void startGame() {

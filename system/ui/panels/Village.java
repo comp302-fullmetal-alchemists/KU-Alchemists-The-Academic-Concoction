@@ -14,6 +14,7 @@ public class Village extends JPanel {
     private JButton potionButton;
     private JButton publicationButton;
     private JButton deductionButton;
+    private JButton mainMenuButton;
 
 
     public Village() {
@@ -22,10 +23,13 @@ public class Village extends JPanel {
         this.potionButton = createNavButton("potionBrewingArea", "Potion Brewing Area");
         this.publicationButton = createNavButton("publicationArea", "Publication Area");
         this.deductionButton = createNavButton("deductionBoard", "Deduction Board");
+        this.mainMenuButton = createNavButton("mainMenu", "Main Menu");
+
         add(ingButton);
         add(potionButton);
         add(publicationButton);
         add(deductionButton);
+        add(mainMenuButton);
     }
 
     public JButton createNavButton(String nav, String text) {
