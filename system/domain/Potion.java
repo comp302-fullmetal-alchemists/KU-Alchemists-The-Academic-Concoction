@@ -10,6 +10,10 @@ public class Potion {
     private String status;
     private ArrayList<IngredientCard> formula;
 
+    public Potion(String name) {
+        this.name = name;
+    }
+
     public Potion(String status, ArrayList<IngredientCard> formula) {
         this.status = status;
         this.formula = formula;

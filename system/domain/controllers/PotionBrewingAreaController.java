@@ -40,8 +40,17 @@ public class PotionBrewingAreaController implements Collector{
         GameBoardController.getInstance().getMediator().disconnectCollector();
     }
 
-    public void makePotion(IngredientCard card1, IngredientCard card2) {
-        return;
+    public void makePotion() {
+        if (ing1 != null && ing2 != null) {
+            Potion brewed = new Potion("Potion");
+            GameBoardController.getInstance().getMediator().sendToPlayer(brewed);
+            potionBrewingUI.update("DISCARD_INGREDIENTS");
+            ing1 = null;
+            ing2 = null;
+        }
+        else {
+            potionBrewingUI.update("ABSENT_INGREDIENTS");
+        }
     }
 
     public void chooseExperiment() {

@@ -1,6 +1,7 @@
 package system.ui.panels;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -39,6 +40,8 @@ public class PotionBrewingArea extends JPanel implements Observer {
         add(ingredient1);
         this.ingredient2 = createIngredientField("Give Ingredient2");
         add(ingredient2);
+        this.makePotion = createPotionButton("Make Potion");
+        add(makePotion);
     }
 
 
@@ -112,6 +115,20 @@ public class PotionBrewingArea extends JPanel implements Observer {
         return ing;
     }
 
+    public JButton createPotionButton(String text) {
+        JButton button = new JButton(text);
+        button.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    pbaController.makePotion();
+                }
+
+            }
+        );
+        return button;
+    }
+
 
     @Override
     public void update(String msg) {
@@ -120,6 +137,13 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("NEW_INGREDIENT2")) {
             ingredient2.setText(msg.substring(17));
+        }
+        else if (msg.contains("ABSENT_INGREDIENTS")) {
+            JOptionPane.showMessageDialog(this, "Please fill ingredients");
+        }
+        else if (msg.contains("DISCARD_INGREDIENTS")) {
+            ingredient1.setText("Give Ingredient1");
+            ingredient2.setText("Give Ingredient2");
         }
     }
 }

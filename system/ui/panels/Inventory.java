@@ -33,13 +33,20 @@ public class Inventory extends JPanel implements Observer {
         this.items = new ArrayList<JLabel>();
     }
 
-    public void addItemToInventory(String text) {
+    public void addItemToInventory(String text, String type) {
         JLabel label = new JLabel(text);
         label.addMouseListener(
             new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    Inventory.this.invController.sendIngredient(text);
+                    if (type == "Ingredient") {
+                        Inventory.this.invController.sendIngredient(text);
+                    }
+                    else if (type == "Potion") {
+                        //as long as there is no collector of potions is present in
+                        //concrete mediator, this method is safe
+                        Inventory.this.invController.sendPotion(text);
+                    }
                 }
 
                 @Override
@@ -83,10 +90,13 @@ public class Inventory extends JPanel implements Observer {
     @Override
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT")) {
-            addItemToInventory(msg.substring(16));
+            addItemToInventory(msg.substring(16), "Ingredient");
         }
         else if (msg.contains("REMOVED_INGREDIENT")) {
             removeItemFromInventory(msg.substring(20));
+        }
+        else if (msg.contains("NEW_POTION")) {
+            addItemToInventory(msg.substring(12), "Potion");
         }
     }
 

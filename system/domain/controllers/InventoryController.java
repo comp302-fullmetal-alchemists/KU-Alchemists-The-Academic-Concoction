@@ -113,6 +113,11 @@ public class InventoryController {
         inventoryUI.update(String.format("REMOVED_INGREDIENT: %s", ingredient.getName()));
     }
 
+    public void removePotion(Potion potion) {
+    	potions.remove(potion);
+        inventoryUI.update(String.format("REMOVED_POTION: %s", potion));
+    }
+
     public void sendIngredient(String ingredientName) {
         /// If player will choose ingredients from its dashboard, it cannot choose an ingredient that doesn't belong to it
         /// therefore it makes sense to change ingredientCards to Map<String, IngredientCard>
@@ -125,11 +130,19 @@ public class InventoryController {
             }
         }
     }
-    /**********/
 
-    public void removePotion(Potion potion) {
-    	//potions.remove(potion);
-        return;
+    public void sendPotion(String potionName) {
+        /// If player will choose ingredients from its dashboard, it cannot choose an ingredient that doesn't belong to it
+        /// therefore it makes sense to change ingredientCards to Map<String, IngredientCard>
+        for (Potion pot: potions){
+            if (pot.getName().equals(potionName)) {
+                if (GameBoardController.getInstance().getMediator().sendToCollector(pot)) {
+                    removePotion(pot);
+                }
+                break;
+            }
+        }
     }
+    /**********/
 
 }
