@@ -1,5 +1,6 @@
 package system.domain.controllers;
 import java.util.ArrayList;
+import java.util.Random;
 
 import system.domain.IngredientCard;
 import system.domain.Potion;
@@ -15,6 +16,8 @@ public class PotionBrewingAreaController {
     //removePotion(potion)
 
     private ArrayList<String> students;
+    Random random = new Random();
+
     //private ArrayList<String> adventurers; //Removed the list of adventurers
 
     public void makePotion(IngredientCard card1, IngredientCard card2) {
@@ -30,23 +33,32 @@ public class PotionBrewingAreaController {
     }
 
     
-    //T0D0 create this as offer creator with no input and offer output with random
-    public String giveOffer(int offer, int potionType) {
-        //Add to UI
-        String potionTypeStr;
-        if (potionType>0){
-            potionTypeStr = "positive";
-        }
+    
+    public boolean summonAdventurerOrNot(){
+        return random.nextBoolean();// Generate a random boolean value FOR EVERY ROUND
+    }
+    
 
-        else {
-            potionTypeStr = "negative";
-        }
-        return String.format("The Adventurer offers %d golds for a %s potion\n", offer, potionTypeStr);
+    public String giveOffer() {
+        //TOOD Add to UI
+        //Aventurer gives 3 gold for positive, 2 gold for positive or neutral, 1 gold for any potion.
+
+        String adventurerInfo = "Hark, potion-masters! The Adventurer proclaims: for potions positive, three golds be thine; for brews of good or neutral kind, two golds; and for any draught, one gold. Present thy potions and claim thy reward!";
+        return adventurerInfo;
     }
 
-    public void removePotion(Potion potion) {
-        return;
-    }
-
+    public int agreeOffer(int offer, Potion potion){
+        if ((offer == 3) && (potion.getStatus() == "positive")){
+            return offer;
+        }
+        else if ((offer == 2) && (!(potion.getStatus() == "negative"))){
+            return offer;
+        }
+        else if(offer == 1){
+            return offer;
+        }
+        else{
+            return 0;//ERROR WRONG POTION, AS A PUNISHMENT GET THE POTION
+        }
 
 }

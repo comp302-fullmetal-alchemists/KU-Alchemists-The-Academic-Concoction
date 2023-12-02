@@ -81,7 +81,7 @@ public class InventoryController {
     }
     
     public void removePotion(Potion potion) {
-    	//potions.remove(potion);
+    	potions.remove(potion);
         return;
     }
 
