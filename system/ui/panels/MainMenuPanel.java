@@ -28,7 +28,7 @@ public class MainMenuPanel extends JPanel{
 
     public MainMenuPanel(PlayerMediator mediator) {
         super();
-        this.back = createNavButton("environment", "Back to environment");
+        this.back = createNavButton("village", "Back to village");
         this.mediator = mediator;
         add(back);
         this.helpButton = createHelpButton("Help");
