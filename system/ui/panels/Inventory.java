@@ -53,11 +53,21 @@ public class Inventory extends JPanel implements Observer {
 
                 @Override
                 public void mouseExited(MouseEvent e) {}
-
+                
             }
         );
         items.add(label);
-        this.refresh();
+        refresh();
+    }
+
+    public void removeItemFromInventory(String item) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getText().equals(item)) {
+                items.remove(i);
+                break;
+            }
+        }
+        refresh();
     }
 
     public void refresh() {
@@ -74,6 +84,9 @@ public class Inventory extends JPanel implements Observer {
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT")) {
             addItemToInventory(msg.substring(16));
+        }
+        else if (msg.contains("REMOVED_INGREDIENT")) {
+            removeItemFromInventory(msg.substring(20));
         }
     }
 

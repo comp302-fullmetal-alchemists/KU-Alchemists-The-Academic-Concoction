@@ -61,6 +61,20 @@ public class PotionBrewingAreaController implements Collector{
     }
 
 
+    public void discardIngredient(int num) {
+        if (num == 1) {
+            GameBoardController.getInstance().getMediator().sendToPlayer(ing1);
+            ing1 = null;
+            potionBrewingUI.update("DISCARD_INGREDIENT1");
+        }
+        else if (num == 2) {
+            GameBoardController.getInstance().getMediator().sendToPlayer(ing2);
+            ing2 = null;
+            potionBrewingUI.update("DISCARD_INGREDIENT2");
+        } 
+        
+    }
+
     @Override
     public void collectIngredient(IngredientCard ing) {
         if (ing1==null) {

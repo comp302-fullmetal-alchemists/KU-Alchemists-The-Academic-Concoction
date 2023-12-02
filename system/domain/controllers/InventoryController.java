@@ -114,6 +114,8 @@ public class InventoryController {
     }
 
     public void sendIngredient(String ingredientName) {
+        /// If player will choose ingredients from its dashboard, it cannot choose an ingredient that doesn't belong to it
+        /// therefore it makes sense to change ingredientCards to Map<String, IngredientCard>
         for (IngredientCard ing: ingredientCards){
             if (ing.getName().equals(ingredientName)) {
                 if (GameBoardController.getInstance().getMediator().sendToCollector(ing)) {
