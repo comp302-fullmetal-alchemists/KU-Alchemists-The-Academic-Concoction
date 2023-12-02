@@ -60,5 +60,6 @@ public class PotionBrewingAreaController {
         else{
             return 0;//ERROR WRONG POTION, AS A PUNISHMENT GET THE POTION
         }
+    }
 
 }

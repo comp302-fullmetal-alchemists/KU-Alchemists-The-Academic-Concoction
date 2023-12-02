@@ -12,6 +12,7 @@ public class GameBoardController {
 
     private static List<Player> players;
     private static GameLogController gameLog; 
+    private static PotionBrewingAreaController potionBrewingArea;
 
     public GameLogController getGameLog(){
         return gameLog;
@@ -23,9 +24,8 @@ public class GameBoardController {
 
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
-        players.add(player2);
-        //gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
-        gameLog = new GameLogController(player1, player2);
+        players.add(player2); 
+        gameLog = new GameLogController(player1, player2); //get the players and initalize the gamelog
     }
     
     public static Player getPlayer(int index) {
