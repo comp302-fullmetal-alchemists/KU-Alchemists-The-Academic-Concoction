@@ -5,6 +5,7 @@ public class Theory {
         private IngredientCard ingredient;
         private Player owner;
         private boolean debunked;
+        
 
     public Theory(AlchemyMarker alchemy, IngredientCard ingredient, Player owner) {
         this.alchemy = alchemy;
