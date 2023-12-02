@@ -17,7 +17,7 @@ public class PotionBrewingArea extends JPanel {
     public PotionBrewingArea(PlayerMediator mediator) {
         super();
         this.mediator = mediator;
-        this.back = createNavButton("environment", "Back to environment");
+        this.back = createNavButton("village", "Back to the village");
         add(back);
     }
 

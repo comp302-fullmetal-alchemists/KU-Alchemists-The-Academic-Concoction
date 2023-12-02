@@ -8,6 +8,7 @@ import system.domain.Cards;
 import system.domain.IngredientCard;
 import system.domain.Player;
 import system.domain.Potion;
+import system.domain.interfaces.Observer;
 
 
 public class InventoryController {
@@ -23,12 +24,17 @@ public class InventoryController {
     private List<IngredientCard> ingredientCards;
     private List<ArtifactCard> artifactCards;
     private List<Potion> potions;
+    private Observer inventoryUI;
 
     public InventoryController() {
         this.gold = 0;
         this.ingredientCards = new ArrayList<IngredientCard>();
         this.artifactCards = new ArrayList<ArtifactCard>();
         this.potions = new ArrayList<Potion>();
+    }
+
+    public void setObserver(Observer observer) {
+        this.inventoryUI = observer;
     }
 
 
@@ -78,6 +84,13 @@ public class InventoryController {
             artifactCards.add(ACard);
         }
         
+    }
+
+    
+    public void updateIngredients(IngredientCard ingredient) {
+        ingredientCards.add(ingredient);
+        inventoryUI.update(String.format("NEW_INGREDIENT: %s", ingredient.getName()));
+
     }
     
     public void removePotion(Potion potion) {

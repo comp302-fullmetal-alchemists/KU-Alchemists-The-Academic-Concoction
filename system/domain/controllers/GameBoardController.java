@@ -1,26 +1,29 @@
 package system.domain.controllers;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import system.domain.Player;
 import system.domain.ArtifactCard;
+import system.domain.interfaces.Observer;
+
+
 public class GameBoardController {
 
-    //GameBoard	players: List<Players>	calculateFinalScore()
-    //startGame()
-    //changePlayer(player)
-
-    private static List<Player> players;
     private static GameBoardController instance;
+    private List<Player> players;
+    private IngredientStorageController ingredientStorage;
+    private PotionBrewingAreaController potionBrewingArea;
+    private DeductionBoardController deductionBoard;
+    private PublicationAreaController publicationArea;
+    private Observer gameboardUI;
 
     //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+    GameLogController gameLog;
 
-    //public GameLogController getGameLog(){
-     //   return gameLog;
-    //}
-
-    public GameBoardController() {
-        GameBoardController.players = new ArrayList<Player>();
+    private GameBoardController() {
+        this.players = new ArrayList<Player>();
     }
 
     public static GameBoardController getInstance() {
@@ -30,23 +33,67 @@ public class GameBoardController {
         return instance;
     }
 
+    public void setObserver(Observer observer) {
+        this.gameboardUI = observer;
+    }
+
+
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2);
+        Random random = new Random();
+        int firstPlayer = random.nextInt(2);
+        players.get(firstPlayer).changeTurn();
+        this.ingredientStorage = new IngredientStorageController();
+        this.publicationArea = new PublicationAreaController();
+        this.deductionBoard = new DeductionBoardController();
+        this.potionBrewingArea = new PotionBrewingAreaController();
+        this.ingredientStorage.initializePiles();
+        gameboardUI.update("INITIALIZE_BOARD");
     }
+
+
+    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+
+    //public GameLogController getGameLog(){
+     //   return gameLog;
+    //}
     
     public Player getPlayer(int index) {
         return players.get(index);
     }
 
-    public Player getCurrPlayer() {
+    public void changePlayer() {
+        players.get(0).changeTurn();
+        players.get(1).changeTurn();
+        gameboardUI.update("CHANGE_PLAYER");
+    }
+    
+    
+    public Player getCurrentPlayer() {
         if (players.get(0).getTurn()) {
             return players.get(0);
-        }
-        else {
+        } else {
             return players.get(1);
         }
     }
+
+    public IngredientStorageController getIngredientStorageController(){
+        return ingredientStorage;
+    }
+
+    public PotionBrewingAreaController getPotionBrewingAreaController() {
+        return potionBrewingArea;
+    }
+
+    public PublicationAreaController getPublicationAreaController() {
+        return publicationArea;
+    }
+
+    public DeductionBoardController getDeductionBoardController() {
+        return deductionBoard;
+    }
+
 
     
     public int calculateFinalScore(Player player) {
@@ -95,7 +142,7 @@ public class GameBoardController {
         else{
             return player2; 
         }
-        }
+    }
 
 
     public void startGame() {
