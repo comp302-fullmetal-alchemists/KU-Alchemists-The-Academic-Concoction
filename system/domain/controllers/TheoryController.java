@@ -14,11 +14,11 @@ public class TheoryController {
     }
 
     public void debunkTheory(AlchemyMarker alchemy, Theory theory, int index) {
-        if(theory.getAlchemy() == alchemy && theory.getOwner() != GameBoardController.getPlayer(index)) {
+        if(theory.getAlchemy() == alchemy && theory.getOwner() != GameBoardController.getInstance().getPlayer(index)) {
             System.err.println("Theory debunked");
-            GameBoardController.getPlayer(index).getInventory().updateGold(2);
+            GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
             theory.setDebunked(true);
-            theory.setOwner(GameBoardController.getPlayer(index));
+            theory.setOwner(GameBoardController.getInstance().getPlayer(index));
         }
         else {
             System.err.println("Theory not debunked");

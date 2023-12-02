@@ -22,8 +22,8 @@ public class PlayerContentPane extends JPanel {
         setLayout(cards);
         player1 = new PlayerDashboard(p1);
         player2 = new PlayerDashboard(p2);
-        add(player1, "player1");
-        add(player2, "player2");
+        add(player1, p1.getName());
+        add(player2, p2.getName());
         this.mediator = mediator;
         mediator.connectPlayer(player1);
     }
