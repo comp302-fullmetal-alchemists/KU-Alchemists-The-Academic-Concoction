@@ -7,6 +7,8 @@ import java.util.Random;
 import system.domain.Player;
 import system.domain.ArtifactCard;
 import system.domain.interfaces.Observer;
+import system.domain.interfaces.Mediator;
+import system.domain.util.ConcreteMediator;
 
 
 public class GameBoardController {
@@ -17,6 +19,7 @@ public class GameBoardController {
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
+    private Mediator mediator;
     private Observer gameboardUI;
 
     //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
@@ -49,6 +52,7 @@ public class GameBoardController {
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.ingredientStorage.initializePiles();
+        this.mediator = new ConcreteMediator(players.get(firstPlayer));
         gameboardUI.update("INITIALIZE_BOARD");
     }
 
@@ -64,6 +68,7 @@ public class GameBoardController {
     public void changePlayer() {
         players.get(0).changeTurn();
         players.get(1).changeTurn();
+        mediator.connectPlayer(getCurrentPlayer());
         gameboardUI.update("CHANGE_PLAYER");
     }
     
@@ -89,6 +94,10 @@ public class GameBoardController {
 
     public DeductionBoardController getDeductionBoardController() {
         return deductionBoard;
+    }
+
+    public Mediator getMediator() {
+        return mediator;
     }
 
 

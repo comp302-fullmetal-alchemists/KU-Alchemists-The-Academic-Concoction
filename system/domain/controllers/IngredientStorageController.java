@@ -34,7 +34,8 @@ public class IngredientStorageController {
     }
 
     public IngredientCard transmuteIngredient(int index, IngredientCard card) {
-        GameBoardController.getInstance().getPlayer(index).getInventory().giveIngredient(card);
+        //this just yielded an error but it is not my use case so I just commented it out
+        //GameBoardController.getInstance().getPlayer(index).getInventory().giveIngredient(card);
         GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
         
         return card;
@@ -51,7 +52,7 @@ public class IngredientStorageController {
         }
         else {
             IngredientCard drawn = ingredientPile.remove(0);
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateIngredients(drawn);
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
         }
     }

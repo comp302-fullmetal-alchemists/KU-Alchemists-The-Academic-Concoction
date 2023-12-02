@@ -1,13 +1,11 @@
 package system.ui.panels;
 
 import system.ui.frame.GameContentPane;
-import system.domain.IngredientCard;
 import system.domain.controllers.IngredientStorageController;
 import system.domain.controllers.GameBoardController;
 import system.ui.interfaces.PlayerMediator;
 import system.domain.interfaces.Observer;
 
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;

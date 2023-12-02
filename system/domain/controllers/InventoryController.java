@@ -49,7 +49,7 @@ public class InventoryController {
     public List<ArtifactCard> getArtifactCards(){
         return artifactCards;
     }
-
+    /* 
     public void giveIngredient(IngredientCard card) {
     	//delete card from ingredient card list of the corresponding players inventory
         for(IngredientCard icard : ingredientCards){
@@ -60,7 +60,7 @@ public class InventoryController {
         }
 
     }
-
+    */
     public void showInventory(Player player) {
        //observer will use this
         return;
@@ -86,13 +86,45 @@ public class InventoryController {
         
     }
 
-    
     public void updateIngredients(IngredientCard ingredient) {
         ingredientCards.add(ingredient);
         inventoryUI.update(String.format("NEW_INGREDIENT: %s", ingredient.getName()));
+    }
 
+    /*********/
+    /*These should be the accessers of inventory for the mediator */
+    public void addIngredient(IngredientCard ingredient) {
+        ingredientCards.add(ingredient);
+        inventoryUI.update(String.format("NEW_INGREDIENT: %s", ingredient.getName()));
     }
     
+    public void addArtifact(ArtifactCard artifact) {
+        artifactCards.add(artifact);
+        inventoryUI.update(String.format("NEW_ARTIFACT: %s", artifact.getName()));
+    }
+
+    public void addPotion(Potion potion) {
+        potions.add(potion);
+        inventoryUI.update(String.format("NEW_POTION: %s", potion.getName()));
+    }
+
+    public void removeIngredient(IngredientCard ingredient) {
+        ingredientCards.remove(ingredient);
+        inventoryUI.update(String.format("REMOVED_INGREDIENT: %s", ingredient.getName()));
+    }
+
+    public void sendIngredient(String ingredientName) {
+        for (IngredientCard ing: ingredientCards){
+            if (ing.getName().equals(ingredientName)) {
+                if (GameBoardController.getInstance().getMediator().sendToCollector(ing)) {
+                    removeIngredient(ing);
+                }
+                break;
+            }
+        }
+    }
+    /**********/
+
     public void removePotion(Potion potion) {
     	//potions.remove(potion);
         return;

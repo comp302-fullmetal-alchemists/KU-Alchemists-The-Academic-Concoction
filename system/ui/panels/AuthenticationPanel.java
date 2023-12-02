@@ -1,7 +1,6 @@
 package system.ui.panels;
 
 import system.domain.controllers.AuthenticationController;
-import system.domain.Player;
 import system.domain.interfaces.Observer;
 
 import javax.swing.JPanel;

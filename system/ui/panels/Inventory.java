@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,29 @@ public class Inventory extends JPanel implements Observer {
     }
 
     public void addItemToInventory(String text) {
-        items.add(new JLabel(text));
+        JLabel label = new JLabel(text);
+        label.addMouseListener(
+            new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    Inventory.this.invController.sendIngredient(text);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {}
+
+                @Override
+                public void mouseExited(MouseEvent e) {}
+
+            }
+        );
+        items.add(label);
         this.refresh();
     }
 
@@ -44,6 +68,7 @@ public class Inventory extends JPanel implements Observer {
         revalidate();
         repaint();
     }
+
 
     @Override
     public void update(String msg) {
