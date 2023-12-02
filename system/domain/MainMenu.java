@@ -12,8 +12,9 @@ public class MainMenu {
         return;
     }
 
-    public void helpScreen() {
-        return;
+    public static String helpScreen() {
+        String helpString = "We are here to help you!";
+        return helpString;
     }
 
     public void pauseGame() {

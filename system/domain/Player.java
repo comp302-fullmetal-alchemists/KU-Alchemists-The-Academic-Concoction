@@ -15,8 +15,10 @@ public class Player {
         this.name = name;
         this.turn = false;
         this.token = token;
+        this.reputationPoint = 0;
+        this.sicknessPoint = 0;
         this.inventory = new InventoryController();
-
+      
     }
 
     public String getName(){
