@@ -30,15 +30,19 @@ public class AuthenticationPanel extends JPanel implements Observer{
         this.usernameLabel = new JLabel("Usernames");
         add(usernameLabel);
         this.usernameField1 = new JTextField(23);
+        usernameField1.setText("player1");
         add(usernameField1);
         this.usernameField2 = new JTextField(23);
+        usernameField2.setText("player2");
         add(usernameField2);
         this.tokenLabel = new JLabel("Tokens");
         add(tokenLabel);
         this.tokenField1 = new JTextField(10);
         add(tokenField1);
+        tokenField1.setText("token1");
         this.tokenField2 = new JTextField(10);
         add(tokenField2);
+        tokenField2.setText("token2");
         this.loginButton = new JButton("Login");
         add(loginButton);
         
