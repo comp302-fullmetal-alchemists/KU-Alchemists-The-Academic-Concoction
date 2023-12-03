@@ -52,6 +52,11 @@ public class PotionBrewingArea extends JPanel implements Observer {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ((GameContentPane) PotionBrewingArea.this.getParent()).changeView(nav);
+                    if (!ingredient1.getText().equals("Give Ingredient1")) pbaController.discardIngredient(1);
+                    if (!ingredient2.getText().equals("Give Ingredient2")) pbaController.discardIngredient(2);
+                    pbaController.deactivate();
+                    active = false;
+                    activation.setText("Activate choice");
                 }
 
             }
@@ -143,6 +148,12 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("DISCARD_INGREDIENTS")) {
             ingredient1.setText("Give Ingredient1");
+            ingredient2.setText("Give Ingredient2");
+        }
+        else if (msg.contains("DISCARD_INGREDIENT1")) {
+            ingredient1.setText("Give Ingredient1");
+        }
+        else if (msg.contains("DISCARD_INGREDIENT2")) {
             ingredient2.setText("Give Ingredient2");
         }
     }
