@@ -1,6 +1,7 @@
 package system.ui.panels;
 
 import system.ui.frame.GameContentPane;
+import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.IngredientStorageController;
 import system.ui.interfaces.PlayerMediator;
@@ -20,6 +21,7 @@ public class IngredientStorage extends JPanel {
     private PlayerMediator mediator;
     private JButton back;
     private JButton ingredientButton;
+    private JButton artifactButton;
     
     public IngredientStorage(PlayerMediator mediator) {
         super();
@@ -31,6 +33,8 @@ public class IngredientStorage extends JPanel {
         add(back);
         this.ingredientButton = createIngButton("Draw Ingredient");
         add(ingredientButton);
+        this.artifactButton = createArtifactButton("Draw Artifact Card");
+        add(artifactButton);
     }
 
     public JButton createIngButton(String text) {
@@ -60,5 +64,21 @@ public class IngredientStorage extends JPanel {
             }
         );
         return button;
+    }
+
+    public JButton createArtifactButton(String text) {
+        JButton artifactButton = new JButton(text);
+        artifactButton.addActionListener(
+            new ActionListener() {
+                @Override 
+                public void actionPerformed(ActionEvent e) {
+                    ArtifactCard drawn = ingController.buyArtifact();
+                    JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!",drawn.getName()));
+                    JOptionPane.showMessageDialog(IngredientStorage.this, String.format("The effects of the card:!", ingController.useArtifact(drawn).toString()));
+
+                }
+            }
+        );
+        return artifactButton;
     }
 }

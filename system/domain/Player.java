@@ -15,6 +15,7 @@ public class Player {
         this.name = name;
         this.turn = false;
         this.token = token;
+        this.inventory = new InventoryController();
       
     }
 

@@ -21,5 +21,8 @@ public class ArtifactCard extends Cards{
     public String getEffect() {
         return this.effect;
     }
+    public String getName() {
+        return name;
+    }
     
 }

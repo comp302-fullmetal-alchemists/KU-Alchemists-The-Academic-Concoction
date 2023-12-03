@@ -22,6 +22,8 @@ public class IngredientStorageController {
         ingredientPile.add(new IngredientCard("Ingredient1",  null));
         ingredientPile.add(new IngredientCard("Ingredient2", null));
         ingredientPile.add(new IngredientCard("Ingredient3", null));
+        artifactPile.add(new ArtifactCard("Elixir of Insight", "Allows a player to view the top three cards of the ingredient deck and rearrange them in any order."));
+        artifactPile.add(new ArtifactCard("Philosopher's Compass", "Once per round, the player can swap the position of two alchemy markers on the Deduction Board."));
     }
 
     public IngredientCard transmuteIngredient(IngredientCard card) {
@@ -33,16 +35,18 @@ public class IngredientStorageController {
 
     public ArtifactCard buyArtifact() {
         // control if the player has enough gold
-        if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 3) {
+        /*if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 3) {
             return null;
-        }
+           
+        }*/
         //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
         ArtifactCard artifact = drawArtifact();
+        System.out.println("Artifact bought: " + artifact.getName());
+        
         if (artifact == null) {
             return null;
         }
         GameBoardController.getInstance().getCurrentPlayer().getInventory().getArtifactCards().add(artifact);
-        useArtifact(artifact);
         return artifact;
     }
 
@@ -61,7 +65,7 @@ public class IngredientStorageController {
         return drawed;
     }
 
-    public ArrayList<IngredientCard> useArtifact(ArtifactCard card) {
+    public ArrayList<IngredientCard> useArtifact(ArtifactCard card) {  // void dondur switch case yap 
         if (card.getEffect().equals("Elixir of Insight")) {
             // player can see 3 ingredient cards from the pile
             ArrayList<IngredientCard> cards = new ArrayList<IngredientCard>();
