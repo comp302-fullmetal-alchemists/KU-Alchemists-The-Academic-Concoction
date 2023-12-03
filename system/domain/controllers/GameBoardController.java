@@ -49,14 +49,15 @@ public class GameBoardController {
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.ingredientStorage.initializePiles();
-        gameboardUI.update("initializeTheBoard");
+        gameboardUI.update("INITIALIZE_BOARD");
     }
 
 
-    public GameLogController getGameLog(){
-        return gameLog;
-    }
+    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
 
+    //public GameLogController getGameLog(){
+     //   return gameLog;
+    //}
     public Player getPlayer(int index) {
         return players.get(index);
     }
@@ -64,6 +65,7 @@ public class GameBoardController {
     public void changePlayer() {
         players.get(0).changeTurn();
         players.get(1).changeTurn();
+        gameboardUI.update("CHANGE_PLAYER");
     }
     
     public Player getCurrentPlayer() {
@@ -138,7 +140,7 @@ public class GameBoardController {
         else{
             return player2; 
         }
-        }
+    }
 
 
     public void startGame() {

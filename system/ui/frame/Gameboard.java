@@ -30,22 +30,31 @@ public class Gameboard extends JFrame implements Observer{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         validate();
     }
+    
+    @Override
+    public void update(String msg) {
+        if (msg.equals("INITIALIZE_BOARD")) {
+            initializeTheBoard();
+        }
+        else if (msg.equals("CHANGE_PLAYER")) {
+            changePlayer();
+        }
+    }
+
+    public void changePlayer() {
+        playerPane.changeView(gameController.getCurrentPlayer().getName());
+    }
 
     public void initializeTheBoard() {
         remove(authPanel);
         setLayout(new GridLayout(1, 2));
         this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1), mediator);
         this.gamePane = new GameContentPane(mediator);
+        playerPane.changeView(gameController.getCurrentPlayer().getName());
         add(gamePane);
         add(playerPane);
         revalidate();
     }
 
-    @Override
-    public void update(String msg) {
-        if (msg.equals("initializeTheBoard")) {
-            initializeTheBoard();
-        }
-    }
 
 }
