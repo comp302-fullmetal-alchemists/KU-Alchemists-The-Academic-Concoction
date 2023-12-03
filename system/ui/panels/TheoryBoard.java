@@ -7,31 +7,33 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import system.domain.AlchemyMarker;
+import system.domain.Alchemy;
 import system.domain.Player;
+import system.domain.controllers.GameBoardController;
 import system.domain.controllers.TheoryController;
 import system.ui.frame.GameContentPane;
 import system.ui.interfaces.PlayerMediator;
+
 
 public class TheoryBoard extends JPanel {
     private PlayerMediator mediator;
     private TheoryController theoryController;
     private JLabel ingredients1;
-    private JComboBox<AlchemyMarker> alchemy1;
+    private JComboBox<Alchemy> alchemy1;
     private JLabel ingredients2;
-    private JComboBox<AlchemyMarker> alchemy2;
+    private JComboBox<Alchemy> alchemy2;
     private JLabel ingredients3;
-    private JComboBox<AlchemyMarker> alchemy3;
+    private JComboBox<Alchemy> alchemy3;
     private JLabel ingredients4;
-    private JComboBox<AlchemyMarker> alchemy4;
+    private JComboBox<Alchemy> alchemy4;
     private JLabel ingredients5;
-    private JComboBox<AlchemyMarker> alchemy5;
+    private JComboBox<Alchemy> alchemy5;
     private JLabel ingredients6;
-    private JComboBox<AlchemyMarker> alchemy6;
+    private JComboBox<Alchemy> alchemy6;
     private JLabel ingredients7;
-    private JComboBox<AlchemyMarker> alchemy7;
+    private JComboBox<Alchemy> alchemy7;
     private JLabel ingredients8;
-    private JComboBox<AlchemyMarker> alchemy8;
+    private JComboBox<Alchemy> alchemy8;
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);
@@ -52,21 +54,21 @@ public class TheoryBoard extends JPanel {
         super();
         this.theoryController = new TheoryController();
         this.ingredients1 = new JLabel("Ingredient 1");
-        this.alchemy1= new JComboBox<AlchemyMarker>();
+        this.alchemy1= new JComboBox<Alchemy>();
         this.ingredients2 = new JLabel("Ingredient 2");
-        this.alchemy2= new JComboBox<AlchemyMarker>();
+        this.alchemy2= new JComboBox<Alchemy>();
         this.ingredients3 = new JLabel("Ingredient 3");
-        this.alchemy3= new JComboBox<AlchemyMarker>();
+        this.alchemy3= new JComboBox<Alchemy>();
         this.ingredients4 = new JLabel("Ingredient 4");
-        this.alchemy4= new JComboBox<AlchemyMarker>();
+        this.alchemy4= new JComboBox<Alchemy>();
         this.ingredients5 = new JLabel("Ingredient 5");
-        this.alchemy5= new JComboBox<AlchemyMarker>();
+        this.alchemy5= new JComboBox<Alchemy>();
         this.ingredients6 = new JLabel("Ingredient 6");
-        this.alchemy6= new JComboBox<AlchemyMarker>();
+        this.alchemy6= new JComboBox<Alchemy>();
         this.ingredients7 = new JLabel("Ingredient 7");
-        this.alchemy7= new JComboBox<AlchemyMarker>();
+        this.alchemy7= new JComboBox<Alchemy>();
         this.ingredients8 = new JLabel("Ingredient 8");
-        this.alchemy8= new JComboBox<AlchemyMarker>();
+        this.alchemy8= new JComboBox<Alchemy>();
         add(ingredients1);
         add(alchemy1);
         add(ingredients2);
@@ -91,7 +93,4 @@ public class TheoryBoard extends JPanel {
 
     }
 
-
-    
-    
 }

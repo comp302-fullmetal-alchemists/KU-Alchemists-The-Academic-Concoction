@@ -12,7 +12,7 @@ public class TheoryController {
     public TheoryController() {
     }
 
-    public void publishTheory(AlchemyMarker alchemy, IngredientCard ingredient) {
+    public void publishTheory(Alchemy alchemy, IngredientCard ingredient) {
         for (Theory i : theories) {
             if (i.getAlchemy() == alchemy && i.getIngredient() == ingredient) {
                 System.err.println("Theory has already published");
