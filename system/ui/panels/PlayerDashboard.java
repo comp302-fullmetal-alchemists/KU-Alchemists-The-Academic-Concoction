@@ -23,8 +23,9 @@ public class PlayerDashboard extends JPanel {
     }
 
     public void takeIngredients(IngredientCard ingCard) {
-        inventory.addItemToInventory(ingCard.getName());
+        inventory.addItemToInventory(ingCard.getName(), "Ingredient");
     } 
+
     
     private void click(GameLogController gameLog) {
         //OR CLICK GAMELOG PANEL

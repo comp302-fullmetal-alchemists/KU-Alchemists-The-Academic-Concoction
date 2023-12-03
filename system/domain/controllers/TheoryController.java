@@ -1,6 +1,6 @@
 package system.domain.controllers;
 
-import system.domain.AlchemyMarker;
+import system.domain.Alchemy;
 import system.domain.IngredientCard;
 import system.domain.Theory;
 import java.util.List;
@@ -30,7 +30,7 @@ public class TheoryController {
         return;
     }
 
-    public void debunkTheory(AlchemyMarker alchemy, Theory theory, int index) {
+    public void debunkTheory(Alchemy alchemy, Theory theory, int index) {
         if(theory.getAlchemy() == alchemy && theory.getOwner() != GameBoardController.getInstance().getPlayer(index)) {
             System.err.println("Theory debunked");
             GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);

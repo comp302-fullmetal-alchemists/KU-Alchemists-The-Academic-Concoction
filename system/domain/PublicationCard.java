@@ -7,9 +7,9 @@ public class PublicationCard extends Cards {
 
     private String name;
     private IngredientCard ingredient;
-    private AlchemyMarker alchemy;
+    private Alchemy alchemy;
 
-    public PublicationCard(String name, IngredientCard ingredient, AlchemyMarker alchemy) {
+    public PublicationCard(String name, IngredientCard ingredient, Alchemy alchemy) {
         super(name);
         this.name = name;
         this.ingredient = ingredient;
@@ -24,7 +24,7 @@ public class PublicationCard extends Cards {
         return this.ingredient;
     }
 
-    public AlchemyMarker getAlchemy() {
+    public Alchemy getAlchemy() {
         return this.alchemy;
     }
 
