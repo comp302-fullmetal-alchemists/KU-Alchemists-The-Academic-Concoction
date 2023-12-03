@@ -13,6 +13,7 @@ import system.domain.interfaces.Mediator;
 import system.domain.Cards;
 
 public class IngredientStorageController {
+    // public storage 
     //IngredientStorage	ingredient pile: List<ingredientCard>
     //artifact pile: List<artifactCard>	transmuteIngredient(ingredientCard)
     //buyArtifact()

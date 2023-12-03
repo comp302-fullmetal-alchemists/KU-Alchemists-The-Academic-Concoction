@@ -20,6 +20,7 @@ public class InventoryController {
     //showInventory(player)
     //updateGold(int)
     //updateInventory(card)
+    // private storage
 
     private int gold;
     private List<IngredientCard> ingredientCards;
