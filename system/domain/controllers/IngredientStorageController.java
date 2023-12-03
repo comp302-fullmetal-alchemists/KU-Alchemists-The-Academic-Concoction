@@ -1,6 +1,8 @@
 package system.domain.controllers;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -20,6 +22,7 @@ public class IngredientStorageController {
     private Observer ingredientStorageUI;
     private Mediator mediator;
 
+
     public IngredientStorageController() {
         this.ingredientPile = new ArrayList<IngredientCard>();
         this.artifactPile = new ArrayList<ArtifactCard>();
@@ -31,18 +34,21 @@ public class IngredientStorageController {
     }
 
     public void initializePiles() {
-        for (Integer i = 0; i < 10; i++) {
-            ingredientPile.add(new IngredientCard("Ingredient" + i.toString(), null));
+        Random random = new Random();   
+        for (int i = 0; i < 24; i++) {
+            String ingredientName = GameBoardController.getInstance().getIngredients()[i%8];
+            ingredientPile.add(new IngredientCard(ingredientName,GameBoardController.getInstance().getAlchemyMap().get(ingredientName)));
         }
+        Collections.shuffle(ingredientPile);
+
         for (Integer i = 0; i < 10; i++) {
             artifactPile.add(new ArtifactCard("Artifact" + i.toString(), null));
         }
-        Random random = new Random();   
         for (int i = 0; i < 2; i++) {
-            GameBoardController.getInstance().getPlayer(0).getInventory().addIngredient(ingredientPile.remove(random.nextInt(ingredientPile.size())));
+            GameBoardController.getInstance().getPlayer(0).getInventory().addIngredient(ingredientPile.remove(0));
         }
         for (int i = 0; i < 2; i++) {
-            GameBoardController.getInstance().getPlayer(1).getInventory().addIngredient(ingredientPile.remove(random.nextInt(ingredientPile.size())));
+            GameBoardController.getInstance().getPlayer(1).getInventory().addIngredient(ingredientPile.remove(0));
         }
     }
 
@@ -72,5 +78,20 @@ public class IngredientStorageController {
             GameBoardController.getInstance().getCurrentPlayer().playedTurn();
         }
     }
+
+//Alchemy alch1 = new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.SMALL, -AlchemicalConstants.LARGE); 
+//Alchemy alch2 = new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.LARGE, AlchemicalConstants.LARGE);
+//Alchemy alch3 = new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE);
+//Alchemy alch4 = new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.LARGE, AlchemicalConstants.SMALL);
+//Alchemy alch5 = new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL);
+//Alchemy alch6 = new Alchemy(AlchemicalConstants.SMALL,- AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL);
+//Alchemy alch7 = new Alchemy(AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL, AlchemicalConstants.LARGE);
+//Alchemy alch8 = new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL, AlchemicalConstants.SMALL);
+
+
+
+
+
+    
 
 }
