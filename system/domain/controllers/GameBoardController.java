@@ -54,8 +54,9 @@ public class GameBoardController {
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
-        this.ingredientStorage.initializePiles();
         gameboardUI.update("INITIALIZE_BOARD");
+        this.ingredientStorage.initializePiles();
+
     }
 
 
