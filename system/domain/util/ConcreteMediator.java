@@ -13,10 +13,6 @@ public class ConcreteMediator implements Mediator {
     private Collector collector;
 
 
-    public ConcreteMediator(Player player) {
-        this.player = player;
-    }
-
     @Override
     public void connectPlayer(Player player) {
         this.player = player;
@@ -32,6 +28,9 @@ public class ConcreteMediator implements Mediator {
         this.collector = null;
     }
 
+    // Mediator instead of player decides actions to be done because, if it were the player
+    // then player's method needed to have these dispatches as well because it is for sure that
+    // player holds artifacts, ingredients and potions
     @Override
     public <T> void sendToPlayer(T item) {
         if (item instanceof IngredientCard) {
@@ -44,22 +43,14 @@ public class ConcreteMediator implements Mediator {
             player.getInventory().addPotion((Potion) item);
         }
     }
-
-    @Override
+    // Collector will decide its action based on item type, since they may not need all types of items
+    // or they dont hold some types of items at all
+    @Override 
     public <T> boolean sendToCollector(T item) {
         if (collector != null) {
-            if (item instanceof IngredientCard) {
-                collector.collectIngredient((IngredientCard) item);
-            }
-            else if (item instanceof ArtifactCard) {
-                collector.collectArtifact((ArtifactCard) item);
-            }
-            else if (item instanceof Potion) {
-                collector.collectPotion((Potion) item);
-            }
+            collector.collectItem(item);
             return true;
         }
         return false;
     }
-    
 }

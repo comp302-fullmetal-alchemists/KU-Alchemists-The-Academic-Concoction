@@ -27,6 +27,8 @@ public class GameBoardController {
 
     private GameBoardController() {
         this.players = new ArrayList<Player>();
+        this.mediator = new ConcreteMediator();
+
     }
 
     public static GameBoardController getInstance() {
@@ -47,12 +49,12 @@ public class GameBoardController {
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
         players.get(firstPlayer).changeTurn();
+        mediator.connectPlayer(players.get(firstPlayer));
         this.ingredientStorage = new IngredientStorageController();
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.ingredientStorage.initializePiles();
-        this.mediator = new ConcreteMediator(players.get(firstPlayer));
         gameboardUI.update("INITIALIZE_BOARD");
     }
 
@@ -102,7 +104,7 @@ public class GameBoardController {
     }
 
 
-    
+
     public int calculateFinalScore(Player player) {
     //to do: get rep, gold, artifact from player's inventory
     	int finalScore = 0;

@@ -9,6 +9,7 @@ import system.domain.IngredientCard;
 import system.domain.Player;
 import system.domain.Potion;
 import system.domain.interfaces.Observer;
+import system.domain.interfaces.Mediator;
 
 
 public class InventoryController {
@@ -25,12 +26,14 @@ public class InventoryController {
     private List<ArtifactCard> artifactCards;
     private List<Potion> potions;
     private Observer inventoryUI;
+    private Mediator mediator;
 
     public InventoryController() {
         this.gold = 0;
         this.ingredientCards = new ArrayList<IngredientCard>();
         this.artifactCards = new ArrayList<ArtifactCard>();
         this.potions = new ArrayList<Potion>();
+        this.mediator = GameBoardController.getInstance().getMediator();
     }
 
     public void setObserver(Observer observer) {
@@ -123,7 +126,7 @@ public class InventoryController {
         /// therefore it makes sense to change ingredientCards to Map<String, IngredientCard>
         for (IngredientCard ing: ingredientCards){
             if (ing.getName().equals(ingredientName)) {
-                if (GameBoardController.getInstance().getMediator().sendToCollector(ing)) {
+                if (mediator.sendToCollector(ing)) {
                     removeIngredient(ing);
                 }
                 break;
@@ -132,11 +135,11 @@ public class InventoryController {
     }
 
     public void sendPotion(String potionName) {
-        /// If player will choose ingredients from its dashboard, it cannot choose an ingredient that doesn't belong to it
-        /// therefore it makes sense to change ingredientCards to Map<String, IngredientCard>
+        /// If player will choose potions from its dashboard, it cannot choose a potion that doesn't belong to it
+        /// therefore it makes sense to change potions to Map<String, IngredientCard>
         for (Potion pot: potions){
             if (pot.getName().equals(potionName)) {
-                if (GameBoardController.getInstance().getMediator().sendToCollector(pot)) {
+                if (mediator.sendToCollector(pot)) {
                     removePotion(pot);
                 }
                 break;
