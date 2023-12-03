@@ -1,9 +1,11 @@
 package system.ui.panels;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 
 
 import system.ui.frame.GameContentPane;
@@ -13,12 +15,15 @@ public class PublicationArea extends JPanel{
 
     private PlayerMediator mediator;
     private JButton back;
+    private TheoryBoard theoryBoard;
 
     public PublicationArea(PlayerMediator mediator) {
         super();
         this.mediator = mediator;
         this.back = createNavButton("environment", "Back to environment");
         add(back);
+        this.theoryBoard = new TheoryBoard();
+        add(theoryBoard);
     }
 
     public JButton createNavButton(String nav, String text) {
