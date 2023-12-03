@@ -53,4 +53,8 @@ public class ConcreteMediator implements Mediator {
         }
         return false;
     }
+
+    public void playerPlayedTurn() {
+        player.playedTurn();
+    }
 }

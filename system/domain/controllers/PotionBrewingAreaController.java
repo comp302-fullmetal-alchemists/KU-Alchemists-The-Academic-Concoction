@@ -42,6 +42,7 @@ public class PotionBrewingAreaController implements Collector{
             potionBrewingUI.update("DISCARD_INGREDIENTS");
             ing1 = null;
             ing2 = null;
+            mediator.playerPlayedTurn();
         }
         else {
             potionBrewingUI.update("ABSENT_INGREDIENTS");

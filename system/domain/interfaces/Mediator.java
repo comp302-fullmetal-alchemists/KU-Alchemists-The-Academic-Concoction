@@ -13,4 +13,6 @@ public interface Mediator {
     <T> void sendToPlayer(T item);
 
     <T> boolean sendToCollector(T item);
+
+    void playerPlayedTurn();
 }

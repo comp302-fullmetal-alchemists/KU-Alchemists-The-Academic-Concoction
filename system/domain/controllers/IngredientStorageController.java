@@ -69,6 +69,7 @@ public class IngredientStorageController {
             IngredientCard drawn = ingredientPile.remove(0);
             GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
+            GameBoardController.getInstance().getCurrentPlayer().playedTurn();
         }
     }
 

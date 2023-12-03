@@ -29,7 +29,7 @@ public class InventoryController {
     private Mediator mediator;
 
     public InventoryController() {
-        this.gold = 0;
+        this.gold = 10;
         this.ingredientCards = new ArrayList<IngredientCard>();
         this.artifactCards = new ArrayList<ArtifactCard>();
         this.potions = new ArrayList<Potion>();
@@ -76,23 +76,6 @@ public class InventoryController {
     	return amount;
     }
 
-    public void updateInventory(Cards card) {
-        //sanırım bu da uı için bir method tekrar bakalım.
-        if(card instanceof IngredientCard){
-            IngredientCard ICard = (IngredientCard) card;
-            ingredientCards.add(ICard);
-        } 
-        else if (card instanceof ArtifactCard){
-            ArtifactCard ACard = (ArtifactCard) card;
-            artifactCards.add(ACard);
-        }
-        
-    }
-
-    public void updateIngredients(IngredientCard ingredient) {
-        ingredientCards.add(ingredient);
-        inventoryUI.update(String.format("NEW_INGREDIENT: %s", ingredient.getName()));
-    }
 
     /*********/
     /*These should be the accessers of inventory for the mediator */

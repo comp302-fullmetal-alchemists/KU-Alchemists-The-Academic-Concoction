@@ -77,7 +77,7 @@ public class GameBoardController {
     }
     
     public Player getCurrentPlayer() {
-        if (players.get(0).getTurn()) {
+        if (players.get(0).isInTurn()) {
             return players.get(0);
         } else {
             return players.get(1);
