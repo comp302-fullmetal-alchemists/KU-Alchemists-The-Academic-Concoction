@@ -28,6 +28,9 @@ public class GameBoardController {
     private String[] ingredients = {"Solaris Root", "Bat Wing", "Toadstool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
     private Alchemy[] alchemies = new Alchemy[8];
     private Map<String, Alchemy> alchemyMap = new HashMap<String, Alchemy>();
+    private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
+    private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
+    private String[] usages = {null,null,"Immediate effect." };
     //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
     GameLogController gameLog;
 
@@ -59,15 +62,16 @@ public class GameBoardController {
         }
     }
 
+  
+
+    public void setObserver(Observer observer) {
+        this.gameboardUI = observer;
+    }
     public static GameBoardController getInstance() {
         if (instance == null) {
             instance = new GameBoardController();
         }
         return instance;
-    }
-
-    public void setObserver(Observer observer) {
-        this.gameboardUI = observer;
     }
 
 
@@ -97,6 +101,18 @@ public class GameBoardController {
     //}
     public Player getPlayer(int index) {
         return players.get(index);
+    }
+
+    public String[] getArtifactStrings() {
+        return artifacts;
+    }
+
+    public String[] getArtifactEffect() {
+        return effects;
+    }
+
+    public String[] getArtifactUsage() {
+        return usages;
     }
 
     public void changePlayer() {
