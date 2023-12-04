@@ -12,7 +12,8 @@ public class GameLogController {
     //	showGameLog(player) prints the game log. To show, UI elements need to be implemented
 
 
-    private Map<Player, List<GameAction>> gameActions;
+    private Map<Player, List<GameAction>> gameActions = new HashMap<>();
+
     
     public  GameLogController(Player player1, Player player2){
         GameAction startAction1 = new GameAction("Game", player1.getName(), "GameLog Start", 0);

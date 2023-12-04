@@ -27,7 +27,7 @@ public class PotionBrewingAreaController implements Collector{
 
     public PotionBrewingAreaController() {
         this.students = new ArrayList<String>();
-        this.adventurers = new ArrayList<String>();
+        //this.adventurers = new ArrayList<String>();
         this.mediator = GameBoardController.getInstance().getMediator();
     }
 
@@ -56,12 +56,6 @@ public class PotionBrewingAreaController implements Collector{
     public void makeExperiment() {
         return;
     }
-
-    
-    
-    public boolean summonAdventurerOrNot(){
-        return random.nextBoolean();// Generate a random boolean value FOR EVERY ROUND
-    }
     
 
     public String giveOffer() {
@@ -87,19 +81,28 @@ public class PotionBrewingAreaController implements Collector{
         }
     }
 
-    public int agreeOffer(int offer, Potion potion){
-        if ((offer == 3) && (potion.getStatus() == "positive")){
-            return offer;
-        }
-        else if ((offer == 2) && (!(potion.getStatus() == "negative"))){
-            return offer;
-        }
-        else if(offer == 1){
-            return offer;
-        }
-        else{
-            return 0;//ERROR WRONG POTION, AS A PUNISHMENT GET THE POTION
+    @Override
+    public <T> void collectItem(T item) {
+        if (item instanceof IngredientCard) {
+            IngredientCard ing = (IngredientCard) item;
+            if (ing1==null) {
+            ing1 = ing;
+            potionBrewingUI.update(String.format("NEW_INGREDIENT1: %s", ing.getName()));
+            }
+            else if (ing2 == null) {
+            ing2 = ing;
+            potionBrewingUI.update(String.format("NEW_INGREDIENT2: %s", ing.getName()));
+            }
         }
     }
 
+    @Override
+    public void activate() {
+        mediator.connectCollector(this);
+    }
+
+    @Override
+    public void deactivate() {
+        mediator.disconnectCollector();
+    }
 }

@@ -92,9 +92,6 @@ public class GameBoardController {
 
     //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
 
-    //public GameLogController getGameLog(){
-     //   return gameLog;
-    //}
     public static Player getPlayer(int index) {
         return players.get(index);
     }
@@ -126,7 +123,11 @@ public class GameBoardController {
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorage;
     }
-
+    
+    public GameLogController getGameLog(){
+        return gameLog;
+    }
+    
     public PotionBrewingAreaController getPotionBrewingAreaController() {
         return potionBrewingArea;
     }
