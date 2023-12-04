@@ -1,18 +1,26 @@
 package system.ui.panels;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+
 
 import java.awt.event.ActionListener;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import java.awt.event.MouseEvent;
 
 import system.ui.frame.GameContentPane;
 import system.ui.interfaces.PlayerMediator;
 import system.domain.controllers.PotionBrewingAreaController;
+import system.domain.Potion;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 
@@ -26,6 +34,11 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JTextField ingredient1;  //something to display the ingredients chosen
     private JTextField ingredient2;
     private JButton makePotion;
+    private JTextArea AdventurerInfo;
+    private JComboBox<String> potionsDropdown;
+    private JComboBox<String> offerDropdown;
+    private JButton sellPotionButton;
+
 
     public PotionBrewingArea(PlayerMediator mediator) {
         super();
@@ -42,8 +55,60 @@ public class PotionBrewingArea extends JPanel implements Observer {
         add(ingredient2);
         this.makePotion = createPotionButton("Make Potion");
         add(makePotion);
+
+        this.AdventurerInfo = new JTextArea(pbaController.giveOffer(), 5,12);
+        Font f = new Font("Serif", Font.ITALIC, 15);
+        AdventurerInfo.setFont(f);
+        add(AdventurerInfo);
+
+        this.potionsDropdown = inventoryDropdown();
+        add(potionsDropdown);
+        this.offerDropdown = optionsDropdown();
+        add(offerDropdown);
+        this.sellPotionButton((Potion) inventoryDropdown().getSelectedItem(), optionsDropdown().getSelectedIndex());
+        //add(sellPotionButton);
     }
 
+
+    public JLabel AdventurerInfo(String adventurerInfo) {
+        // Create the label with adventurer information
+        JLabel adventurer = new JLabel(adventurerInfo);
+        return adventurer;
+    } //PROB NOT REQUIRED
+
+    public JComboBox<String> inventoryDropdown() {
+        List<Potion> potions = pbaController.getPotions();
+        String[] inventoryOptions = new String[potions.size()];
+        for (int i = 0; i < potions.size(); i++) {
+            inventoryOptions[i] = potions.get(i).getName();
+        }
+        JComboBox<String> inventoryDropdown = new JComboBox<>(inventoryOptions);
+    
+        return inventoryDropdown;
+    }
+
+
+    public JComboBox<String> optionsDropdown() {
+        String[] quantityOptions = {"One", "Two", "Three"};
+        return new JComboBox<>(quantityOptions);
+    }
+
+    public JButton sellPotionButton(Potion selectedPotion, int selectedOffer){
+        List<Potion> potions = pbaController.getPotions();
+        JButton sellPotionButton = new JButton("Sell the Potion");
+        sellPotionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedPotion != null) {
+                    pbaController.agreeOffer(selectedOffer, selectedPotion);
+                } else {
+                    // Handle the case where no potion is selected or potion is not found
+                }
+            }
+        });
+        return sellPotionButton;
+    }
+    
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);

@@ -1,5 +1,6 @@
 package system.domain.controllers;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import system.domain.ArtifactCard;
@@ -56,27 +57,51 @@ public class PotionBrewingAreaController implements Collector{
     public void makeExperiment() {
         return;
     }
+
+    public void discardIngredient(int num) {
+        if (num == 1) {
+            mediator.sendToPlayer(ing1);
+            ing1 = null;
+            potionBrewingUI.update("DISCARD_INGREDIENT1");
+        }
+        else if (num == 2) {
+            mediator.sendToPlayer(ing2);
+            ing2 = null;
+            potionBrewingUI.update("DISCARD_INGREDIENT2");
+        } 
+        
+    }
     
+    public List<Potion> getPotions(){
+        return GameBoardController.getInstance().getCurrentPlayer().getInventory().gePotions();
+    }
 
     public String giveOffer() {
         //TOOD Add to UI
         //Aventurer gives 3 gold for positive, 2 gold for positive or neutral, 1 gold for any potion.
 
-        String adventurerInfo = "Hark, potion-masters! The Adventurer proclaims: for potions positive, three golds be thine; for brews of good or neutral kind, two golds; and for any draught, one gold. Present thy potions and claim thy reward!";
+        String adventurerInfo = "Hark, potion-masters! The Adventurer proclaims:\nfor potions positive, three golds be thine;\nfor brews of good or neutral kind, two golds;\nand for any draught, one gold.\nPresent thy potions and claim thy reward!";
         return adventurerInfo;
     }
 
     public int agreeOffer(int offer, Potion potion){
         if ((offer == 3) && (potion.getStatus() == "positive")){
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
             return offer;
         }
         else if ((offer == 2) && (!(potion.getStatus() == "negative"))){
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
             return offer;
         }
         else if(offer == 1){
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
             return offer;
         }
         else{
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
             return 0;//ERROR WRONG POTION, AS A PUNISHMENT GET THE POTION
         }
     }

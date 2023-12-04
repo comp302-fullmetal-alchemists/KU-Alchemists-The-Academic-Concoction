@@ -41,7 +41,10 @@ public class InventoryController {
         this.inventoryUI = observer;
     }
 
-
+    public List<Potion> gePotions(){
+        return potions;
+    }
+    
     public int getGold(){
         return gold;
     }

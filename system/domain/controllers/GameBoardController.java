@@ -96,14 +96,6 @@ public class GameBoardController {
         return players.get(index);
     }
 
-    public static Player getCurrPlayer() {
-        if (players.get(0).getTurn()) {
-            return players.get(0);
-        }
-        else {
-            return players.get(1);
-        }
-    }
 
     public void changePlayer() {
         players.get(0).changeTurn();
