@@ -37,7 +37,7 @@ public class PotionBrewingAreaController implements Collector{
 
     public void makePotion() {
         if (ing1 != null && ing2 != null) {
-            Potion brewed = new Potion("Potion");
+            Potion brewed = new Potion(ing1, ing2);
             mediator.sendToPlayer(brewed);
             potionBrewingUI.update("DISCARD_INGREDIENTS");
             ing1 = null;
@@ -86,11 +86,11 @@ public class PotionBrewingAreaController implements Collector{
             IngredientCard ing = (IngredientCard) item;
             if (ing1==null) {
             ing1 = ing;
-            potionBrewingUI.update(String.format("NEW_INGREDIENT1: %s", ing.getName()));
+            potionBrewingUI.update(String.format("NEW_INGREDIENT1:%s", ing.getName()));
             }
             else if (ing2 == null) {
             ing2 = ing;
-            potionBrewingUI.update(String.format("NEW_INGREDIENT2: %s", ing.getName()));
+            potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
             }
         }
     }

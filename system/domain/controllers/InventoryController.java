@@ -82,27 +82,27 @@ public class InventoryController {
     /*These should be the accessers of inventory for the mediator */
     public void addIngredient(IngredientCard ingredient) {
         ingredientCards.add(ingredient);
-        inventoryUI.update(String.format("NEW_INGREDIENT: %s", ingredient.getName()));
+        inventoryUI.update(String.format("NEW_INGREDIENT:%s", ingredient.getName()));
     }
     
     public void addArtifact(ArtifactCard artifact) {
         artifactCards.add(artifact);
-        inventoryUI.update(String.format("NEW_ARTIFACT: %s", artifact.getName()));
+        inventoryUI.update(String.format("NEW_ARTIFACT:%s", artifact.getName()));
     }
 
     public void addPotion(Potion potion) {
         potions.add(potion);
-        inventoryUI.update(String.format("NEW_POTION: %s", potion.getName()));
+        inventoryUI.update(String.format("NEW_POTION:%s", potion.getStatus()));
     }
 
     public void removeIngredient(IngredientCard ingredient) {
         ingredientCards.remove(ingredient);
-        inventoryUI.update(String.format("REMOVED_INGREDIENT: %s", ingredient.getName()));
+        inventoryUI.update(String.format("REMOVED_INGREDIENT:%s", ingredient.getName()));
     }
 
     public void removePotion(Potion potion) {
     	potions.remove(potion);
-        inventoryUI.update(String.format("REMOVED_POTION: %s", potion));
+        inventoryUI.update(String.format("REMOVED_POTION:%s", potion));
     }
 
     public void sendIngredient(String ingredientName) {
@@ -118,11 +118,11 @@ public class InventoryController {
         }
     }
 
-    public void sendPotion(String potionName) {
+    public void sendPotion(String potionStatus) {
         /// If player will choose potions from its dashboard, it cannot choose a potion that doesn't belong to it
         /// therefore it makes sense to change potions to Map<String, IngredientCard>
         for (Potion pot: potions){
-            if (pot.getName().equals(potionName)) {
+            if (pot.getStatus().equals(potionStatus)) {
                 if (mediator.sendToCollector(pot)) {
                     removePotion(pot);
                 }

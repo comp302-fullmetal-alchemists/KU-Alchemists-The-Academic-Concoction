@@ -45,6 +45,7 @@ public class IngredientStorageController {
         for (Integer i = 0; i < 10; i++) {
             artifactPile.add(new ArtifactCard("Artifact" + i.toString(), null));
         }
+
         for (int i = 0; i < 2; i++) {
             GameBoardController.getInstance().getPlayer(0).getInventory().addIngredient(ingredientPile.remove(0));
         }
@@ -75,7 +76,7 @@ public class IngredientStorageController {
         else {
             IngredientCard drawn = ingredientPile.remove(0);
             GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
-            ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
+            ingredientStorageUI.update(String.format("CARDREMOVAL:%s", drawn.getName()));
             GameBoardController.getInstance().getCurrentPlayer().playedTurn();
         }
     }

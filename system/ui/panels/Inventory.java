@@ -90,13 +90,13 @@ public class Inventory extends JPanel implements Observer {
     @Override
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT")) {
-            addItemToInventory(msg.substring(16), "Ingredient");
+            addItemToInventory(msg.split(":")[1], "Ingredient");
         }
         else if (msg.contains("REMOVED_INGREDIENT")) {
-            removeItemFromInventory(msg.substring(20));
+            removeItemFromInventory(msg.split(":")[1]);
         }
         else if (msg.contains("NEW_POTION")) {
-            addItemToInventory(msg.substring(12), "Potion");
+            addItemToInventory(msg.split(":")[1], "Potion");
         }
     }
 

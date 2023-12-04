@@ -14,5 +14,7 @@ public interface Mediator {
 
     <T> boolean sendToCollector(T item);
 
+    void updatePlayerGold(int updateAmount);
+
     void playerPlayedTurn();
 }

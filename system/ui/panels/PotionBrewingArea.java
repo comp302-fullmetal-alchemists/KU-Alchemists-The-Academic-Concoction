@@ -138,10 +138,10 @@ public class PotionBrewingArea extends JPanel implements Observer {
     @Override
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT1")) {
-            ingredient1.setText(msg.substring(17));
+            ingredient1.setText(msg.split(":")[1]);
         }
         else if (msg.contains("NEW_INGREDIENT2")) {
-            ingredient2.setText(msg.substring(17));
+            ingredient2.setText(msg.split(":")[1]);
         }
         else if (msg.contains("ABSENT_INGREDIENTS")) {
             JOptionPane.showMessageDialog(this, "Please fill ingredients");

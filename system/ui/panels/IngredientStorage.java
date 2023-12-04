@@ -64,7 +64,7 @@ public class IngredientStorage extends JPanel implements Observer {
             JOptionPane.showMessageDialog(IngredientStorage.this, "Pile is empty!");
         }
         else if (msg.contains("CARDREMOVAL")) {
-            JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!", msg.substring(13)));
+            JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!", msg.split(":")[1]));
         }
     }
 }

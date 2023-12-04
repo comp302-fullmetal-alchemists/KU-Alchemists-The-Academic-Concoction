@@ -54,6 +54,13 @@ public class ConcreteMediator implements Mediator {
         return false;
     }
 
+    @Override
+    public void updatePlayerGold(int updateAmount) {
+        player.getInventory().updateGold(updateAmount);
+    }
+
+    
+    @Override
     public void playerPlayedTurn() {
         player.playedTurn();
     }
