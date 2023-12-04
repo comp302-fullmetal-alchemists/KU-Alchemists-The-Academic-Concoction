@@ -150,57 +150,57 @@ public class GameBoardController {
         return mediator;
     }
 
-    public int calculateFinalScore(Player player) {
-    //to do: get rep, gold, artifact from player's inventory
-    	int finalScore = 0;
-        
-        //10 points for each rep points
-        finalScore += (player.getReputation() * 10) ;
-       //trade each artifact with 2 golds
-        for(ArtifactCard a : player.getInventory().getArtifactCards()) {
-                player.getInventory().updateGold(2);
-        }
-        //1 point for 3 gold  
-        finalScore += (player.getInventory().getGold() / 3) ;
-
-        return finalScore;
-    }
+   
 
     public String[] getIngredients(){
         return ingredients;
     }
 
 
-    public Player winner(){
-        Player player1 = players.get(0);
-        Player player2 = players.get(1);
-        int score1 = calculateFinalScore(player1); 
-        int score2 = calculateFinalScore(player2);
-
-        if(score1 > score2){
-            return player1;
-        }
-        else if(score1 == score2){
-            
-            for(Player p: players){
-                p.getInventory().updateGold(- (p.getInventory().getGold() / 3)) ;
+    public int calculateFinalScore(Player player) {
+        //to do: get rep, gold, artifact from player's inventory
+            int finalScore = 0;
+            //10 points for each rep points
+            finalScore += (player.getReputation() * 10) ;
+           //trade each artifact with 2 golds
+            for(ArtifactCard a : player.getInventory().getArtifactCards()) {
+                    player.getInventory().updateGold(2);
             }
-
-            if(player1.getInventory().getGold() > player2.getInventory().getGold()) {
+            //1 point for 3 gold  
+            finalScore += (player.getInventory().getGold() / 3) ;
+            player.getInventory().updateGold(- (player.getInventory().getGold() / 3)) ;
+    
+    
+            return finalScore;
+        }
+    
+    
+        public Player winner(){
+            Player player1 = players.get(0);
+            Player player2 = players.get(1);
+            int score1 = calculateFinalScore(player1); 
+            int score2 = calculateFinalScore(player2);
+    
+            if(score1 > score2){
                 return player1;
             }
-           // else if(player1.getInventory().getGold() == player2.getInventory().getGold()) {
-                //display they are both tie
-           // }
-           else{
-             return player2;
-           }
-        
-        }
-        else{
-            return player2; 
-        }
-    }
+            else if(score1 == score2){
+                
+                if(player1.getInventory().getGold() > player2.getInventory().getGold()) {
+                    return player1;
+                }
+                else if (player1.getInventory().getGold() == player2.getInventory().getGold()) {
+                    return null ; //check it !!
+                }
+                else{
+                 return player2;
+               }
+            
+            }
+            else{
+                return player2; 
+            }
+            }
 
     public Map<String, Alchemy> getAlchemyMap() {
         return alchemyMap;

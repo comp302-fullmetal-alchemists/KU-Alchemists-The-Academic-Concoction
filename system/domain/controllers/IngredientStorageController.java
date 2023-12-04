@@ -10,10 +10,11 @@ import java.util.Random;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;
+import system.domain.interfaces.Collector;
 import system.domain.interfaces.Mediator;
 import system.domain.Cards;
 
-public class IngredientStorageController {
+public class IngredientStorageController implements Collector{
     // public storage 
     //IngredientStorage	ingredient pile: List<ingredientCard>
     //artifact pile: List<artifactCard>	transmuteIngredient(ingredientCard)
@@ -124,16 +125,24 @@ public class IngredientStorageController {
         }
         return null;
     }
-//Alchemy alch1 = new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.SMALL, -AlchemicalConstants.LARGE); 
-//Alchemy alch2 = new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.LARGE, AlchemicalConstants.LARGE);
-//Alchemy alch3 = new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE);
-//Alchemy alch4 = new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.LARGE, AlchemicalConstants.SMALL);
-//Alchemy alch5 = new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL);
-//Alchemy alch6 = new Alchemy(AlchemicalConstants.SMALL,- AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL);
-//Alchemy alch7 = new Alchemy(AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL, AlchemicalConstants.LARGE);
-//Alchemy alch8 = new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL, AlchemicalConstants.SMALL);
 
+    @Override
+    public <T> void collectItem(T item) {
+        if (item instanceof IngredientCard) {
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
+            mediator.playerPlayedTurn();
+        }
+    }
 
+    @Override
+    public void activate() {
+        mediator.connectCollector(this);
+    }
+
+    @Override
+    public void deactivate() {
+        mediator.disconnectCollector();
+    }
 
 
 
