@@ -48,8 +48,7 @@ public class ConcreteMediator implements Mediator {
     @Override 
     public <T> boolean sendToCollector(T item) {
         if (collector != null) {
-            collector.collectItem(item);
-            return true;
+            return collector.collectItem(item);
         }
         return false;
     }

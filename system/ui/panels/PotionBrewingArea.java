@@ -22,7 +22,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private PotionBrewingAreaController pbaController;
     private JButton back;
     private JButton activation;
-    private boolean active = false;
     private JTextField ingredient1;  //something to display the ingredients chosen
     private JTextField ingredient2;
     private JButton makePotion;
@@ -55,7 +54,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
                     if (!ingredient1.getText().equals("Give Ingredient1")) pbaController.discardIngredient(1);
                     if (!ingredient2.getText().equals("Give Ingredient2")) pbaController.discardIngredient(2);
                     pbaController.deactivate();
-                    active = false;
                     activation.setText("Activate choice");
                 }
 
@@ -72,14 +70,12 @@ public class PotionBrewingArea extends JPanel implements Observer {
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (active){
+                    if (pbaController.isActive()) {
                         pbaController.deactivate();
-                        active = false;
                         button.setText(deactiveText);
                     }
                     else {
                         pbaController.activate();
-                        active = true;
                         button.setText(activeText);
                     }
                 }

@@ -6,9 +6,11 @@ import system.domain.ArtifactCard;
 
 public interface Collector {
 
-    <T> void collectItem(T item);
+    <T> boolean collectItem(T item);
 
     void activate();
     
     void deactivate();
+
+    boolean isActive();
 }

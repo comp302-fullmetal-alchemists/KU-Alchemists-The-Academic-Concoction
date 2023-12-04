@@ -24,6 +24,7 @@ public class PotionBrewingAreaController implements Collector{
     private IngredientCard ing2;
     private Observer potionBrewingUI;
     private Mediator mediator;
+    private Boolean active = false;
 
     public PotionBrewingAreaController() {
         this.students = new ArrayList<String>();
@@ -81,27 +82,38 @@ public class PotionBrewingAreaController implements Collector{
     }
 
     @Override
-    public <T> void collectItem(T item) {
+    public <T> boolean collectItem(T item) {
         if (item instanceof IngredientCard) {
             IngredientCard ing = (IngredientCard) item;
             if (ing1==null) {
             ing1 = ing;
             potionBrewingUI.update(String.format("NEW_INGREDIENT1:%s", ing.getName()));
+            return true;
             }
             else if (ing2 == null) {
             ing2 = ing;
             potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
+            return true;
             }
+            return false;
         }
+        return false;
     }
 
     @Override
     public void activate() {
         mediator.connectCollector(this);
+        active = true;
     }
 
     @Override
     public void deactivate() {
         mediator.disconnectCollector();
+        active = false;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
     }
 }
