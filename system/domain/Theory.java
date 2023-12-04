@@ -1,13 +1,13 @@
 package system.domain;
 
 public class Theory {
-        private AlchemyMarker alchemy;
+        private Alchemy alchemy;
         private IngredientCard ingredient;
         private Player owner;
         private boolean debunked;
         
 
-    public Theory(AlchemyMarker alchemy, IngredientCard ingredient, Player owner) {
+    public Theory(Alchemy alchemy, IngredientCard ingredient, Player owner) {
         this.alchemy = alchemy;
         this.ingredient = ingredient;
         this.owner = owner;
@@ -15,11 +15,11 @@ public class Theory {
         
     }
 
-    public AlchemyMarker getAlchemy() {
+    public Alchemy getAlchemy() {
         return alchemy;
     }
 
-    public void setAlchemy(AlchemyMarker alchemy) {
+    public void setAlchemy(Alchemy alchemy) {
         this.alchemy = alchemy;
     }
 

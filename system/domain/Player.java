@@ -1,11 +1,13 @@
 package system.domain;
 
 import system.domain.controllers.InventoryController;
+import system.domain.controllers.GameBoardController;
 
 public class Player {
     
     private String name;
     private Boolean turn;
+    private int turnsLeft;
     private String token;
     private int reputationPoint;
     private int sicknessPoint;
@@ -21,29 +23,49 @@ public class Player {
       
     }
 
-    public String getName(){
-        return name;
-    }
-    
+    /**********Getters and Setters******************/
     public void setName(String name) {
 		this.name = name;
 	}
 
-    public Boolean getTurn() {
-		return turn;
-	}
+    public String getName(){
+        return name;
+    }
 
-	public void setTurn(Boolean turn) {
-		this.turn = turn;
-	}
+    public Boolean isInTurn() {
+        return turn;
+    }
+
+    public void changeTurn() {
+        if (!turn) {
+            turnsLeft = 3;
+        }
+        turn = !turn;
+    }
+
+    public void playedTurn() {
+        turnsLeft -= 1;
+        if (turnsLeft == 0) {
+            GameBoardController.getInstance().changePlayer();
+        }
+    }
 
 	public void setToken(String token) {
 		this.token = token;
 	}
+    
+    public String getToken() {
+        return token;
+    }
 
     public int getReputation() {
         return reputationPoint;
     }
+
+    public InventoryController getInventory() {
+        return inventory;
+    }
+
 
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
@@ -53,20 +75,5 @@ public class Player {
         sicknessPoint = sicknessPoint + updateVal;
     }
 
-	public Boolean isInTurn() {
-        return turn;
-    }
 
-    public void changeTurn() {
-        turn = !turn;
-    }
-
-
-    public String getToken() {
-        return token;
-    }
-   
-   public InventoryController getInventory() {
-        return inventory;
-   }
 }
