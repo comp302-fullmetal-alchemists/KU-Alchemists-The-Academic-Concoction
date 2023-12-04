@@ -58,14 +58,15 @@ public class MainMenuPanel extends JPanel{
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JDialog helpDialog = new JDialog();
+                    /*JDialog helpDialog = new JDialog();
                     helpDialog.setContentPane(new HelpScreenPanel());
                     helpDialog.setSize(400, 300);
                     helpDialog.setTitle("Help Screen");
                     helpDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     helpDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     helpDialog.setLocationRelativeTo(MainMenuPanel.this);
-                    helpDialog.setVisible(true);
+                    helpDialog.setVisible(true);*/
+                    ((GameContentPane) MainMenuPanel.this.getParent()).changeView("helpScreen");
                 }
             }
         );
