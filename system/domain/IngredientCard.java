@@ -7,11 +7,10 @@ public class IngredientCard extends Cards{
     //static formula: Map<String, alchemyMarker>
 
     private String name;
-    private AlchemyMarker alchemy;
-    private static Map<String, AlchemyMarker> formula;
+    private Alchemy alchemy;
 
 
-    public IngredientCard(String name, AlchemyMarker alchemy) {
+    public IngredientCard(String name, Alchemy alchemy) {
         super(name);
         this.name = name;
         this.alchemy = alchemy;

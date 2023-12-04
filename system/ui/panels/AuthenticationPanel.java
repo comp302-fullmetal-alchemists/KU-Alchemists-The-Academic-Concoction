@@ -1,8 +1,7 @@
 package system.ui.panels;
 
 import system.domain.controllers.AuthenticationController;
-import system.domain.Player;
-import system.ui.frame.Gameboard;
+import system.domain.interfaces.Observer;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -14,8 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class AuthenticationPanel extends JPanel{
-    private Gameboard game;
+public class AuthenticationPanel extends JPanel implements Observer{
     private JButton loginButton;
     private JTextField usernameField1;
     private JTextField usernameField2;
@@ -25,22 +23,26 @@ public class AuthenticationPanel extends JPanel{
     private JLabel tokenLabel;
     private AuthenticationController authController;
 
-    public AuthenticationPanel(Gameboard game){
+    public AuthenticationPanel(){
         super();
-        this.game = game;
-        this.authController = new AuthenticationController(game.getController());
+        this.authController = new AuthenticationController();
+        authController.setObserver(this);
         this.usernameLabel = new JLabel("Usernames");
         add(usernameLabel);
         this.usernameField1 = new JTextField(23);
+        usernameField1.setText("player1");
         add(usernameField1);
         this.usernameField2 = new JTextField(23);
+        usernameField2.setText("player2");
         add(usernameField2);
         this.tokenLabel = new JLabel("Tokens");
         add(tokenLabel);
         this.tokenField1 = new JTextField(10);
         add(tokenField1);
+        tokenField1.setText("token1");
         this.tokenField2 = new JTextField(10);
         add(tokenField2);
+        tokenField2.setText("token2");
         this.loginButton = new JButton("Login");
         add(loginButton);
         
@@ -50,19 +52,17 @@ public class AuthenticationPanel extends JPanel{
                 String username2 = usernameField2.getText();
                 String token1 = new String(tokenField1.getText());
                 String token2 = new String(tokenField2.getText());
-                String response = authController.login(username1, token1, username2, token2);
-                if (response == "Welcome to the KuAlchemists"){
-                    game.initializeTheBoard();
-                    
-                }
-                else{
-                    JOptionPane.showMessageDialog(AuthenticationPanel.this, response);
-                }
-                
+                authController.login(username1, token1, username2, token2);
             }
-    });
+        });
+    }
 
+    @Override
+    public void update(String msg) {
+        if (!msg.equals("VALID")) {
+            JOptionPane.showMessageDialog(this, msg);
+        }
+    }
 
-}
 
 }

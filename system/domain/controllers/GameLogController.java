@@ -15,10 +15,9 @@ public class GameLogController {
     private Map<Player, List<GameAction>> gameActions;
     
     public  GameLogController(Player player1, Player player2){
-        gameActions = new HashMap<Player, List<GameAction>>(); //initalize the gameactions
-
         GameAction startAction1 = new GameAction("Game", player1.getName(), "GameLog Start", 0);
         GameAction startAction2 = new GameAction("Game", player2.getName(), "GameLog Start", 0);
+
 
         gameActions.put(player1, List.of(startAction1));
         gameActions.put(player2, List.of(startAction2));

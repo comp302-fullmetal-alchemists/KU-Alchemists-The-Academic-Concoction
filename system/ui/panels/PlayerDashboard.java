@@ -16,16 +16,16 @@ public class PlayerDashboard extends JPanel {
     public PlayerDashboard(Player player){
         super();
         this.player = player;
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(player.getInventory());
         this.playerLabel = new JLabel(player.getName());
         add(playerLabel);
         add(inventory);
     }
 
     public void takeIngredients(IngredientCard ingCard) {
-        inventory.addItemToInventory(ingCard.getName());
-        inventory.update();
+        inventory.addItemToInventory(ingCard.getName(), "Ingredient");
     } 
+
     
     private void click(GameLogController gameLog) {
         //OR CLICK GAMELOG PANEL
