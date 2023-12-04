@@ -1,4 +1,4 @@
-package system.domain;
+package system.domain.controllers;
 
 public class DeductionBoardController {
 

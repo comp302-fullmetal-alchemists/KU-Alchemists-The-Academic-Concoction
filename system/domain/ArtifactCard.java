@@ -9,20 +9,23 @@ public class ArtifactCard extends Cards{
 
     private String name;
     private String effect;
+    private String usage;
 
-    public ArtifactCard(String name, String effect) {
+    public ArtifactCard(String name, String effect, String usage) {
         super(name);
         this.name = name;
         this.effect = effect;
     }
-    /*public String chooseEffectUsage() {
-        return this.effect;
-    }*/
-    public String getEffect() {
-        return this.effect;
-    }
+
     public String getName() {
         return name;
     }
-    
+
+    public String getEffect() {
+        return effect;
+    }
+
+    public String getUsage() {
+        return usage;
+    }
 }

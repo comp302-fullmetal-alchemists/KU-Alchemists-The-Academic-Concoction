@@ -1,22 +1,24 @@
 package system.domain;
 
 public class Theory {
-        private AlchemyMarker alchemy;
+        private Alchemy alchemy;
         private IngredientCard ingredient;
         private Player owner;
+        private boolean debunked;
 
-    public Theory(AlchemyMarker alchemy, IngredientCard ingredient, Player owner) {
+    public Theory(Alchemy alchemy, IngredientCard ingredient, Player owner) {
         this.alchemy = alchemy;
         this.ingredient = ingredient;
         this.owner = owner;
+        this.debunked = false;
         
     }
 
-    public AlchemyMarker getAlchemy() {
+    public Alchemy getAlchemy() {
         return alchemy;
     }
 
-    public void setAlchemy(AlchemyMarker alchemy) {
+    public void setAlchemy(Alchemy alchemy) {
         this.alchemy = alchemy;
     }
 
@@ -26,6 +28,22 @@ public class Theory {
 
     public void setIngredient(IngredientCard ingredient) {
         this.ingredient = ingredient;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }   
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public boolean isDebunked() {
+        return debunked;
+    }
+
+    public void setDebunked(boolean debunked) {
+        this.debunked = debunked;
     }
     
 }
