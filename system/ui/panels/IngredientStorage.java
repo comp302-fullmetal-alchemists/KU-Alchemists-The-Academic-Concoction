@@ -22,6 +22,9 @@ public class IngredientStorage extends JPanel implements Observer {
     private JButton back;
     private JButton ingredientButton;
     private JButton artifactButton;
+    private JButton transmuteIngButton;
+    private Boolean active = false ;
+    
     
     public IngredientStorage(PlayerMediator mediator) {
         super();
@@ -34,6 +37,8 @@ public class IngredientStorage extends JPanel implements Observer {
         add(ingredientButton);
         this.artifactButton = createArtifactButton("Draw Artifact Card");
         add(artifactButton);
+        this.transmuteIngButton = createTransmuteIngButton();
+        add(transmuteIngButton);
     }
 
     public JButton createIngButton(String text) {
@@ -56,6 +61,9 @@ public class IngredientStorage extends JPanel implements Observer {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ((GameContentPane) IngredientStorage.this.getParent()).changeView(nav);
+                    ingController.deactivate();
+                    active = false;
+                    transmuteIngButton.setText("Trasnmute Ingredient");
                 }
             }
         );
@@ -77,6 +85,38 @@ public class IngredientStorage extends JPanel implements Observer {
             }
         );
         return artifactButton;}
+    
+        public JButton createTransmuteIngButton() {
+            String deactiveText = "Transmute Ingredient";
+            String activeText = "finish action";
+            JButton button = new JButton(deactiveText);
+            button.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (active){
+                            ingController.deactivate();
+                            active = false;
+                            button.setText(deactiveText);
+                        }
+                        else {
+                            ingController.activate();
+                            active = true;
+                            button.setText(activeText);
+                        }
+                    }
+    
+                }
+            );
+            
+            return button;
+        }
+
+
+
+
+
+
     @Override
     public void update(String msg) {
         if (msg.equals("Pile is empty!")) {
