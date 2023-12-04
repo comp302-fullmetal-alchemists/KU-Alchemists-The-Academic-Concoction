@@ -14,7 +14,7 @@ public class GameContentPane extends JPanel {
     private PotionBrewingArea potionBrewingArea;
     private DeductionBoard deductionBoard;
     private PublicationArea publicationArea;
-    private MainMenuPanel mainMenu;
+    private MainMenu mainMenu;
     private CardLayout cards;
     private PlayerMediator mediator;
 
@@ -26,7 +26,7 @@ public class GameContentPane extends JPanel {
         this.potionBrewingArea = new PotionBrewingArea(mediator);
         this.deductionBoard = new DeductionBoard(mediator);
         this.publicationArea = new PublicationArea(mediator);
-        this.mainMenu = new MainMenuPanel(mediator);
+        this.mainMenu = new MainMenu(mediator);
         this.cards = new CardLayout();
         setLayout(cards);
         add(village, "village");
