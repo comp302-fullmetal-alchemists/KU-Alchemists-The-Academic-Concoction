@@ -2,7 +2,7 @@ package system.domain.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
 import system.domain.ArtifactCard;
 import system.domain.Cards;
 import system.domain.IngredientCard;
@@ -13,6 +13,7 @@ import system.domain.interfaces.Mediator;
 
 
 public class InventoryController {
+    // Player's inventory
     // Inventory	gold : int
     //ingredient cards: List<ingredientCard>
     //artifact cards : List<artifactCard>
@@ -20,10 +21,17 @@ public class InventoryController {
     //showInventory(player)
     //updateGold(int)
     //updateInventory(card)
+    // initialize an artifact card object and add it to the artifact card list of the corresponding players inventory
+    // initialize an ingredient card object and add it to the ingredient card list of the corresponding players inventory
+    // initialize a potion object and add it to the potion list of the corresponding players inventory
+    // delete card from ingredient card list of the corresponding players inventory
+    // delete card from artifact card list of the corresponding players inventory   
+    // delete card from potion list of the corresponding players inventory
+    
 
     private int gold;
     private List<IngredientCard> ingredientCards;
-    private List<ArtifactCard> artifactCards;
+    public ArrayList<ArtifactCard> artifactCards;
     private List<Potion> potions;
     private Observer inventoryUI;
     private Mediator mediator;
@@ -49,10 +57,19 @@ public class InventoryController {
 		this.gold = gold;
 	}
 
-    public List<ArtifactCard> getArtifactCards(){
+    public ArrayList<ArtifactCard> getArtifactCards(){
         return artifactCards;
     }
-    /* 
+
+    public List<IngredientCard> getIngredientCards(){
+        return ingredientCards;
+    }
+
+    public List<Potion> getPotions(){
+        return potions;
+    }
+ 
+
     public void giveIngredient(IngredientCard card) {
     	//delete card from ingredient card list of the corresponding players inventory
         for(IngredientCard icard : ingredientCards){
@@ -63,7 +80,7 @@ public class InventoryController {
         }
 
     }
-    */
+    
     public void showInventory(Player player) {
        //observer will use this
         return;
@@ -73,7 +90,7 @@ public class InventoryController {
     	
     	setGold(gold + amount) ;
         
-    	return amount;
+    	return gold;
     }
 
 
@@ -132,3 +149,4 @@ public class InventoryController {
     /**********/
 
 }
+
