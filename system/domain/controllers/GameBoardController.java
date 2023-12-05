@@ -23,6 +23,7 @@ public class GameBoardController {
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
+    private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
     private String[] ingredients = {"Solaris Root", "Bat Wing", "Toadstool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
@@ -88,9 +89,9 @@ public class GameBoardController {
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
+        this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
-
     }
 
 
@@ -144,6 +145,10 @@ public class GameBoardController {
 
     public DeductionBoardController getDeductionBoardController() {
         return deductionBoard;
+    }
+
+    public TheoryController getTheoryController() {
+        return theory;
     }
 
     public Mediator getMediator() {
@@ -208,5 +213,9 @@ public class GameBoardController {
     public void startGame() {
 
         return;
+    }
+
+    public Alchemy[] getAlchemies() {
+        return alchemies;
     }
 }
