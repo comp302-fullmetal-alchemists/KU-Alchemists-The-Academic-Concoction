@@ -13,11 +13,9 @@ import system.domain.Player;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.TheoryController;
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 
 
 public class TheoryBoard extends JPanel {
-    private PlayerMediator mediator;
     private TheoryController theoryController;
     private JButton ingredient1;
     private JButton ingredient2;

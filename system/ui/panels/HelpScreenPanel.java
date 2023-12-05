@@ -9,8 +9,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
-
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
