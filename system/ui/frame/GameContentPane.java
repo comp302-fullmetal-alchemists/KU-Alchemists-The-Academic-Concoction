@@ -15,7 +15,6 @@ public class GameContentPane extends JPanel {
     private DeductionBoard deductionBoard;
     private PublicationArea publicationArea;
     private MainMenuPanel mainMenu;
-    private HelpScreenPanel helpScreen;
     private CardLayout cards;
     private PlayerMediator mediator;
 
@@ -28,7 +27,6 @@ public class GameContentPane extends JPanel {
         this.deductionBoard = new DeductionBoard(mediator);
         this.publicationArea = new PublicationArea(mediator);
         this.mainMenu = new MainMenuPanel(mediator);
-        this.helpScreen = new HelpScreenPanel();
         this.cards = new CardLayout();
         setLayout(cards);
         add(village, "village");
@@ -37,7 +35,6 @@ public class GameContentPane extends JPanel {
         add(deductionBoard, "deductionBoard");
         add(publicationArea, "publicationArea");
         add(mainMenu, "mainMenu");
-        add(helpScreen, "helpScreen");
         mediator.connectActionSpace(ingredientStorage);
     }
 
