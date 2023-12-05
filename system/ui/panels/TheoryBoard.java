@@ -72,6 +72,9 @@ public class TheoryBoard extends JPanel {
         return ingredient;
     }
 
+    public void setIngredient(String ing){
+        this.ingredient = ing;
+    }
 
 
 }

@@ -36,6 +36,7 @@ public class TheoryController {
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getCurrentPlayer());
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
+
         }
         return;
     }

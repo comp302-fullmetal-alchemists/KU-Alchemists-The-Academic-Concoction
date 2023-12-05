@@ -98,10 +98,12 @@ public class PublicationArea extends JPanel implements Observer{
                 public void actionPerformed(ActionEvent e) {
                     if (alchemy.isEmpty()) {
                         System.err.println("Please select an alchemy");
+                        theoryBoard.setIngredient(null);
                     }
                     else if (theoryBoard.getIngredient() == null)
                     {
                         System.err.println("Please select an ingredient");
+                        alchemy = "";
                     }
                     else {
                         System.out.println(String.format("Alchemy = %s, Ingredient = %s", alchemy, theoryBoard.getIngredient()));
@@ -109,6 +111,8 @@ public class PublicationArea extends JPanel implements Observer{
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
+                        alchemy = "";
+                        theoryBoard.setIngredient(null);
                     }
                 }
 
