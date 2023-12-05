@@ -55,6 +55,14 @@ public class IngredientStorageController {
         for (int i = 0; i < 2; i++) {
             GameBoardController.getInstance().getPlayer(1).getInventory().addIngredient(ingredientPile.remove(0));
         }
+
+        gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getPlayer(0).getName(), "Game has started!", 0);
+        gameLog.recordLog(GameBoardController.getInstance().getPlayer(0), gameAction);
+
+        gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getPlayer(1).getName(), "Game has started!", 0);
+        gameLog.recordLog(GameBoardController.getInstance().getPlayer(1), gameAction);
+
+
     }
 
     

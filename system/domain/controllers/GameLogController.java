@@ -7,12 +7,8 @@ import java.util.Map;
 
 import system.domain.GameAction;
 import system.domain.Player;
-import system.ui.panels.PlayerDashboard;
 
 public class GameLogController {
-
-    //	showGameLog(player) prints the game log. To show, UI elements need to be implemented
-
 
     private Map<Player, List<GameAction>> gameActions = new HashMap<>();
     
