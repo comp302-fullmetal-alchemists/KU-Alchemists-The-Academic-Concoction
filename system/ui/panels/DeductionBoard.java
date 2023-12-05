@@ -7,17 +7,14 @@ import java.awt.event.ActionEvent;
 
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 
 
 public class DeductionBoard extends JPanel{
 
-    private PlayerMediator mediator;
     private JButton back;
 
-    public DeductionBoard(PlayerMediator mediator) {
+    public DeductionBoard() {
         super();
-        this.mediator = mediator;
         this.back = createNavButton("village", "Back to the village");
         add(back);
     }

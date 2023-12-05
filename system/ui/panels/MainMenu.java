@@ -10,7 +10,6 @@ import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 
 
 public class MainMenu extends JPanel{
@@ -20,9 +19,9 @@ public class MainMenu extends JPanel{
     private JButton helpButton;
     JButton pauseButton;
 
-    public MainMenu(PlayerMediator mediator) {
+    public MainMenu() {
        
-        this.back = createNavButton("environment", "Back to environment");
+        this.back = createNavButton("village", "Back to village");
         add(back);
         this.helpButton = createHelpButton("Help");
         add(helpButton);

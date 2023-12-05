@@ -1,18 +1,13 @@
 package system.domain.controllers;
 
-import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Collector;
 import system.domain.interfaces.Mediator;
-import system.domain.Cards;
 
 public class IngredientStorageController implements Collector{
     // public storage 
@@ -24,7 +19,7 @@ public class IngredientStorageController implements Collector{
     private List<ArtifactCard> artifactPile;
     private Observer ingredientStorageUI;
     private Mediator mediator;
-
+    private Boolean active = false;
 
     public IngredientStorageController() {
         this.ingredientPile = new ArrayList<IngredientCard>();
@@ -38,7 +33,6 @@ public class IngredientStorageController implements Collector{
     }
 
     public void initializePiles() {
-        Random random = new Random();   
         for (int i = 0; i < 24; i++) {
             String ingredientName = GameBoardController.getInstance().getIngredients()[i%8];
             ingredientPile.add(new IngredientCard(ingredientName,GameBoardController.getInstance().getAlchemyMap().get(ingredientName)));
@@ -58,41 +52,41 @@ public class IngredientStorageController implements Collector{
     }
 
 
-    public IngredientCard transmuteIngredient(int index, IngredientCard card) {
-        //this just yielded an error but it is not my use case so I just commented it out
-        //GameBoardController.getInstance().getPlayer(index).getInventory().giveIngredient(card);
-        GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
-        
-        return card;
-
-    }
-
-    public ArtifactCard buyArtifact() {
+    public void buyArtifact() {
         // control if the player has enough gold
         /*if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 3) {
             return null;
            
         }*/
         //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
-        ArtifactCard artifact = drawArtifact();
-        System.out.println("Artifact bought: " + artifact.getName());
-        
-        if (artifact == null) {
-            return null;
+        if (mediator.playerGoldAtLeast(3)) {
+            ArtifactCard artifact = drawArtifact();
+            if (artifact == null) {
+                ingredientStorageUI.update("EMPTY_PILE");
+            }
+            else {
+                mediator.sendToPlayer(artifact);
+                mediator.updatePlayerGold(-3);
+                ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
+                useArtifact(artifact);
+                mediator.playerPlayedTurn();
+            }
         }
-        GameBoardController.getInstance().getCurrentPlayer().getInventory().getArtifactCards().add(artifact);
-        return artifact;
+        else {
+            ingredientStorageUI.update("NOT_ENOUGH_GOLD");
+        }
+
     }
 
     public void drawIngredient() {
         if (ingredientPile.isEmpty()) {
-            ingredientStorageUI.update("Pile is empty!");
+            ingredientStorageUI.update("EMPTY_PILE");
         }
         else {
             IngredientCard drawn = ingredientPile.remove(0);
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
+            mediator.sendToPlayer(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL:%s", drawn.getName()));
-            GameBoardController.getInstance().getCurrentPlayer().playedTurn();
+            mediator.playerPlayedTurn();
         }
     }
 
@@ -104,42 +98,44 @@ public class IngredientStorageController implements Collector{
         return drawed;
     }
 
-    public ArrayList<IngredientCard> useArtifact(ArtifactCard card) {  // void dondur switch case yap 
+    public void useArtifact(ArtifactCard card) {  
         if (card.getName().equals("Elixir of Insight")) {
-            // player can see 3 ingredient cards from the pile
-            ArrayList<IngredientCard> cards = new ArrayList<IngredientCard>();
             String cardNames = "";
-            /*if (ingredientPile.size() < 3) {
-                return null;
-            }*/
-            for (int i = 1; i <= 3; i++) {
-                cards.add(ingredientPile.get(ingredientPile.size() - i));
-                cardNames += ingredientPile.get(ingredientPile.size() - i).getName() + ", ";
+            for (int i = 0; i < (ingredientPile.size() < 3? ingredientPile.size(): 3); i++) {
+                cardNames += ingredientPile.get(i).getName() + ", ";
 
             }
             ingredientStorageUI.update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
-            //ingredientStorageUI.update(String.format("CARDREMOVAL: %s", cards.toArray()));
-            return cards;
         }
-        return null;
     }
 
     @Override
-    public <T> void collectItem(T item) {
+    public <T> boolean collectItem(T item) {
         if (item instanceof IngredientCard) {
+            IngredientCard ing = (IngredientCard) item;
             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
+            ingredientStorageUI.update(String.format("CARD_SOLD:%s", ing.getName()));
             mediator.playerPlayedTurn();
+            return true;
         }
+        return false;
     }
 
     @Override
     public void activate() {
         mediator.connectCollector(this);
+        active = true;
     }
 
     @Override
     public void deactivate() {
         mediator.disconnectCollector();
+        active = false;
+    }
+
+    @Override 
+    public boolean isActive() {
+        return active;
     }
 
 

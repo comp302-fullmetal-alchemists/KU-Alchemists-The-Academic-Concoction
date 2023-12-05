@@ -47,6 +47,9 @@ public class Inventory extends JPanel implements Observer {
                         //concrete mediator, this method is safe
                         Inventory.this.invController.sendPotion(text);
                     }
+                    else if (type == "Artifact") {
+                        /// maybe use the artifact or something
+                    }
                 }
 
                 @Override
@@ -97,6 +100,9 @@ public class Inventory extends JPanel implements Observer {
         }
         else if (msg.contains("NEW_POTION")) {
             addItemToInventory(msg.split(":")[1], "Potion");
+        }
+        else if (msg.contains("NEW_ARTIFACT")){
+            addItemToInventory(msg.split(":")[1], "Artifact");
         }
     }
 

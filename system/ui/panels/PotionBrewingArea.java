@@ -11,24 +11,23 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 import system.domain.controllers.PotionBrewingAreaController;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 
 public class PotionBrewingArea extends JPanel implements Observer {
 
-    private PlayerMediator mediator;
     private PotionBrewingAreaController pbaController;
     private JButton back;
     private JButton activation;
     private JTextField ingredient1;  //something to display the ingredients chosen
     private JTextField ingredient2;
     private JButton makePotion;
+    String deactiveText = "Activate choice";
+    String activeText = "Deactivate choice";
 
-    public PotionBrewingArea(PlayerMediator mediator) {
+    public PotionBrewingArea() {
         super();
-        this.mediator = mediator;
         this.pbaController = GameBoardController.getInstance().getPotionBrewingAreaController();
         pbaController.setObserver(this);
         this.back = createNavButton("village", "Back to the village");
@@ -43,6 +42,11 @@ public class PotionBrewingArea extends JPanel implements Observer {
         add(makePotion);
     }
 
+    public void initialize() {
+        pbaController.deactivate();
+        activation.setText(deactiveText);
+    }
+
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);
@@ -53,8 +57,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
                     ((GameContentPane) PotionBrewingArea.this.getParent()).changeView(nav);
                     if (!ingredient1.getText().equals("Give Ingredient1")) pbaController.discardIngredient(1);
                     if (!ingredient2.getText().equals("Give Ingredient2")) pbaController.discardIngredient(2);
-                    pbaController.deactivate();
-                    activation.setText("Activate choice");
+                    initialize();
                 }
 
             }
@@ -63,8 +66,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
     }
 
     public JButton createActivationButton() {
-        String deactiveText = "Activate choice";
-        String activeText = "Deactivate choice";
         JButton button = new JButton(deactiveText);
         button.addActionListener(
             new ActionListener() {
@@ -131,6 +132,10 @@ public class PotionBrewingArea extends JPanel implements Observer {
     }
 
 
+    public void showMessageDialog(String displayMsg) {
+        JOptionPane.showMessageDialog(this, displayMsg);
+    }
+
     @Override
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT1")) {
@@ -140,11 +145,13 @@ public class PotionBrewingArea extends JPanel implements Observer {
             ingredient2.setText(msg.split(":")[1]);
         }
         else if (msg.contains("ABSENT_INGREDIENTS")) {
-            JOptionPane.showMessageDialog(this, "Please fill ingredients");
+            showMessageDialog("Please fill ingredients");
         }
-        else if (msg.contains("DISCARD_INGREDIENTS")) {
+        else if (msg.contains("BREWED_POTION")) {
             ingredient1.setText("Give Ingredient1");
             ingredient2.setText("Give Ingredient2");
+            showMessageDialog("You have brewed a " + msg.split(":")[1] + " potion!");
+
         }
         else if (msg.contains("DISCARD_INGREDIENT1")) {
             ingredient1.setText("Give Ingredient1");

@@ -7,16 +7,13 @@ import java.awt.event.ActionEvent;
 
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 
 public class PublicationArea extends JPanel{
 
-    private PlayerMediator mediator;
     private JButton back;
 
-    public PublicationArea(PlayerMediator mediator) {
+    public PublicationArea() {
         super();
-        this.mediator = mediator;
         this.back = createNavButton("village", "Back to the village");
         add(back);
     }

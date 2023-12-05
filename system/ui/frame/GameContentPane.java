@@ -1,8 +1,6 @@
 package system.ui.frame;
 
 import system.ui.panels.*;
-import system.ui.interfaces.*;
-
 import javax.swing.JPanel;
 
 import java.awt.CardLayout;
@@ -16,17 +14,15 @@ public class GameContentPane extends JPanel {
     private PublicationArea publicationArea;
     private MainMenu mainMenu;
     private CardLayout cards;
-    private PlayerMediator mediator;
 
-    public GameContentPane(PlayerMediator mediator) {
+    public GameContentPane() {
         super();
-        this.mediator = mediator;
         this.village = new Village();
-        this.ingredientStorage = new IngredientStorage(mediator);
-        this.potionBrewingArea = new PotionBrewingArea(mediator);
-        this.deductionBoard = new DeductionBoard(mediator);
-        this.publicationArea = new PublicationArea(mediator);
-        this.mainMenu = new MainMenu(mediator);
+        this.ingredientStorage = new IngredientStorage();
+        this.potionBrewingArea = new PotionBrewingArea();
+        this.deductionBoard = new DeductionBoard();
+        this.publicationArea = new PublicationArea();
+        this.mainMenu = new MainMenu();
         this.cards = new CardLayout();
         setLayout(cards);
         add(village, "village");
@@ -35,10 +31,13 @@ public class GameContentPane extends JPanel {
         add(deductionBoard, "deductionBoard");
         add(publicationArea, "publicationArea");
         add(mainMenu, "mainMenu");
-        mediator.connectActionSpace(ingredientStorage);
     }
 
     public void changeView(String cardName) {
         cards.show(this, cardName);
+        switch (cardName) {
+            case "ingredientStorage": ingredientStorage.initialize();
+            case "potionBrewingArea": potionBrewingArea.initialize();
+        }
     }
 }

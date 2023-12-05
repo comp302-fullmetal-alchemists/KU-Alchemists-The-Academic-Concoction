@@ -40,7 +40,7 @@ public class PotionBrewingAreaController implements Collector{
         if (ing1 != null && ing2 != null) {
             Potion brewed = new Potion(ing1, ing2);
             mediator.sendToPlayer(brewed);
-            potionBrewingUI.update("DISCARD_INGREDIENTS");
+            potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
             ing1 = null;
             ing2 = null;
             mediator.playerPlayedTurn();

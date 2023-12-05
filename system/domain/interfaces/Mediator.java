@@ -16,5 +16,7 @@ public interface Mediator {
 
     void updatePlayerGold(int updateAmount);
 
+    boolean playerGoldAtLeast(int threshold);
+
     void playerPlayedTurn();
 }

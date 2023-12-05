@@ -4,7 +4,6 @@ import system.ui.frame.GameContentPane;
 import system.domain.controllers.IngredientStorageController;
 import system.domain.ArtifactCard;
 import system.domain.controllers.GameBoardController;
-import system.ui.interfaces.PlayerMediator;
 import system.domain.interfaces.Observer;
 
 
@@ -18,17 +17,16 @@ import java.awt.event.ActionEvent;
 public class IngredientStorage extends JPanel implements Observer {
     
     private IngredientStorageController ingController;
-    private PlayerMediator mediator;
     private JButton back;
     private JButton ingredientButton;
     private JButton artifactButton;
     private JButton transmuteIngButton;
-    private Boolean active = false ;
+    String deactiveText = "Transmute Ingredient";
+    String activeText = "Finish action";
     
     
-    public IngredientStorage(PlayerMediator mediator) {
+    public IngredientStorage() {
         super();
-        this.mediator = mediator;
         this.ingController = GameBoardController.getInstance().getIngredientStorageController(); 
         ingController.setObserver(this);
         this.back = createNavButton("village", "Back to the village");
@@ -39,6 +37,11 @@ public class IngredientStorage extends JPanel implements Observer {
         add(artifactButton);
         this.transmuteIngButton = createTransmuteIngButton();
         add(transmuteIngButton);
+    }
+
+    public void initialize() {
+        ingController.deactivate();
+        transmuteIngButton.setText(deactiveText);
     }
 
     public JButton createIngButton(String text) {
@@ -61,9 +64,7 @@ public class IngredientStorage extends JPanel implements Observer {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ((GameContentPane) IngredientStorage.this.getParent()).changeView(nav);
-                    ingController.deactivate();
-                    active = false;
-                    transmuteIngButton.setText("Trasnmute Ingredient");
+                    initialize();
                 }
             }
         );
@@ -76,32 +77,24 @@ public class IngredientStorage extends JPanel implements Observer {
             new ActionListener() {
                 @Override 
                 public void actionPerformed(ActionEvent e) {
-                    ArtifactCard drawn = ingController.buyArtifact();
-                    JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!",drawn.getName()));
-                    ingController.useArtifact(drawn);
-                    
-                    
+                    ingController.buyArtifact();
                 }
             }
         );
         return artifactButton;}
     
         public JButton createTransmuteIngButton() {
-            String deactiveText = "Transmute Ingredient";
-            String activeText = "finish action";
             JButton button = new JButton(deactiveText);
             button.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (active){
+                        if (ingController.isActive()){
                             ingController.deactivate();
-                            active = false;
                             button.setText(deactiveText);
                         }
                         else {
                             ingController.activate();
-                            active = true;
                             button.setText(activeText);
                         }
                     }
@@ -115,18 +108,31 @@ public class IngredientStorage extends JPanel implements Observer {
 
 
 
+    public void showMessageDialog(String displayMsg) {
+        JOptionPane.showMessageDialog(this, displayMsg);
+    }
 
 
     @Override
     public void update(String msg) {
-        if (msg.equals("Pile is empty!")) {
-            JOptionPane.showMessageDialog(IngredientStorage.this, "Pile is empty!");
+        if (msg.equals("EMPTY_PILE")) {
+            showMessageDialog("Pile is empty!");
         }
         else if (msg.contains("CARDREMOVAL")) {
-            JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn %s!", msg.split(":")[1]));
+            showMessageDialog(String.format("You have drawn %s!", msg.split(":")[1]));
         }
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
-            JOptionPane.showMessageDialog(IngredientStorage.this, String.format("You have drawn the elixir of insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
+            showMessageDialog(String.format("You have drawn the elixir of insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
+        }
+        else if (msg.contains("CARD_SOLD")) {
+            showMessageDialog(String.format("You have sold %s!", msg.split(":")[1]));
+            initialize();
+        }
+        else if (msg.contains("ARTIFACT_BOUGHT")) {
+            showMessageDialog(String.format("You have bought %s!", msg.split(":")[1]));
+        }
+        else if (msg.contains("NOT_ENOUGH_GOLD")) {
+            showMessageDialog("You do not have enough gold!");
         }
     }
 }

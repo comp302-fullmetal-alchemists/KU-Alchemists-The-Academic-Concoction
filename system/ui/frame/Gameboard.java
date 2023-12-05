@@ -4,10 +4,10 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
-import system.ui.interfaces.Mediator;
-import system.ui.interfaces.PlayerMediator;
 import system.ui.panels.AuthenticationPanel;
 
 
@@ -17,7 +17,6 @@ public class Gameboard extends JFrame implements Observer{
 	AuthenticationPanel authPanel;
     PlayerContentPane playerPane;
     GameContentPane gamePane;
-    PlayerMediator mediator;
     GameBoardController gameController;
   
 	public static void main(String[] args) {
@@ -43,7 +42,6 @@ public class Gameboard extends JFrame implements Observer{
 		authPanel.setBounds(600, 153, 0, 0);
 		getContentPane().add(authPanel);
 		authPanel.setLayout(null);
-		this.mediator = new Mediator();
 		setSize(859, 607);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,14 +62,16 @@ public class Gameboard extends JFrame implements Observer{
 	}
 	
 	public void changePlayer() { 
+		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getCurrentPlayer().getName()));
         playerPane.changeView(gameController.getCurrentPlayer().getName());
+		gamePane.changeView("village");
     }
 
     public void initializeTheBoard() { 
         remove(authPanel);
         getContentPane().setLayout(new GridLayout(1, 2));
-        this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1), mediator);
-        this.gamePane = new GameContentPane(mediator);
+        this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1));
+        this.gamePane = new GameContentPane();
         playerPane.changeView(gameController.getCurrentPlayer().getName());
         getContentPane().add(gamePane);
         getContentPane().add(playerPane);

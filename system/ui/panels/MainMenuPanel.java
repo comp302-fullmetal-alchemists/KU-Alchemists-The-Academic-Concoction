@@ -15,21 +15,18 @@ import java.awt.event.ActionEvent;
 
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 import system.domain.MainMenu;
 
 
 public class MainMenuPanel extends JPanel{
 
-    private PlayerMediator mediator;
     private JButton back;
     private JButton helpButton;
     JButton pauseButton;
 
-    public MainMenuPanel(PlayerMediator mediator) {
+    public MainMenuPanel() {
         super();
         this.back = createNavButton("village", "Back to village");
-        this.mediator = mediator;
         add(back);
         this.helpButton = createHelpButton("Help");
         add(helpButton);

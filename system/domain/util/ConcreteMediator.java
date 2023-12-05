@@ -58,6 +58,11 @@ public class ConcreteMediator implements Mediator {
         player.getInventory().updateGold(updateAmount);
     }
 
+    @Override
+    public boolean playerGoldAtLeast(int threshold) {
+        return player.getInventory().getGold() >= threshold;
+    }
+
     
     @Override
     public void playerPlayedTurn() {
