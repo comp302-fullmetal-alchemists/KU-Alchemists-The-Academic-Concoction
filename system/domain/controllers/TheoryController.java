@@ -1,32 +1,42 @@
 package system.domain.controllers;
 
 import system.domain.Alchemy;
-import system.domain.IngredientCard;
 import system.domain.Theory;
+import system.domain.interfaces.Observer;
+
 import java.util.List;
+import java.util.ArrayList;
 
 public class TheoryController {
-
+    //This can be created as map
     private List<Theory> theories;
+    private Observer theoryUI;
 
     public TheoryController() {
+        this.theories = new ArrayList<Theory>();
     }
 
-    public void publishTheory(Alchemy alchemy, IngredientCard ingredient) {
+    public void setObserver(Observer observer) {
+        this.theoryUI = observer;
+    }
+
+    public void publishTheory(Alchemy alchemy, String ingredient) {
         for (Theory i : theories) {
-            if (i.getAlchemy() == alchemy && i.getIngredient() == ingredient) {
-                System.err.println("Theory has already published");
+            if (i.getAlchemy() == alchemy || i.getIngredient() == ingredient) {
+                theoryUI.update("DUPLICATE_THEORY");
                 return;
             }
         } 
         if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 1) {
-            System.err.println("Not enough gold");
+            theoryUI.update("NOT_ENOUGH_GOLD");
             return;
         }
-        else;
+        else{
             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(-1);
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getCurrentPlayer());
             theories.add(theory);
+            theoryUI.update("THEORY_PUBLISHED");
+        }
         return;
     }
 

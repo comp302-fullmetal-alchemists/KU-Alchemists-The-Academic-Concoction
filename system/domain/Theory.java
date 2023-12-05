@@ -2,12 +2,12 @@ package system.domain;
 
 public class Theory {
         private Alchemy alchemy;
-        private IngredientCard ingredient;
+        private String ingredient;
         private Player owner;
         private boolean debunked;
         
 
-    public Theory(Alchemy alchemy, IngredientCard ingredient, Player owner) {
+    public Theory(Alchemy alchemy, String ingredient, Player owner) {
         this.alchemy = alchemy;
         this.ingredient = ingredient;
         this.owner = owner;
@@ -23,11 +23,11 @@ public class Theory {
         this.alchemy = alchemy;
     }
 
-    public IngredientCard getIngredient() {
+    public String getIngredient() {
         return ingredient;
     }
 
-    public void setIngredient(IngredientCard ingredient) {
+    public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
 
