@@ -21,8 +21,8 @@ public class GameLogController {
         GameAction startAction1 = new GameAction("Game", player1.getName(), "GameLog Start", 0);
         GameAction startAction2 = new GameAction("Game", player2.getName(), "GameLog Start", 0);
 
-        gameActions.put(player1, List.of(startAction1));
-        gameActions.put(player2, List.of(startAction2));
+     //   gameActions.put(player1, List.of(startAction1));
+     //   gameActions.put(player2, List.of(startAction2));
     }
 
     public void showGameLog(Player player) {

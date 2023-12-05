@@ -14,6 +14,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.UIManager;
+import java.awt.Font;
 
 public class IngredientStorage extends JPanel implements Observer {
     
@@ -28,9 +32,11 @@ public class IngredientStorage extends JPanel implements Observer {
     
     public IngredientStorage(PlayerMediator mediator) {
         super();
+        setBackground(new Color(58, 77, 108));
         this.mediator = mediator;
         this.ingController = GameBoardController.getInstance().getIngredientStorageController(); 
         ingController.setObserver(this);
+        setLayout(null);
         this.back = createNavButton("village", "Back to the village");
         add(back);
         this.ingredientButton = createIngButton("Draw Ingredient");
@@ -39,10 +45,20 @@ public class IngredientStorage extends JPanel implements Observer {
         add(artifactButton);
         this.transmuteIngButton = createTransmuteIngButton();
         add(transmuteIngButton);
+        
+        JTextPane txtpnActions = new JTextPane();
+        txtpnActions.setFont(new Font("Apple Chancery", Font.PLAIN, 20));
+        txtpnActions.setForeground(UIManager.getColor("List.selectionForeground"));
+        txtpnActions.setBackground(new Color(58, 77, 108));
+        txtpnActions.setText("Actions");
+        txtpnActions.setBounds(27, 19, 144, 42);
+        add(txtpnActions);
     }
+    
 
     public JButton createIngButton(String text) {
         JButton ingButton = new JButton(text);
+        ingButton.setBounds(27, 60, 179, 29);
         ingButton.addActionListener(
             new ActionListener() {
                 @Override 
@@ -56,6 +72,7 @@ public class IngredientStorage extends JPanel implements Observer {
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);
+        button.setBounds(271, 19, 159, 29);
         button.addActionListener(
             new ActionListener() {
                 @Override
@@ -72,6 +89,7 @@ public class IngredientStorage extends JPanel implements Observer {
 
     public JButton createArtifactButton(String text) {
         JButton artifactButton = new JButton(text);
+        artifactButton.setBounds(27, 101, 179, 29);
         artifactButton.addActionListener(
             new ActionListener() {
                 @Override 
@@ -90,6 +108,7 @@ public class IngredientStorage extends JPanel implements Observer {
             String deactiveText = "Transmute Ingredient";
             String activeText = "finish action";
             JButton button = new JButton(deactiveText);
+            button.setBounds(27, 142, 179, 29);
             button.addActionListener(
                 new ActionListener() {
                     @Override
