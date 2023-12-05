@@ -10,6 +10,7 @@ import java.util.HashMap;
 import system.domain.Player;
 import system.domain.Alchemy;
 import system.domain.ArtifactCard;
+import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
@@ -24,6 +25,7 @@ public class GameBoardController {
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
     private GameLogController gameLog;
+    private GameAction gameAction;
     private Mediator mediator;
     private Observer gameboardUI;
     private String[] ingredients = {"Solaris Root", "Bat Wing", "Toadstool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
@@ -73,7 +75,7 @@ public class GameBoardController {
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2); 
-        gameLog = new GameLogController(player1, player2); //get the players and initalize the gamelog
+        this.gameLog = new GameLogController(player1, player2); //get the players and initalize the gamelog
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
         players.get(firstPlayer).changeTurn();
@@ -86,7 +88,6 @@ public class GameBoardController {
         this.potionBrewingArea = new PotionBrewingAreaController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
-
     }
 
     public static Player getPlayer(int index) {

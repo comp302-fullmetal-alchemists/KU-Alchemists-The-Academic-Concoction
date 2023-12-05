@@ -52,14 +52,14 @@ public class PlayerDashboard extends JPanel implements Observer {
     }
 
     public void gameLogDisplayInit(){
-        gameLogDisplayText = new JTextArea(5,25);
+        gameLogDisplayText = new JTextArea(5,35);
         gameLogDisplayText.setEditable(false);
         gameLogDisplay = new JScrollPane(gameLogDisplayText);
         gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }
 
     public void appendToGameLog(String text) {
-        gameLogDisplayText.append(text + "\n");
+        gameLogDisplayText.append(text);
     }
 
     @Override

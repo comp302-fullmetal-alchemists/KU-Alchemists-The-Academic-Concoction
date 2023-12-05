@@ -11,6 +11,7 @@ import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.Cards;
+import system.domain.GameAction;
 
 public class IngredientStorageController {
     // public storage 
@@ -22,9 +23,12 @@ public class IngredientStorageController {
     private List<ArtifactCard> artifactPile;
     private Observer ingredientStorageUI;
     private Mediator mediator;
+    private GameLogController gameLog;
+    private GameAction gameAction;
 
 
     public IngredientStorageController() {
+        this.gameLog = GameBoardController.getInstance().getGameLog();
         this.ingredientPile = new ArrayList<IngredientCard>();
         this.artifactPile = new ArrayList<ArtifactCard>();
         this.mediator = GameBoardController.getInstance().getMediator();
@@ -77,6 +81,9 @@ public class IngredientStorageController {
             GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
             GameBoardController.getInstance().getCurrentPlayer().playedTurn();
+
+            gameAction = new GameAction("Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         }
     }
 
