@@ -6,43 +6,66 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 public class Village extends JPanel {
     
-    private JButton ingButton;
-    private JButton potionButton;
-    private JButton publicationButton;
-    private JButton deductionButton;
-    private JButton mainMenuButton;
-
 
     public Village() {
-        super();
-        this.ingButton = createNavButton("ingredientStorage", "Ingredient Storage");
-        this.potionButton = createNavButton("potionBrewingArea", "Potion Brewing Area");
-        this.publicationButton = createNavButton("publicationArea", "Publication Area");
-        this.deductionButton = createNavButton("deductionBoard", "Deduction Board");
-        this.mainMenuButton = createNavButton("mainMenu", "Main Menu");
+    	setBackground(new Color(58, 77, 108));
+        setLayout(null);
+        
+        JButton btnIngredientStorage = new JButton("Ingredient Storage");
+        btnIngredientStorage.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		 ((GameContentPane) Village.this.getParent()).changeView("ingredientStorage");
+        	}
+        });
+        btnIngredientStorage.setBounds(111, 49, 159, 29);
+        add(btnIngredientStorage);
+       
+       
+        
+        JButton btnPotionBrewingArea = new JButton("Potion Brewing Area");
+        btnPotionBrewingArea.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+       		 ((GameContentPane) Village.this.getParent()).changeView("potionBrewingArea");
 
-        add(ingButton);
-        add(potionButton);
-        add(publicationButton);
-        add(deductionButton);
-        add(mainMenuButton);
+        	}
+        });
+        btnPotionBrewingArea.setBounds(111, 99, 159, 29);
+        add(btnPotionBrewingArea);
+        
+        
+        JButton btnPublicationArea = new JButton("Publication Area\n");
+        btnPublicationArea.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+       		 ((GameContentPane) Village.this.getParent()).changeView("publicationArea");
+
+        	}
+        });
+        btnPublicationArea.setBounds(111, 150, 159, 29);
+        add(btnPublicationArea);
+        
+        JButton btnMainMenu = new JButton("Main Menu\n");
+        btnMainMenu.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		 ((GameContentPane) Village.this.getParent()).changeView("mainMenu");
+        	}
+        });
+        btnMainMenu.setBounds(111, 258, 159, 29);
+        add(btnMainMenu);
+        
+        JButton btnDeductionBoard = new JButton("Deduction Board\n");
+        btnDeductionBoard.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                ((GameContentPane) Village.this.getParent()).changeView("deductionBoard");
+        	}
+        });
+        btnDeductionBoard.setBounds(111, 203, 159, 29);
+        add(btnDeductionBoard);
     }
-
-    public JButton createNavButton(String nav, String text) {
-        JButton button = new JButton(text);
-        button.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((GameContentPane) Village.this.getParent()).changeView(nav);
-                }
-
-            }
-        );
-        return button;
-    }
+    
+ 
 }
