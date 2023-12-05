@@ -78,12 +78,14 @@ public class IngredientStorageController {
         }
         else {
             IngredientCard drawn = ingredientPile.remove(0);
+
             GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
-            GameBoardController.getInstance().getCurrentPlayer().playedTurn();
 
             gameAction = new GameAction("Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            
+            GameBoardController.getInstance().getCurrentPlayer().playedTurn();
         }
     }
 

@@ -27,7 +27,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.inventory = new Inventory(player.getInventory());
         this.playerLabel = new JLabel(player.getName());
         this.gameLogController = GameBoardController.getInstance().getGameLog();
-        gameLogController.setPlayerDashboard(this);
+        player.setPlayerDashboard(this);
         add(playerLabel);
         add(inventory);
         gameLogDisplayInit();
@@ -51,15 +51,15 @@ public class PlayerDashboard extends JPanel implements Observer {
     	//return gameLog actions
     }
 
+    public void appendToGameLog(String text) {
+        gameLogDisplayText.append(text);
+    }
+
     public void gameLogDisplayInit(){
         gameLogDisplayText = new JTextArea(5,35);
         gameLogDisplayText.setEditable(false);
         gameLogDisplay = new JScrollPane(gameLogDisplayText);
         gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-    }
-
-    public void appendToGameLog(String text) {
-        gameLogDisplayText.append(text);
     }
 
     @Override

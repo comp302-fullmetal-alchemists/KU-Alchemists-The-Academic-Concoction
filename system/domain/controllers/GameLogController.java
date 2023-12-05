@@ -15,11 +15,6 @@ public class GameLogController {
 
 
     private Map<Player, List<GameAction>> gameActions = new HashMap<>();
-    private  PlayerDashboard playerDashboardUI;
-
-    public void setPlayerDashboard(PlayerDashboard playerDashboard){
-        this.playerDashboardUI = playerDashboard;
-    }
     
     public  GameLogController(Player player1, Player player2){
         //GameAction startAction1 = new GameAction("Game", player1.getName(), "GameLog Start", 0);
@@ -31,11 +26,7 @@ public class GameLogController {
 
     public void recordLog(Player player, GameAction gameAction) {
         gameActions.get(player).add(gameAction); //gets the players GameAction list, adds the game action to there.
-        for (int i = 0; i<2; i++){
-            if(player == GameBoardController.getPlayer(i)){
-                playerDashboardUI.appendToGameLog(gameAction.toString());
-            }
-        }
+            player.appendToGameLog(gameAction.toString());
         return;
     }
 

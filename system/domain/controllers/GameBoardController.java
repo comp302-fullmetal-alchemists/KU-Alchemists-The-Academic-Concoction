@@ -94,6 +94,10 @@ public class GameBoardController {
         return players.get(index);
     }
 
+    public static List<Player> getPlayerList() {
+        return players;
+    }
+
 
     public void changePlayer() {
         players.get(0).changeTurn();
