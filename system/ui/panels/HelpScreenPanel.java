@@ -21,31 +21,33 @@ public class HelpScreenPanel extends JPanel {
         // Initialize and add components for the help screen
         //chatgbt is used for striing helpcontent
         // Sample help content
-        String helpContent = "## Game Name Help Center\n\n" +
-                "Welcome to Game Name! This is a brief overview of the game's features:\n\n" +
+        String helpContent = "## KuAlchemists Help Center\n\n" +
+                "Welcome to KuAlchemists! This is a brief overview of the game's features:\n\n" +
                 "### Getting Started\n" +
-                "1. **Overview:** Explore an exciting world filled with challenges and adventures.\n" +
-                "2. **Controls:** Use WASD to move, left mouse button to attack, and spacebar to jump.\n" +
-                "3. **Objectives:** Complete quests, defeat enemies, and level up your character.\n\n" +
-                "### Gameplay Mechanics\n" +
-                "1. **Movement:** Navigate using WASD or arrow keys.\n" +
-                "2. **Combat:** Defeat enemies using your weapons and special abilities.\n" +
-                "3. **Interactions:** Talk to NPCs, solve puzzles, and discover hidden items.\n" +
-                "4. **Power-ups and Abilities:** Unlock and upgrade special powers to enhance your skills.\n\n" +
+                "1. Explore an exciting world filled with magic and adventures.\n" +
+                "2. **Controls:** Use mouse or touchpad to click on buttons.\n" +
+                "3. **Objectives:** Make experiments, publish theories, earn reputation point to win the game.\n\n" +
+                "### Game Board\n" +
+                "1. **Village:** Visit the village to access different areas.\n" +
+                "2. **Potion Brewing Area:** Make experiments to discover new potions.\n" +
+                "3. **Publication Area:** Publish theories to earn reputation points.\n" +
+                "4. **Deduction Board:** Use deduction to form theories.\n" +
+                "5. **Ingredient Storage:** Draw ingredients and artifact cards.\n\n" +
+                "### Player Actions\n" +
+                "1. **Draw Ingredient:** Draw an ingredient card from the ingredient storage.\n" +
+                "2. **Draw Artifact Card:** Draw an artifact card from the ingredient storage.\n" +
+                "3. **Make Experiment:** Make an experiment to discover a new potion.\n" +
+                "4. **Publish Theory:** Publish a theory to earn reputation points.\n" +
+                "5. **Debunk Theory:** Debunk a theory to earn reputation points.\n\n" +
+                "6. **Sell Potion:** Sell a potion to earn gold.\n" +
+                "7. **Transmute Ingredient:** Transmute an ingredient to earn gold.\n" +
+
                 "### Levels and Challenges\n" +
-                "1. **Level Structure:** Progress through diverse levels with unique challenges.\n" +
-                "2. **Challenges and Rewards:** Complete optional challenges to earn rewards.\n\n" +
-                "### Settings and Options\n" +
-                "1. **Graphics:** Adjust graphical settings for optimal performance.\n" +
-                "2. **Sound:** Customize audio settings, including music and sound effects.\n" +
-                "3. **Controls:** Configure control settings to match your preferences.\n" +
-                "4. **Accessibility:** Explore features for players with different needs.\n\n" +
-                "### Troubleshooting\n" +
-                "1. **Common Issues:** Find solutions to common problems.\n" +
-                "2. **Technical Support:** Contact our support team for assistance.\n\n" +
+                "1. **Level 1:** You are only allowed to forage ingredients, transmute ingredients, and sell potions.\n" +
+                "2. **Level 2:** You are only allowed to make experiments and publish theories.\n" +
+                "3. **Level 3:** You are allowed to make experiments, publish theories, and debunk theories.\n\n" +
                 "### Contact Us\n" +
-                "1. **Feedback:** Share your feedback and suggestions to help us improve the game.\n" +
-                "2. **Support:** For technical assistance and other inquiries, reach out to our support team.";
+                "If you have any questions or concerns, please contact us at";
 
         JTextArea helpTextArea = new JTextArea(helpContent);
         helpTextArea.setEditable(false);
