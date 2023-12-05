@@ -20,6 +20,7 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
+      
     }
 
     /**********Getters and Setters******************/
@@ -52,6 +53,7 @@ public class Player {
 	public void setToken(String token) {
 		this.token = token;
 	}
+    
     public String getToken() {
         return token;
     }

@@ -92,7 +92,6 @@ public class GameBoardController {
         this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
-
     }
 
 
