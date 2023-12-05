@@ -80,36 +80,42 @@ public class PotionBrewingAreaController implements Collector{
     }
     
     public List<Potion> getPotions(){
-        return GameBoardController.getInstance().getCurrentPlayer().getInventory().gePotions();
+        return GameBoardController.getInstance().getCurrentPlayer().getInventory().getPotions();
     }
 
     public String giveOffer() {
-        //TOOD Add to UI
         //Aventurer gives 3 gold for positive, 2 gold for positive or neutral, 1 gold for any potion.
-
         String adventurerInfo = "Hark, potion-masters! The Adventurer proclaims:\nfor potions positive, three golds be thine;\nfor brews of good or neutral kind, two golds;\nand for any draught, one gold.\nPresent thy potions and claim thy reward!";
         return adventurerInfo;
     }
 
-    public int agreeOffer(int offer, Potion potion){
-        if ((offer == 3) && (potion.getStatus() == "positive")){
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
-            return offer;
-        }
-        else if ((offer == 2) && (!(potion.getStatus() == "negative"))){
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
-            return offer;
-        }
-        else if(offer == 1){
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
-            return offer;
+    public int agreeOffer(int offer){
+        if(potionToSell == null){
+            //NULL
+            System.out.println("NO POTION");
+            return 0;
         }
         else{
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potion);
-            return 0;//ERROR WRONG POTION, AS A PUNISHMENT GET THE POTION
+            System.out.printf("offer of %d with potion %s\n", offer, potionToSell.getName());//RM LATER
+            if ((offer == 3) && (potionToSell.getStatus() == "positive")){
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potionToSell);
+                return offer;
+            }
+            else if ((offer == 2) && (!(potionToSell.getStatus() == "negative"))){
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potionToSell);
+                return offer;
+            }
+            else if(offer == 1){
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potionToSell);
+                return offer;
+            }
+            else{
+                GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potionToSell);
+                return 0;//ERROR WRONG POTION, AS A PUNISHMENT GET THE POTION
+            }
         }
     }
 

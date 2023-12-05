@@ -41,7 +41,7 @@ public class InventoryController {
         this.inventoryUI = observer;
     }
 
-    public List<Potion> gePotions(){
+    public List<Potion> getPotions(){
         return potions;
     }
     
@@ -104,7 +104,10 @@ public class InventoryController {
     }
 
     public void removePotion(Potion potion) {
+        System.out.printf("potions: %d\n", potions.size());
+        System.out.printf("Potion to remove: %s %s\n", potion.getName(), potion.getStatus());
     	potions.remove(potion);
+        System.out.printf("potions after: %d\n", potions.size());
         inventoryUI.update(String.format("REMOVED_POTION: %s", potion));
     }
 

@@ -89,9 +89,6 @@ public class GameBoardController {
 
     }
 
-
-    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
-
     public static Player getPlayer(int index) {
         return players.get(index);
     }

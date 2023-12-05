@@ -36,7 +36,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JButton makePotion;
     private JTextArea AdventurerInfo;
     private JTextField potionToSell;
-    private JComboBox<String> potionsDropdown; //DELETE LATER
     private JComboBox<String> offerDropdown;
     private JButton sellPotionButton;
 
@@ -62,45 +61,27 @@ public class PotionBrewingArea extends JPanel implements Observer {
         AdventurerInfo.setFont(f);
         add(AdventurerInfo);
 
-        //this.potionsDropdown = inventoryDropdown();
-        //add(potionsDropdown);
         this.potionToSell = createPotionField("sell a potion");
         add(potionToSell);
 
         this.offerDropdown = optionsDropdown();
         add(offerDropdown);
-        this.sellPotionButton = sellPotionButton((Potion) inventoryDropdown().getSelectedItem(), optionsDropdown().getSelectedIndex());
+        this.sellPotionButton = sellPotionButton();
         add(sellPotionButton);
     }
-
-    public JComboBox<String> inventoryDropdown() {
-        List<Potion> potions = pbaController.getPotions();
-        String[] inventoryOptions = new String[potions.size()];
-        for (int i = 0; i < potions.size(); i++) {
-            inventoryOptions[i] = potions.get(i).getName();
-        }
-        JComboBox<String> inventoryDropdown = new JComboBox<>(inventoryOptions);
-    
-        return inventoryDropdown;
-    }
-
 
     public JComboBox<String> optionsDropdown() {
         String[] quantityOptions = {"One", "Two", "Three"};
         return new JComboBox<>(quantityOptions);
     }
 
-    public JButton sellPotionButton(Potion selectedPotion, int selectedOffer){
-        List<Potion> potions = pbaController.getPotions();
+    public JButton sellPotionButton(){
         JButton sellPotionButton = new JButton("Sell the Potion");
         sellPotionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedPotion != null) {
-                    pbaController.agreeOffer(selectedOffer, selectedPotion);
-                } else {
-                    // Handle the case where no potion is selected or potion is not found
-                }
+                int selectedOffer = offerDropdown.getSelectedIndex();
+                pbaController.agreeOffer(selectedOffer + 1);
             }
         });
         return sellPotionButton;

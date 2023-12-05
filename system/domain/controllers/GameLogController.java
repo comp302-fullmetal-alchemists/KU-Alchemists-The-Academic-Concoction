@@ -13,7 +13,6 @@ public class GameLogController {
 
 
     private Map<Player, List<GameAction>> gameActions = new HashMap<>();
-
     
     public  GameLogController(Player player1, Player player2){
         GameAction startAction1 = new GameAction("Game", player1.getName(), "GameLog Start", 0);
