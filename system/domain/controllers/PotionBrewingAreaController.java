@@ -23,6 +23,7 @@ public class PotionBrewingAreaController implements Collector{
     private ArrayList<String> students;
     private IngredientCard ing1;
     private IngredientCard ing2;
+    private Potion potionToSell;
     private Observer potionBrewingUI;
     private Mediator mediator;
 
@@ -71,6 +72,12 @@ public class PotionBrewingAreaController implements Collector{
         } 
         
     }
+
+    public void discardPotion() {
+            mediator.sendToPlayer(potionToSell);
+            potionToSell = null;
+            potionBrewingUI.update("DISCARD_POTION");
+    }
     
     public List<Potion> getPotions(){
         return GameBoardController.getInstance().getCurrentPlayer().getInventory().gePotions();
@@ -117,6 +124,14 @@ public class PotionBrewingAreaController implements Collector{
             else if (ing2 == null) {
             ing2 = ing;
             potionBrewingUI.update(String.format("NEW_INGREDIENT2: %s", ing.getName()));
+            }
+        }
+
+        if (item instanceof Potion) {
+            Potion potion = (Potion) item;
+            if (potionToSell==null) {
+                this.potionToSell = potion; 
+                potionBrewingUI.update(String.format("POTION_TO_SELL: %s", potion.getName()));
             }
         }
     }

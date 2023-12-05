@@ -35,7 +35,8 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JTextField ingredient2;
     private JButton makePotion;
     private JTextArea AdventurerInfo;
-    private JComboBox<String> potionsDropdown;
+    private JTextField potionToSell;
+    private JComboBox<String> potionsDropdown; //DELETE LATER
     private JComboBox<String> offerDropdown;
     private JButton sellPotionButton;
 
@@ -61,20 +62,16 @@ public class PotionBrewingArea extends JPanel implements Observer {
         AdventurerInfo.setFont(f);
         add(AdventurerInfo);
 
-        this.potionsDropdown = inventoryDropdown();
-        add(potionsDropdown);
+        //this.potionsDropdown = inventoryDropdown();
+        //add(potionsDropdown);
+        this.potionToSell = createPotionField("sell a potion");
+        add(potionToSell);
+
         this.offerDropdown = optionsDropdown();
         add(offerDropdown);
-        this.sellPotionButton((Potion) inventoryDropdown().getSelectedItem(), optionsDropdown().getSelectedIndex());
-        //add(sellPotionButton);
+        this.sellPotionButton = sellPotionButton((Potion) inventoryDropdown().getSelectedItem(), optionsDropdown().getSelectedIndex());
+        add(sellPotionButton);
     }
-
-
-    public JLabel AdventurerInfo(String adventurerInfo) {
-        // Create the label with adventurer information
-        JLabel adventurer = new JLabel(adventurerInfo);
-        return adventurer;
-    } //PROB NOT REQUIRED
 
     public JComboBox<String> inventoryDropdown() {
         List<Potion> potions = pbaController.getPotions();
@@ -185,6 +182,36 @@ public class PotionBrewingArea extends JPanel implements Observer {
         return ing;
     }
 
+    public JTextField createPotionField(String name) {
+        JTextField ing = new JTextField(20);
+        ing.setEnabled(false);
+        ing.setText(name);
+        ing.addMouseListener(
+            new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    ing.setText(name);
+                    pbaController.discardPotion();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {}
+
+                @Override
+                public void mouseExited(MouseEvent e) {}
+
+            }
+        );
+        return ing;
+    }
+
     public JButton createPotionButton(String text) {
         JButton button = new JButton(text);
         button.addActionListener(
@@ -220,6 +247,12 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("DISCARD_INGREDIENT2")) {
             ingredient2.setText("Give Ingredient2");
+        }
+        else if (msg.contains("DISCARD_POTION")){
+            potionToSell.setText("potion to sell");
+        }
+        else if (msg.contains("POTION_TO_SELL")){
+            potionToSell.setText(msg.substring(15));
         }
     }
 }
