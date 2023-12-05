@@ -99,7 +99,7 @@ public class PublicationArea extends JPanel implements Observer{
                     if (alchemy.isEmpty()) {
                         System.err.println("Please select an alchemy");
                     }
-                    else if (theoryBoard.getIngredient().isEmpty())
+                    else if (theoryBoard.getIngredient() == null)
                     {
                         System.err.println("Please select an ingredient");
                     }
