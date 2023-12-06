@@ -23,6 +23,7 @@ public class MainMenuPanel extends JPanel{
     private JButton back;
     private JButton helpButton;
     JButton pauseButton;
+    private HelpScreenPanel helpScreen;
 
     public MainMenuPanel() {
         super();
@@ -30,10 +31,19 @@ public class MainMenuPanel extends JPanel{
         add(back);
         this.helpButton = createHelpButton("Help");
         add(helpButton);
+        this.helpScreen = new HelpScreenPanel();
         this.pauseButton = createPauseButton("Pause/Resume");
         add(pauseButton);
     }
 
+    public void initiliaze() {
+        removeAll();
+        add(back);
+        add(helpButton);
+        add(pauseButton);
+        revalidate();
+        repaint();
+    }
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);
@@ -55,15 +65,10 @@ public class MainMenuPanel extends JPanel{
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    /*JDialog helpDialog = new JDialog();
-                    helpDialog.setContentPane(new HelpScreenPanel());
-                    helpDialog.setSize(400, 300);
-                    helpDialog.setTitle("Help Screen");
-                    helpDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    helpDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                    helpDialog.setLocationRelativeTo(MainMenuPanel.this);
-                    helpDialog.setVisible(true);*/
-                    ((GameContentPane) MainMenuPanel.this.getParent()).changeView("helpScreen");
+                    removeAll();
+                    add(helpScreen);
+                    revalidate();
+                    repaint();
                 }
             }
         );
