@@ -42,7 +42,7 @@ public class Gameboard extends JFrame implements Observer{
 		authPanel.setBounds(600, 153, 0, 0);
 		getContentPane().add(authPanel);
 		authPanel.setLayout(null);
-		setSize(859, 607);
+		setSize(1450, 950);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		validate();

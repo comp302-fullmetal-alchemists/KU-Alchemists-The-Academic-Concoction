@@ -1,6 +1,9 @@
 package system.domain;
 
 import system.domain.controllers.InventoryController;
+
+import javax.swing.Icon;
+
 import system.domain.controllers.GameBoardController;
 
 public class Player {
@@ -8,12 +11,12 @@ public class Player {
     private String name;
     private Boolean turn;
     private int turnsLeft;
-    private String token;
+    private Icon token;
     private int reputationPoint;
     private int sicknessPoint;
     private InventoryController inventory;
 
-    public Player(String name, String token) {
+    public Player(String name, Icon token) {
         this.name = name;
         this.turn = false;
         this.token = token;
@@ -50,11 +53,11 @@ public class Player {
         }
     }
 
-	public void setToken(String token) {
+	public void setToken(Icon token) {
 		this.token = token;
 	}
     
-    public String getToken() {
+    public Icon getToken() {
         return token;
     }
 
