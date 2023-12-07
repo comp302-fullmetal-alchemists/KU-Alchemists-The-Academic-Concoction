@@ -3,6 +3,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 
@@ -15,6 +16,7 @@ public class DeductionBoard extends JPanel{
 
     public DeductionBoard() {
         super();
+        setBackground(new Color(58, 77, 108));
         this.back = createNavButton("village", "Back to the village");
         add(back);
     }

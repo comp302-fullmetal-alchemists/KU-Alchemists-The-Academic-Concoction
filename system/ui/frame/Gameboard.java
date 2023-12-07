@@ -42,11 +42,11 @@ public class Gameboard extends JFrame implements Observer{
 		authPanel.setBounds(600, 153, 0, 0);
 		getContentPane().add(authPanel);
 		authPanel.setLayout(null);
-		setSize(859, 607);
+		setSize(1200, 800);
+		this.setResizable(false);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		validate();
-		
 		
 	}
 
@@ -68,11 +68,14 @@ public class Gameboard extends JFrame implements Observer{
     }
 
     public void initializeTheBoard() { 
-        remove(authPanel);
-        getContentPane().setLayout(new GridLayout(1, 2));
+        authPanel.setVisible(false);
+        getContentPane().remove(authPanel);
         this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1));
         this.gamePane = new GameContentPane();
+        playerPane.setBounds(832,32, 335, 700);
+        gamePane.setBounds(37,32,752, 700);
         playerPane.changeView(gameController.getCurrentPlayer().getName());
+        getContentPane().setLayout(null);
         getContentPane().add(gamePane);
         getContentPane().add(playerPane);
         revalidate();

@@ -170,58 +170,52 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		this.authController = new AuthenticationController();
         authController.setObserver(this);
 		
-		JTextArea txtWelcome = new JTextArea();
+		JLabel txtWelcome = new JLabel();
 		txtWelcome.setForeground(new Color(255, 255, 255));
 		txtWelcome.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 30));
 		txtWelcome.setBackground(new Color(58, 77, 108));
 		txtWelcome.setText("WELCOME TO KUALCHEMISTS!");
 		txtWelcome.setBounds(190, 29, 697, 87);
-        txtWelcome.setEditable(false);
 		add(txtWelcome);
 		
-		JTextArea txtInformMessage = new JTextArea();
-		txtInformMessage.setText("Please enter usernames and choose tokens to start the game!");
-		txtInformMessage.setForeground(Color.WHITE);
-		txtInformMessage.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 23));
-		txtInformMessage.setBackground(new Color(58, 77, 108));
-		txtInformMessage.setBounds(90, 140, 697, 46);
-        txtInformMessage.setEditable(false);
-		add(txtInformMessage);
+		JLabel InformMessage = new JLabel();
+		InformMessage.setText("Please enter usernames and choose tokens to start the game!");
+		InformMessage.setForeground(Color.WHITE);
+		InformMessage.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 23));
+		InformMessage.setBackground(new Color(58, 77, 108));
+		InformMessage.setBounds(90, 140, 697, 46);
+		add(InformMessage);
 		
-		JTextArea txtrPlayer1Username = new JTextArea();
-		txtrPlayer1Username.setText("Player 1 username:\n");
-		txtrPlayer1Username.setForeground(Color.WHITE);
-		txtrPlayer1Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
-		txtrPlayer1Username.setBackground(new Color(58, 77, 108));
-		txtrPlayer1Username.setBounds(36, 214, 166, 32);
-        txtrPlayer1Username.setEditable(false);
-		add(txtrPlayer1Username);
+		JLabel Player1Username = new JLabel();
+		Player1Username.setText("Player 1 username:\n");
+		Player1Username.setForeground(Color.WHITE);
+		Player1Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
+		Player1Username.setBackground(new Color(58, 77, 108));
+		Player1Username.setBounds(36, 214, 166, 32);
+		add(Player1Username);
 		
-		JTextArea txtrPlayer2Username = new JTextArea();
-		txtrPlayer2Username.setText("Player 2 username:\n");
-		txtrPlayer2Username.setForeground(Color.WHITE);
-		txtrPlayer2Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
-		txtrPlayer2Username.setBackground(new Color(58, 77, 108));
-		txtrPlayer2Username.setBounds(36, 324, 141, 32);
-        txtrPlayer2Username.setEditable(false);
-		add(txtrPlayer2Username);
+		JLabel Player2Username = new JLabel();
+		Player2Username.setText("Player 2 username:\n");
+		Player2Username.setForeground(Color.WHITE);
+		Player2Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
+		Player2Username.setBackground(new Color(58, 77, 108));
+		Player2Username.setBounds(36, 324, 141, 32);
+		add(Player2Username);
 		
-		JTextArea txtrPlayer1TokenChoose = new JTextArea();
+		JLabel txtrPlayer1TokenChoose = new JLabel();
 		txtrPlayer1TokenChoose.setText("Player 1 choose a token:\n");
 		txtrPlayer1TokenChoose.setForeground(Color.WHITE);
 		txtrPlayer1TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
 		txtrPlayer1TokenChoose.setBackground(new Color(58, 77, 108));
 		txtrPlayer1TokenChoose.setBounds(442, 214, 166, 32);
-        txtrPlayer1TokenChoose.setEditable(false);
 		add(txtrPlayer1TokenChoose);
 		
-		JTextArea txtrPlayer2TokenChoose = new JTextArea();
+		JLabel txtrPlayer2TokenChoose = new JLabel();
 		txtrPlayer2TokenChoose.setText("Player 2 choose a token:\n");
 		txtrPlayer2TokenChoose.setForeground(Color.WHITE);
 		txtrPlayer2TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
 		txtrPlayer2TokenChoose.setBackground(new Color(58, 77, 108));
 		txtrPlayer2TokenChoose.setBounds(442, 324, 166, 32);
-        txtrPlayer2TokenChoose.setEditable(false);
 		add(txtrPlayer2TokenChoose);
 		
 		username1 = new JTextField();

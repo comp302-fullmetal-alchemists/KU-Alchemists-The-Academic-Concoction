@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -27,6 +28,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 
     public PotionBrewingArea() {
         super();
+        setBackground(new Color(58, 77, 108));
         this.pbaController = GameBoardController.getInstance().getPotionBrewingAreaController();
         pbaController.setObserver(this);
         this.back = createNavButton("village", "Back to the village");

@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.GridLayout;
 
 
@@ -33,6 +34,7 @@ public class PublicationArea extends JPanel implements Observer{
 
     public PublicationArea() {
         super();
+        setBackground(new Color(58, 77, 108));
         this.back = createNavButton("village", "Back to the village");
         add(back);
         this.Alchemy1= createAlchemyButton("Alchemy 1");
