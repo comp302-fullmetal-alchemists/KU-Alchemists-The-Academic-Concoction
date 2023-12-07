@@ -9,6 +9,7 @@ import system.domain.interfaces.Observer;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
@@ -44,13 +45,12 @@ public class IngredientStorage extends JPanel implements Observer {
         this.transmuteIngButton = createTransmuteIngButton();
         add(transmuteIngButton);
         
-        JTextPane txtpnActions = new JTextPane();
-        txtpnActions.setFont(new Font("Apple Chancery", Font.PLAIN, 20));
-        txtpnActions.setForeground(UIManager.getColor("List.selectionForeground"));
-        txtpnActions.setBackground(new Color(58, 77, 108));
-        txtpnActions.setText("Actions");
-        txtpnActions.setBounds(27, 19, 144, 42);
-        add(txtpnActions);
+        JLabel lblNewLabel = new JLabel("Actions");
+        lblNewLabel.setFont(new Font("Apple Chancery", Font.PLAIN, 20));
+    	lblNewLabel.setForeground(Color.WHITE);
+    	lblNewLabel.setBounds(27, 24, 130, 24);
+        add(lblNewLabel);
+        
     }
     
 
