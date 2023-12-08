@@ -37,7 +37,7 @@ public class PlayerDashboard extends JPanel {
     }
 
     public void takeIngredients(IngredientCard ingCard) {
-        inventory.addItemToInventory(ingCard.getName(), "Ingredient");
+        inventory.addIngredientToInventory(ingCard.getName());
     } 
 
     
