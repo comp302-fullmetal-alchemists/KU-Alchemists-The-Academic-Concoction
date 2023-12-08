@@ -149,7 +149,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
             showMessageDialog("You have brewed a " + msg.split(":")[1] + " potion!");
         }
         else if (msg.contains("DISCARD_INGREDIENT1")) {
-        	System.out.println("z");
             ing1.setText(ing1Default);
         }
         else if (msg.contains("DISCARD_INGREDIENT2")) {
