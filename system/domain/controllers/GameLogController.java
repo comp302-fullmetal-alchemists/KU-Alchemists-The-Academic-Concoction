@@ -13,9 +13,13 @@ import java.util.List;
 public class GameLogController {
 
     private Map<Player, List<GameAction>> gameActions = new HashMap<>();
-    
-    public  GameLogController(Player player1, Player player2){
 
+    
+    public  GameLogController(){
+    }
+
+
+    public void GameLogControllerInit(Player player1, Player player2){
         gameActions.put(player1,  new ArrayList<>());
         gameActions.put(player2,  new ArrayList<>());
     }

@@ -38,6 +38,8 @@ public class GameBoardController {
     private GameBoardController() {
         this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
+        this.gameLog = new GameLogController(); //get the players and initalize the gamelog
+
 
     }
 
@@ -71,6 +73,7 @@ public class GameBoardController {
     public static GameBoardController getInstance() {
         if (instance == null) {
             instance = new GameBoardController();
+            
         }
         return instance;
     }
@@ -79,7 +82,8 @@ public class GameBoardController {
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2); 
-        this.gameLog = new GameLogController(player1, player2); //get the players and initalize the gamelog
+        gameLog.GameLogControllerInit(player1, player2); //get the players and initalize the gamelog
+
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
         players.get(firstPlayer).changeTurn();
