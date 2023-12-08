@@ -25,6 +25,7 @@ public class GameBoardController {
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
     private GameLogController gameLog;
+    private GameAction gameAction;
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
@@ -121,10 +122,19 @@ public class GameBoardController {
     }
 
     public void changePlayer() {
+        //GAMELOG RECRDS L0G
+        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
+        gameLog.recordLog(getCurrentPlayer(), gameAction);
+
         players.get(0).changeTurn();
         players.get(1).changeTurn();
         mediator.connectPlayer(getCurrentPlayer());
         gameboardUI.update("CHANGE_PLAYER");
+
+        //GAMELOG RECRDS L0G
+        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
+        gameLog.recordLog(getCurrentPlayer(), gameAction);
+
     }
     
     public Player getCurrentPlayer() {
