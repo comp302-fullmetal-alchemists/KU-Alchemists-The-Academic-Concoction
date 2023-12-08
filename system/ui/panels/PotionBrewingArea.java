@@ -27,11 +27,10 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JButton makePotionBtn;
     String deactiveText = "Choose Ingredients";
     String activeText = "Make Potion";
-    private JTextField ing1;
-    private String ing1Default = "Give Ingredient1";
-    private String ing2Default = "Give Ingredient2";
-    private JTextField ing2;
     private JTextField potion;
+    private JLabel lblIng1;
+    private JLabel lblIng2;
+    private String ingDefault = "<html>Give<br>Ingredient</html>";
 	
 	public PotionBrewingArea() {
 		setBackground(new Color(58, 77, 108));
@@ -50,34 +49,34 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		setLayout(null);
 		add(navBtn);
 		
-
-		ing1 = new JTextField();
-		ing1.addMouseListener(new MouseAdapter() {
+		lblIng1 = new JLabel(ingDefault);
+		lblIng1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (pbaController.hasIng1()) pbaController.discardIngredient(1);
-				ing1.setText(ing1Default);
 			}
 		});
-		ing1.setEditable(false);
-		ing1.setText(ing1Default);
-		ing1.setBounds(28, 95, 160, 19);
-		add(ing1);
-		ing1.setColumns(10);
+		lblIng1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIng1.setOpaque(true);
+		lblIng1.setBackground(Color.LIGHT_GRAY);
+		lblIng1.setBounds(28, 98, 90, 96);
+		add(lblIng1);
 		
-		ing2 = new JTextField();
-		ing2.addMouseListener(new MouseAdapter() {
+		lblIng2 = new JLabel(ingDefault);
+		lblIng2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (pbaController.hasIng2()) pbaController.discardIngredient(2);
-				ing2.setText(ing2Default);
 			}
 		});
-		ing2.setText(ing2Default);
-		ing2.setEditable(false);
-		ing2.setBounds(28, 124, 160, 19);
-		add(ing2);
-		ing2.setColumns(10);
+		lblIng2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIng2.setOpaque(true);
+		lblIng2.setBackground(Color.LIGHT_GRAY);
+		lblIng2.setBounds(188, 98, 90, 96);
+		add(lblIng2);
+		
+		
+		
 		
 		makePotionBtn = new JButton("Choose Ingredients");
 		makePotionBtn.addActionListener(new ActionListener() {
@@ -93,31 +92,32 @@ public class PotionBrewingArea extends JPanel implements Observer {
                 }
 			}
 		});
-		makePotionBtn.setBounds(28, 153, 160, 21);
+		makePotionBtn.setBounds(73, 246, 160, 21);
 		add(makePotionBtn);
 		
 		JLabel makePotionLabel = new JLabel("Brew Potions");
 		makePotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		makePotionLabel.setForeground(Color.LIGHT_GRAY);
-		makePotionLabel.setBounds(28, 61, 160, 13);
+		makePotionLabel.setBounds(73, 61, 160, 13);
 		add(makePotionLabel);
 		
 		JLabel sellPotionLabel = new JLabel("Sell a Potion");
 		sellPotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		sellPotionLabel.setForeground(Color.LIGHT_GRAY);
-		sellPotionLabel.setBounds(256, 61, 160, 13);
+		sellPotionLabel.setBounds(433, 61, 160, 13);
 		add(sellPotionLabel);
 		
 		potion = new JTextField();
 		potion.setText("Give Potion");
 		potion.setEditable(false);
-		potion.setBounds(256, 124, 160, 19);
+		potion.setBounds(433, 95, 160, 19);
 		add(potion);
 		potion.setColumns(10);
 		
 		JButton sellPotionBtn = new JButton("Sell Potion");
-		sellPotionBtn.setBounds(256, 153, 160, 21);
+		sellPotionBtn.setBounds(433, 123, 160, 21);
 		add(sellPotionBtn);
+		
 		
 	}
 	
@@ -135,24 +135,33 @@ public class PotionBrewingArea extends JPanel implements Observer {
     @Override
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT1")) {
-            ing1.setText(msg.split(":")[1]);
+        	String[] ingName = msg.split(":")[1].split(" ");
+        	lblIng1.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
+        	lblIng1.setBackground(new Color(117, 67, 108));
         }
         else if (msg.contains("NEW_INGREDIENT2")) {
-            ing2.setText(msg.split(":")[1]);
+        	String[] ingName = msg.split(":")[1].split(" ");
+        	lblIng2.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
+        	lblIng2.setBackground(new Color(117, 67, 108));
         }
         else if (msg.contains("ABSENT_INGREDIENTS")) {
             showMessageDialog("Please fill ingredients");
         }
         else if (msg.contains("BREWED_POTION")) {
-            ing1.setText(ing1Default);
-            ing2.setText(ing2Default);
+            lblIng1.setText(ingDefault);
+    		lblIng1.setBackground(Color.LIGHT_GRAY);
+            lblIng2.setText(ingDefault);
+    		lblIng2.setBackground(Color.LIGHT_GRAY);
             showMessageDialog("You have brewed a " + msg.split(":")[1] + " potion!");
         }
         else if (msg.contains("DISCARD_INGREDIENT1")) {
-            ing1.setText(ing1Default);
+            lblIng1.setText(ingDefault);
+    		lblIng1.setBackground(Color.LIGHT_GRAY);
         }
         else if (msg.contains("DISCARD_INGREDIENT2")) {
-            ing2.setText(ing2Default);
+            lblIng2.setText(ingDefault);
+    		lblIng2.setBackground(Color.LIGHT_GRAY);
+
         }
     }
 }
