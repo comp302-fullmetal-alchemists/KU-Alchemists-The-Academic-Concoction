@@ -62,6 +62,9 @@ public class Player {
         return reputationPoint;
     }
 
+    public int getSickness(){
+        return sicknessPoint;
+    }
     public InventoryController getInventory() {
         return inventory;
     }
