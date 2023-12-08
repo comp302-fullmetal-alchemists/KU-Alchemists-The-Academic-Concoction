@@ -26,11 +26,17 @@ public class GameBoardController {
     private PublicationAreaController publicationArea;
     private GameLogController gameLog;
     private GameAction gameAction;
+    private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toadstool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
+    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
     private Alchemy[] alchemies = new Alchemy[8];
     private Map<String, Alchemy> alchemyMap = new HashMap<String, Alchemy>();
+    private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
+    private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
+    private String[] usages = {null,null,"Immediate effect." };
+    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
+    GameLogController gameLog;
 
     private GameBoardController() {
         this.players = new ArrayList<Player>();
@@ -60,15 +66,16 @@ public class GameBoardController {
         }
     }
 
+  
+
+    public void setObserver(Observer observer) {
+        this.gameboardUI = observer;
+    }
     public static GameBoardController getInstance() {
         if (instance == null) {
             instance = new GameBoardController();
         }
         return instance;
-    }
-
-    public void setObserver(Observer observer) {
-        this.gameboardUI = observer;
     }
 
 
@@ -86,6 +93,7 @@ public class GameBoardController {
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
+        this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
     }
@@ -98,6 +106,18 @@ public class GameBoardController {
         return players;
     }
 
+        
+    public String[] getArtifactStrings() {
+        return artifacts;
+    }
+
+    public String[] getArtifactEffect() {
+        return effects;
+    }
+
+    public String[] getArtifactUsage() {
+        return usages;
+    }
 
     public void changePlayer() {
         players.get(0).changeTurn();
@@ -134,66 +154,74 @@ public class GameBoardController {
         return deductionBoard;
     }
 
+    public TheoryController getTheoryController() {
+        return theory;
+    }
+
     public Mediator getMediator() {
         return mediator;
     }
 
-    public int calculateFinalScore(Player player) {
-    //to do: get rep, gold, artifact from player's inventory
-    	int finalScore = 0;
-        
-        //10 points for each rep points
-        finalScore += (player.getReputation() * 10) ;
-       //trade each artifact with 2 golds
-        for(ArtifactCard a : player.getInventory().getArtifactCards()) {
-                player.getInventory().updateGold(2);
-        }
-        //1 point for 3 gold  
-        finalScore += (player.getInventory().getGold() / 3) ;
-
-        return finalScore;
-    }
+   
 
     public String[] getIngredients(){
         return ingredients;
     }
 
 
-    public Player winner(){
-        Player player1 = players.get(0);
-        Player player2 = players.get(1);
-        int score1 = calculateFinalScore(player1); 
-        int score2 = calculateFinalScore(player2);
-
-        if(score1 > score2){
-            return player1;
-        }
-        else if(score1 == score2){
-            
-            for(Player p: players){
-                p.getInventory().updateGold(- (p.getInventory().getGold() / 3)) ;
+    public int calculateFinalScore(Player player) {
+        //to do: get rep, gold, artifact from player's inventory
+            int finalScore = 0;
+            //10 points for each rep points
+            finalScore += (player.getReputation() * 10) ;
+           //trade each artifact with 2 golds
+            for(ArtifactCard a : player.getInventory().getArtifactCards()) {
+                    player.getInventory().updateGold(2);
             }
-
-            if(player1.getInventory().getGold() > player2.getInventory().getGold()) {
+            //1 point for 3 gold  
+            finalScore += (player.getInventory().getGold() / 3) ;
+            player.getInventory().updateGold(- (player.getInventory().getGold() / 3)) ;
+    
+    
+            return finalScore;
+        }
+    
+    
+        public Player winner(){
+            Player player1 = players.get(0);
+            Player player2 = players.get(1);
+            int score1 = calculateFinalScore(player1); 
+            int score2 = calculateFinalScore(player2);
+    
+            if(score1 > score2){
                 return player1;
             }
-           // else if(player1.getInventory().getGold() == player2.getInventory().getGold()) {
-                //display they are both tie
-           // }
-           else{
-             return player2;
-           }
-        
-        }
-        else{
-            return player2; 
-        }
-    }
+            else if(score1 == score2){
+                
+                if(player1.getInventory().getGold() > player2.getInventory().getGold()) {
+                    return player1;
+                }
+                else if (player1.getInventory().getGold() == player2.getInventory().getGold()) {
+                    return null ; //check it !!
+                }
+                else{
+                 return player2;
+               }
+            
+            }
+            else{
+                return player2; 
+            }
+            }
 
     public Map<String, Alchemy> getAlchemyMap() {
         return alchemyMap;
     }
     public void startGame() {
         return;
+    }
+
+    public Alchemy[] getAlchemies() {
+        return alchemies;
     }
 }

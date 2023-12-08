@@ -5,8 +5,12 @@ import system.domain.interfaces.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 
+import java.awt.Color;
+
+import javax.swing.JLabel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
@@ -20,10 +24,16 @@ public class Inventory extends JPanel implements Observer {
 
     private ArrayList<JLabel> items;
     private InventoryController invController;
+    private JLabel lblGold;
 
     public Inventory() {
         super();
         this.items = new ArrayList<JLabel>();
+
+        JLabel lblGold = new JLabel("Gold: \n" + invController.getGold());
+        lblGold.setBounds(23, 51, 61, 16);
+        lblGold.setForeground(Color.WHITE);
+        add(lblGold);
     }
 
     public Inventory(InventoryController invController) {
@@ -31,7 +41,26 @@ public class Inventory extends JPanel implements Observer {
         this.invController = invController;
         invController.setObserver(this);
         this.items = new ArrayList<JLabel>();
+      
+        JLabel lblGold = new JLabel("Gold: \n" + invController.getGold());
+        lblGold.setBounds(6, 6, 61, 16);
+        add(lblGold);
+        
+        JPanel ingredientPanel = new JPanel();
+        ingredientPanel.setBounds(17, 43, 75, 100);
+        add(ingredientPanel);
+
+
     }
+
+          /*
+    Icon solarisRoot = new ImageIcon(getClass().getResource( "/solaris root.jpg"));
+    Icon owlFeather = new ImageIcon(getClass().getResource("/owl feather.jpg"));
+    Icon batWing = new ImageIcon(getClass().getResource("/bat wing.jpg"));
+    Icon toadStool = new ImageIcon(getClass().getResource("/toad stool.jpg"));
+
+    */
+
 
     public void addItemToInventory(String text, String type) {
         JLabel label = new JLabel(text);
@@ -46,6 +75,9 @@ public class Inventory extends JPanel implements Observer {
                         //as long as there is no collector of potions is present in
                         //concrete mediator, this method is safe
                         Inventory.this.invController.sendPotion(text);
+                    }
+                    else if (type == "Artifact") {
+                        /// maybe use the artifact or something
                     }
                 }
 
@@ -64,11 +96,13 @@ public class Inventory extends JPanel implements Observer {
             }
         );
         items.add(label);
+        //  System.out.println(label.getText());
         refresh();
     }
 
     public void removeItemFromInventory(String item) {
         for (int i = 0; i < items.size(); i++) {
+             // if (items.get(i).getIcon().equals(item)) {
             if (items.get(i).getText().equals(item)) {
                 items.remove(i);
                 break;
@@ -82,6 +116,8 @@ public class Inventory extends JPanel implements Observer {
         for (JLabel j: items){
             add(j);
         }
+        lblGold = new JLabel("Gold: \n" + invController.getGold());
+        add(lblGold); 
         revalidate();
         repaint();
     }
@@ -90,13 +126,16 @@ public class Inventory extends JPanel implements Observer {
     @Override
     public void update(String msg) {
         if (msg.contains("NEW_INGREDIENT")) {
-            addItemToInventory(msg.substring(16), "Ingredient");
+            addItemToInventory(msg.split(":")[1], "Ingredient");
         }
         else if (msg.contains("REMOVED_INGREDIENT")) {
-            removeItemFromInventory(msg.substring(20));
+            removeItemFromInventory(msg.split(":")[1]);
         }
         else if (msg.contains("NEW_POTION")) {
-            addItemToInventory(msg.substring(12), "Potion");
+            addItemToInventory(msg.split(":")[1], "Potion");
+        }
+        else if (msg.contains("NEW_ARTIFACT")){
+            addItemToInventory(msg.split(":")[1], "Artifact");
         }
     }
 

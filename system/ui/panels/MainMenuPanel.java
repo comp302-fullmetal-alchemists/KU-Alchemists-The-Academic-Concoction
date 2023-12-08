@@ -15,28 +15,35 @@ import java.awt.event.ActionEvent;
 
 
 import system.ui.frame.GameContentPane;
-import system.ui.interfaces.PlayerMediator;
 import system.domain.MainMenu;
 
 
 public class MainMenuPanel extends JPanel{
 
-    private PlayerMediator mediator;
     private JButton back;
     private JButton helpButton;
     JButton pauseButton;
+    private HelpScreenPanel helpScreen;
 
-    public MainMenuPanel(PlayerMediator mediator) {
+    public MainMenuPanel() {
         super();
         this.back = createNavButton("village", "Back to village");
-        this.mediator = mediator;
         add(back);
         this.helpButton = createHelpButton("Help");
         add(helpButton);
+        this.helpScreen = new HelpScreenPanel();
         this.pauseButton = createPauseButton("Pause/Resume");
         add(pauseButton);
     }
 
+    public void initiliaze() {
+        removeAll();
+        add(back);
+        add(helpButton);
+        add(pauseButton);
+        revalidate();
+        repaint();
+    }
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);
@@ -58,8 +65,10 @@ public class MainMenuPanel extends JPanel{
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String helpString = MainMenu.helpScreen();
-                    JOptionPane.showMessageDialog(MainMenuPanel.this, helpString);
+                    removeAll();
+                    add(helpScreen);
+                    revalidate();
+                    repaint();
                 }
             }
         );

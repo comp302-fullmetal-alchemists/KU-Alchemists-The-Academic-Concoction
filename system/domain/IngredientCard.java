@@ -1,11 +1,6 @@
 package system.domain;
-import java.util.Map;
 
 public class IngredientCard extends Cards{
-
-    //IngredientCard	card name: String
-    //static formula: Map<String, alchemyMarker>
-
     private String name;
     private Alchemy alchemy;
 
@@ -15,10 +10,13 @@ public class IngredientCard extends Cards{
         this.name = name;
         this.alchemy = alchemy;
     }
-    
 
     public String getName() {
         return name;
+    }
+
+    public Alchemy getAlchemy() {
+        return alchemy;
     }
 
 }

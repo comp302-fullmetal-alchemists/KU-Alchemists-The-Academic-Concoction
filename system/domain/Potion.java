@@ -1,17 +1,18 @@
 package system.domain;
 
 import java.util.ArrayList;
+import system.domain.controllers.GameBoardController;
+
 public class Potion {
-    //potion	status: String (int?)
-    //formula: ArrayList<IngredientCard>	+ operation1(params):returnType
-    //- operation2(params)
-    //- operation3()
-    private String name;
+
     private String status;
     private ArrayList<IngredientCard> formula;
 
-    public Potion(String name) {
-        this.name = name;
+
+    public Potion(IngredientCard ing1, IngredientCard ing2) {
+        Alchemy alch1 = GameBoardController.getInstance().getAlchemyMap().get(ing1.getName());
+        Alchemy alch2 = GameBoardController.getInstance().getAlchemyMap().get(ing2.getName());
+        this.status = Alchemy.combine(alch1, alch2);
     }
 
     public Potion(String status, ArrayList<IngredientCard> formula) {
@@ -25,10 +26,6 @@ public class Potion {
 
     public ArrayList<IngredientCard> getFormula() {
         return this.formula;
-    }
-
-    public String getName() {
-        return name;
     }
 
 

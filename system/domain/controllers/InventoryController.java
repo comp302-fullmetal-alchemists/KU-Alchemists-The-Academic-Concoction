@@ -2,7 +2,7 @@ package system.domain.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
 import system.domain.ArtifactCard;
 import system.domain.Cards;
 import system.domain.IngredientCard;
@@ -13,6 +13,7 @@ import system.domain.interfaces.Mediator;
 
 
 public class InventoryController {
+    // Player's inventory
     // Inventory	gold : int
     //ingredient cards: List<ingredientCard>
     //artifact cards : List<artifactCard>
@@ -20,11 +21,17 @@ public class InventoryController {
     //showInventory(player)
     //updateGold(int)
     //updateInventory(card)
-    // private storage
+    // initialize an artifact card object and add it to the artifact card list of the corresponding players inventory
+    // initialize an ingredient card object and add it to the ingredient card list of the corresponding players inventory
+    // initialize a potion object and add it to the potion list of the corresponding players inventory
+    // delete card from ingredient card list of the corresponding players inventory
+    // delete card from artifact card list of the corresponding players inventory   
+    // delete card from potion list of the corresponding players inventory
+    
 
     private int gold;
     private List<IngredientCard> ingredientCards;
-    private List<ArtifactCard> artifactCards;
+    public ArrayList<ArtifactCard> artifactCards;
     private List<Potion> potions;
     private Observer inventoryUI;
     private Mediator mediator;
@@ -53,10 +60,19 @@ public class InventoryController {
 		this.gold = gold;
 	}
 
-    public List<ArtifactCard> getArtifactCards(){
+    public ArrayList<ArtifactCard> getArtifactCards(){
         return artifactCards;
     }
-    /* 
+
+    public List<IngredientCard> getIngredientCards(){
+        return ingredientCards;
+    }
+
+    public List<Potion> getPotions(){
+        return potions;
+    }
+ 
+
     public void giveIngredient(IngredientCard card) {
     	//delete card from ingredient card list of the corresponding players inventory
         for(IngredientCard icard : ingredientCards){
@@ -67,7 +83,7 @@ public class InventoryController {
         }
 
     }
-    */
+    
     public void showInventory(Player player) {
        //observer will use this
         return;
@@ -77,7 +93,7 @@ public class InventoryController {
     	
     	setGold(gold + amount) ;
         
-    	return amount;
+    	return gold;
     }
 
 
@@ -85,22 +101,22 @@ public class InventoryController {
     /*These should be the accessers of inventory for the mediator */
     public void addIngredient(IngredientCard ingredient) {
         ingredientCards.add(ingredient);
-        inventoryUI.update(String.format("NEW_INGREDIENT: %s", ingredient.getName()));
+        inventoryUI.update(String.format("NEW_INGREDIENT:%s", ingredient.getName()));
     }
     
     public void addArtifact(ArtifactCard artifact) {
         artifactCards.add(artifact);
-        inventoryUI.update(String.format("NEW_ARTIFACT: %s", artifact.getName()));
+        inventoryUI.update(String.format("NEW_ARTIFACT:%s", artifact.getName()));
     }
 
     public void addPotion(Potion potion) {
         potions.add(potion);
-        inventoryUI.update(String.format("NEW_POTION: %s", potion.getName()));
+        inventoryUI.update(String.format("NEW_POTION:%s", potion.getStatus()));
     }
 
     public void removeIngredient(IngredientCard ingredient) {
         ingredientCards.remove(ingredient);
-        inventoryUI.update(String.format("REMOVED_INGREDIENT: %s", ingredient.getName()));
+        inventoryUI.update(String.format("REMOVED_INGREDIENT:%s", ingredient.getName()));
     }
 
     public void removePotion(Potion potion) {
@@ -124,11 +140,11 @@ public class InventoryController {
         }
     }
 
-    public void sendPotion(String potionName) {
+    public void sendPotion(String potionStatus) {
         /// If player will choose potions from its dashboard, it cannot choose a potion that doesn't belong to it
         /// therefore it makes sense to change potions to Map<String, IngredientCard>
         for (Potion pot: potions){
-            if (pot.getName().equals(potionName)) {
+            if (pot.getStatus().equals(potionStatus)) {
                 if (mediator.sendToCollector(pot)) {
                     removePotion(pot);
                 }
@@ -139,3 +155,4 @@ public class InventoryController {
     /**********/
 
 }
+

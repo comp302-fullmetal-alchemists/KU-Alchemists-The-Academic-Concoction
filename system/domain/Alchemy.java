@@ -24,7 +24,37 @@ public class Alchemy {
         alchemical[AlchemicalConstants.BLUE][1] = Integer.signum(blueAspect);
     }
 
-  
+    public int[][] getAlchemical() {
+        return alchemical;
+    }
+
+    public static String combine(Alchemy alch1, Alchemy alch2) {
+        String status = "neutral";
+        String[] colors = {"Red", "Green", "Blue"};
+        for (int i = 0; i < 3; i++) {
+            if (alch1.alchemical[i][0] != alch2.alchemical[i][0]) {
+                if (alch1.alchemical[i][1] == alch2.alchemical[i][1]) {
+                    status = colors[i] +  (alch1.alchemical[i][1] == 1? "+" : "-");
+                    return status;
+                }
+                
+            }
+        }
+        return status;
+        
+    }
+    
+    @Override
+    public String toString() {
+        String res = "";
+        for (int i = 0; i < 3; i++){
+            if (this.alchemical[i][0] == 2) res += "b";
+            else res += "s";
+            if (this.alchemical[i][1] > 0)  res += "+";
+            else res += "-";
+        }
+        return res;
+    }
 }
 
 

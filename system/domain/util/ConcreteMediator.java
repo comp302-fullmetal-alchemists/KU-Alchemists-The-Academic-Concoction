@@ -48,12 +48,23 @@ public class ConcreteMediator implements Mediator {
     @Override 
     public <T> boolean sendToCollector(T item) {
         if (collector != null) {
-            collector.collectItem(item);
-            return true;
+            return collector.collectItem(item);
         }
         return false;
     }
 
+    @Override
+    public void updatePlayerGold(int updateAmount) {
+        player.getInventory().updateGold(updateAmount);
+    }
+
+    @Override
+    public boolean playerGoldAtLeast(int threshold) {
+        return player.getInventory().getGold() >= threshold;
+    }
+
+    
+    @Override
     public void playerPlayedTurn() {
         player.playedTurn();
     }
