@@ -65,8 +65,8 @@ public class IngredientStorageController implements Collector{
                 ingredientStorageUI.update("EMPTY_PILE");
             }
             else {
-                mediator.sendToPlayer(artifact);
                 mediator.updatePlayerGold(-3);
+                mediator.sendToPlayer(artifact);
                 ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
                 useArtifact(artifact);
                 mediator.playerPlayedTurn();
