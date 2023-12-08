@@ -35,27 +35,43 @@ public class PublicationArea extends JPanel implements Observer{
     public PublicationArea() {
         super();
         setBackground(new Color(58, 77, 108));
+        setLayout(null);
+
         this.back = createNavButton("village", "Back to the village");
+        back.setBounds(10, 25, 85, 101);
         add(back);
+
         this.Alchemy1= createAlchemyButton("Alchemy 1");
+        Alchemy1.setBounds(126, 25, 85, 39);
         add(Alchemy1);
         this.Alchemy2= createAlchemyButton("Alchemy 2");
+        Alchemy2.setBounds(250, 25, 85, 39);
         add(Alchemy2);
         this.Alchemy3= createAlchemyButton("Alchemy 3");
+        Alchemy3.setBounds(374, 25, 85, 39);
         add(Alchemy3);
         this.Alchemy4= createAlchemyButton("Alchemy 4");
+        Alchemy4.setBounds(493, 25, 85, 39);
         add(Alchemy4);
         this.Alchemy5= createAlchemyButton("Alchemy 5");
+        Alchemy5.setBounds(126, 87, 85, 39);
         add(Alchemy5);
         this.Alchemy6= createAlchemyButton("Alchemy 6");
+        Alchemy6.setBounds(250, 87, 85, 39);
         add(Alchemy6);
         this.Alchemy7= createAlchemyButton("Alchemy 7");
+        Alchemy7.setBounds(374, 87, 85, 39);
         add(Alchemy7);
         this.Alchemy8= createAlchemyButton("Alchemy 8");
+        Alchemy8.setBounds(493, 87, 85, 39);
         add(Alchemy8);
+
         this.theoryBoard = new TheoryBoard();
+        theoryBoard.setBounds(10, 195, 584, 487);
         add(theoryBoard);
+
         this.submitButton = new JButton("Submit");
+        submitButton.setBounds(250, 700, 85, 39);
         addActiontoButton(submitButton);
         add(submitButton);
         this.theoryController = GameBoardController.getInstance().getTheoryController();
