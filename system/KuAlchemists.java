@@ -7,8 +7,6 @@ public class KuAlchemists {
             System.out.println("Welcome to the Ku Alchemists!");
             
             Gameboard game = new Gameboard();
+     
         }
     }
-
-
-    

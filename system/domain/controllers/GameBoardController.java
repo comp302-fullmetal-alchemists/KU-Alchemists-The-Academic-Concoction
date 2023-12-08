@@ -103,7 +103,7 @@ public class GameBoardController {
     public Player getPlayer(int index) {
         return players.get(index);
     }
-
+        
     public String[] getArtifactStrings() {
         return artifacts;
     }

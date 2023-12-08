@@ -70,6 +70,7 @@ public class IngredientStorageController implements Collector{
                 ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
                 useArtifact(artifact);
                 mediator.playerPlayedTurn();
+                
             }
         }
         else {
