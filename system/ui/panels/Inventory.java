@@ -94,7 +94,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng1.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng1.setOpaque(true);
-        lblIng1.setBackground(new Color(139, 69, 19));
+        lblIng1.setBackground(new Color(117, 67, 108));
         lblIng1.setBounds(6, 4, 60, 64);
         ingPanel.add(lblIng1);
         
@@ -107,7 +107,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng2.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng2.setOpaque(true);
-        lblIng2.setBackground(new Color(139, 69, 19));
+        lblIng2.setBackground(new Color(117, 67, 108));
         lblIng2.setBounds(72, 4, 60, 64);
         ingPanel.add(lblIng2);
         
@@ -120,7 +120,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng3.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng3.setOpaque(true);
-        lblIng3.setBackground(new Color(139, 69, 19));
+        lblIng3.setBackground(new Color(117, 67, 108));
         lblIng3.setBounds(138, 4, 60, 64);
         ingPanel.add(lblIng3);
         
@@ -133,7 +133,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng4.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng4.setOpaque(true);
-        lblIng4.setBackground(new Color(139, 69, 19));
+        lblIng4.setBackground(new Color(117, 67, 108));
         lblIng4.setBounds(204, 4, 60, 64);
         ingPanel.add(lblIng4);
         
@@ -146,7 +146,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng5.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng5.setOpaque(true);
-        lblIng5.setBackground(new Color(139, 69, 19));
+        lblIng5.setBackground(new Color(117, 67, 108));
         lblIng5.setBounds(6, 72, 60, 64);
         ingPanel.add(lblIng5);
         
@@ -159,7 +159,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng6.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng6.setOpaque(true);
-        lblIng6.setBackground(new Color(139, 69, 19));
+        lblIng6.setBackground(new Color(117, 67, 108));
         lblIng6.setBounds(72, 72, 60, 64);
         ingPanel.add(lblIng6);
         
@@ -172,7 +172,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng7.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng7.setOpaque(true);
-        lblIng7.setBackground(new Color(139, 69, 19));
+        lblIng7.setBackground(new Color(117, 67, 108));
         lblIng7.setBounds(138, 72, 60, 64);
         ingPanel.add(lblIng7);
         
@@ -185,7 +185,7 @@ public class Inventory extends JPanel implements Observer {
         });
         lblIng8.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng8.setOpaque(true);
-        lblIng8.setBackground(new Color(139, 69, 19));
+        lblIng8.setBackground(new Color(117, 67, 108));
         lblIng8.setBounds(204, 72, 60, 64);
         ingPanel.add(lblIng8);
         
