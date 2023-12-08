@@ -6,10 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
 import system.domain.controllers.GameBoardController;
@@ -24,7 +24,6 @@ import javax.swing.SwingConstants;
 public class PotionBrewingArea extends JPanel implements Observer {
 	private PotionBrewingAreaController pbaController;
     private JButton navBtn;
-    private JButton activationBtn;
     private JButton makePotionBtn;
     String deactiveText = "Choose Ingredients";
     String activeText = "Make Potion";

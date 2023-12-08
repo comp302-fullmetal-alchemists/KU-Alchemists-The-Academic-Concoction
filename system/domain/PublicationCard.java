@@ -1,5 +1,6 @@
 package system.domain;
 
+
 public class PublicationCard extends Cards {
 //publicationCard	card name: String
 //ingredient: ingredientCard
@@ -8,7 +9,7 @@ public class PublicationCard extends Cards {
     private String name;
     private IngredientCard ingredient;
     private Alchemy alchemy;
-
+    
     public PublicationCard(String name, IngredientCard ingredient, Alchemy alchemy) {
         super(name);
         this.name = name;

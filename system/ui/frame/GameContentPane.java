@@ -12,8 +12,9 @@ public class GameContentPane extends JPanel {
     private PotionBrewingArea potionBrewingArea;
     private DeductionBoard deductionBoard;
     private PublicationArea publicationArea;
-    private MainMenu mainMenu;
+    private MainMenuPanel mainMenu;
     private CardLayout cards;
+    
 
     public GameContentPane() {
         super();
@@ -22,7 +23,7 @@ public class GameContentPane extends JPanel {
         this.potionBrewingArea = new PotionBrewingArea();
         this.deductionBoard = new DeductionBoard();
         this.publicationArea = new PublicationArea();
-        this.mainMenu = new MainMenu();
+        this.mainMenu = new MainMenuPanel();
         this.cards = new CardLayout();
         setLayout(cards);
         add(village, "village");
