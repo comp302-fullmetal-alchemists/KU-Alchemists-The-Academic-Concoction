@@ -25,7 +25,6 @@ public class GameBoardController {
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
     private GameLogController gameLog;
-    private GameAction gameAction;
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
@@ -35,8 +34,6 @@ public class GameBoardController {
     private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
     private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
     private String[] usages = {null,null,"Immediate effect." };
-    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
-    GameLogController gameLog;
 
     private GameBoardController() {
         this.players = new ArrayList<Player>();

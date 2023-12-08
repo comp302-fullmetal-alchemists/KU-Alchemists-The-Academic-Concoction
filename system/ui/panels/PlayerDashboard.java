@@ -32,17 +32,13 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.inventory = new Inventory(player.getInventory());
         inventory.setBounds(20, 40, 193, 303);
         inventory.setForeground(Color.WHITE); //
-        setLayout(null);
+        //setLayout(null);
         this.playerLabel = new JLabel(player.getName());
         player.setPlayerDashboard(this);
         playerLabel.setForeground(Color.WHITE);
         playerLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
         playerLabel.setBounds(22, 20, 105, 21);
         playerLabel.setBackground(new Color(58, 77, 108));
-        add(playerLabel);
-        add(inventory);
-        gameLogDisplayInit();
-        add(gameLogDisplay);
         JLabel lblNewLabel = new JLabel("Player name:");
         lblNewLabel.setForeground(Color.WHITE);
         lblNewLabel.setBounds(80, 5, 110, 16);
@@ -57,23 +53,39 @@ public class PlayerDashboard extends JPanel implements Observer {
         lblSickness.setForeground(Color.WHITE);
         lblSickness.setBounds(22, 86, 88, 16);
         add(lblSickness);
+
+//GAME LOG
+
+        add(playerLabel);
+        add(inventory);
+
+        gameLogDisplayInit();
+        add(gameLogDisplay);
     }
 
     public Player getPlayer(){
         return this.player;
     }
+
     public void takeIngredients(IngredientCard ingCard) {
         inventory.addItemToInventory(ingCard.getName(), "Ingredient");
     } 
 
-    
-    private void click(GameLogController gameLog) {
-        //OR CLICK GAMELOG PANEL
-	}
-    
-    private void get(GameLogController gameLog, Player player) {
-    	player = this.player;
-    	//return gameLog actions
+    public void appendToGameLog(String text) {
+        gameLogDisplayText.append(text);
+    }
+
+    public void gameLogDisplayInit(){
+        this.gameLogDisplayText = new JTextArea(5,35);
+        gameLogDisplayText.setEditable(false);
+        this.gameLogDisplay = new JScrollPane(gameLogDisplayText);
+        gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    }
+
+    @Override
+    public void update(String msg) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
     
 }   

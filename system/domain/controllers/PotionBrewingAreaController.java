@@ -97,7 +97,7 @@ public class PotionBrewingAreaController implements Collector{
             return 0;
         }
         else{
-            System.out.printf("offer of %d with potion %s\n", offer, potionToSell.getName());//RM LATER
+            System.out.printf("offer of %d with potion status %s\n", offer, potionToSell.getStatus());//for testing RM LATER
             if ((offer == 3) && (potionToSell.getStatus() == "positive")){
                 GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
                 GameBoardController.getInstance().getCurrentPlayer().getInventory().removePotion(potionToSell);
@@ -141,9 +141,12 @@ public class PotionBrewingAreaController implements Collector{
             Potion potion = (Potion) item;
             if (potionToSell==null) {
                 this.potionToSell = potion; 
-                potionBrewingUI.update(String.format("POTION_TO_SELL: %s", potion.getName()));
+                potionBrewingUI.update(String.format("POTION_TO_SELL: %s", potion.getStatus()));
+                return true;
             }
+            return false;
         }
+        return false;
     }
 
     @Override
