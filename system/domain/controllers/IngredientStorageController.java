@@ -89,6 +89,11 @@ public class IngredientStorageController implements Collector{
                 mediator.updatePlayerGold(-3);
                 mediator.sendToPlayer(artifact);
                 ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
+                
+                //GAME LOG RECORDS
+                gameAction = new GameAction("Artifact Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
+                gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+                
                 useArtifact(artifact);
                 mediator.playerPlayedTurn();
                 
@@ -110,6 +115,7 @@ public class IngredientStorageController implements Collector{
             GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
 
+            //GAME LOG RECORDS
             gameAction = new GameAction("Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
             
@@ -134,6 +140,10 @@ public class IngredientStorageController implements Collector{
             }
             ingredientStorageUI.update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
         }
+
+        //GAME LOG RECORDS
+        gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Their Cards",  String.format("%s is Used", card.getName()), 0);
+        gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
     }
 
     @Override
@@ -142,6 +152,10 @@ public class IngredientStorageController implements Collector{
             IngredientCard ing = (IngredientCard) item;
             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
             ingredientStorageUI.update(String.format("CARD_SOLD:%s", ing.getName()));
+
+            //GAME LOG RECORDS
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ing.getName()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
             mediator.playerPlayedTurn();
             return true;
         }

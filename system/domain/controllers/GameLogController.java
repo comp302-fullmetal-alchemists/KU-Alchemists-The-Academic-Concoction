@@ -22,8 +22,14 @@ public class GameLogController {
 
     public void recordLog(Player player, GameAction gameAction) {
         gameActions.get(player).add(gameAction); //gets the players GameAction list, adds the game action to there.
-            player.appendToGameLog(gameAction.toString());
+        player.appendToGameLog(gameAction.toString());
         return;
     }
+
+    public void recordLogSilent(Player player, GameAction gameAction) {
+        gameActions.get(player).add(gameAction); //gets the players GameAction list, adds the game action to there.
+        return;
+    }
+
 
 }

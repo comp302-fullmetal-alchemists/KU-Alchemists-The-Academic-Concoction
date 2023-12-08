@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import system.domain.ArtifactCard;
+import system.domain.GameAction;
 import system.domain.IngredientCard;
 import system.domain.Potion;
 import system.domain.interfaces.Collector;
@@ -26,11 +27,13 @@ public class PotionBrewingAreaController implements Collector{
     private Potion potionToSell;
     private Observer potionBrewingUI;
     private Mediator mediator;
+    private GameLogController gameLog;
+    private GameAction gameAction;
     private Boolean active = false;
 
     public PotionBrewingAreaController() {
+        this.gameLog = GameBoardController.getInstance().getGameLog();
         this.students = new ArrayList<String>();
-        //this.adventurers = new ArrayList<String>();
         this.mediator = GameBoardController.getInstance().getMediator();
     }
 
@@ -43,6 +46,11 @@ public class PotionBrewingAreaController implements Collector{
             Potion brewed = new Potion(ing1, ing2);
             mediator.sendToPlayer(brewed);
             potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
+
+            //GAMELOG RECORDS LOG
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+        
             ing1 = null;
             ing2 = null;
             mediator.playerPlayedTurn();
@@ -126,11 +134,15 @@ public class PotionBrewingAreaController implements Collector{
             IngredientCard ing = (IngredientCard) item;
             if (ing1==null) {
             ing1 = ing;
+
+            //Should this be logged?
             potionBrewingUI.update(String.format("NEW_INGREDIENT1:%s", ing.getName()));
             return true;
             }
             else if (ing2 == null) {
             ing2 = ing;
+
+            //Should this be logged?
             potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
             return true;
             }
