@@ -159,10 +159,10 @@ public class AuthenticationPanel extends JPanel implements Observer {
     //load images to the combobox   
     private DefaultComboBoxModel<Icon> loadImages(){
         DefaultComboBoxModel<Icon> images = new DefaultComboBoxModel<Icon>();
-        images.addElement(new ImageIcon("C://Users//User//Desktop//Ders-Mers//senior1//comp302//project//project//system//ui//panels//token1.png"));
-        images.addElement(new ImageIcon("C://Users//User//Desktop//Ders-Mers//senior1//comp302//project//project//system//ui//panels//token2.png"));
-        images.addElement(new ImageIcon("C://Users//User//Desktop//Ders-Mers//senior1//comp302//project//project//system//ui//panels//token3.png"));
-        images.addElement(new ImageIcon("C://Users//User//Desktop//Ders-Mers//senior1//comp302//project//project//system//ui//panels//token4.png"));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token1.png")));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token2.png")));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token3.png")));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token4.png")));
 
         return images;
     }
