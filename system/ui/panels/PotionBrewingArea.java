@@ -43,6 +43,8 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JTextField potionToSell;
     private JComboBox<String> offerDropdown;
     private JButton sellPotionButton;
+    private JTextField adventurerInfo;
+    private JLabel lblPotion;
 
 	public PotionBrewingArea() {
         super();
@@ -52,7 +54,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         
         
 		navBtn = new JButton("Back to the village");
-		navBtn.setBounds(28, 10, 160, 21);
+		navBtn.setBounds(279, 10, 160, 21);
 		navBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((GameContentPane) PotionBrewingArea.this.getParent()).changeView("village");
@@ -114,19 +116,21 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		makePotionLabel.setBounds(73, 61, 160, 13);
 		add(makePotionLabel);
 
+		
+		/*
         this.AdventurerInfo = new JTextArea(pbaController.giveOffer(), 5,12);
         Font f = new Font("Serif", Font.ITALIC, 15);
         AdventurerInfo.setFont(f);
-        add(AdventurerInfo);
+        //add(AdventurerInfo);
 
         this.potionToSell = createPotionField("sell a potion");
-        add(potionToSell);
+        //add(potionToSell);
 
         this.offerDropdown = optionsDropdown();
-        add(offerDropdown);
+        //add(offerDropdown);
         this.sellPotionButton = sellPotionButton();
-        add(sellPotionButton);
-
+        //add(sellPotionButton);
+		 */
 		
 		JLabel sellPotionLabel = new JLabel("Sell a Potion");
 		sellPotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -134,21 +138,30 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		sellPotionLabel.setBounds(433, 61, 160, 13);
 		add(sellPotionLabel);
 		
-		potion = new JTextField();
-		potion.setText("Give Potion");
-		potion.setEditable(false);
-		potion.setBounds(433, 95, 160, 19);
-		add(potion);
-		potion.setColumns(10);
-		
-		JButton sellPotionBtn = new JButton("Sell Potion");
-		sellPotionBtn.setBounds(433, 123, 160, 21);
+		JButton sellPotionBtn = new JButton("New button");
+		sellPotionBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		sellPotionBtn.setBounds(443, 334, 134, 32);
 		add(sellPotionBtn);
+		
+		adventurerInfo = new JTextField();
+		adventurerInfo.setBounds(443, 94, 134, 173);
+		add(adventurerInfo);
+		adventurerInfo.setColumns(10);
+		
+		lblPotion = new JLabel("New label");
+		lblPotion.setOpaque(true);
+		lblPotion.setBackground(Color.LIGHT_GRAY);
+		lblPotion.setBounds(443, 292, 134, 32);
+		add(lblPotion);
+		
     }
 		
 	public JComboBox<String> optionsDropdown() {
             String[] quantityOptions = {"One", "Two", "Three"};
-            return new JComboBox<>(quantityOptions);
+            return new JComboBox<String>(quantityOptions);
         }
     
     public JButton sellPotionButton(){

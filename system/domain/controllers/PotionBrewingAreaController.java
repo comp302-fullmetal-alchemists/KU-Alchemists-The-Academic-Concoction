@@ -161,7 +161,7 @@ public class PotionBrewingAreaController implements Collector{
         if (item instanceof Potion) {
             Potion potion = (Potion) item;
             if (potionToSell==null) {
-                this.potionToSell = potion; 
+                this.potionToSell = potion;
                 potionBrewingUI.update(String.format("POTION_TO_SELL: %s", potion.getStatus()));
                 return true;
             }
