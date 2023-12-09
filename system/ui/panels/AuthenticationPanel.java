@@ -1,152 +1,22 @@
-/*package system.ui.panels;
 
-import system.domain.controllers.AuthenticationController;
-import system.domain.Player;
-import system.domain.interfaces.Observer;
-
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-
-public class AuthenticationPanel extends JPanel implements Observer{
-    private JButton loginButton;
-    private JTextField usernameField1;
-    private JTextField usernameField2;
-    private JTextField tokenField1;
-    private JTextField tokenField2;
-    private JLabel usernameLabel;
-    private JLabel tokenLabel;
-    private AuthenticationController authController;
-
-    public AuthenticationPanel(){
-        super();
-        this.authController = new AuthenticationController();
-        authController.setObserver(this);
-        this.usernameLabel = new JLabel("Usernames");
-        add(usernameLabel);
-        this.usernameField1 = new JTextField(23);
-        usernameField1.setText("player1");
-        add(usernameField1);
-        this.usernameField2 = new JTextField(23);
-        usernameField2.setText("player2");
-        add(usernameField2);
-        this.tokenLabel = new JLabel("Tokens");
-        add(tokenLabel);
-        this.tokenField1 = new JTextField(10);
-        add(tokenField1);
-        tokenField1.setText("token1");
-        this.tokenField2 = new JTextField(10);
-        add(tokenField2);
-        tokenField2.setText("token2");
-        this.loginButton = new JButton("Login");
-        add(loginButton);
-        
-        loginButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                String username1 = usernameField1.getText();
-                String username2 = usernameField2.getText();
-                String token1 = new String(tokenField1.getText());
-                String token2 = new String(tokenField2.getText());
-                authController.login(username1, token1, username2, token2);
-            }
-        });
-    }
-
-    @Override
-    public void update(String msg) {
-        if (!msg.equals("VALID")) {
-            JOptionPane.showMessageDialog(this, msg);
-        }
-    }
-
-
-}*/
-/*package system.ui.panels;
-
-import system.domain.controllers.AuthenticationController;
-import system.domain.Player;
-import system.domain.interfaces.Observer;
-
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-
-public class AuthenticationPanel extends JPanel implements Observer{
-    private JButton loginButton;
-    private JTextField usernameField1;
-    private JTextField usernameField2;
-    private JTextField tokenField1;
-    private JTextField tokenField2;
-    private JLabel usernameLabel;
-    private JLabel tokenLabel;
-    private AuthenticationController authController;
-
-    public AuthenticationPanel(){
-        super();
-        this.authController = new AuthenticationController();
-        authController.setObserver(this);
-        this.usernameLabel = new JLabel("Usernames");
-        add(usernameLabel);
-        this.usernameField1 = new JTextField(23);
-        usernameField1.setText("player1");
-        add(usernameField1);
-        this.usernameField2 = new JTextField(23);
-        usernameField2.setText("player2");
-        add(usernameField2);
-        this.tokenLabel = new JLabel("Tokens");
-        add(tokenLabel);
-        this.tokenField1 = new JTextField(10);
-        add(tokenField1);
-        tokenField1.setText("token1");
-        this.tokenField2 = new JTextField(10);
-        add(tokenField2);
-        tokenField2.setText("token2");
-        this.loginButton = new JButton("Login");
-        add(loginButton);
-        
-        loginButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                String username1 = usernameField1.getText();
-                String username2 = usernameField2.getText();
-                String token1 = new String(tokenField1.getText());
-                String token2 = new String(tokenField2.getText());
-                authController.login(username1, token1, username2, token2);
-            }
-        });
-    }
-
-    @Override
-    public void update(String msg) {
-        if (!msg.equals("VALID")) {
-            JOptionPane.showMessageDialog(this, msg);
-        }
-    }
-
-
-}*/
 package system.ui.panels;
 
 import javax.swing.JPanel;
 import java.awt.Color;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JTextField;
 import system.domain.controllers.AuthenticationController;
 import system.domain.interfaces.Observer;
+import javax.swing.ImageIcon;
+import javax.swing.Icon;
+import javax.swing.DefaultComboBoxModel;
+
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -155,8 +25,8 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 	private JTextField username1;
 	private JTextField username2;
-	private JTextField token1;
-	private JTextField token2;
+    private JComboBox token1;
+    private JComboBox token2;
 	private AuthenticationController authController;
 
 	/**
@@ -166,110 +36,152 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	
 		setBackground(new Color(58, 77, 108));
 		setLayout(null);
+		setSize(1200, 800);
 		
 		this.authController = new AuthenticationController();
         authController.setObserver(this);
 		
-		JLabel txtWelcome = new JLabel();
+		JTextArea txtWelcome = new JTextArea();
+		txtWelcome.setEditable(false);
 		txtWelcome.setForeground(new Color(255, 255, 255));
-		txtWelcome.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 30));
+		txtWelcome.setFont(new Font("Monotype Corsiva", Font.BOLD, 60));
 		txtWelcome.setBackground(new Color(58, 77, 108));
 		txtWelcome.setText("WELCOME TO KUALCHEMISTS!");
-		txtWelcome.setBounds(190, 29, 697, 87);
+		txtWelcome.setBounds(152, 38, 908, 72);
+		txtWelcome.setEditable(false);
+
 		add(txtWelcome);
 		
-		JLabel InformMessage = new JLabel();
-		InformMessage.setText("Please enter usernames and choose tokens to start the game!");
-		InformMessage.setForeground(Color.WHITE);
-		InformMessage.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 23));
-		InformMessage.setBackground(new Color(58, 77, 108));
-		InformMessage.setBounds(90, 140, 697, 46);
-		add(InformMessage);
-		
-		JLabel Player1Username = new JLabel();
-		Player1Username.setText("Player 1 username:\n");
-		Player1Username.setForeground(Color.WHITE);
-		Player1Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
-		Player1Username.setBackground(new Color(58, 77, 108));
-		Player1Username.setBounds(36, 214, 166, 32);
-		add(Player1Username);
-		
-		JLabel Player2Username = new JLabel();
-		Player2Username.setText("Player 2 username:\n");
-		Player2Username.setForeground(Color.WHITE);
-		Player2Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
-		Player2Username.setBackground(new Color(58, 77, 108));
-		Player2Username.setBounds(36, 324, 141, 32);
-		add(Player2Username);
-		
-		JLabel txtrPlayer1TokenChoose = new JLabel();
+		JTextArea txtInformMessage = new JTextArea();
+		txtInformMessage.setText("Please enter usernames and choose tokens to start the game!");
+		txtInformMessage.setForeground(Color.WHITE);
+		txtInformMessage.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 25));
+		txtInformMessage.setBackground(new Color(58, 77, 108));
+		txtInformMessage.setBounds(213, 120, 975, 46);
+		txtInformMessage.setEditable(false);
+		add(txtInformMessage);
+
+    	JTextArea txtrPlayer1Username = new JTextArea();
+		txtrPlayer1Username.setText("Player 1 username:\n");
+		txtrPlayer1Username.setForeground(Color.WHITE);
+		txtrPlayer1Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
+		txtrPlayer1Username.setBackground(new Color(58, 77, 108));
+		/*txtrPlayer1Username.setBounds(270, 212, 212, 32);*/
+		txtrPlayer1Username.setBounds(152, 176, 212, 32);
+    	txtrPlayer1Username.setEditable(false);
+		add(txtrPlayer1Username);
+
+		JTextArea txtrPlayer2Username = new JTextArea();
+		txtrPlayer2Username.setText("Player 2 username:\n");
+		txtrPlayer2Username.setForeground(Color.WHITE);
+		txtrPlayer2Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
+		txtrPlayer2Username.setBackground(new Color(58, 77, 108));
+		/*txtrPlayer2Username.setBounds(905, 212, 141, 32);*/
+		txtrPlayer2Username.setBounds(687, 177, 221, 32);
+   		txtrPlayer2Username.setEditable(false);
+		add(txtrPlayer2Username);
+
+        JTextArea txtrPlayer1TokenChoose = new JTextArea();
 		txtrPlayer1TokenChoose.setText("Player 1 choose a token:\n");
 		txtrPlayer1TokenChoose.setForeground(Color.WHITE);
-		txtrPlayer1TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
+		txtrPlayer1TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
 		txtrPlayer1TokenChoose.setBackground(new Color(58, 77, 108));
-		txtrPlayer1TokenChoose.setBounds(442, 214, 166, 32);
+		/*txtrPlayer1TokenChoose.setBounds(258, 397, 332, 32);*/
+		txtrPlayer1TokenChoose.setBounds(152, 307, 332, 32);
+    	txtrPlayer1TokenChoose.setEditable(false);
 		add(txtrPlayer1TokenChoose);
-		
-		JLabel txtrPlayer2TokenChoose = new JLabel();
+
+		JTextArea txtrPlayer2TokenChoose = new JTextArea();
 		txtrPlayer2TokenChoose.setText("Player 2 choose a token:\n");
 		txtrPlayer2TokenChoose.setForeground(Color.WHITE);
-		txtrPlayer2TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 14));
+		txtrPlayer2TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
 		txtrPlayer2TokenChoose.setBackground(new Color(58, 77, 108));
-		txtrPlayer2TokenChoose.setBounds(442, 324, 166, 32);
+		/*txtrPlayer2TokenChoose.setBounds(880, 397, 296, 32);*/
+    	txtrPlayer2TokenChoose.setBounds(687, 307, 296, 32);
+    	txtrPlayer2TokenChoose.setEditable(false);
 		add(txtrPlayer2TokenChoose);
-		
+
 		username1 = new JTextField();
-		username1.setBounds(72, 242, 166, 53);
-        username1.setText("player1");
-        add(username1);
+		username1.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		username1.setBounds(157, 229, 166, 53);
+		/*username1.setBounds(270, 276, 166, 53);*/
+		add(username1);
 		username1.setColumns(10);
-		
+
 		username2 = new JTextField();
+		username2.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		username2.setBounds(691, 229, 166, 53);
+		/*username2.setBounds(905, 276, 166, 53);*/
 		username2.setColumns(10);
-		username2.setBounds(72, 368, 166, 53);
-        username2.setText("player2");
 		add(username2);
-		
-		token1 = new JTextField();
-		token1.setColumns(10);
-		token1.setBounds(452, 242, 166, 53);
-        token1.setText("token1");
+
+		token1 = new JComboBox();
+		token1.setBounds(152, 357, 348, 268);
+		token1.setBackground(new Color(58, 77, 108));
+		token1.setModel(loadImages());
+    	token1.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            token1.getSelectedItem();
+        }
+    	});
 		add(token1);
-		
-		token2 = new JTextField();
-		token2.setColumns(10);
-		token2.setBounds(452, 368, 166, 53);
-        token2.setText("token2");
+		token1.setVisible(true);
+
+		token2 = new JComboBox();
+		token2.setBounds(687, 357, 351, 268);
+		token2.setBackground(new Color(58, 77, 108));
+		token2.setModel(loadImages());
+		token2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				token2.getSelectedItem();
+			}
+		});
 		add(token2);
-		
+		token2.setVisible(true);
+
 		JButton loginButton = new JButton("LOGIN");
+		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
+
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 	                String player1username = username1.getText();
 	                String player2username = username2.getText();
-	                String player1token = new String(token1.getText());
-	                String player2token = new String(token2.getText());
+	                Icon player1token = (Icon) token1.getSelectedItem();
+	                Icon player2token = (Icon) token2.getSelectedItem();
 	                authController.login(player1username, player1token, player2username, player2token);
 	            
 			}
 		});
-		loginButton.setBounds(614, 470, 166, 46);
+		/*loginButton.setBounds(1105, 747, 166, 46); */
+		loginButton.setBounds(978, 650, 166, 42);
 		add(loginButton);
 		
 		JTextArea txtrAGameBy = new JTextArea();
 		txtrAGameBy.setText("A game by FullMetal Alchemists\n");
 		txtrAGameBy.setForeground(Color.WHITE);
-		txtrAGameBy.setFont(new Font("Luminari", Font.ITALIC, 14));
+		txtrAGameBy.setFont(new Font("Luminari", Font.ITALIC, 18));
 		txtrAGameBy.setBackground(new Color(58, 77, 108));
-		txtrAGameBy.setBounds(600, 532, 241, 32);
-        txtrAGameBy.setEditable(false);
+		/*txtrAGameBy.setBounds(1004, 803, 468, 32);*/
+		txtrAGameBy.setBounds(880, 695, 300, 32);
+    	txtrAGameBy.setEditable(false);
 		add(txtrAGameBy);
-
 	}
+
+    //load images to the combobox   
+    private DefaultComboBoxModel<Icon> loadImages(){
+        DefaultComboBoxModel<Icon> images = new DefaultComboBoxModel<Icon>();
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token1.png")));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token2.png")));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token3.png")));
+        images.addElement(new ImageIcon(getClass().getResource("/resources/token4.png")));
+
+        return images;
+    }
+    
+    
 
 	@Override
 	public void update(String msg) {
-		// TODO Auto-generated method stub
 		 if (!msg.equals("VALID")) {
 	            JOptionPane.showMessageDialog(this, msg);
 	        }

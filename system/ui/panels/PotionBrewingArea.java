@@ -1,17 +1,25 @@
 package system.ui.panels;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+
 
 import java.awt.event.ActionListener;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import java.awt.event.MouseEvent;
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
+import system.domain.Potion;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import java.awt.GridBagLayout;
@@ -31,8 +39,13 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JLabel lblIng1;
     private JLabel lblIng2;
     private String ingDefault = "<html>Give<br>Ingredient</html>";
-	
+    private JTextArea AdventurerInfo;
+    private JTextField potionToSell;
+    private JComboBox<String> offerDropdown;
+    private JButton sellPotionButton;
+
 	public PotionBrewingArea() {
+        super();
 		setBackground(new Color(58, 77, 108));
 		this.pbaController = GameBoardController.getInstance().getPotionBrewingAreaController();
         pbaController.setObserver(this);
@@ -100,6 +113,20 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		makePotionLabel.setForeground(Color.LIGHT_GRAY);
 		makePotionLabel.setBounds(73, 61, 160, 13);
 		add(makePotionLabel);
+
+        this.AdventurerInfo = new JTextArea(pbaController.giveOffer(), 5,12);
+        Font f = new Font("Serif", Font.ITALIC, 15);
+        AdventurerInfo.setFont(f);
+        add(AdventurerInfo);
+
+        this.potionToSell = createPotionField("sell a potion");
+        add(potionToSell);
+
+        this.offerDropdown = optionsDropdown();
+        add(offerDropdown);
+        this.sellPotionButton = sellPotionButton();
+        add(sellPotionButton);
+
 		
 		JLabel sellPotionLabel = new JLabel("Sell a Potion");
 		sellPotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -117,9 +144,54 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		JButton sellPotionBtn = new JButton("Sell Potion");
 		sellPotionBtn.setBounds(433, 123, 160, 21);
 		add(sellPotionBtn);
+    }
 		
-		
+	public JComboBox<String> optionsDropdown() {
+            String[] quantityOptions = {"One", "Two", "Three"};
+            return new JComboBox<>(quantityOptions);
+        }
+    
+    public JButton sellPotionButton(){
+            JButton sellPotionButton = new JButton("Sell the Potion");
+            sellPotionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedOffer = offerDropdown.getSelectedIndex();
+                    pbaController.agreeOffer(selectedOffer + 1);
+                }
+            });
+            return sellPotionButton;
 	}
+
+    public JTextField createPotionField(String name) {
+        JTextField ing = new JTextField(20);
+        ing.setEnabled(false);
+        ing.setText(name);
+        ing.addMouseListener(
+            new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    ing.setText(name);
+                    pbaController.discardPotion();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {}
+
+                @Override
+                public void mouseExited(MouseEvent e) {}
+
+            }
+        );
+        return ing;
+    }
 	
     public void initialize() {
     	if (pbaController.hasIng1()) pbaController.discardIngredient(1);
@@ -161,7 +233,12 @@ public class PotionBrewingArea extends JPanel implements Observer {
         else if (msg.contains("DISCARD_INGREDIENT2")) {
             lblIng2.setText(ingDefault);
     		lblIng2.setBackground(Color.LIGHT_GRAY);
-
+        }
+        else if (msg.contains("DISCARD_POTION")){
+            potionToSell.setText("potion to sell");
+        }
+        else if (msg.contains("POTION_TO_SELL")){
+            potionToSell.setText(msg.substring(15));
         }
     }
 }

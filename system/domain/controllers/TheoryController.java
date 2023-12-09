@@ -1,7 +1,9 @@
 package system.domain.controllers;
 
 import system.domain.Alchemy;
+import system.domain.GameAction;
 import system.domain.Theory;
+import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
 
 import java.util.List;
@@ -11,9 +13,13 @@ public class TheoryController {
     //This can be created as map
     private List<Theory> theories;
     private Observer theoryUI;
+    private GameLogController gameLog;
+    private GameAction gameAction;
 
     public TheoryController() {
         this.theories = new ArrayList<Theory>();
+        this.gameLog = GameBoardController.getInstance().getGameLog();
+
     }
 
     public void setObserver(Observer observer) {
@@ -37,6 +43,9 @@ public class TheoryController {
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
 
+            //GAMELOG RECORDS LOG
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory: %s!", theory.getIngredient()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         }
         return;
     }
@@ -47,7 +56,14 @@ public class TheoryController {
             GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
             theory.setDebunked(true);
             theory.setOwner(GameBoardController.getInstance().getPlayer(index));
+
+            //GAMELOG RECORDS LOG FOR DEBUNKER
+            gameAction = new GameAction(GameBoardController.getInstance().getPlayer(index).getName(), theory.getOwner().getName(), String.format("Debunked the Theory: %s!", theory.getIngredient()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getPlayer(index), gameAction);
+            //GAMELOG RECORDS LOG FOR DEBUNKEE
+            gameLog.recordLog(theory.getOwner(), gameAction);
         }
+
         else {
             //System.err.println("Theory not debunked");
         }
