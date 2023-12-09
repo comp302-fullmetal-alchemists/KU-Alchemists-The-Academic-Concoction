@@ -126,6 +126,8 @@ public class PublicationArea extends JPanel implements Observer{
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
+                        theoryBoard.createTheoryBook(theoryBoard.getIngredient(), alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+                        System.out.println("Theory book created by " + GameBoardController.getInstance().getCurrentPlayer().getName() + " with " + theoryBoard.getIngredient() + " and " + alchemy);
                         alchemy = "";
                         theoryBoard.setIngredient(null);
                     }
@@ -139,15 +141,13 @@ public class PublicationArea extends JPanel implements Observer{
     public void update(String msg) {
        if (msg.contains("DUPLICATE_THEORY")) {
               JOptionPane.showMessageDialog(this, "Duplicate theory");
-         }
+              
+        }
          else if (msg.contains("NOT_ENOUGH_GOLD")) {
               JOptionPane.showMessageDialog(this, "Not enough gold");
-         }
+        }
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
-       }
+        }
     }
-
-
-    
 }

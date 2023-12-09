@@ -32,6 +32,7 @@ public class TheoryBoard extends JPanel {
         super();
         setLayout(null);
         this.theoryController = new TheoryController();
+        /* 
         this.ingredient1 = createIngButton(GameBoardController.getInstance().getIngredients()[0]);
         ingredient1.setBounds(22, 194, 103, 21);
         add(ingredient1);
@@ -56,7 +57,9 @@ public class TheoryBoard extends JPanel {
         this.ingredient8 = createIngButton(GameBoardController.getInstance().getIngredients()[7]);
         ingredient8.setBounds(459, 400, 103, 21);
         add(ingredient8);
-
+        */
+                
+        /*     
         JLabel theoryBook1 = new JLabel("");
 		theoryBook1.setBounds(22, 53, 100, 118);
 		add(theoryBook1);
@@ -88,7 +91,7 @@ public class TheoryBoard extends JPanel {
 		JLabel theoryBook8 = new JLabel("");
 		theoryBook8.setBounds(465, 259, 103, 118);
 		add(theoryBook8);
-
+        */ 
         // Add an ActionListener to the JComboBox to handle item selection
 
     }
@@ -107,13 +110,21 @@ public class TheoryBoard extends JPanel {
         return button;
     }
 
+    public JLabel createTheoryBook(String ingName, String alchemy, String player) {
+        JLabel label = new JLabel("");
+        label.setText(player + " has theorized " + ingName + " with " + alchemy);
+        label.setBounds(22, 53, 100, 118);
+        add(label);
+        return label;
+    }
+
+
     public String getIngredient (){
         return ingredient;
     }
 
-    public void setIngredient(String ing){
-        this.ingredient = ing;
+    public void setIngredient (String ingredient){
+        this.ingredient = ingredient;
     }
-
-
 }
+
