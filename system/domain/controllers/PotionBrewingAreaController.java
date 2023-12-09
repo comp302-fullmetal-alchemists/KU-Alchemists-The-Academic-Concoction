@@ -68,6 +68,15 @@ public class PotionBrewingAreaController implements Collector{
         return;
     }
 
+    public boolean hasIng1() {
+    	return !(ing1 == null);
+    }
+    
+    public boolean hasIng2() {
+    	return !(ing2 == null);
+    }
+
+
     public void discardIngredient(int num) {
         if (num == 1) {
             mediator.sendToPlayer(ing1);

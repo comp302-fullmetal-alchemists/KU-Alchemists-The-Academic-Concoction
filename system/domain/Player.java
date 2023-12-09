@@ -1,6 +1,10 @@
 package system.domain;
 
 import system.domain.controllers.InventoryController;
+import system.domain.interfaces.Observer;
+
+import javax.swing.Icon;
+
 import system.ui.panels.PlayerDashboard;
 import system.domain.controllers.GameBoardController;
 
@@ -9,13 +13,13 @@ public class Player {
     private String name;
     private Boolean turn;
     private int turnsLeft;
-    private String token;
+    private Icon token;
     private int reputationPoint;
     private int sicknessPoint;
     private InventoryController inventory;
-    private PlayerDashboard playerDashboardUI;
+    private Observer playerUI;
 
-    public Player(String name, String token) {
+    public Player(String name, Icon token) {
         this.name = name;
         this.turn = false;
         this.token = token;
@@ -25,17 +29,15 @@ public class Player {
       
     }
 
+    public void setPlayerUI(Observer observer) {
+    	this.playerUI = observer;
+    }
+    
     /**********Getters and Setters******************/
-    public void setPlayerDashboard(PlayerDashboard playerDashboard){
-        this.playerDashboardUI = playerDashboard;
-    }
-
-    public PlayerDashboard getPlayerDashboard(){
-        return this.playerDashboardUI;
-    }
 
     public void appendToGameLog(String text) {
-        playerDashboardUI.appendToGameLog(text);
+        playerUI.update("GAMELOG:"+text);
+    	//playerDashboardUI.appendToGameLog(text);
     }
 
     public void setName(String name) {
@@ -64,11 +66,11 @@ public class Player {
         }
     }
 
-	public void setToken(String token) {
+	public void setToken(Icon token) {
 		this.token = token;
 	}
     
-    public String getToken() {
+    public Icon getToken() {
         return token;
     }
 

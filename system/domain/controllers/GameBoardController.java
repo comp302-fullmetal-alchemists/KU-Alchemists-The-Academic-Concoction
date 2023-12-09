@@ -29,7 +29,7 @@ public class GameBoardController {
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
+    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad Stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
     private Alchemy[] alchemies = new Alchemy[8];
     private Map<String, Alchemy> alchemyMap = new HashMap<String, Alchemy>();
     private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};

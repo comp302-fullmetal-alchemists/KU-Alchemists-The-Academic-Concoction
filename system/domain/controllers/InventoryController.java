@@ -32,7 +32,7 @@ public class InventoryController {
 
     private int gold;
     private List<IngredientCard> ingredientCards;
-    public ArrayList<ArtifactCard> artifactCards;
+    public  List<ArtifactCard> artifactCards;
     private List<Potion> potions;
     private Observer inventoryUI;
     private Mediator mediator;
@@ -65,7 +65,7 @@ public class InventoryController {
 		this.gold = gold;
 	}
 
-    public ArrayList<ArtifactCard> getArtifactCards(){
+    public List<ArtifactCard> getArtifactCards(){
         return artifactCards;
     }
 

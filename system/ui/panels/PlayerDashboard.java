@@ -27,49 +27,55 @@ public class PlayerDashboard extends JPanel implements Observer {
     public PlayerDashboard(Player player) {
         super();
         setBackground(new Color(58, 77, 108));
-        this.setBounds(150, 150, 486, 357);
+        setLayout(null);
+
+        this.setBounds(150, 150, 335, 700);
         this.player = player;
-        this.inventory = new Inventory(player.getInventory());
-        inventory.setBounds(20, 40, 193, 303);
-        inventory.setForeground(Color.WHITE); //
-        //setLayout(null);
         this.playerLabel = new JLabel(player.getName());
-        player.setPlayerDashboard(this);
-        playerLabel.setForeground(Color.WHITE);
-        playerLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
-        playerLabel.setBounds(22, 20, 105, 21);
-        playerLabel.setBackground(new Color(58, 77, 108));
+        player.setPlayerUI(this);
+        playerLabel.setForeground(Color.LIGHT_GRAY);
+        playerLabel.setBounds(157, 5, 81, 16);
+        add(playerLabel);
+
+        this.inventory = new Inventory(player.getInventory());
+        inventory.setBounds(22, 63, 290, 390);
+        add(inventory);
+        
         JLabel lblNewLabel = new JLabel("Player name:");
-        lblNewLabel.setForeground(Color.WHITE);
+        lblNewLabel.setForeground(Color.LIGHT_GRAY);
         lblNewLabel.setBounds(80, 5, 110, 16);
         add(lblNewLabel);
 
         lblReputation = new JLabel("Reputation: \n" + player.getReputation());
-        lblReputation.setForeground(Color.WHITE);
-        lblReputation.setBounds(22, 58, 88, 16);
+        lblReputation.setForeground(Color.LIGHT_GRAY);
+        lblReputation.setBounds(53, 31, 88, 16);
         add(lblReputation);
 
         lblSickness = new JLabel("Sickness: \n"  + player.getSickness()  );
-        lblSickness.setForeground(Color.WHITE);
-        lblSickness.setBounds(22, 86, 88, 16);
+        lblSickness.setForeground(Color.LIGHT_GRAY);
+        lblSickness.setBounds(190, 31, 88, 16);
         add(lblSickness);
 
 //GAME LOG
-
-        add(playerLabel);
-        add(inventory);
-
+  
+        JLabel lblInventory = new JLabel("Inventory");
+        lblInventory.setForeground(Color.LIGHT_GRAY);
+        lblInventory.setBounds(22, 50, 88, 13);
+        add(lblInventory);
+        
         gameLogDisplayInit();
         add(gameLogDisplay);
+        
+        JLabel lblGameLog = new JLabel("Game Log");
+        lblGameLog.setForeground(Color.LIGHT_GRAY);
+        lblGameLog.setBounds(22, 464, 88, 13);
+        add(lblGameLog);
     }
 
     public Player getPlayer(){
         return this.player;
     }
 
-    public void takeIngredients(IngredientCard ingCard) {
-        inventory.addItemToInventory(ingCard.getName(), "Ingredient");
-    } 
 
     public void appendToGameLog(String text) {
         gameLogDisplayText.append(text);
@@ -79,13 +85,14 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.gameLogDisplayText = new JTextArea(5,35);
         gameLogDisplayText.setEditable(false);
         this.gameLogDisplay = new JScrollPane(gameLogDisplayText);
+        gameLogDisplay.setBounds(22, 477, 290, 210);
         gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }
 
     @Override
     public void update(String msg) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        if (msg.contains("GAMELOG")) {
+        	appendToGameLog(msg.split(":")[1]);
+        }
     }
-    
 }   
