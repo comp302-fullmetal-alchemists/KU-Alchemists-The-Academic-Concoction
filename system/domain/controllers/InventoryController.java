@@ -137,7 +137,7 @@ public class InventoryController {
     }
 
     public void removePotion(Potion potion) {
-        System.out.printf("potions: %d\n", potions.size()); //testing line
+        System.out.printf("Inventry controller\n potions: %d\n", potions.size()); //testing line
         System.out.printf("Potion to remove status %s\n", potion.getStatus()); //testing line
     	potions.remove(potion);
         System.out.printf("potions after: %d\n", potions.size()); //testing line

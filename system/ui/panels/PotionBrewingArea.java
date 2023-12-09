@@ -21,11 +21,13 @@ import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
 import system.domain.Potion;
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.IngredientStorageController;
 import system.domain.interfaces.Observer;
 
 public class PotionBrewingArea extends JPanel implements Observer {
 
     private PotionBrewingAreaController pbaController;
+    private IngredientStorageController ingController;
     private JButton back;
     private JButton activation;
     private JTextField ingredient1;  //something to display the ingredients chosen
@@ -43,7 +45,10 @@ public class PotionBrewingArea extends JPanel implements Observer {
         super();
         setBackground(new Color(58, 77, 108));
         this.pbaController = GameBoardController.getInstance().getPotionBrewingAreaController();
+        this.ingController = GameBoardController.getInstance().getIngredientStorageController();
         pbaController.setObserver(this);
+        ingController.setObserver(this);
+
         this.back = createNavButton("village", "Back to the village");
         add(back);
         this.activation = createActivationButton();
@@ -60,9 +65,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
         AdventurerInfo.setFont(f);
         add(AdventurerInfo);
 
-        this.potionToSell = createPotionField("sell a potion");
-        add(potionToSell);
-
         this.offerDropdown = optionsDropdown();
         add(offerDropdown);
         this.sellPotionButton = sellPotionButton();
@@ -70,18 +72,28 @@ public class PotionBrewingArea extends JPanel implements Observer {
     }
 
     public JComboBox<String> optionsDropdown() {
-        String[] quantityOptions = {"One", "Two", "Three"};
+        String[] quantityOptions = {"I demand 1 gold - My potion is a gamble of curse, calm or charm.", "I demand 2 golds - My potion contains no malevolence.", "I demand 3 golds - My potion is assured of goodly nature."};
         return new JComboBox<>(quantityOptions);
     }
 
     public JButton sellPotionButton(){
-        JButton sellPotionButton = new JButton("Sell the Potion");
+        JButton sellPotionButton = new JButton("Select a Potion to sell");
+        sellPotionButton.setBounds(27, 142, 179, 29);
         sellPotionButton.addActionListener(new ActionListener() {
-            @Override
+                //int selectedOffer = offerDropdown.getSelectedIndex();
+                //pbaController.agreeOffer(selectedOffer + 1);
             public void actionPerformed(ActionEvent e) {
-                int selectedOffer = offerDropdown.getSelectedIndex();
-                pbaController.agreeOffer(selectedOffer + 1);
+                if (ingController.isActive()){
+                    ingController.deactivate();
+                    sellPotionButton.setText("Stop Selling");
+                }
+                else {
+                    ingController.activate();
+                    sellPotionButton.setText("Select a Potion to sell");
+                }
             }
+
+
         });
         return sellPotionButton;
     }
@@ -161,36 +173,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
         return ing;
     }
 
-    public JTextField createPotionField(String name) {
-        JTextField ing = new JTextField(20);
-        ing.setEnabled(false);
-        ing.setText(name);
-        ing.addMouseListener(
-            new MouseListener() {
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    ing.setText(name);
-                    pbaController.discardPotion();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {}
-
-                @Override
-                public void mouseReleased(MouseEvent e) {}
-
-                @Override
-                public void mouseEntered(MouseEvent e) {}
-
-                @Override
-                public void mouseExited(MouseEvent e) {}
-
-            }
-        );
-        return ing;
-    }
-
     public JButton createPotionButton(String text) {
         JButton button = new JButton(text);
         button.addActionListener(
@@ -233,11 +215,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
         else if (msg.contains("DISCARD_INGREDIENT2")) {
             ingredient2.setText("Give Ingredient2");
         }
-        else if (msg.contains("DISCARD_POTION")){
-            potionToSell.setText("potion to sell");
-        }
-        else if (msg.contains("POTION_TO_SELL")){
-            potionToSell.setText(msg.substring(15));
-        }
+
     }
 }
