@@ -10,6 +10,7 @@ import java.util.HashMap;
 import system.domain.Player;
 import system.domain.Alchemy;
 import system.domain.ArtifactCard;
+import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
@@ -18,11 +19,13 @@ import system.domain.util.ConcreteMediator;
 public class GameBoardController {
 
     private static GameBoardController instance;
-    private List<Player> players;
+    private static List<Player> players;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
+    private GameLogController gameLog;
+    private GameAction gameAction;
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
@@ -32,12 +35,12 @@ public class GameBoardController {
     private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
     private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
     private String[] usages = {null,null,"Immediate effect." };
-    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
-    GameLogController gameLog;
 
     private GameBoardController() {
         this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
+        this.gameLog = new GameLogController(); //get the players and initalize the gamelog
+
 
     }
 
@@ -71,6 +74,7 @@ public class GameBoardController {
     public static GameBoardController getInstance() {
         if (instance == null) {
             instance = new GameBoardController();
+            
         }
         return instance;
     }
@@ -78,7 +82,9 @@ public class GameBoardController {
 
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
-        players.add(player2);
+        players.add(player2); 
+        gameLog.GameLogControllerInit(player1, player2); //get the players and initalize the gamelog
+
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
         players.get(firstPlayer).changeTurn();
@@ -94,15 +100,14 @@ public class GameBoardController {
         this.ingredientStorage.initializePiles();
     }
 
-
-    //GameLogController gameLog = new GameLogController(players.get(0), players.get(1)); //get the players and initalize the gamelog
-
-    //public GameLogController getGameLog(){
-     //   return gameLog;
-    //}
-    public Player getPlayer(int index) {
+    public static Player getPlayer(int index) {
         return players.get(index);
     }
+
+    public static List<Player> getPlayerList() {
+        return players;
+    }
+
         
     public String[] getArtifactStrings() {
         return artifacts;
@@ -117,10 +122,19 @@ public class GameBoardController {
     }
 
     public void changePlayer() {
+        //GAMELOG RECRDS L0G
+        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
+        gameLog.recordLog(getCurrentPlayer(), gameAction);
+
         players.get(0).changeTurn();
         players.get(1).changeTurn();
         mediator.connectPlayer(getCurrentPlayer());
         gameboardUI.update("CHANGE_PLAYER");
+
+        //GAMELOG RECRDS L0G
+        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
+        gameLog.recordLog(getCurrentPlayer(), gameAction);
+
     }
     
     public Player getCurrentPlayer() {
@@ -134,7 +148,11 @@ public class GameBoardController {
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorage;
     }
-
+    
+    public GameLogController getGameLog(){
+        return gameLog;
+    }
+    
     public PotionBrewingAreaController getPotionBrewingAreaController() {
         return potionBrewingArea;
     }
@@ -211,7 +229,6 @@ public class GameBoardController {
         return alchemyMap;
     }
     public void startGame() {
-
         return;
     }
 

@@ -17,4 +17,8 @@ public class GameAction {
     public String toString() { //Example "From player1 to player2, 3 gold given." or "From Player1 to Adventurer, negative potion given."
         return String.format("From %s to %s, %s\n", from, to, action);
     }
+
+    public int getScore(){
+        return score;
+    }
 }

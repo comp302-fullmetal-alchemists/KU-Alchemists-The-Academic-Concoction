@@ -1,17 +1,25 @@
 package system.ui.panels;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
+
 
 import java.awt.event.ActionListener;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import java.awt.event.MouseEvent;
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
+import system.domain.Potion;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 
@@ -23,6 +31,11 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JTextField ingredient1;  //something to display the ingredients chosen
     private JTextField ingredient2;
     private JButton makePotion;
+    private JTextArea AdventurerInfo;
+    private JTextField potionToSell;
+    private JComboBox<String> offerDropdown;
+    private JButton sellPotionButton;
+
     String deactiveText = "Activate choice";
     String activeText = "Deactivate choice";
 
@@ -41,6 +54,36 @@ public class PotionBrewingArea extends JPanel implements Observer {
         add(ingredient2);
         this.makePotion = createPotionButton("Make Potion");
         add(makePotion);
+
+        this.AdventurerInfo = new JTextArea(pbaController.giveOffer(), 5,12);
+        Font f = new Font("Serif", Font.ITALIC, 15);
+        AdventurerInfo.setFont(f);
+        add(AdventurerInfo);
+
+        this.potionToSell = createPotionField("sell a potion");
+        add(potionToSell);
+
+        this.offerDropdown = optionsDropdown();
+        add(offerDropdown);
+        this.sellPotionButton = sellPotionButton();
+        add(sellPotionButton);
+    }
+
+    public JComboBox<String> optionsDropdown() {
+        String[] quantityOptions = {"One", "Two", "Three"};
+        return new JComboBox<>(quantityOptions);
+    }
+
+    public JButton sellPotionButton(){
+        JButton sellPotionButton = new JButton("Sell the Potion");
+        sellPotionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedOffer = offerDropdown.getSelectedIndex();
+                pbaController.agreeOffer(selectedOffer + 1);
+            }
+        });
+        return sellPotionButton;
     }
 
     public void initialize() {
@@ -118,6 +161,36 @@ public class PotionBrewingArea extends JPanel implements Observer {
         return ing;
     }
 
+    public JTextField createPotionField(String name) {
+        JTextField ing = new JTextField(20);
+        ing.setEnabled(false);
+        ing.setText(name);
+        ing.addMouseListener(
+            new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    ing.setText(name);
+                    pbaController.discardPotion();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {}
+
+                @Override
+                public void mouseExited(MouseEvent e) {}
+
+            }
+        );
+        return ing;
+    }
+
     public JButton createPotionButton(String text) {
         JButton button = new JButton(text);
         button.addActionListener(
@@ -159,6 +232,12 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("DISCARD_INGREDIENT2")) {
             ingredient2.setText("Give Ingredient2");
+        }
+        else if (msg.contains("DISCARD_POTION")){
+            potionToSell.setText("potion to sell");
+        }
+        else if (msg.contains("POTION_TO_SELL")){
+            potionToSell.setText(msg.substring(15));
         }
     }
 }
