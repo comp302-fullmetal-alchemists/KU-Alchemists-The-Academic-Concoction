@@ -104,10 +104,7 @@ public class Gameboard extends JFrame implements Observer{
 		getContentPane().add(authPanel);
 		authPanel.setLayout(null);
 		setSize(1200, 800);
-<<<<<<< HEAD
-=======
 		this.setResizable(false);
->>>>>>> 3f6f437bdca186bb78dabb30cdf61a557c6f13f8
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.helpScreen = new HelpScreenPanel();
