@@ -4,6 +4,7 @@ import system.domain.controllers.InventoryController;
 
 import javax.swing.Icon;
 
+import system.ui.panels.PlayerDashboard;
 import system.domain.controllers.GameBoardController;
 
 public class Player {
@@ -15,6 +16,7 @@ public class Player {
     private int reputationPoint;
     private int sicknessPoint;
     private InventoryController inventory;
+    private PlayerDashboard playerDashboardUI;
 
     public Player(String name, Icon token) {
         this.name = name;
@@ -27,6 +29,18 @@ public class Player {
     }
 
     /**********Getters and Setters******************/
+    public void setPlayerDashboard(PlayerDashboard playerDashboard){
+        this.playerDashboardUI = playerDashboard;
+    }
+
+    public PlayerDashboard getPlayerDashboard(){
+        return this.playerDashboardUI;
+    }
+
+    public void appendToGameLog(String text) {
+        playerDashboardUI.appendToGameLog(text);
+    }
+
     public void setName(String name) {
 		this.name = name;
 	}
@@ -65,6 +79,9 @@ public class Player {
         return reputationPoint;
     }
 
+    public int getSickness(){
+        return sicknessPoint;
+    }
     public InventoryController getInventory() {
         return inventory;
     }
