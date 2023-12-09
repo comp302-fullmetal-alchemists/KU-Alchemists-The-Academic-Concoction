@@ -152,8 +152,8 @@ public class Gameboard extends JFrame implements Observer{
 	
 	public void changePlayer() { 
 		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getCurrentPlayer().getName()));
-        playerPane.changeView(gameController.getCurrentPlayer().getName());
 		gamePane.changeView("village");
+        playerPane.changeView(gameController.getCurrentPlayer().getName());
     }
 
     public void initializeTheBoard() { 

@@ -42,7 +42,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
     private JLabel lblPotion;
     private String ingDefault = "<html>Give<br>Ingredient</html>";
     private JButton makePotion;
-    private JButton sellPotionButton;
+    private JButton sellPotionBtn;
     private String[] offerStrings = {"You get 1 gold - Your potion is a gamble of curse, calm or charm.", "You get 2 golds - Your potion contains no malevolence.", "You get 3 golds - Your potion is assured of goodly nature."};
     private JLabel adventurerInfo;
 
@@ -122,8 +122,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		sellPotionLabel.setBounds(433, 61, 160, 13);
 		add(sellPotionLabel);
 		
-		JButton sellPotionBtn = new JButton("Select a Potion");
-        sellPotionBtn.setBounds(73, 246, 160, 21);
+		sellPotionBtn = new JButton("Select a Potion");
 		sellPotionBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                     if (pbaController.isActive()) {
@@ -137,8 +136,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
                 }
 			}
 		});
-        
-		sellPotionBtn.setBounds(443, 334, 134, 32);
+		sellPotionBtn.setBounds(459, 365, 134, 32);
 		add(sellPotionBtn);
 		
 		adventurerInfo = new JLabel("<html>Hark, potion-masters! The Adventurer proclaims:<br>" + //
@@ -146,7 +144,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		        "for brews of good or neutral kind, two golds;<br>" + //
 		        "and for any draught, one gold.<br>" + //
 		        "Present thy potions and claim thy reward!</html>");
-		adventurerInfo.setBounds(443, 94, 134,200);
+		adventurerInfo.setBounds(410, 98, 225,181);
         adventurerInfo.setOpaque(true);
         adventurerInfo.setBackground(Color.LIGHT_GRAY);
 		add(adventurerInfo);
@@ -154,7 +152,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		lblPotion = new JLabel("Select a Potion to Sell");
 		lblPotion.setOpaque(true);
 		lblPotion.setBackground(Color.LIGHT_GRAY);
-		lblPotion.setBounds(443, 312, 134, 32);
+		lblPotion.setBounds(459, 306, 134, 32);
 		add(lblPotion);
 		
     }
@@ -162,8 +160,10 @@ public class PotionBrewingArea extends JPanel implements Observer {
     public void initialize() {
     	if (pbaController.hasIng1()) pbaController.discardIngredient(1);
         if (pbaController.hasIng2()) pbaController.discardIngredient(2);
+        if (pbaController.hasPotionToSell()) pbaController.discardPotion();
         pbaController.deactivate();
         makePotionBtn.setText(deactiveText);
+        sellPotionBtn.setText("Select a Potion");
     }
    
     public void showMessageDialog(String displayMsg) {

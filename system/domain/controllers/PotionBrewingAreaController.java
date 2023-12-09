@@ -76,6 +76,10 @@ public class PotionBrewingAreaController implements Collector{
     public boolean hasIng2() {
     	return !(ing2 == null);
     }
+    
+    public boolean hasPotionToSell() {
+    	return !(potionToSell == null);
+    }
 
 
     public void discardIngredient(int num) {

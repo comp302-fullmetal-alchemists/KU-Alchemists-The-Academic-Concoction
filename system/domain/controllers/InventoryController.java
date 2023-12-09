@@ -93,7 +93,7 @@ public class InventoryController {
     public int updateGold(int amount) {
     	
     	setGold(gold + amount) ;
-        
+        inventoryUI.update("GOLD_UPDATE");
     	return gold;
     }
 

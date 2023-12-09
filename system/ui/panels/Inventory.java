@@ -211,6 +211,10 @@ public class Inventory extends JPanel implements Observer {
         
     }
     
+    public void updateGold() {
+    	lblPlayerGold.setText(String.format("%d",invController.getGold()));
+    }
+    
     public void updateIng(String ingName) {
     	JLabel ingLbl = null;
     	if (ingName.equals("Solaris Root")) {
@@ -250,7 +254,6 @@ public class Inventory extends JPanel implements Observer {
     public void removeIngredientFromInventory(String text) {
     	ingredients.put(text, ingredients.get(text) - 1);
     	updateIng(text);
-    	lblPlayerGold.setText(String.format("%d",invController.getGold()));
     }
     
     
@@ -336,9 +339,7 @@ public class Inventory extends JPanel implements Observer {
             }
             potionPanel.revalidate();
             potionPanel.repaint();
-    	}
-    	
-        lblPlayerGold.setText(String.format("%d",invController.getGold()));
+    	}	
     }
 
 
@@ -359,6 +360,9 @@ public class Inventory extends JPanel implements Observer {
         }
         else if (msg.contains("NEW_ARTIFACT")){
             addItemToInventory(msg.split(":")[1], "Artifact");
+        }
+        else if (msg.contains("GOLD_UPDATE")) {
+        	updateGold();
         }
     }
 }
