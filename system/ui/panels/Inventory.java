@@ -350,6 +350,10 @@ public class Inventory extends JPanel implements Observer {
         else if (msg.contains("REMOVED_INGREDIENT")) {
             removeIngredientFromInventory(msg.split(":")[1]);
         }
+        else if (msg.contains("REMOVED_POTION")) {
+            removeItemFromInventory(msg.split(":")[1], "Potion");
+            lblPlayerGold.setText(String.format("%d",invController.getGold()));
+        }
         else if (msg.contains("NEW_POTION")) {
             addItemToInventory(msg.split(":")[1], "Potion");
         }

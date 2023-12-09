@@ -30,6 +30,7 @@ public class PotionBrewingAreaController implements Collector{
     private GameLogController gameLog;
     private GameAction gameAction;
     private Boolean active = false;
+    private int offer;
 
     public PotionBrewingAreaController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
@@ -101,24 +102,28 @@ public class PotionBrewingAreaController implements Collector{
         return GameBoardController.getInstance().getCurrentPlayer().getInventory().getPotions();
     }
 
-    public String giveOffer() {
-        //Adventurer gives 3 gold for positive, 2 gold for positive or neutral, 1 gold for any potion.
-        String adventurerInfo = "Hark, potion-masters! The Adventurer proclaims:\nfor potions positive, three golds be thine;\nfor brews of good or neutral kind, two golds;\nand for any draught, one gold.\nPresent thy potions and claim thy reward!";
-        return adventurerInfo;
-    }
-
     public void sellPotion(){
         if(potionToSell != null){//IF THERE IS POTION TO SELL
-            if (potionToSell.getStatus() == "positive"){ //POSITIVE POTION
-                GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(3);
+            if (potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("+")){ //POSITIVE POTION
+                offer = 3;
             }
-            else if (!(potionToSell.getStatus() == "negative")){ //POSITIVE OR NEUTRAL POTION
-                GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
+            else if (!(potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("-"))){ //POSITIVE OR NEUTRAL POTION
+                offer = 2;
             }
             else{ // POSITIVE, NEUTRAL OR NEGATIVE POTION
-                GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(1);
+                offer = 1;
             }
+
+            //GAMELOG RECORDS LOG
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+        
+            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
             potionToSell = null;
+            potionBrewingUI.update(String.format("SOLD_POTION:%d", offer));
+
+
+
             mediator.playerPlayedTurn();
         }
         else{ //NO POTION
