@@ -38,7 +38,7 @@ public class IngredientStorage extends JPanel implements Observer {
         setLayout(null);
         this.back = createNavButton("village", "Back to the village");
         add(back);
-        this.ingredientButton = createIngButton("Draw Ingredient");
+        this.ingredientButton = createIngButton("Forage Ingredient");
         add(ingredientButton);
         this.artifactButton = createArtifactButton("Draw Artifact Card");
         add(artifactButton);
