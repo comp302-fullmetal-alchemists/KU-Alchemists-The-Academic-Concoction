@@ -137,11 +137,8 @@ public class InventoryController {
     }
 
     public void removePotion(Potion potion) {
-        System.out.printf("potions: %d\n", potions.size()); //testing line
-        System.out.printf("Potion to remove status %s\n", potion.getStatus()); //testing line
     	potions.remove(potion);
-        System.out.printf("potions after: %d\n", potions.size()); //testing line
-        inventoryUI.update(String.format("REMOVED_POTION: %s", potion));
+        inventoryUI.update(String.format("REMOVED_POTION:%s", potion.getStatus()));
 
         //GAMELOG LOGS SILENTLY TO SAVE STATUS
         gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getCurrentPlayer().getName(),  String.format("Removed potion %s", potion.getStatus()), 0);
