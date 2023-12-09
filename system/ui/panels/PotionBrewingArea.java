@@ -58,7 +58,6 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		navBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((GameContentPane) PotionBrewingArea.this.getParent()).changeView("village");
-                initialize();
 			}
 		});
 		setLayout(null);
@@ -157,7 +156,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		
     }
 	
-    public void initialize() {
+    public void clear() {
     	if (pbaController.hasIng1()) pbaController.discardIngredient(1);
         if (pbaController.hasIng2()) pbaController.discardIngredient(2);
         if (pbaController.hasPotionToSell()) pbaController.discardPotion();

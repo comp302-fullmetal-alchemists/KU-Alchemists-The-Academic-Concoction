@@ -54,7 +54,7 @@ public class IngredientStorage extends JPanel implements Observer {
     }
     
 
-    public void initialize() {
+    public void clear() {
         ingController.deactivate();
         transmuteIngButton.setText(deactiveText);
     }
@@ -81,7 +81,6 @@ public class IngredientStorage extends JPanel implements Observer {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ((GameContentPane) IngredientStorage.this.getParent()).changeView(nav);
-                    initialize();
                 }
             }
         );
@@ -145,7 +144,7 @@ public class IngredientStorage extends JPanel implements Observer {
         }
         else if (msg.contains("CARD_SOLD")) {
             showMessageDialog(String.format("You have sold %s!", msg.split(":")[1]));
-            initialize();
+            clear();
         }
         else if (msg.contains("ARTIFACT_BOUGHT")) {
             showMessageDialog(String.format("You have bought %s!", msg.split(":")[1]));
