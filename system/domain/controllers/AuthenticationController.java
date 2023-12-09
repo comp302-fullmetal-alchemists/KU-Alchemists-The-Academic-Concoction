@@ -1,5 +1,7 @@
 package system.domain.controllers;
 
+import javax.swing.Icon;
+
 import system.domain.Player;
 import system.domain.interfaces.Observer;
 
@@ -14,7 +16,7 @@ public class AuthenticationController {
         this.authenticationUI = observer;
     }
 
-    public void login(String username1, String token1, String username2, String token2) {
+    public void login(String username1, Icon token1, String username2, Icon token2) {
         if (username1.equals(username2)){
             authenticationUI.update("Usernames cannot be the same");
         }

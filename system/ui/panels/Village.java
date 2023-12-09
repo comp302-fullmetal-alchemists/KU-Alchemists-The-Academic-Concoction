@@ -54,8 +54,11 @@ public class Village extends JPanel {
         		 ((GameContentPane) Village.this.getParent()).changeView("mainMenu");
         	}
         });
+
+        /* 
         btnMainMenu.setBounds(111, 258, 159, 29);
         add(btnMainMenu);
+        */
         
         JButton btnDeductionBoard = new JButton("Deduction Board\n");
         btnDeductionBoard.addActionListener(new ActionListener() {
