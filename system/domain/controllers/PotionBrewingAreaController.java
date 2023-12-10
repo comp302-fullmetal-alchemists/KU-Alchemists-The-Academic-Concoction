@@ -137,28 +137,28 @@ public class PotionBrewingAreaController implements Collector{
         if (item instanceof IngredientCard) {
             IngredientCard ing = (IngredientCard) item;
             if (ing1==null) {
-            ing1 = ing;
-
-            potionBrewingUI.update(String.format("NEW_INGREDIENT1:%s", ing.getName()));
-            return true;
+	            ing1 = ing;
+	
+	            potionBrewingUI.update(String.format("NEW_INGREDIENT1:%s", ing.getName()));
+	            return true;
             }
             else if (ing2 == null) {
-            ing2 = ing;
-
-            potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
-            return true;
+	            ing2 = ing;
+	
+	            potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
+	            return true;
             }
             return false;
         }
 
         if (item instanceof Potion) { //if the clicked item is a potion
             Potion potion = (Potion) item; //cast the item into potion
-            if (potionToSell==null) { //if we are not already holding a potion
-                this.potionToSell = potion; //make the holding potion the clicked potion
-                potionBrewingUI.update(String.format("NEW_POTION:%s", potion.getStatus())); //send a message to UI to update
-                return true;
+            if (potionToSell!=null) { //if we are not already holding a potion
+                discardPotion();
             }
-            return false;
+            this.potionToSell = potion; //make the holding potion the clicked potion
+            potionBrewingUI.update(String.format("NEW_POTION:%s", potion.getStatus())); //send a message to UI to update
+            return true;
         }
         return false;
     }
