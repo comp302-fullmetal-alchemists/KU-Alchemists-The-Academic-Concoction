@@ -7,26 +7,23 @@ import java.util.Map;
 
 import system.domain.GameAction;
 import system.domain.Player;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameLogController {
 
-    private Map<Player, List<GameAction>> gameActions = new HashMap<>();
+    private Map<Player, List<GameAction>> gameActions = new HashMap<>(); //there is only one gamelog per game, so it stores the players game actions in a Map.
 
-    
     public  GameLogController(){
-    }
+    } //creation without players
 
 
     public void GameLogControllerInit(Player player1, Player player2){
         gameActions.put(player1,  new ArrayList<>());
         gameActions.put(player2,  new ArrayList<>());
-    }
+    }//initalizing the gameActions map with players inputted.
 
     public void recordLog(Player player, GameAction gameAction) {
         gameActions.get(player).add(gameAction); //gets the players GameAction list, adds the game action to there.
-        player.appendToGameLog(gameAction.toString());
+        player.appendToGameLog(gameAction.toString()); //adds the gameLog to the player dashboard so it shows in UI.
         return;
     }
 

@@ -55,14 +55,13 @@ public class PlayerDashboard extends JPanel implements Observer {
         lblSickness.setForeground(Color.LIGHT_GRAY);
         lblSickness.setBounds(190, 31, 88, 16);
         add(lblSickness);
-
-//GAME LOG
   
         JLabel lblInventory = new JLabel("Inventory");
         lblInventory.setForeground(Color.LIGHT_GRAY);
         lblInventory.setBounds(22, 50, 88, 13);
         add(lblInventory);
         
+        //Scrollable GameLog inside players dashboard
         gameLogDisplayInit();
         add(gameLogDisplay);
         
@@ -78,10 +77,10 @@ public class PlayerDashboard extends JPanel implements Observer {
 
 
     public void appendToGameLog(String text) {
-        gameLogDisplayText.append(text);
+        gameLogDisplayText.append(text); //append to the scrollable textbox in players dashboard
     }
 
-    public void gameLogDisplayInit(){
+    public void gameLogDisplayInit(){ //creation of scrollable textbox as gamelog
         this.gameLogDisplayText = new JTextArea(5,35);
         gameLogDisplayText.setEditable(false);
         this.gameLogDisplay = new JScrollPane(gameLogDisplayText);
@@ -90,7 +89,7 @@ public class PlayerDashboard extends JPanel implements Observer {
     }
 
     @Override
-    public void update(String msg) {
+    public void update(String msg) {//Observer messager
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
         }

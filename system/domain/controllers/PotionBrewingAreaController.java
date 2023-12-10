@@ -48,7 +48,7 @@ public class PotionBrewingAreaController implements Collector{
             mediator.sendToPlayer(brewed);
             potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
 
-            //GAMELOG RECORDS LOG
+            //GAMELOG RECORDS LOG: When a player brews a potion
             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         
@@ -104,32 +104,31 @@ public class PotionBrewingAreaController implements Collector{
     
 
     public void sellPotion(){
-        if(potionToSell != null){//IF THERE IS POTION TO SELL
-            if (potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("+")){ //POSITIVE POTION
+        if(potionToSell != null){//If there is a potion to sell
+            if (potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("+")){ //if its positive give 3 golds
                 offer = 3;
             }
-            else if (!(potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("-"))){ //POSITIVE OR NEUTRAL POTION
+            else if (!(potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("-"))){ //if its not negative, meaning positive or neutral give 2 golds
                 offer = 2;
             }
-            else{ // POSITIVE, NEUTRAL OR NEGATIVE POTION
+            else{ //if it has unknown qualities, give 1 gold.
                 offer = 1;
             }
 
-            //GAMELOG RECORDS LOG
+			//GAMELOG RECORDS LOG: When a potion is sold
             gameAction = new GameAction(mediator.getPlayerName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         
             mediator.updatePlayerGold(offer);
-            //GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
-            potionToSell = null;
-            potionBrewingUI.update(String.format("SOLD_POTION:%d", offer));
+            potionToSell = null;//this makes sure the potion is removed from inventory
+            potionBrewingUI.update(String.format("SOLD_POTION:%d", offer));//send a message to the UI so its updated
 
 
 
             mediator.playerPlayedTurn();
         }
-        else{ //NO POTION
-            potionBrewingUI.update("ABSENT_POTION");
+        else{ //If there is no potions to sell
+            potionBrewingUI.update("ABSENT_POTION");//tell the UI so it gives the appropriate message
         }
     }
 
@@ -152,11 +151,11 @@ public class PotionBrewingAreaController implements Collector{
             return false;
         }
 
-        if (item instanceof Potion) {
-            Potion potion = (Potion) item;
-            if (potionToSell==null) {
-                this.potionToSell = potion; 
-                potionBrewingUI.update(String.format("NEW_POTION:%s", potion.getStatus()));
+        if (item instanceof Potion) { //if the clicked item is a potion
+            Potion potion = (Potion) item; //cast the item into potion
+            if (potionToSell==null) { //if we are not already holding a potion
+                this.potionToSell = potion; //make the holding potion the clicked potion
+                potionBrewingUI.update(String.format("NEW_POTION:%s", potion.getStatus())); //send a message to UI to update
                 return true;
             }
             return false;

@@ -24,8 +24,8 @@ public class GameBoardController {
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
-    private GameLogController gameLog;
-    private GameAction gameAction;
+    private GameLogController gameLog; 
+    private GameAction gameAction; //to be used for start game gameAction
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
@@ -39,7 +39,7 @@ public class GameBoardController {
     private GameBoardController() {
         this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
-        this.gameLog = new GameLogController(); //get the players and initalize the gamelog
+        this.gameLog = new GameLogController(); //create the gamelog
 
 
     }
@@ -83,7 +83,7 @@ public class GameBoardController {
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2); 
-        gameLog.GameLogControllerInit(player1, player2); //get the players and initalize the gamelog
+        gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
 
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
@@ -122,7 +122,7 @@ public class GameBoardController {
     }
 
     public void changePlayer() {
-        //GAMELOG RECRDS L0G
+        //GAMELOG RECORDS LOG: When the round is over for a player
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
         gameLog.recordLog(getCurrentPlayer(), gameAction);
 
@@ -133,7 +133,7 @@ public class GameBoardController {
         mediator.connectPlayer(getCurrentPlayer());
         gameboardUI.update("CHANGED_PLAYER");
 
-        //GAMELOG RECRDS L0G
+        //GAMELOG RECORDS LOG: When its a different players turn to play
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
         gameLog.recordLog(getCurrentPlayer(), gameAction);
 
