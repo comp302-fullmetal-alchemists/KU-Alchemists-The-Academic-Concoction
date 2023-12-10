@@ -8,9 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.GridLayout;
-
+import java.awt.List;
 
 import system.domain.Alchemy;
+import system.domain.Theory;
 import system.domain.controllers.TheoryController;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
@@ -31,6 +32,7 @@ public class PublicationArea extends JPanel implements Observer{
     private String alchemy = "";
     private TheoryController theoryController;
     private JButton submitButton;
+    private JButton debunkButton;
 
     public PublicationArea() {
         super();
@@ -121,6 +123,42 @@ public class PublicationArea extends JPanel implements Observer{
         submitButton.setBounds(297, 643, 128, 31);
         addActiontoButton(submitButton);
         add(submitButton);
+
+        this.debunkButton = new JButton("Debunk");
+        debunkButton.setBounds(297, 685, 128, 31);
+        debunkButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //select an ingredient that has a theory and an alchemy
+                    //if no ingredient is selected, show error message
+                    if (theoryBoard.getIngredient() == null)
+                    {
+                        System.err.println("Please select an ingredient");
+                        
+                    }
+                    else if (alchemy.isEmpty()){
+                        System.err.println("Please select an alchemy");
+                    }
+                    else {
+                        for (Theory i : theoryController.getTheories()) {
+                            if (i.getIngredient().equals(theoryBoard.getIngredient())) {
+                                int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
+                                theoryController.debunkTheory(GameBoardController.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
+
+                                return;
+                            }
+                        }
+                        alchemy = "";
+                        theoryBoard.setIngredient(null);
+                    }
+
+            }
+        }
+        );  
+         
+        add(debunkButton);
+
         this.theoryController = GameBoardController.getInstance().getTheoryController();
         theoryController.setObserver(this);
     }
@@ -184,6 +222,7 @@ public class PublicationArea extends JPanel implements Observer{
         );
     }
 
+
     @Override
     public void update(String msg) {
        if (msg.contains("DUPLICATE_THEORY")) {
@@ -195,6 +234,18 @@ public class PublicationArea extends JPanel implements Observer{
         }
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
+        }
+        else if (msg.contains("THEORY_DEBUNKED")) {
+            JOptionPane.showMessageDialog(this, "Theory debunked");
+        }
+        else if (msg.contains("THEORY_NOT_DEBUNKED")) {
+            JOptionPane.showMessageDialog(this, "Theory not debunked");
+        }
+        else if (msg.contains("CANNOT_DEBUNK_YOUR_OWN_THEORY")) {
+            JOptionPane.showMessageDialog(this, "Cannot debunk your own theory");
+        }
+        else if (msg.contains("CANNOT_DEBUNK_SAME_ALCHEMY")) {
+            JOptionPane.showMessageDialog(this, "Cannot debunk same alchemy");
         }
     }
 }

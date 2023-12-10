@@ -77,6 +77,7 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Solaris Root";
                 theoryBook = theoryBook1;
+                System.out.println(ingredient);
 			}
 		});
 		add(theoryBook1);
