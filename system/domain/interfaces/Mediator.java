@@ -19,4 +19,6 @@ public interface Mediator {
     boolean playerGoldAtLeast(int threshold);
 
     void playerPlayedTurn();
+    
+    String getPlayerName();
 }

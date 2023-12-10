@@ -7,6 +7,7 @@ public class GameAction {
     private String action;
     private int score;
 
+    //has the variables for: Where the action is coming from, who is affected/notified by it, what is the action and its score value for final score calculation.
     public GameAction (String from, String to, String action, int score) {
         this.from = from;
         this.to = to;

@@ -35,10 +35,9 @@ public class GameContentPane extends JPanel {
     }
 
     public void changeView(String cardName) {
+    	if (ingredientStorage.isVisible()) ingredientStorage.clear();
+    	else if (potionBrewingArea.isVisible()) potionBrewingArea.clear();
         cards.show(this, cardName);
-        switch (cardName) {
-            case "ingredientStorage": ingredientStorage.initialize();
-            case "potionBrewingArea": potionBrewingArea.initialize();
-        }
+        if (cardName.equals("potionBrewingArea")) potionBrewingArea.activate();
     }
 }

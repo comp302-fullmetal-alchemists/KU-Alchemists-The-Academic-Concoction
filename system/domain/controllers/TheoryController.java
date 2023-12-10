@@ -43,7 +43,7 @@ public class TheoryController {
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
 
-            //GAMELOG RECORDS LOG
+            //GAMELOG RECORDS LOG: When a player publishes a theory
             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory: %s!", theory.getIngredient()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         }
