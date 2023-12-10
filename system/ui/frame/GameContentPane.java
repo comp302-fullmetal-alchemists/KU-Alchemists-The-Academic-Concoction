@@ -38,6 +38,7 @@ public class GameContentPane extends JPanel {
     	if (ingredientStorage.isVisible()) ingredientStorage.clear();
     	else if (potionBrewingArea.isVisible()) potionBrewingArea.clear();
         cards.show(this, cardName);
-        if (cardName.equals("potionBrewingArea")) potionBrewingArea.activate();
+        if (cardName.equals("ingredientStorage")) ingredientStorage.activate();
+        else if (cardName.equals("potionBrewingArea")) potionBrewingArea.activate();
     }
 }

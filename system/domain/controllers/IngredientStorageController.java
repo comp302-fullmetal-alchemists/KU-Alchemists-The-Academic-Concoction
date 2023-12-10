@@ -24,6 +24,7 @@ public class IngredientStorageController implements Collector{
     private GameLogController gameLog;
     private GameAction gameAction;
     private Boolean active = false;
+    private IngredientCard ingToSell;
 
     public IngredientStorageController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
@@ -64,14 +65,31 @@ public class IngredientStorageController implements Collector{
 
 
     }
+    
+    public boolean hasIngToSell() {
+    	return ingToSell != null;
+    }
+    
+    public void discardIngToSell() {
+    	mediator.sendToPlayer(ingToSell);
+    	ingToSell = null;
+    	ingredientStorageUI.update("DISCARD_INGREDIENT");
+    }
 
-    public IngredientCard transmuteIngredient(int index, IngredientCard card) {
-        //this just yielded an error but it is not my use case so I just commented it out
-        //GameBoardController.getInstance().getPlayer(index).getInventory().giveIngredient(card);
-        GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
-        
-        return card;
-
+    public void transmuteIngredient() {
+    	if (ingToSell != null) {
+    		mediator.updatePlayerGold(2);
+            ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
+            //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            ingToSell = null;
+            mediator.playerPlayedTurn();
+    	}
+    	else {
+    		ingredientStorageUI.update("ABSENT_INGREDIENT");
+    	}
+    	
     }
 
     public void buyArtifact() {
@@ -113,14 +131,14 @@ public class IngredientStorageController implements Collector{
         else {
             IngredientCard drawn = ingredientPile.remove(0);
 
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
+            mediator.sendToPlayer(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
 
             //GAME LOG RECORDS: When a player draws a card.
             gameAction = new GameAction("Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
             
-            GameBoardController.getInstance().getCurrentPlayer().playedTurn();
+            mediator.playerPlayedTurn();
         }
     }
 
@@ -151,13 +169,11 @@ public class IngredientStorageController implements Collector{
     public <T> boolean collectItem(T item) {
         if (item instanceof IngredientCard) {
             IngredientCard ing = (IngredientCard) item;
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
-            ingredientStorageUI.update(String.format("CARD_SOLD:%s", ing.getName()));
-
-            //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ing.getName()), 0);
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
-            mediator.playerPlayedTurn();
+            if (ingToSell != null) {
+            	discardIngToSell();
+            }
+            ingToSell = ing;
+            ingredientStorageUI.update("NEW_INGREDIENT:" + ing.getName());
             return true;
         }
         return false;
