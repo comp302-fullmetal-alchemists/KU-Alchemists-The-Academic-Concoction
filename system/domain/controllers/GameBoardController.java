@@ -100,7 +100,7 @@ public class GameBoardController {
         this.ingredientStorage.initializePiles();
     }
 
-    public static Player getPlayer(int index) {
+    public Player getPlayer(int index) {
         return players.get(index);
     }
         
