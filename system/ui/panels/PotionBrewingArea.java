@@ -123,7 +123,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
                 }
 			}
 		});
-		sellPotionBtn.setBounds(459, 365, 134, 32);
+		sellPotionBtn.setBounds(459, 427, 134, 32);
 		add(sellPotionBtn);
 		
 		adventurerInfo = new JLabel("<html>Hark, potion-masters! The Adventurer proclaims:<br>" + //
@@ -136,7 +136,8 @@ public class PotionBrewingArea extends JPanel implements Observer {
         adventurerInfo.setBackground(Color.LIGHT_GRAY);
 		add(adventurerInfo);
 		
-		lblPotion = new JLabel("Select a Potion to Sell");
+		lblPotion = new JLabel("Select a Potion");
+		lblPotion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPotion.addMouseListener(
 				new MouseAdapter() {
 					@Override
@@ -146,7 +147,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 				});
 		lblPotion.setOpaque(true);
 		lblPotion.setBackground(Color.LIGHT_GRAY);
-		lblPotion.setBounds(459, 306, 134, 32);
+		lblPotion.setBounds(482, 304, 90, 96);
 		add(lblPotion);
 		
     }
@@ -180,7 +181,20 @@ public class PotionBrewingArea extends JPanel implements Observer {
         	lblIng2.setBackground(new Color(117, 67, 108));
         }
         else if (msg.contains("NEW_POTION")) {
-            lblPotion.setText(msg.split(":")[1]);
+        	String status = msg.split(":")[1];
+            lblPotion.setText((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
+            if (status.equals("neutral")) {
+            	lblPotion.setBackground(Color.LIGHT_GRAY);
+    		}
+    		else if (status.substring(0, status.length() - 1).equals("Red")) {
+    			lblPotion.setBackground(Color.RED);
+    		}
+    		else if (status.substring(0, status.length() - 1).equals("Green")) {
+    			lblPotion.setBackground(Color.GREEN);
+    		}
+    		else if (status.substring(0, status.length() - 1).equals("Blue")) {
+    			lblPotion.setBackground(Color.BLUE);
+    		}
         }
         else if (msg.contains("ABSENT_INGREDIENTS")) {
             showMessageDialog("Please fill ingredients");
@@ -197,6 +211,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("SOLD_POTION")) {
             lblPotion.setText("Select a Potion");
+            lblPotion.setBackground(Color.LIGHT_GRAY);
             showMessageDialog(offerStrings[Integer.parseInt(msg.split(":")[1]) - 1]);//gets the offer and shows the message dialog according to that offer value.
         }
 
@@ -210,6 +225,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("DISCARD_POTION")) {
             lblPotion.setText("Select a Potion");
+            lblPotion.setBackground(Color.LIGHT_GRAY);
         }
 
     }
