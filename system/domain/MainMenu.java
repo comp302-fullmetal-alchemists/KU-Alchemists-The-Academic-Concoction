@@ -13,8 +13,7 @@ public class MainMenu {
     }
 
     public static String helpScreen() {
-        String helpString = "We are here to help you!";
-        return helpString;
+        return "KuAlchemists Help Center\n\n";
     }
 
     public void pauseGame() {
