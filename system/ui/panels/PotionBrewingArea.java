@@ -170,7 +170,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
     }
     
     @Override
-    public void update(String msg) {
+    public void update(String msg) {//messager for observer
         if (msg.contains("NEW_INGREDIENT1")) {
         	String[] ingName = msg.split(":")[1].split(" ");
         	lblIng1.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
@@ -199,7 +199,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("SOLD_POTION")) {
             lblPotion.setText("Select a Potion");
-            showMessageDialog(offerStrings[Integer.parseInt(msg.split(":")[1]) - 1]);
+            showMessageDialog(offerStrings[Integer.parseInt(msg.split(":")[1]) - 1]);//gets the offer and shows the message dialog according to that offer value.
         }
 
         else if (msg.contains("DISCARD_INGREDIENT1")) {

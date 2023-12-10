@@ -37,7 +37,6 @@ public class Player {
 
     public void appendToGameLog(String text) {
         playerUI.update("GAMELOG:"+text);
-    	//playerDashboardUI.appendToGameLog(text);
     }
 
     public void setName(String name) {
