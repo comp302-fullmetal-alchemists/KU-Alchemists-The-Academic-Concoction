@@ -7,7 +7,6 @@ import system.domain.ArtifactCard;
 import system.domain.Cards;
 import system.domain.GameAction;
 import system.domain.IngredientCard;
-import system.domain.Player;
 import system.domain.Potion;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;

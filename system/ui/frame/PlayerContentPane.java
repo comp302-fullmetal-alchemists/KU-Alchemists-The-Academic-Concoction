@@ -1,7 +1,7 @@
 package system.ui.frame;
 
+import system.domain.controllers.Player;
 import system.ui.panels.*;
-import system.domain.Player;
 
 import javax.swing.JPanel;
 

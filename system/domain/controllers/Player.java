@@ -1,12 +1,10 @@
-package system.domain;
+package system.domain.controllers;
 
-import system.domain.controllers.InventoryController;
 import system.domain.interfaces.Observer;
 
 import javax.swing.Icon;
 
 import system.ui.panels.PlayerDashboard;
-import system.domain.controllers.GameBoardController;
 
 public class Player {
     

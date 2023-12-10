@@ -2,7 +2,6 @@ package system.domain.controllers;
 
 import javax.swing.Icon;
 
-import system.domain.Player;
 import system.domain.interfaces.Observer;
 
 public class AuthenticationController {

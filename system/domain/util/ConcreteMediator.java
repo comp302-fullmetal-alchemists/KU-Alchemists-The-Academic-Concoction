@@ -1,13 +1,18 @@
 package system.domain.util;
 
-import system.domain.Player;
 import system.domain.interfaces.Collector;
 import system.domain.interfaces.Mediator;
 import system.domain.IngredientCard;
 import system.domain.ArtifactCard;
 import system.domain.Potion;
+import system.domain.controllers.Player;
 
 public class ConcreteMediator implements Mediator {
+	
+	/* 
+	 * This is the concrete version of mediator, that holds one player that is always the current player and always connected,
+	 * and one collector that is connected to the other side of communication when opened.
+	 */
 
     private Player player;
     private Collector collector;

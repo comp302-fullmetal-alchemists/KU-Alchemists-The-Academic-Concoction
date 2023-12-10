@@ -42,6 +42,11 @@ public class PotionBrewingAreaController implements Collector{
         this.potionBrewingUI = observer;
     }
 
+    
+    /*
+     * Here we can brew a potion of two ingredients, based on their alchemies. 
+     * The testing and results of potion are not implemented yet.
+     * */
     public void makePotion() {
         if (ing1 != null && ing2 != null) {
             Potion brewed = new Potion(ing1, ing2);
@@ -132,6 +137,13 @@ public class PotionBrewingAreaController implements Collector{
         }
     }
 
+    
+    /* 
+     * Collector interface works with mediator, they make taking objects from players easier while maintaining
+     * low coupling. When a collector like potionBrewingArea is opened, player can send ingredients and potions to
+     * it by clicking those objects from its inventory.
+     * PotionBrewing area handles the objects it receives accordingly.
+     * */
     @Override
     public <T> boolean collectItem(T item) {
         if (item instanceof IngredientCard) {

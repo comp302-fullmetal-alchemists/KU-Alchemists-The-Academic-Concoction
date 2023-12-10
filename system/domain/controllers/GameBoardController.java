@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
 
-import system.domain.Player;
 import system.domain.Alchemy;
 import system.domain.ArtifactCard;
 import system.domain.GameAction;
@@ -55,6 +54,8 @@ public class GameBoardController {
          alchemies[7] = new Alchemy(-Alchemy.AlchemicalConstants.LARGE, -Alchemy.AlchemicalConstants.SMALL, Alchemy.AlchemicalConstants.SMALL);
     }
 
+    
+    //when game starts, alchemies are randomly assigned to ingredients
     public void assignRandomAlchemy() {
         ArrayList<Integer> alchemyIndex = new ArrayList<Integer>();
         for (int i = 0; i < 8; i++) {
@@ -71,6 +72,8 @@ public class GameBoardController {
     public void setObserver(Observer observer) {
         this.gameboardUI = observer;
     }
+    
+    //GameboardController is a singleton class, this is the lazy initialization method
     public static GameBoardController getInstance() {
         if (instance == null) {
             instance = new GameBoardController();
@@ -80,6 +83,7 @@ public class GameBoardController {
     }
 
 
+    //authentication sends players to gameboard and gameboard readies the game areas
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2); 
@@ -116,6 +120,12 @@ public class GameBoardController {
         return usages;
     }
 
+    /*	when a player is going to be changed, first the game areas are cleared and items remaining in them
+    	are sent back to the previous player because the previous player may have objects left in those areas, 
+    	like an ingredient that is going to be sold.This was the "CHANGING_PLAYER" update.
+    	 Then it changes the view to the next player, this is the "CHANGED_PLAYER" update.
+     
+     */
     public void changePlayer() {
         //GAMELOG RECORDS LOG: When the round is over for a player
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
@@ -142,6 +152,10 @@ public class GameBoardController {
         }
     }
 
+    
+    /*
+     UI objects get their controllers from GameBoardController.
+     */
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorage;
     }
@@ -222,6 +236,10 @@ public class GameBoardController {
             }
             }
 
+        
+    /* 
+     * The random assignment of aclhemies to ingredients is needed for some parts of the game, this is to get it.
+     * */    
     public Map<String, Alchemy> getAlchemyMap() {
         return alchemyMap;
     }
