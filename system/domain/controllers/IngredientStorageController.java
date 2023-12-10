@@ -55,6 +55,7 @@ public class IngredientStorageController implements Collector{
             GameBoardController.getInstance().getPlayer(1).getInventory().addIngredient(ingredientPile.remove(0));
         }
 
+        //gameStart is logged in for both players.
         gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getPlayer(0).getName(), "Game has started!", 0);
         gameLog.recordLog(GameBoardController.getInstance().getPlayer(0), gameAction);
 
@@ -90,7 +91,7 @@ public class IngredientStorageController implements Collector{
                 mediator.sendToPlayer(artifact);
                 ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
                 
-                //GAME LOG RECORDS
+                //GAME LOG RECORDS: When a player buys an artifact card.
                 gameAction = new GameAction("Artifact Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
                 gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
                 
@@ -115,7 +116,7 @@ public class IngredientStorageController implements Collector{
             GameBoardController.getInstance().getCurrentPlayer().getInventory().addIngredient(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
 
-            //GAME LOG RECORDS
+            //GAME LOG RECORDS: When a player draws a card.
             gameAction = new GameAction("Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
             
@@ -141,8 +142,8 @@ public class IngredientStorageController implements Collector{
             ingredientStorageUI.update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
         }
 
-        //GAME LOG RECORDS
-        gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Their Cards",  String.format("%s is Used", card.getName()), 0);
+        //GAME LOG RECORDS: When a player uses their artifact card
+        gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "themselves",  String.format("%s is Used", card.getName()), 0);
         gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
     }
 
@@ -153,7 +154,7 @@ public class IngredientStorageController implements Collector{
             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
             ingredientStorageUI.update(String.format("CARD_SOLD:%s", ing.getName()));
 
-            //GAME LOG RECORDS
+            //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ing.getName()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
             mediator.playerPlayedTurn();

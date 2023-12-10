@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>KuAlch</name>
+	<name>project</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 	<filteredResources>
 		<filter>
-<<<<<<< HEAD
-			<id>1701430244036</id>
-=======
-			<id>1701010698274</id>
->>>>>>> f2b653e6fdf9ebefc6a961e7727ddca6519f74c0
+			<id>1702160101219</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

@@ -24,12 +24,12 @@ public class GameBoardController {
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
-    private GameLogController gameLog;
-    private GameAction gameAction;
+    private GameLogController gameLog; 
+    private GameAction gameAction; //to be used for start game gameAction
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
+    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad Stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
     private Alchemy[] alchemies = new Alchemy[8];
     private Map<String, Alchemy> alchemyMap = new HashMap<String, Alchemy>();
     private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
@@ -39,7 +39,7 @@ public class GameBoardController {
     private GameBoardController() {
         this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
-        this.gameLog = new GameLogController(); //get the players and initalize the gamelog
+        this.gameLog = new GameLogController(); //create the gamelog
 
 
     }
@@ -83,7 +83,7 @@ public class GameBoardController {
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2); 
-        gameLog.GameLogControllerInit(player1, player2); //get the players and initalize the gamelog
+        gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
 
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
@@ -117,16 +117,18 @@ public class GameBoardController {
     }
 
     public void changePlayer() {
-        //GAMELOG RECRDS L0G
+        //GAMELOG RECORDS LOG: When the round is over for a player
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
         gameLog.recordLog(getCurrentPlayer(), gameAction);
 
+        gameboardUI.update("CHANGING_PLAYER");
+        
         players.get(0).changeTurn();
         players.get(1).changeTurn();
         mediator.connectPlayer(getCurrentPlayer());
-        gameboardUI.update("CHANGE_PLAYER");
+        gameboardUI.update("CHANGED_PLAYER");
 
-        //GAMELOG RECRDS L0G
+        //GAMELOG RECORDS LOG: When its a different players turn to play
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
         gameLog.recordLog(getCurrentPlayer(), gameAction);
 

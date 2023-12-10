@@ -93,15 +93,21 @@ public class Gameboard extends JFrame implements Observer{
 		if (msg.equals("INITIALIZE_BOARD")) {
             initializeTheBoard();
         }
-        else if (msg.equals("CHANGE_PLAYER")) {
+		else if (msg.equals("CHANGING_PLAYER")) {
+			clear();
+		}
+        else if (msg.equals("CHANGED_PLAYER")) {
             changePlayer();
         }
+	}
+	
+	public void clear() {
+		gamePane.changeView("village");
 	}
 	
 	public void changePlayer() { 
 		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getCurrentPlayer().getName()));
         playerPane.changeView(gameController.getCurrentPlayer().getName());
-		gamePane.changeView("village");
     }
 
     public void initializeTheBoard() { 
