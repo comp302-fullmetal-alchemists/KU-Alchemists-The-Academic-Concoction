@@ -10,33 +10,36 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class TheoryController {
-    //This can be created as map
     private List<Theory> theories;
     private Observer theoryUI;
     private GameLogController gameLog;
     private GameAction gameAction;
 
     public TheoryController() {
-        this.theories = new ArrayList<Theory>();
+        this.theories = new ArrayList<Theory>(); //add theories to the list
         this.gameLog = GameBoardController.getInstance().getGameLog();
 
     }
 
     public void setObserver(Observer observer) {
+        //connects the observer to the theory controller
         this.theoryUI = observer;
     }
 
     public void publishTheory(Alchemy alchemy, String ingredient) {
+        //check if the theory is already published
         for (Theory i : theories) {
             if (i.getAlchemy() == alchemy || i.getIngredient() == ingredient) {
                 theoryUI.update("DUPLICATE_THEORY");
                 return;
             }
         } 
+        //check if the player has enough gold to publish a theory
         if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 1) {
             theoryUI.update("NOT_ENOUGH_GOLD");
             return;
         }
+        //publish the theory
         else{
             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(-1);
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getCurrentPlayer());
@@ -46,7 +49,7 @@ public class TheoryController {
             //GAMELOG RECORDS LOG
             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory: %s!", theory.getIngredient()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
-
+            //increase the turn count
             GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
         return;
