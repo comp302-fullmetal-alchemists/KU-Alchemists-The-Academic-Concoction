@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TheoryController {
-    //This can be created as map
     private List<Theory> theories;
     private Observer theoryUI;
     private GameLogController gameLog;
@@ -21,27 +20,31 @@ public class TheoryController {
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
 
     public TheoryController() {
-        this.theories = new ArrayList<Theory>();
+        this.theories = new ArrayList<Theory>(); //add theories to the list
         this.gameLog = GameBoardController.getInstance().getGameLog();
         this.alchemyMap = GameBoardController.getInstance().getAlchemyMap();
 
     }
 
     public void setObserver(Observer observer) {
+        //connects the observer to the theory controller
         this.theoryUI = observer;
     }
 
     public void publishTheory(Alchemy alchemy, String ingredient) {
+        //check if the theory is already published
         for (Theory i : theories) {
             if (i.getAlchemy() == alchemy || i.getIngredient() == ingredient) {
                 theoryUI.update("DUPLICATE_THEORY");
                 return;
             }
         } 
+        //check if the player has enough gold to publish a theory
         if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 1) {
             theoryUI.update("NOT_ENOUGH_GOLD");
             return;
         }
+        //publish the theory
         else{
             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(-1);
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getCurrentPlayer());
@@ -51,6 +54,8 @@ public class TheoryController {
             //GAMELOG RECORDS LOG: When a player publishes a theory
             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            //increase the turn count
+            GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
         return;
     }
