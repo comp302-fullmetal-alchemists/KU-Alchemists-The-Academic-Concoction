@@ -46,6 +46,8 @@ public class TheoryController {
             //GAMELOG RECORDS LOG
             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory: %s!", theory.getIngredient()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+
+            GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
         return;
     }

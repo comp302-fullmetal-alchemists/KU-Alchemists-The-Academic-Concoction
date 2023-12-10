@@ -198,8 +198,6 @@ public class PublicationArea extends JPanel implements Observer{
               JOptionPane.showMessageDialog(this, "Theory published");
               //create theory book
               theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
-              //change player
-              GameBoardController.getInstance().changePlayer();
         }
     }
 }
