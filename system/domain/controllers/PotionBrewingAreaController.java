@@ -96,15 +96,12 @@ public class PotionBrewingAreaController implements Collector{
         
     }
 
-    public void discardPotion() {
+    public void discardPotion(){
             mediator.sendToPlayer(potionToSell);
             potionToSell = null;
             potionBrewingUI.update("DISCARD_POTION");
     }
     
-    public List<Potion> getPotions(){
-        return GameBoardController.getInstance().getCurrentPlayer().getInventory().getPotions();
-    }
 
     public void sellPotion(){
         if(potionToSell != null){//IF THERE IS POTION TO SELL
@@ -119,10 +116,11 @@ public class PotionBrewingAreaController implements Collector{
             }
 
             //GAMELOG RECORDS LOG
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
+            gameAction = new GameAction(mediator.getPlayerName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         
-            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
+            mediator.updatePlayerGold(offer);
+            //GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(offer);
             potionToSell = null;
             potionBrewingUI.update(String.format("SOLD_POTION:%d", offer));
 

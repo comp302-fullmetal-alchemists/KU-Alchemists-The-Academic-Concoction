@@ -126,10 +126,12 @@ public class GameBoardController {
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
         gameLog.recordLog(getCurrentPlayer(), gameAction);
 
+        gameboardUI.update("CHANGING_PLAYER");
+        
         players.get(0).changeTurn();
         players.get(1).changeTurn();
         mediator.connectPlayer(getCurrentPlayer());
-        gameboardUI.update("CHANGE_PLAYER");
+        gameboardUI.update("CHANGED_PLAYER");
 
         //GAMELOG RECRDS L0G
         gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
