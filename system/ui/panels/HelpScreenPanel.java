@@ -24,8 +24,8 @@ public class HelpScreenPanel extends JPanel {
 
         "Game Board\n" +
         "1. Village: Visit the village to access different areas.\n" +
-        "2. Potion Brewing Area: Make experiments to discover new potions.\n" +
-        "3. Publication Area: Publish theories to earn reputation points.\n" +
+        "2. Potion Brewing Area: Make experiments to discover new potions and sell them to earn gold.\n" +
+        "3. Publication Area: Publish theories to earn reputation points and debunk theories.\n" +
         "4. Deduction Board: Use deduction to form theories.\n" +
         "5. Ingredient Storage: Draw ingredients and artifact cards, you can also transmute ingredients.\n\n" +
 
@@ -34,18 +34,14 @@ public class HelpScreenPanel extends JPanel {
         "2. Draw Artifact Card: Draw an artifact card from the ingredient storage, it will cost 3 golds.\n" +
         "3. Make Experiment: Make an experiment to discover a new potion, you can have negative, positive or neutral results.\n" +
         "4. Publish Theory:Publish a theory to earn reputation points, do not forget you need golds.\n" +
-        "5. Debunk Theory: Debunk a published theory to earn reputation points but do not forget if you are wrong you will lose gold.\n\n" +
+        "5. Debunk Theory: Debunk a published theory to earn reputation points but do not forget if you are wrong you will lose gold.\n" +
         "6. Sell Potion: Sell a potion to earn gold.\n" +
         "7. Transmute Ingredient: Transmute an ingredient to earn gold.\n\n" +
 
         "Rounds and allowed actions\n" +
         "Round 1: You are only allowed to forage ingredients, transmute ingredients,make experiment, and buy artifact cards.\n" +
         "Round 2: You are additionally allowed to sell a potion and publish theories.\n" +
-        "Round 3: You are additionally allowed to  debunk theories.\n\n" +
-        
-        "Artifact Cards\n" +
-        "Elixir of Insight:Allows a player to view the top three cards of the ingredient deck and rearrange them in any order." +
-        "Discount Card: ?\n" ;
+        "Round 3: You are additionally allowed to  debunk theories.\n\n" ;
 
         // Set layout and add components
         setLayout(new BorderLayout());
