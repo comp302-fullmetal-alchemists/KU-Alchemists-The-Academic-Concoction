@@ -43,7 +43,7 @@ public class GameBoardController {
 
 
     }
-
+    // alchemies are created from the Alchemy class according to the actual game in here 
     public void setAlchemy() {
          alchemies[0] = new Alchemy(-Alchemy.AlchemicalConstants.SMALL, Alchemy.AlchemicalConstants.SMALL, -Alchemy.AlchemicalConstants.LARGE); 
          alchemies[1] = new Alchemy(Alchemy.AlchemicalConstants.LARGE, Alchemy.AlchemicalConstants.LARGE, Alchemy.AlchemicalConstants.LARGE);

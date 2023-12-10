@@ -94,13 +94,9 @@ public class IngredientStorageController implements Collector{
 
     public void buyArtifact() {
         // control if the player has enough gold
-        /*if (GameBoardController.getInstance().getCurrentPlayer().getInventory().getGold() < 3) {
-            return null;
-           
-        }*/
-        //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
         if (mediator.playerGoldAtLeast(3)) {
-            ArtifactCard artifact = drawArtifact();
+            //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
+            ArtifactCard artifact = drawArtifact();       
             if (artifact == null) {
                 ingredientStorageUI.update("EMPTY_PILE");
             }
@@ -141,7 +137,7 @@ public class IngredientStorageController implements Collector{
             mediator.playerPlayedTurn();
         }
     }
-
+    // draw an artifact card from the pile according to the rule of taking the last card from the pile
     public ArtifactCard drawArtifact() {
         if (artifactPile.isEmpty()) {
             return null;
@@ -149,7 +145,8 @@ public class IngredientStorageController implements Collector{
         ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
         return drawed;
     }
-
+    // since the phase I. stated that the Elixir of Insight card must be implemented, this method is only
+    // being used to show the top 3 cards of the ingredient pile, later on other artifact cards will be implemented 
     public void useArtifact(ArtifactCard card) {  
         if (card.getName().equals("Elixir of Insight")) {
             String cardNames = "";

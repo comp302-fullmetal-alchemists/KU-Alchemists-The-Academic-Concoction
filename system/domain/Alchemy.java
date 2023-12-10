@@ -59,7 +59,7 @@ public class Alchemy {
 
 
 /* 
- *  R G B - 8 INGREDIENTS CREATED FROM THE 3 ASPECTS
+ *  R G B - 8 INGREDIENTS CREATED FROM THE 3 ASPECTS - According to the actual game rules
 //Alchemy alch1 = new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.SMALL, -AlchemicalConstants.LARGE); 
 //Alchemy alch2 = new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.LARGE, AlchemicalConstants.LARGE);
 //Alchemy alch3 = new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE);
