@@ -20,14 +20,14 @@ public class PublicationArea extends JPanel implements Observer{
 
     private JButton back;
     private TheoryBoard theoryBoard;
-    private JButton Alchemy1;
-    private JButton Alchemy2;
-    private JButton Alchemy3;
-    private JButton Alchemy4;
-    private JButton Alchemy5;
-    private JButton Alchemy6;
-    private JButton Alchemy7;
-    private JButton Alchemy8;
+    private JButton alchemy1;
+    private JButton alchemy2;
+    private JButton alchemy3;
+    private JButton alchemy4;
+    private JButton alchemy5;
+    private JButton alchemy6;
+    private JButton alchemy7;
+    private JButton alchemy8;
     private String alchemy = "";
     private TheoryController theoryController;
     private JButton submitButton;
@@ -37,40 +37,87 @@ public class PublicationArea extends JPanel implements Observer{
         setLayout(null);
         setBackground(new Color(58, 77, 108));
         this.back = createNavButton("village", "Back to the village");
-        back.setBounds(10, 25, 85, 101);
+        back.setBounds(31, 25, 99, 101);
         add(back);
 
-        this.Alchemy1= createAlchemyButton("Alchemy 1");
-        Alchemy1.setBounds(126, 25, 85, 39);
-        add(Alchemy1);
-        this.Alchemy2= createAlchemyButton("Alchemy 2");
-        Alchemy2.setBounds(250, 25, 85, 39);
-        add(Alchemy2);
-        this.Alchemy3= createAlchemyButton("Alchemy 3");
-        Alchemy3.setBounds(374, 25, 85, 39);
-        add(Alchemy3);
-        this.Alchemy4= createAlchemyButton("Alchemy 4");
-        Alchemy4.setBounds(493, 25, 85, 39);
-        add(Alchemy4);
-        this.Alchemy5= createAlchemyButton("Alchemy 5");
-        Alchemy5.setBounds(126, 87, 85, 39);
-        add(Alchemy5);
-        this.Alchemy6= createAlchemyButton("Alchemy 6");
-        Alchemy6.setBounds(250, 87, 85, 39);
-        add(Alchemy6);
-        this.Alchemy7= createAlchemyButton("Alchemy 7");
-        Alchemy7.setBounds(374, 87, 85, 39);
-        add(Alchemy7);
-        this.Alchemy8= createAlchemyButton("Alchemy 8");
-        Alchemy8.setBounds(493, 87, 85, 39);
-        add(Alchemy8);
+        alchemy1 = new JButton("Alchemy 1");
+		alchemy1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 1";
+			}
+		});
+		alchemy1.setBounds(193, 25, 85, 39);
+		add(alchemy1);
+
+		alchemy2 = new JButton("Alchemy 2");
+		alchemy2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 2";
+			}
+		});
+		alchemy2.setBounds(340, 25, 85, 39);
+		add(alchemy2);
+
+		alchemy3 = new JButton("Alchemy 3");
+		alchemy3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 3";
+			}
+		});
+		alchemy3.setBounds(488, 25, 85, 39);
+		add(alchemy3);
+
+		alchemy4 = new JButton("Alchemy 4");
+		alchemy4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 4";
+			}
+		});
+		alchemy4.setBounds(634, 25, 85, 39);
+		add(alchemy4);
+
+		alchemy5 = new JButton("Alchemy 5");
+		alchemy5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 5";
+			}
+		});
+		alchemy5.setBounds(193, 87, 85, 39);
+		add(alchemy5);
+
+		alchemy6 = new JButton("Alchemy 6");
+		alchemy6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 6";
+			}
+		});
+		alchemy6.setBounds(340, 87, 85, 39);
+		add(alchemy6);
+
+		alchemy7 = new JButton("Alchemy 7");
+		alchemy7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 7";
+			}
+		});
+		alchemy7.setBounds(488, 87, 85, 39);
+		add(alchemy7);
+
+		alchemy8 = new JButton("Alchemy 8");
+		alchemy8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 8";
+			}
+		});
+		alchemy8.setBounds(634, 87, 85, 39);
+		add(alchemy8);
 
         this.theoryBoard = new TheoryBoard();
-        theoryBoard.setBounds(10, 195, 584, 487);
+        theoryBoard.setBounds(31, 136, 688, 487);
         add(theoryBoard);
 
         this.submitButton = new JButton("Submit");
-        submitButton.setBounds(250, 700, 85, 39);
+        submitButton.setBounds(297, 643, 128, 31);
         addActiontoButton(submitButton);
         add(submitButton);
         this.theoryController = GameBoardController.getInstance().getTheoryController();
@@ -125,7 +172,7 @@ public class PublicationArea extends JPanel implements Observer{
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
-                        theoryBoard.createTheoryBook(theoryBoard.getIngredient(), alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+                        theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
                         System.out.println("Theory book created by " + GameBoardController.getInstance().getCurrentPlayer().getName() + " with " + theoryBoard.getIngredient() + " and " + alchemy);
                         alchemy = "";
                         theoryBoard.setIngredient(null);
