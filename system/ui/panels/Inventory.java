@@ -34,8 +34,9 @@ public class Inventory extends JPanel implements Observer {
 
 
     private Map<String, Integer> ingredients;
-    private ArrayList<JLabel> artifacts;
+    private ArrayList<String> artifacts;
     private ArrayList<JLabel> potions;
+    private ArrayList<String> potions2;
     private InventoryController invController;
     private JLabel lblGold;
     private JLabel lblPlayerGold;
@@ -67,8 +68,9 @@ public class Inventory extends JPanel implements Observer {
         ingredients.put("Rat Tail", 0);
         ingredients.put("Spider Web", 0);
         ingredients.put("Newt Eye", 0);
-        this.artifacts = new ArrayList<JLabel>();
+        this.artifacts = new ArrayList<String>();
         this.potions = new ArrayList<JLabel>();
+        this.potions2 = new ArrayList<String>();
         setLayout(null);
         
         lblGold = new JLabel("Gold:");
@@ -199,6 +201,7 @@ public class Inventory extends JPanel implements Observer {
         
         artifactPanel = new JPanel();
         artifactPanel.setBounds(10, 210, 270, 70);
+        artifactPanel.setLayout(null);
         add(artifactPanel);
         
         lblPotion = new JLabel("Potions:");
@@ -207,6 +210,7 @@ public class Inventory extends JPanel implements Observer {
         
         potionPanel = new JPanel();
         potionPanel.setBounds(10, 310, 270, 70);
+        potionPanel.setLayout(null);
         add(potionPanel);
         
     }
@@ -257,90 +261,84 @@ public class Inventory extends JPanel implements Observer {
     }
     
     
-    public void addItemToInventory(String text, String type) {
-        JLabel label = new JLabel(text);
-        label.addMouseListener(
-            new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (type.equals("Potion")) {
-                        //as long as there is no collector of potions is present in
-                        //concrete mediator, this method is safe
-                        Inventory.this.invController.sendPotion(text);
-                    }
-                    else if (type.equals("Artifact")) {
-                        /// maybe use the artifact or something
-                    }
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {}
-
-                @Override
-                public void mouseReleased(MouseEvent e) {}
-
-                @Override
-                public void mouseEntered(MouseEvent e) {}
-
-                @Override
-                public void mouseExited(MouseEvent e) {}
-                
-            }
-        );
-        
-        if (type.equals("Potion")) {
-        	potions.add(label);
-        	refresh("Potion");
-        }
-        else if (type.equals("Artifact")) {
-        	artifacts.add(label);
-        	refresh("Artifact");
-        }
-    }
-
-    public void removeItemFromInventory(String item, String type) {
-    	if (type.equals("Artifact")) {
-    		for (int i = 0; i < artifacts.size(); i++) {
-                if (artifacts.get(i).getText().equals(item)) {
-                    artifacts.remove(i);
-                    break;
-                }
-            }
-    		refresh("Artifact");
+    public String artifactNameToLabelText(String name) {
+    	String[] parts = name.split(" ");
+    	String ret = "<html>";
+    	for (int i = 0; i < parts.length; i++) {
+    		ret += parts[i];
+    		ret += "<br>";
     	}
-    	else if (type.equals("Potion")) {
-    		for (int i = 0; i < potions.size(); i++) {
-                if (potions.get(i).getText().equals(item)) {
-                    potions.remove(i);
-                    break;
-                }
-            }
-    		refresh("Potion");
-    	}
-        
+    	ret += "</html>";
+    	return ret;
     }
-
-    public void refresh(String type) {
-    	
-    	if (type.equals("Artifact")) {
-    		artifactPanel.removeAll();
-            artifactPanel.revalidate();
-            for (JLabel j: artifacts){
-                artifactPanel.add(j);
-            }
-            artifactPanel.revalidate();
-            artifactPanel.repaint();
-    	}
-    	else if (type.equals("Potion")) {
-    		potionPanel.removeAll();
-            potionPanel.revalidate();
-            for (JLabel j: potions){
-                potionPanel.add(j);
-            }
-            potionPanel.revalidate();
-            potionPanel.repaint();
-    	}	
+    
+    public void addArtifactToInventory(String text) {
+    	artifacts.add(text);
+    	updateArtifacts();
     }
+ 
+    public void updateArtifacts() {
+    	artifactPanel.removeAll();
+    	artifactPanel.revalidate();
+    	int x0 = 6;
+    	for (int i = 0; i < artifacts.size(); i++) {
+    		JLabel artifactLabel = new JLabel(artifactNameToLabelText(artifacts.get(i)));
+    		artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    		artifactLabel.setOpaque(true);
+    		artifactLabel.setBackground(new Color(49, 81, 50));
+    		artifactLabel.setForeground(Color.LIGHT_GRAY);
+    		artifactLabel.setBounds(x0 + 66*i, 3, 60, 64);
+    		artifactPanel.add(artifactLabel);
+    	}
+    	artifactPanel.revalidate();
+    	artifactPanel.repaint();
+    }
+    
+    public void addPotionToInventory(String text) {
+    	potions2.add(text);
+    	updatePotions();
+    }
+    
+    public void removePotionFromInventory(String text) {
+    	potions2.remove(text);
+    	updatePotions();
+    }
+    
+    public void updatePotions() {
+    	potionPanel.removeAll();
+    	potionPanel.revalidate();
+    	int x0 = 6;
+    	for (int i = 0; i < potions2.size(); i++) {
+    		String status = potions2.get(i);
+    		JLabel potionLabel = new JLabel((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
+    		potionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    		potionLabel.setOpaque(true);
+    		if (status.equals("neutral")) {
+    			potionLabel.setBackground(Color.LIGHT_GRAY);
+    		}
+    		else if (status.substring(0, status.length() - 1).equals("Red")) {
+    			potionLabel.setBackground(Color.RED);
+    		}
+    		else if (status.substring(0, status.length() - 1).equals("Green")) {
+    			potionLabel.setBackground(Color.GREEN);
+    		}
+    		else if (status.substring(0, status.length() - 1).equals("Blue")) {
+    			potionLabel.setBackground(Color.BLUE);
+    		}
+    		potionLabel.setBounds(x0 + 66*i, 3, 60, 64);
+    		potionLabel.addMouseListener(new MouseAdapter() {
+            	@Override
+            	public void mouseClicked(MouseEvent e) {
+            		Inventory.this.invController.sendPotion(status);
+            	}
+            });    
+    		potionPanel.add(potionLabel);
+    	}
+    	potionPanel.revalidate();
+    	potionPanel.repaint();
+    }
+    
+    
 
 
     @Override
@@ -352,14 +350,13 @@ public class Inventory extends JPanel implements Observer {
             removeIngredientFromInventory(msg.split(":")[1]);
         }
         else if (msg.contains("REMOVED_POTION")) {
-            removeItemFromInventory(msg.split(":")[1], "Potion");
-            lblPlayerGold.setText(String.format("%d",invController.getGold()));
+            removePotionFromInventory(msg.split(":")[1]);
         }
         else if (msg.contains("NEW_POTION")) {
-            addItemToInventory(msg.split(":")[1], "Potion");
+            addPotionToInventory(msg.split(":")[1]);
         }
         else if (msg.contains("NEW_ARTIFACT")){
-            addItemToInventory(msg.split(":")[1], "Artifact");
+            addArtifactToInventory(msg.split(":")[1]);
         }
         else if (msg.contains("GOLD_UPDATE")) {
         	updateGold();
