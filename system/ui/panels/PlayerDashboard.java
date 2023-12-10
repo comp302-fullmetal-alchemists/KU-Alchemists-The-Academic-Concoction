@@ -63,6 +63,10 @@ public class PlayerDashboard extends JPanel implements Observer {
         
         //Scrollable GameLog inside players dashboard
         gameLogDisplayInit();
+        this.gameLogDisplayText = new JTextArea(5,35);
+        gameLogDisplayText.setBounds(12, 504, 303, 80);
+        add(gameLogDisplayText);
+        gameLogDisplayText.setEditable(false);
         add(gameLogDisplay);
         
         JLabel lblGameLog = new JLabel("Game Log");
@@ -85,6 +89,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         gameLogDisplayText.setEditable(false);
         this.gameLogDisplay = new JScrollPane(gameLogDisplayText);
         gameLogDisplay.setBounds(22, 477, 290, 210);
+
         gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }
 
