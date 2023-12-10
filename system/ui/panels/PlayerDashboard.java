@@ -1,8 +1,8 @@
 package system.ui.panels;
 
-import system.domain.Player;
 import system.domain.interfaces.Observer;
 import system.domain.IngredientCard;
+import system.domain.controllers.Player;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import system.domain.GameAction;
-import system.domain.Player;
 
 public class GameLogController {
 

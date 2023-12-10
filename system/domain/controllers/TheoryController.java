@@ -5,7 +5,6 @@ import system.domain.GameAction;
 import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
-import system.domain.Player;
 
 import java.util.List;
 import java.util.Map;

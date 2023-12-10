@@ -15,8 +15,8 @@ import java.awt.event.MouseEvent;
 
 import system.domain.Alchemy;
 import system.domain.IngredientCard;
-import system.domain.Player;
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.Player;
 import system.domain.controllers.TheoryController;
 import system.ui.frame.GameContentPane;
 
