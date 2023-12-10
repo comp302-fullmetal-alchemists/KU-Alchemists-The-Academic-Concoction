@@ -1,21 +1,3 @@
-/*package system.ui.frame;
-
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import system.domain.controllers.GameBoardController;
-import system.domain.interfaces.Observer;
-import system.ui.panels.AuthenticationPanel;
-import system.ui.panels.HelpScreenPanel;*/
 package system.ui.frame;
 
 import java.awt.Dialog;

@@ -12,7 +12,7 @@ public class HelpScreenPanel extends JPanel {
 
     public HelpScreenPanel() {
         
-        // Help content string
+        // Help content string, for the outline I took it from the chatGBT
         String helpContent =
         "KuAlchemists Help Center\n\n" +
         "Welcome to KuAlchemists! This is a brief overview of the game's features:\n\n" +
