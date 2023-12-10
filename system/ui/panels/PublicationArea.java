@@ -149,12 +149,12 @@ public class PublicationArea extends JPanel implements Observer{
         //create submit button
 
         this.submitButton = new JButton("Submit");
-        submitButton.setBounds(297, 643, 128, 31);
+        submitButton.setBounds(225, 643, 128, 31);
         addActiontoButton(submitButton);
         add(submitButton);
 
         this.debunkButton = new JButton("Debunk");
-        debunkButton.setBounds(297, 685, 128, 31);
+        debunkButton.setBounds(375, 643, 128, 31);
         debunkButton.addActionListener(
             new ActionListener() {
                 @Override
