@@ -103,11 +103,6 @@ public class GameBoardController {
     public static Player getPlayer(int index) {
         return players.get(index);
     }
-
-    public static List<Player> getPlayerList() {
-        return players;
-    }
-
         
     public String[] getArtifactStrings() {
         return artifacts;
