@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>KuAlch</name>
+	<name>project</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1701430244036</id>
+			<id>1702160101219</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

@@ -68,4 +68,9 @@ public class ConcreteMediator implements Mediator {
     public void playerPlayedTurn() {
         player.playedTurn();
     }
+    
+    @Override
+    public String getPlayerName() {
+    	return player.getName();
+    }
 }

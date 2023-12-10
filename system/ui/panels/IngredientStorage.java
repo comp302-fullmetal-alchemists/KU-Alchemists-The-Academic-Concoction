@@ -18,16 +18,18 @@ import java.awt.Color;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class IngredientStorage extends JPanel implements Observer {
     
     private IngredientStorageController ingController;
-    private JButton back;
-    private JButton ingredientButton;
-    private JButton artifactButton;
-    private JButton transmuteIngButton;
-    String deactiveText = "Transmute Ingredient";
-    String activeText = "Finish action";
+    private JButton navBtn;
+    private JLabel lblIngPile;
+    private JLabel lblArtifactPile;
+    private JLabel lblIngToSell;
+    private JButton transmuteIngBtn;
     
     
     public IngredientStorage() {
@@ -36,14 +38,6 @@ public class IngredientStorage extends JPanel implements Observer {
         this.ingController = GameBoardController.getInstance().getIngredientStorageController(); 
         ingController.setObserver(this);
         setLayout(null);
-        this.back = createNavButton("village", "Back to the village");
-        add(back);
-        this.ingredientButton = createIngButton("Draw Ingredient");
-        add(ingredientButton);
-        this.artifactButton = createArtifactButton("Draw Artifact Card");
-        add(artifactButton);
-        this.transmuteIngButton = createTransmuteIngButton();
-        add(transmuteIngButton);
         
         JLabel lblNewLabel = new JLabel("Actions");
         lblNewLabel.setFont(new Font("Apple Chancery", Font.PLAIN, 20));
@@ -51,80 +45,76 @@ public class IngredientStorage extends JPanel implements Observer {
     	lblNewLabel.setBounds(27, 24, 130, 24);
         add(lblNewLabel);
         
+        lblIngPile = new JLabel("Draw Ingredient");
+        lblIngPile.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+                ingController.drawIngredient();
+
+        	}
+        });
+        lblIngPile.setBackground(new Color(117, 67, 108));
+        lblIngPile.setOpaque(true);
+        lblIngPile.setHorizontalAlignment(SwingConstants.CENTER);
+        lblIngPile.setBounds(111, 117, 150, 160);
+        add(lblIngPile);
+        
+        lblArtifactPile = new JLabel("Buy Artifact");
+        lblArtifactPile.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		ingController.buyArtifact();
+        	}
+        });
+    	lblArtifactPile.setOpaque(true);
+    	lblArtifactPile.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblArtifactPile.setBackground(Color.LIGHT_GRAY);
+    	lblArtifactPile.setBounds(111, 370, 150, 160);
+    	add(lblArtifactPile);
+    	
+    	navBtn = new JButton("Back to the village");
+    	navBtn.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			((GameContentPane) IngredientStorage.this.getParent()).changeView("village");
+    		}
+    	});
+    	navBtn.setBounds(288, 26, 159, 29);
+    	add(navBtn);
+    	
+    	lblIngToSell = new JLabel("<html>Select<br>Ingredient</html>");
+    	lblIngToSell.addMouseListener(new MouseAdapter() {
+    		@Override
+    		public void mouseClicked(MouseEvent e) {
+    			if (ingController.hasIngToSell()) ingController.discardIngToSell();
+    		}
+    	});
+    	lblIngToSell.setBackground(Color.LIGHT_GRAY);
+    	lblIngToSell.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblIngToSell.setOpaque(true);
+    	lblIngToSell.setBounds(506, 117, 90, 96);
+    	add(lblIngToSell);
+    	
+    	transmuteIngBtn = new JButton("Transmute Ingredient");
+    	transmuteIngBtn.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			if (ingController.isActive()) ingController.transmuteIngredient();
+    		}
+    	});
+    	transmuteIngBtn.setBounds(473, 256, 159, 21);
+    	add(transmuteIngBtn);
+        
     }
     
 
-    public void initialize() {
+    public void clear() {
+    	if (ingController.hasIngToSell()) ingController.discardIngToSell();
         ingController.deactivate();
-        transmuteIngButton.setText(deactiveText);
     }
-
-    public JButton createIngButton(String text) {
-        JButton ingButton = new JButton(text);
-        ingButton.setBounds(27, 60, 179, 29);
-        ingButton.addActionListener(
-            new ActionListener() {
-                @Override 
-                public void actionPerformed(ActionEvent e) {
-                    ingController.drawIngredient();
-                }
-            }
-        );
-        return ingButton;
-    }
-
-    public JButton createNavButton(String nav, String text) {
-        JButton button = new JButton(text);
-        button.setBounds(271, 19, 159, 29);
-        button.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((GameContentPane) IngredientStorage.this.getParent()).changeView(nav);
-                    initialize();
-                }
-            }
-        );
-        return button;
-    }
-
-    public JButton createArtifactButton(String text) {
-        JButton artifactButton = new JButton(text);
-        artifactButton.setBounds(27, 101, 179, 29);
-        artifactButton.addActionListener(
-            new ActionListener() {
-                @Override 
-                public void actionPerformed(ActionEvent e) {
-                    ingController.buyArtifact();
-                }
-            }
-        );
-        return artifactButton;}
     
-        public JButton createTransmuteIngButton() {
-            JButton button = new JButton(deactiveText);
-            button.setBounds(27, 142, 179, 29);
-            button.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (ingController.isActive()){
-                            ingController.deactivate();
-                            button.setText(deactiveText);
-                        }
-                        else {
-                            ingController.activate();
-                            button.setText(activeText);
-                        }
-                    }
-    
-                }
-            );
-            
-            return button;
-        }
-
-
+    public void activate() {
+    	ingController.activate();
+    	JOptionPane.showMessageDialog(this, "You may now choose ingredients from your inventory to sell.");
+    }
 
 
     public void showMessageDialog(String displayMsg) {
@@ -143,9 +133,22 @@ public class IngredientStorage extends JPanel implements Observer {
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
             showMessageDialog(String.format("You have drawn the elixir of insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
+        else if (msg.contains("NEW_INGREDIENT")) {
+        	String[] ingName = msg.split(":")[1].split(" ");
+        	lblIngToSell.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
+        	lblIngToSell.setBackground(new Color(117, 67, 108));
+        }
+        else if (msg.contains("DISCARD_INGREDIENT")) {
+        	lblIngToSell.setText("<html>Select<br>Ingredient</html>");
+    		lblIngToSell.setBackground(Color.LIGHT_GRAY);
+        }
+        else if (msg.contains("ABSENT_INGREDIENT")) {
+        	showMessageDialog("Please select an ingredient to sell");
+        }
         else if (msg.contains("CARD_SOLD")) {
+        	lblIngToSell.setText("<html>Select<br>Ingredient</html>");
+    		lblIngToSell.setBackground(Color.LIGHT_GRAY);
             showMessageDialog(String.format("You have sold %s!", msg.split(":")[1]));
-            initialize();
         }
         else if (msg.contains("ARTIFACT_BOUGHT")) {
             showMessageDialog(String.format("You have bought %s!", msg.split(":")[1]));

@@ -1,6 +1,7 @@
 package system.domain;
 
 import system.domain.controllers.InventoryController;
+import system.domain.interfaces.Observer;
 
 import javax.swing.Icon;
 
@@ -16,7 +17,7 @@ public class Player {
     private int reputationPoint;
     private int sicknessPoint;
     private InventoryController inventory;
-    private PlayerDashboard playerDashboardUI;
+    private Observer playerUI;
 
     public Player(String name, Icon token) {
         this.name = name;
@@ -28,17 +29,14 @@ public class Player {
       
     }
 
+    public void setPlayerUI(Observer observer) {
+    	this.playerUI = observer;
+    }
+    
     /**********Getters and Setters******************/
-    public void setPlayerDashboard(PlayerDashboard playerDashboard){
-        this.playerDashboardUI = playerDashboard;
-    }
-
-    public PlayerDashboard getPlayerDashboard(){
-        return this.playerDashboardUI;
-    }
 
     public void appendToGameLog(String text) {
-        playerDashboardUI.appendToGameLog(text);
+        playerUI.update("GAMELOG:"+text);
     }
 
     public void setName(String name) {

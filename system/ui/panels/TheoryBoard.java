@@ -42,6 +42,7 @@ public class TheoryBoard extends JPanel {
         
         //create theory books
         theoryBook1 = new JLabel("<html><br>Solaris Root</html>"); //ingredient name of the theory
+
 		theoryBook1.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook1.setBackground(new Color(204, 204, 255));
 		theoryBook1.setOpaque(true);
@@ -52,11 +53,13 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Solaris Root"; //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook1; //set the theory book to the theory book of the ingredient
+
 			}
 		});
 		add(theoryBook1);
 
 		theoryBook2 = new JLabel("<html><br>Bat Wing</html>"); //ingredient name of the theory
+
 		theoryBook2.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook2.setOpaque(true);
 		theoryBook2.setBackground(new Color(204, 204, 255));
@@ -67,11 +70,13 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Bat Wing"; //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook2; //set the theory book to the theory book of the ingredient
+
 			}
 		});
 		add(theoryBook2);
 
 		theoryBook3 = new JLabel("<html><br>Toad Stool</html>"); //ingredient name of the theory
+
 		theoryBook3.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook3.setOpaque(true);
 		theoryBook3.setBackground(new Color(204, 204, 255));
@@ -82,11 +87,13 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Toad Stool"; //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook3; //set the theory book to the theory book of the ingredient
+
 			}
 		});
 		add(theoryBook3);
 
 		theoryBook4 = new JLabel("<html><br>Owl Feather</html>"); //ingredient name of the theory
+
 		theoryBook4.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook4.setBackground(new Color(204, 204, 255));
 		theoryBook4.setOpaque(true);
@@ -97,11 +104,13 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Owl Feather"; //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook4;   //set the theory book to the theory book of the ingredient
+
 			}
 		});
 		add(theoryBook4);
 
 		theoryBook5 = new JLabel("<html><br>Snake Venom</html>"); //ingredient name of the theory
+
 		theoryBook5.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook5.setBackground(new Color(204, 204, 255));
 		theoryBook5.setOpaque(true);
@@ -132,6 +141,7 @@ public class TheoryBoard extends JPanel {
 		add(theoryBook6);
 
 		theoryBook7 = new JLabel("<html><br>Spider Web</html>"); //ingredient name of the theory
+
 		theoryBook7.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook7.setBackground(new Color(204, 204, 255));
 		theoryBook7.setHorizontalAlignment(SwingConstants.CENTER);
@@ -142,11 +152,13 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Spider Web";  //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook7; //set the theory book to the theory book of the ingredient
+
 			}
 		});
 		add(theoryBook7);
 
 		theoryBook8 = new JLabel("<html><br>Newt Eye</html>"); //ingredient name of the theory
+
 		theoryBook8.setVerticalAlignment(SwingConstants.TOP);
 		theoryBook8.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook8.setBackground(new Color(204, 204, 255));
@@ -157,6 +169,7 @@ public class TheoryBoard extends JPanel {
 			public void mouseClicked(MouseEvent e) {
                 ingredient = "Newt Eye"; //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook8; //set the theory book to the theory book of the ingredient
+
 			}
 		});
 		add(theoryBook8);

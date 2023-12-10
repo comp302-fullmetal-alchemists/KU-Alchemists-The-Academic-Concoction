@@ -5,19 +5,24 @@ import system.domain.GameAction;
 import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
+import system.domain.Player;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TheoryController {
     private List<Theory> theories;
     private Observer theoryUI;
     private GameLogController gameLog;
     private GameAction gameAction;
+    private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
 
     public TheoryController() {
         this.theories = new ArrayList<Theory>(); //add theories to the list
         this.gameLog = GameBoardController.getInstance().getGameLog();
+        this.alchemyMap = GameBoardController.getInstance().getAlchemyMap();
 
     }
 
@@ -46,8 +51,8 @@ public class TheoryController {
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
 
-            //GAMELOG RECORDS LOG
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory: %s!", theory.getIngredient()), 0);
+            //GAMELOG RECORDS LOG: When a player publishes a theory
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
             //increase the turn count
             GameBoardController.getInstance().getMediator().playerPlayedTurn();
@@ -55,24 +60,52 @@ public class TheoryController {
         return;
     }
 
-    public void debunkTheory(Alchemy alchemy, Theory theory, int index) {
-        if(theory.getAlchemy() == alchemy && theory.getOwner() != GameBoardController.getInstance().getPlayer(index)) {
-            //System.err.println("Theory debunked");
-            GameBoardController.getInstance().getPlayer(index).getInventory().updateGold(2);
-            theory.setDebunked(true);
-            theory.setOwner(GameBoardController.getInstance().getPlayer(index));
+    public void debunkTheory(Alchemy alchemy, Theory theory, Player player) {
+        //if the the theory which is going to be debunked is not current player's theory and the alchemy is not the same as the theory's alchemy
+        if(theory.getAlchemy() != alchemy && theory.getOwner() != GameBoardController.getInstance().getCurrentPlayer()) {
+            for (Theory i : theories) {
+                if (i.getIngredient()== theory.getIngredient()) {
+                    for (String key: alchemyMap.keySet()) {
+                        if (alchemyMap.get(theory.getIngredient()) == alchemy) {
+                            //alchemyMap contains true match of the ingredient and the alchemy, if the alchemy is the same as the theory's alchemy, then the theory is debunked
+                            theoryUI.update("THEORY_DEBUNKED");
 
-            //GAMELOG RECORDS LOG FOR DEBUNKER
-            gameAction = new GameAction(GameBoardController.getInstance().getPlayer(index).getName(), theory.getOwner().getName(), String.format("Debunked the Theory: %s!", theory.getIngredient()), 0);
-            gameLog.recordLog(GameBoardController.getInstance().getPlayer(index), gameAction);
-            //GAMELOG RECORDS LOG FOR DEBUNKEE
-            gameLog.recordLog(theory.getOwner(), gameAction);
+                            //GAMELOG RECORDS LOG FOR DEBUNKER
+                            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
+                            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+                            //GAMELOG RECORDS LOG FOR DEBUNKEE
+                            gameLog.recordLog(theory.getOwner(), gameAction);
+
+                            i.setAlchemy(alchemy);
+                            i.setOwner(GameBoardController.getInstance().getCurrentPlayer());
+                            i.setDebunked(true);
+                            GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
+
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+        theoryUI.update("THEORY_NOT_DEBUNKED");
+            
         }
-
-        else {
-            //System.err.println("Theory not debunked");
+        else if (theory.getOwner() == GameBoardController.getInstance().getCurrentPlayer()){
+            theoryUI.update("CANNOT_DEBUNK_YOUR_OWN_THEORY");
+        }
+        else if (theory.getAlchemy() == alchemy) {
+            theoryUI.update("CANNOT_DEBUNK_SAME_ALCHEMY");
         }
         return;
+    }
+
+    public List<Theory> getTheories() {
+        return theories;
+    }
+
+    public void getTrueAlchemy() {
+        
     }
     
 }
