@@ -18,7 +18,7 @@ public class TheoryController {
     private Observer theoryUI;
     private GameLogController gameLog;
     private GameAction gameAction;
-    private Map<String, Alchemy> alchemyMap;
+    private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
 
     public TheoryController() {
         this.theories = new ArrayList<Theory>();
@@ -56,11 +56,13 @@ public class TheoryController {
     }
 
     public void debunkTheory(Alchemy alchemy, Theory theory, Player player) {
+        //if the the theory which is going to be debunked is not current player's theory and the alchemy is not the same as the theory's alchemy
         if(theory.getAlchemy() != alchemy && theory.getOwner() != GameBoardController.getInstance().getCurrentPlayer()) {
             for (Theory i : theories) {
                 if (i.getIngredient()== theory.getIngredient()) {
                     for (String key: alchemyMap.keySet()) {
                         if (alchemyMap.get(theory.getIngredient()) == alchemy) {
+                            //alchemyMap contains true match of the ingredient and the alchemy, if the alchemy is the same as the theory's alchemy, then the theory is debunked
                             theoryUI.update("THEORY_DEBUNKED");
                             i.setAlchemy(alchemy);
                             i.setOwner(GameBoardController.getInstance().getCurrentPlayer());

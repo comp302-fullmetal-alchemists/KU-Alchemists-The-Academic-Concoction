@@ -1,6 +1,7 @@
 package system.domain;
 
 public class Theory {
+        // for each theory there is an alchemy and an ingredient and also an owner
         private Alchemy alchemy;
         private String ingredient;
         private Player owner;

@@ -32,7 +32,7 @@ public class PublicationArea extends JPanel implements Observer{
     private String alchemy = "";
     private TheoryController theoryController;
     private JButton submitButton;
-    private JButton debunkButton;
+    private JButton debunkButton; //debunk theory use case button
 
     public PublicationArea() {
         super();
@@ -130,11 +130,10 @@ public class PublicationArea extends JPanel implements Observer{
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //select an ingredient that has a theory and an alchemy
-                    //if no ingredient is selected, show error message
+                    //if ingredient and alchemy is empty, do not let debunk
                     if (theoryBoard.getIngredient() == null)
                     {
-                        System.err.println("Please select an ingredient");
+                        System.err.println("Please select an ingredient"); 
                         
                     }
                     else if (alchemy.isEmpty()){
@@ -142,13 +141,15 @@ public class PublicationArea extends JPanel implements Observer{
                     }
                     else {
                         for (Theory i : theoryController.getTheories()) {
+                            //after finding the theory, debunk it if a theory is not found then do not debunk
                             if (i.getIngredient().equals(theoryBoard.getIngredient())) {
                                 int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
+                                //debunk theory use case
                                 theoryController.debunkTheory(GameBoardController.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
-
                                 return;
                             }
                         }
+                        //after looping through all theories and not finding the theory, make null alchemy and ingredient
                         alchemy = "";
                         theoryBoard.setIngredient(null);
                     }
@@ -156,7 +157,6 @@ public class PublicationArea extends JPanel implements Observer{
             }
         }
         );  
-         
         add(debunkButton);
 
         this.theoryController = GameBoardController.getInstance().getTheoryController();
