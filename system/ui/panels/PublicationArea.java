@@ -46,7 +46,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 1";
 			}
 		});
-		alchemy1.setBounds(193, 25, 85, 39);
+		alchemy1.setBounds(183, 25, 95, 39);
 		add(alchemy1);
 
 		alchemy2 = new JButton("Alchemy 2");
@@ -55,7 +55,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 2";
 			}
 		});
-		alchemy2.setBounds(340, 25, 85, 39);
+		alchemy2.setBounds(330, 25, 95, 39);
 		add(alchemy2);
 
 		alchemy3 = new JButton("Alchemy 3");
@@ -64,7 +64,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 3";
 			}
 		});
-		alchemy3.setBounds(488, 25, 85, 39);
+		alchemy3.setBounds(478, 25, 95, 39);
 		add(alchemy3);
 
 		alchemy4 = new JButton("Alchemy 4");
@@ -73,7 +73,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 4";
 			}
 		});
-		alchemy4.setBounds(634, 25, 85, 39);
+		alchemy4.setBounds(624, 25, 95, 39);
 		add(alchemy4);
 
 		alchemy5 = new JButton("Alchemy 5");
@@ -82,7 +82,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 5";
 			}
 		});
-		alchemy5.setBounds(193, 87, 85, 39);
+		alchemy5.setBounds(183, 87, 95, 39);
 		add(alchemy5);
 
 		alchemy6 = new JButton("Alchemy 6");
@@ -91,7 +91,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 6";
 			}
 		});
-		alchemy6.setBounds(340, 87, 85, 39);
+		alchemy6.setBounds(330, 87, 95, 39);
 		add(alchemy6);
 
 		alchemy7 = new JButton("Alchemy 7");
@@ -100,7 +100,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 7";
 			}
 		});
-		alchemy7.setBounds(488, 87, 85, 39);
+		alchemy7.setBounds(478, 87, 95, 39);
 		add(alchemy7);
 
 		alchemy8 = new JButton("Alchemy 8");
@@ -109,7 +109,7 @@ public class PublicationArea extends JPanel implements Observer{
                 alchemy = "Alchemy 8";
 			}
 		});
-		alchemy8.setBounds(634, 87, 85, 39);
+		alchemy8.setBounds(624, 87, 95, 39);
 		add(alchemy8);
 
         this.theoryBoard = new TheoryBoard();
@@ -172,8 +172,6 @@ public class PublicationArea extends JPanel implements Observer{
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
-                        theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
-                        System.out.println("Theory book created by " + GameBoardController.getInstance().getCurrentPlayer().getName() + " with " + theoryBoard.getIngredient() + " and " + alchemy);
                         alchemy = "";
                         theoryBoard.setIngredient(null);
                     }
@@ -194,6 +192,7 @@ public class PublicationArea extends JPanel implements Observer{
         }
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
+              theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
         }
     }
 }
