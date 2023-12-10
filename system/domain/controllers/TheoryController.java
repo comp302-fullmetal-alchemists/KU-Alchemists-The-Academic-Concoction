@@ -69,6 +69,7 @@ public class TheoryController {
                         if (alchemyMap.get(theory.getIngredient()) == alchemy) {
                             //alchemyMap contains true match of the ingredient and the alchemy, if the alchemy is the same as the theory's alchemy, then the theory is debunked
                             theoryUI.update("THEORY_DEBUNKED");
+                            GameBoardController.getInstance().getMediator().playerPlayedTurn();
 
                             //GAMELOG RECORDS LOG FOR DEBUNKER
                             gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
@@ -89,7 +90,7 @@ public class TheoryController {
             }
 
         theoryUI.update("THEORY_NOT_DEBUNKED");
-            
+        GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
         else if (theory.getOwner() == GameBoardController.getInstance().getCurrentPlayer()){
             theoryUI.update("CANNOT_DEBUNK_YOUR_OWN_THEORY");
