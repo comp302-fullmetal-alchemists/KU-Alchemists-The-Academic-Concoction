@@ -49,7 +49,7 @@ public class TheoryController {
             theoryUI.update("THEORY_PUBLISHED");
 
             //GAMELOG RECORDS LOG: When a player publishes a theory
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory: %s!", theory.getIngredient()), 0);
+            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
         }
         return;
@@ -64,16 +64,19 @@ public class TheoryController {
                         if (alchemyMap.get(theory.getIngredient()) == alchemy) {
                             //alchemyMap contains true match of the ingredient and the alchemy, if the alchemy is the same as the theory's alchemy, then the theory is debunked
                             theoryUI.update("THEORY_DEBUNKED");
+
+                            //GAMELOG RECORDS LOG FOR DEBUNKER
+                            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
+                            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+                            //GAMELOG RECORDS LOG FOR DEBUNKEE
+                            gameLog.recordLog(theory.getOwner(), gameAction);
+
                             i.setAlchemy(alchemy);
                             i.setOwner(GameBoardController.getInstance().getCurrentPlayer());
                             i.setDebunked(true);
                             GameBoardController.getInstance().getCurrentPlayer().getInventory().updateGold(2);
 
-                            //GAMELOG RECORDS LOG FOR DEBUNKER
-                            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), String.format("Debunked the Theory: %s!", theory.getIngredient()), 0);
-                            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
-                            //GAMELOG RECORDS LOG FOR DEBUNKEE
-                            gameLog.recordLog(theory.getOwner(), gameAction);
+
                             return;
                         }
                     }
