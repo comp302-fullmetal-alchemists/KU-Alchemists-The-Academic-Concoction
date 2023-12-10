@@ -8,9 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.GridLayout;
-
+import java.awt.List;
 
 import system.domain.Alchemy;
+import system.domain.Theory;
 import system.domain.controllers.TheoryController;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
@@ -20,44 +21,147 @@ public class PublicationArea extends JPanel implements Observer{
 
     private JButton back;
     private TheoryBoard theoryBoard;
-    private JButton Alchemy1;
-    private JButton Alchemy2;
-    private JButton Alchemy3;
-    private JButton Alchemy4;
-    private JButton Alchemy5;
-    private JButton Alchemy6;
-    private JButton Alchemy7;
-    private JButton Alchemy8;
+    private JButton alchemy1;
+    private JButton alchemy2;
+    private JButton alchemy3;
+    private JButton alchemy4;
+    private JButton alchemy5;
+    private JButton alchemy6;
+    private JButton alchemy7;
+    private JButton alchemy8;
     private String alchemy = "";
     private TheoryController theoryController;
     private JButton submitButton;
+    private JButton debunkButton; //debunk theory use case button
 
     public PublicationArea() {
         super();
         setBackground(new Color(58, 77, 108));
+        setLayout(null);
+
         this.back = createNavButton("village", "Back to the village");
+        back.setBounds(31, 25, 99, 101);
         add(back);
-        this.Alchemy1= createAlchemyButton("Alchemy 1");
-        add(Alchemy1);
-        this.Alchemy2= createAlchemyButton("Alchemy 2");
-        add(Alchemy2);
-        this.Alchemy3= createAlchemyButton("Alchemy 3");
-        add(Alchemy3);
-        this.Alchemy4= createAlchemyButton("Alchemy 4");
-        add(Alchemy4);
-        this.Alchemy5= createAlchemyButton("Alchemy 5");
-        add(Alchemy5);
-        this.Alchemy6= createAlchemyButton("Alchemy 6");
-        add(Alchemy6);
-        this.Alchemy7= createAlchemyButton("Alchemy 7");
-        add(Alchemy7);
-        this.Alchemy8= createAlchemyButton("Alchemy 8");
-        add(Alchemy8);
+
+        alchemy1 = new JButton("Alchemy 1");
+		alchemy1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 1";
+			}
+		});
+		alchemy1.setBounds(193, 25, 85, 39);
+		add(alchemy1);
+
+		alchemy2 = new JButton("Alchemy 2");
+		alchemy2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 2";
+			}
+		});
+		alchemy2.setBounds(340, 25, 85, 39);
+		add(alchemy2);
+
+		alchemy3 = new JButton("Alchemy 3");
+		alchemy3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 3";
+			}
+		});
+		alchemy3.setBounds(488, 25, 85, 39);
+		add(alchemy3);
+
+		alchemy4 = new JButton("Alchemy 4");
+		alchemy4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 4";
+			}
+		});
+		alchemy4.setBounds(634, 25, 85, 39);
+		add(alchemy4);
+
+		alchemy5 = new JButton("Alchemy 5");
+		alchemy5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 5";
+			}
+		});
+		alchemy5.setBounds(193, 87, 85, 39);
+		add(alchemy5);
+
+		alchemy6 = new JButton("Alchemy 6");
+		alchemy6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 6";
+			}
+		});
+		alchemy6.setBounds(340, 87, 85, 39);
+		add(alchemy6);
+
+		alchemy7 = new JButton("Alchemy 7");
+		alchemy7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 7";
+			}
+		});
+		alchemy7.setBounds(488, 87, 85, 39);
+		add(alchemy7);
+
+		alchemy8 = new JButton("Alchemy 8");
+		alchemy8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                alchemy = "Alchemy 8";
+			}
+		});
+		alchemy8.setBounds(634, 87, 85, 39);
+		add(alchemy8);
+
         this.theoryBoard = new TheoryBoard();
+        theoryBoard.setBounds(31, 136, 688, 487);
         add(theoryBoard);
+
         this.submitButton = new JButton("Submit");
+        submitButton.setBounds(297, 643, 128, 31);
         addActiontoButton(submitButton);
         add(submitButton);
+
+        this.debunkButton = new JButton("Debunk");
+        debunkButton.setBounds(297, 685, 128, 31);
+        debunkButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //if ingredient and alchemy is empty, do not let debunk
+                    if (theoryBoard.getIngredient() == null)
+                    {
+                        System.err.println("Please select an ingredient"); 
+                        
+                    }
+                    else if (alchemy.isEmpty()){
+                        System.err.println("Please select an alchemy");
+                    }
+                    else {
+                        for (Theory i : theoryController.getTheories()) {
+                            //after finding the theory, debunk it if a theory is not found then do not debunk
+                            if (i.getIngredient().equals(theoryBoard.getIngredient())) {
+                                int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
+                                //debunk theory use case
+                                theoryController.debunkTheory(GameBoardController.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
+                                if(i.isDebunked()) {
+                                    theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+                                }
+                                return;
+                            }
+                        }
+                        //after looping through all theories and not finding the theory, make null alchemy and ingredient
+                        alchemy = "";
+                        theoryBoard.setIngredient(null);
+                    }
+
+            }
+        }
+        );  
+        add(debunkButton);
+
         this.theoryController = GameBoardController.getInstance().getTheoryController();
         theoryController.setObserver(this);
     }
@@ -110,6 +214,8 @@ public class PublicationArea extends JPanel implements Observer{
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
+                        theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+                        System.out.println("Theory book created by " + GameBoardController.getInstance().getCurrentPlayer().getName() + " with " + theoryBoard.getIngredient() + " and " + alchemy);
                         alchemy = "";
                         theoryBoard.setIngredient(null);
                     }
@@ -119,19 +225,30 @@ public class PublicationArea extends JPanel implements Observer{
         );
     }
 
+
     @Override
     public void update(String msg) {
        if (msg.contains("DUPLICATE_THEORY")) {
               JOptionPane.showMessageDialog(this, "Duplicate theory");
-         }
+              
+        }
          else if (msg.contains("NOT_ENOUGH_GOLD")) {
               JOptionPane.showMessageDialog(this, "Not enough gold");
-         }
+        }
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
-       }
+        }
+        else if (msg.contains("THEORY_DEBUNKED")) {
+            JOptionPane.showMessageDialog(this, "Theory debunked");
+        }
+        else if (msg.contains("THEORY_NOT_DEBUNKED")) {
+            JOptionPane.showMessageDialog(this, "Theory not debunked");
+        }
+        else if (msg.contains("CANNOT_DEBUNK_YOUR_OWN_THEORY")) {
+            JOptionPane.showMessageDialog(this, "Cannot debunk your own theory");
+        }
+        else if (msg.contains("CANNOT_DEBUNK_SAME_ALCHEMY")) {
+            JOptionPane.showMessageDialog(this, "Cannot debunk same alchemy");
+        }
     }
-
-
-    
 }
