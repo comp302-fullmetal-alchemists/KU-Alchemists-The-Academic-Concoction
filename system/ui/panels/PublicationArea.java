@@ -36,12 +36,15 @@ public class PublicationArea extends JPanel implements Observer{
         super();
         setLayout(null);
         setBackground(new Color(58, 77, 108));
+        //create back button
         this.back = createNavButton("village", "Back to the village");
         back.setBounds(31, 25, 99, 101);
         add(back);
 
+        //create alchemy buttons 1 to 8
         alchemy1 = new JButton("Alchemy 1");
 		alchemy1.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 1 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 1";
 			}
@@ -51,6 +54,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy2 = new JButton("Alchemy 2");
 		alchemy2.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 2 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 2";
 			}
@@ -60,6 +64,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy3 = new JButton("Alchemy 3");
 		alchemy3.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 3 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 3";
 			}
@@ -69,6 +74,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy4 = new JButton("Alchemy 4");
 		alchemy4.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 4 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 4";
 			}
@@ -78,6 +84,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy5 = new JButton("Alchemy 5");
 		alchemy5.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 5 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 5";
 			}
@@ -87,6 +94,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy6 = new JButton("Alchemy 6");
 		alchemy6.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 6 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 6";
 			}
@@ -96,6 +104,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy7 = new JButton("Alchemy 7");
 		alchemy7.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 7 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 7";
 			}
@@ -105,6 +114,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 		alchemy8 = new JButton("Alchemy 8");
 		alchemy8.addActionListener(new ActionListener() {
+            //set alchemy to alchemy 8 after clicking
 			public void actionPerformed(ActionEvent e) {
                 alchemy = "Alchemy 8";
 			}
@@ -112,10 +122,12 @@ public class PublicationArea extends JPanel implements Observer{
 		alchemy8.setBounds(624, 87, 95, 39);
 		add(alchemy8);
 
+        //create theory board inside publication area
         this.theoryBoard = new TheoryBoard();
         theoryBoard.setBounds(31, 136, 688, 487);
         add(theoryBoard);
 
+        //create submit button
         this.submitButton = new JButton("Submit");
         submitButton.setBounds(297, 643, 128, 31);
         addActiontoButton(submitButton);
@@ -123,6 +135,7 @@ public class PublicationArea extends JPanel implements Observer{
         this.theoryController = GameBoardController.getInstance().getTheoryController();
         theoryController.setObserver(this);
     }
+
 
     public JButton createNavButton(String nav, String text) {
         JButton button = new JButton(text);
@@ -138,25 +151,12 @@ public class PublicationArea extends JPanel implements Observer{
         return button;
     }
 
-    public JButton createAlchemyButton(String text) {
-        JButton button = new JButton(text);
-        button.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    alchemy = text;
-                }
-
-            }
-        );
-        return button;
-    }
-
     public void addActiontoButton(JButton button){
         button.addActionListener(
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    //check if alchemy and ingredient is selected
                     if (alchemy.isEmpty()) {
                         System.err.println("Please select an alchemy");
                         theoryBoard.setIngredient(null);
@@ -167,11 +167,14 @@ public class PublicationArea extends JPanel implements Observer{
                         alchemy = "";
                     }
                     else {
+                        //alchemy and ingredient is selected properly
                         System.out.println(String.format("Alchemy = %s, Ingredient = %s", alchemy, theoryBoard.getIngredient()));
-                        //convert last character of alchemy to int
+                        //convert last character of alchemy to int to get the index of alchemy
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
+                        //call publish theory method from theory controller
                         theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
+                        //reset alchemy and ingredient
                         alchemy = "";
                         theoryBoard.setIngredient(null);
                     }
@@ -181,6 +184,7 @@ public class PublicationArea extends JPanel implements Observer{
         );
     }
 
+    //update method for observer
     @Override
     public void update(String msg) {
        if (msg.contains("DUPLICATE_THEORY")) {
@@ -192,7 +196,10 @@ public class PublicationArea extends JPanel implements Observer{
         }
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
+              //create theory book
               theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+              //change player
+              GameBoardController.getInstance().changePlayer();
         }
     }
 }
