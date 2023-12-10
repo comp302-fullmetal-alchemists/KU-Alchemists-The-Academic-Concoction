@@ -146,6 +146,9 @@ public class PublicationArea extends JPanel implements Observer{
                                 int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                                 //debunk theory use case
                                 theoryController.debunkTheory(GameBoardController.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
+                                if(i.isDebunked()) {
+                                    theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+                                }
                                 return;
                             }
                         }
