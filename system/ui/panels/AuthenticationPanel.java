@@ -41,6 +41,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		this.authController = new AuthenticationController();
         authController.setObserver(this);
 		
+		//created a text area for the welcome message
 		JTextArea txtWelcome = new JTextArea();
 		txtWelcome.setEditable(false);
 		txtWelcome.setForeground(new Color(255, 255, 255));
@@ -52,6 +53,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 
 		add(txtWelcome);
 		
+		//created a text area for the information message
 		JTextArea txtInformMessage = new JTextArea();
 		txtInformMessage.setText("Please enter usernames and choose tokens to start the game!");
 		txtInformMessage.setForeground(Color.WHITE);
@@ -61,6 +63,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		txtInformMessage.setEditable(false);
 		add(txtInformMessage);
 
+		//created a text area for the player 1 username
     	JTextArea txtrPlayer1Username = new JTextArea();
 		txtrPlayer1Username.setText("Player 1 username:\n");
 		txtrPlayer1Username.setForeground(Color.WHITE);
@@ -71,6 +74,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
     	txtrPlayer1Username.setEditable(false);
 		add(txtrPlayer1Username);
 
+		//created a text area for the player 2 username
 		JTextArea txtrPlayer2Username = new JTextArea();
 		txtrPlayer2Username.setText("Player 2 username:\n");
 		txtrPlayer2Username.setForeground(Color.WHITE);
@@ -81,6 +85,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
    		txtrPlayer2Username.setEditable(false);
 		add(txtrPlayer2Username);
 
+		//created a text area for the player 1 token
         JTextArea txtrPlayer1TokenChoose = new JTextArea();
 		txtrPlayer1TokenChoose.setText("Player 1 choose a token:\n");
 		txtrPlayer1TokenChoose.setForeground(Color.WHITE);
@@ -91,6 +96,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
     	txtrPlayer1TokenChoose.setEditable(false);
 		add(txtrPlayer1TokenChoose);
 
+		//created a text area for the player 2 token
 		JTextArea txtrPlayer2TokenChoose = new JTextArea();
 		txtrPlayer2TokenChoose.setText("Player 2 choose a token:\n");
 		txtrPlayer2TokenChoose.setForeground(Color.WHITE);
@@ -101,6 +107,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
     	txtrPlayer2TokenChoose.setEditable(false);
 		add(txtrPlayer2TokenChoose);
 
+		//created a text field for the player 1 to get username as input
 		username1 = new JTextField();
 		username1.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		username1.setBounds(157, 229, 166, 53);
@@ -108,6 +115,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		add(username1);
 		username1.setColumns(10);
 
+		//created a text field for the player 2 to get username as input
 		username2 = new JTextField();
 		username2.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		username2.setBounds(691, 229, 166, 53);
@@ -115,6 +123,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		username2.setColumns(10);
 		add(username2);
 
+		//created a combo box for the player 1 to choose a token
 		token1 = new JComboBox();
 		token1.setBounds(152, 357, 348, 268);
 		token1.setBackground(new Color(58, 77, 108));
@@ -127,6 +136,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		add(token1);
 		token1.setVisible(true);
 
+		//created a combo box for the player 2 to choose a token
 		token2 = new JComboBox();
 		token2.setBounds(687, 357, 351, 268);
 		token2.setBackground(new Color(58, 77, 108));
@@ -139,15 +149,18 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		add(token2);
 		token2.setVisible(true);
 
+		//created a button for the players to login
 		JButton loginButton = new JButton("LOGIN");
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//get the username and token from the text fields and combo boxes
 	                String player1username = username1.getText();
 	                String player2username = username2.getText();
 	                Icon player1token = (Icon) token1.getSelectedItem();
 	                Icon player2token = (Icon) token2.getSelectedItem();
+					//call the login method from the authentication controller
 	                authController.login(player1username, player1token, player2username, player2token);
 	            
 			}
@@ -156,6 +169,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		loginButton.setBounds(978, 650, 166, 42);
 		add(loginButton);
 		
+		//created a text area for the game by message
 		JTextArea txtrAGameBy = new JTextArea();
 		txtrAGameBy.setText("A game by FullMetal Alchemists\n");
 		txtrAGameBy.setForeground(Color.WHITE);
@@ -179,7 +193,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
     }
     
     
-
+	//update the observer
 	@Override
 	public void update(String msg) {
 		 if (!msg.equals("VALID")) {
