@@ -12,17 +12,22 @@ public class AuthenticationController {
     public AuthenticationController() {
     }
 
+    // This method is called by the UI when the user clicks the login button
     public void setObserver(Observer observer) {
         this.authenticationUI = observer;
     }
 
+    // This method is called by the UI when the user clicks the login button
     public void login(String username1, Icon token1, String username2, Icon token2) {
+        //chechks if the usernames are the same
         if (username1.equals(username2)){
             authenticationUI.update("Usernames cannot be the same");
         }
-        else if (username1.equals("") || token1.equals("") || username2.equals("") || token2.equals("")){
+        //checks whether usernames are empty
+        else if (username1.equals("") || username2.equals("")){
             authenticationUI.update("Please fill all the fields");
         }
+        //creates 2 players and calls the initializeTheBoard method
         else{
             GameBoardController.getInstance().initializeTheBoard(new Player(username1, token1), new Player(username2, token2));
             authenticationUI.update("VALID");
