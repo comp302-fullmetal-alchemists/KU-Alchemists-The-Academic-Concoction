@@ -37,7 +37,6 @@ public class Alchemy {
                     status = colors[i] +  (alch1.alchemical[i][1] == 1? "+" : "-");
                     return status;
                 }
-                
             }
         }
         return status;
@@ -68,14 +67,6 @@ public class Alchemy {
 //Alchemy alch6 = new Alchemy(AlchemicalConstants.SMALL,- AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL);
 //Alchemy alch7 = new Alchemy(AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL, AlchemicalConstants.LARGE);
 //Alchemy alch8 = new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL, AlchemicalConstants.SMALL);
-
-
-
-
-
-
-
-
 
  * 
  * 

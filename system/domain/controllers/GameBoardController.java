@@ -18,7 +18,7 @@ import system.domain.util.ConcreteMediator;
 public class GameBoardController {
 
     private static GameBoardController instance;
-    private static List<Player> players;
+    private List<Player> players;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
@@ -76,8 +76,7 @@ public class GameBoardController {
     //GameboardController is a singleton class, this is the lazy initialization method
     public static GameBoardController getInstance() {
         if (instance == null) {
-            instance = new GameBoardController();
-            
+            instance = new GameBoardController();  
         }
         return instance;
     }
@@ -102,7 +101,12 @@ public class GameBoardController {
         this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
+        for (Player p: players) {
+        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
+        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
+        }
     }
+    
 
     public Player getPlayer(int index) {
         return players.get(index);

@@ -4,8 +4,6 @@ import system.domain.interfaces.Observer;
 
 import javax.swing.Icon;
 
-import system.ui.panels.PlayerDashboard;
-
 public class Player {
     
     private String name;
@@ -78,10 +76,10 @@ public class Player {
     public int getSickness(){
         return sicknessPoint;
     }
+    
     public InventoryController getInventory() {
         return inventory;
     }
-
 
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;

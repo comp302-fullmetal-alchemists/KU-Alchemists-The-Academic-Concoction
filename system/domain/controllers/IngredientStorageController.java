@@ -41,19 +41,12 @@ public class IngredientStorageController implements Collector{
     public void initializePiles() {
         for (int i = 0; i < 24; i++) {
             String ingredientName = GameBoardController.getInstance().getIngredients()[i%8];
-            ingredientPile.add(new IngredientCard(ingredientName,GameBoardController.getInstance().getAlchemyMap().get(ingredientName)));
+            ingredientPile.add(new IngredientCard(ingredientName, GameBoardController.getInstance().getAlchemyMap().get(ingredientName)));
         }
         Collections.shuffle(ingredientPile);
 
         for (int i = 0; i < GameBoardController.getInstance().getArtifactStrings().length - 1; i++) {
             artifactPile.add(new ArtifactCard(GameBoardController.getInstance().getArtifactStrings()[i], GameBoardController.getInstance().getArtifactEffect()[i], GameBoardController.getInstance().getArtifactUsage()[i]));
-        }
-        
-        for (int i = 0; i < 2; i++) {
-            GameBoardController.getInstance().getPlayer(0).getInventory().addIngredient(ingredientPile.remove(0));
-        }
-        for (int i = 0; i < 2; i++) {
-            GameBoardController.getInstance().getPlayer(1).getInventory().addIngredient(ingredientPile.remove(0));
         }
 
         //gameStart is logged in for both players.
@@ -62,8 +55,11 @@ public class IngredientStorageController implements Collector{
 
         gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getPlayer(1).getName(), "Game has started!", 0);
         gameLog.recordLog(GameBoardController.getInstance().getPlayer(1), gameAction);
-
-
+    }
+    
+    //This function is for gameboard to use when sending initial cards to players
+    public IngredientCard pullIngredientCard() {
+    	return ingredientPile.remove(0);
     }
     
     public boolean hasIngToSell() {
