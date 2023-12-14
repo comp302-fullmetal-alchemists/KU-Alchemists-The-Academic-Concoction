@@ -3,11 +3,13 @@ package system.domain.controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Collector;
 import system.domain.interfaces.Mediator;
+import system.domain.util.IngredientFactory;
 import system.domain.Cards;
 import system.domain.GameAction;
 
@@ -39,10 +41,7 @@ public class IngredientStorageController implements Collector{
     }
 
     public void initializePiles() {
-        for (int i = 0; i < 24; i++) {
-            String ingredientName = GameBoardController.getInstance().getIngredients()[i%8];
-            ingredientPile.add(new IngredientCard(ingredientName, GameBoardController.getInstance().getAlchemyMap().get(ingredientName)));
-        }
+        ingredientPile = IngredientFactory.getInstance().createIngredients(24);
         Collections.shuffle(ingredientPile);
 
         for (int i = 0; i < GameBoardController.getInstance().getArtifactStrings().length - 1; i++) {

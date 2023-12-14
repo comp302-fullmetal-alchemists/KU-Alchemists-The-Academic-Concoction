@@ -14,6 +14,7 @@ import system.domain.Alchemy;
 import system.domain.Theory;
 import system.domain.controllers.TheoryController;
 import system.domain.controllers.GameBoardController;
+import system.domain.util.IngredientFactory;
 import system.domain.interfaces.Observer;
 import system.ui.frame.GameContentPane;
 
@@ -174,7 +175,7 @@ public class PublicationArea extends JPanel implements Observer{
                             if (i.getIngredient().equals(theoryBoard.getIngredient())) {
                                 int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                                 //debunk theory use case
-                                theoryController.debunkTheory(GameBoardController.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
+                                theoryController.debunkTheory(IngredientFactory.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
                                 if(i.isDebunked()) {
                                     theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
                                 }
@@ -231,7 +232,7 @@ public class PublicationArea extends JPanel implements Observer{
                         //convert last character of alchemy to int to get the index of alchemy
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         //call publish theory method from theory controller
-                        theoryController.publishTheory(GameBoardController.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
+                        theoryController.publishTheory(IngredientFactory.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
                         //reset alchemy and ingredient
 
