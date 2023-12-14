@@ -5,6 +5,7 @@ import system.domain.GameAction;
 import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
+import system.domain.util.IngredientFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class TheoryController {
     public TheoryController() {
         this.theories = new ArrayList<Theory>(); //add theories to the list
         this.gameLog = GameBoardController.getInstance().getGameLog();
-        this.alchemyMap = GameBoardController.getInstance().getAlchemyMap();
+        this.alchemyMap = IngredientFactory.getInstance().getAlchemyMap();
 
     }
 
