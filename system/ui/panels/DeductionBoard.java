@@ -30,7 +30,7 @@ public class DeductionBoard extends JPanel{
         		((GameContentPane) DeductionBoard.this.getParent()).changeView("village");
         	}
         });
-        navBtn.setBounds(20, 10, 150, 30);
+        navBtn.setBounds(303, 10, 150, 30);
         add(navBtn);
         
         deductionGrid = new JPanel();
