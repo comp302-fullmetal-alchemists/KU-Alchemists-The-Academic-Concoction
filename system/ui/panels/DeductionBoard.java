@@ -13,13 +13,15 @@ import system.ui.frame.GameContentPane;
 public class DeductionBoard extends JPanel{
 
     private JButton back;
+    private JButton navBtn;
+    private JPanel deductionGrid;
 
     public DeductionBoard() {
         super();
         setBackground(new Color(58, 77, 108));
         setLayout(null);
         
-        JButton navBtn = new JButton("Back to the Village");
+        navBtn = new JButton("Back to the Village");
         navBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		((GameContentPane) DeductionBoard.this.getParent()).changeView("village");
@@ -27,5 +29,9 @@ public class DeductionBoard extends JPanel{
         });
         navBtn.setBounds(20, 10, 150, 30);
         add(navBtn);
+        
+        deductionGrid = new JPanel();
+        deductionGrid.setBounds(76, 290, 600, 400);
+        add(deductionGrid);
     }
 }
