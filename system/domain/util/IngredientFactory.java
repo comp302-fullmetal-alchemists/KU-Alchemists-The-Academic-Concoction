@@ -67,6 +67,15 @@ public class IngredientFactory{
 		return alchemyMap;
 	}
 	
+	public int getIngredientOrder(IngredientCard ing) {
+		for (int i = 0; i < 8; i++) {
+			if (ingredients[i].equals(ing.getName())) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public List<IngredientCard> createIngredients(int num) {
 		List<IngredientCard> ingredientList = new ArrayList<IngredientCard>();
 		for (int i = 0; i < num; i++) {

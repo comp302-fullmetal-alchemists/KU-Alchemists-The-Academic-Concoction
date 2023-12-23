@@ -158,7 +158,7 @@ public class IngredientStorageController implements Collector{
     }
 
     @Override
-    public <T> boolean collectItem(T item) {
+    public <T> void collectItem(T item) {
         if (item instanceof IngredientCard) {
             IngredientCard ing = (IngredientCard) item;
             if (ingToSell != null) {
@@ -166,9 +166,7 @@ public class IngredientStorageController implements Collector{
             }
             ingToSell = ing;
             ingredientStorageUI.update("NEW_INGREDIENT:" + ing.getName());
-            return true;
         }
-        return false;
     }
 
     @Override

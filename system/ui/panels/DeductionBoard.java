@@ -6,23 +6,29 @@ import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-
+import system.domain.controllers.DeductionBoardController;
+import system.domain.controllers.GameBoardController;
+import system.domain.interfaces.Observer;
 import system.ui.frame.GameContentPane;
+
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 
-public class DeductionBoard extends JPanel{
+public class DeductionBoard extends JPanel implements Observer{
 
     private JButton back;
     private JButton navBtn;
     private JPanel deductionGrid;
+    private DeductionBoardController dbController;
 
     public DeductionBoard() {
         super();
         setBackground(new Color(58, 77, 108));
         setLayout(null);
+        this.dbController = GameBoardController.getInstance().getDeductionBoardController();
+        dbController.setObserver(this);
         
         navBtn = new JButton("Back to the Village");
         navBtn.addActionListener(new ActionListener() {
@@ -78,4 +84,13 @@ public class DeductionBoard extends JPanel{
         lblIng8.setBounds(615, 280, 75, 80);
         add(lblIng8);
     }
+    
+    public void activate() {
+    	dbController.activate();
+    }
+
+	@Override
+	public void update(String msg) {
+		System.out.println(msg);
+	}
 }

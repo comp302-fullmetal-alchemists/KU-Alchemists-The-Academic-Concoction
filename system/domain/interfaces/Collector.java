@@ -10,7 +10,7 @@ public interface Collector {
 	 * activation is about whether the collector is connected to the mediator or not.
 	 * */
 	
-    <T> boolean collectItem(T item);
+    <T> void collectItem(T item);
 
     void activate();
     

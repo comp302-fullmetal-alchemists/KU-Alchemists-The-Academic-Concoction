@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Observer;
+import system.domain.ResultsTriangle;
 
 import javax.swing.Icon;
 
@@ -12,6 +13,7 @@ public class Player {
     private Icon token;
     private int reputationPoint;
     private int sicknessPoint;
+    private ResultsTriangle resultsTriangle;
     private InventoryController inventory;
     private Observer playerUI;
 
@@ -22,6 +24,7 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
+        this.resultsTriangle = new ResultsTriangle();
       
     }
 
@@ -87,6 +90,10 @@ public class Player {
 
     public void updateSickness(int updateVal) {
         sicknessPoint = sicknessPoint + updateVal;
+    }
+    
+    public ResultsTriangle getResultsTriangle() {
+    	return resultsTriangle;
     }
 
 

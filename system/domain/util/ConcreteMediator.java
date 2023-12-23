@@ -53,7 +53,8 @@ public class ConcreteMediator implements Mediator {
     @Override 
     public <T> boolean sendToCollector(T item) {
         if (collector != null) {
-            return collector.collectItem(item);
+            collector.collectItem(item);
+            return true;
         }
         return false;
     }
@@ -77,5 +78,15 @@ public class ConcreteMediator implements Mediator {
     @Override
     public String getPlayerName() {
     	return player.getName();
+    }
+    
+    @Override
+    public void addResultToPlayer(IngredientCard ing1, IngredientCard ing2, Potion p) {
+    	player.getResultsTriangle().newResult(ing1, ing2, p);
+    }
+    
+    @Override
+    public String getPlayersResults() {
+    	return player.getResultsTriangle().getResultList();
     }
 }

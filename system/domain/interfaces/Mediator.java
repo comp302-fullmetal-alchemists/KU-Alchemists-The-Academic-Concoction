@@ -1,6 +1,8 @@
 package system.domain.interfaces;
 
 import system.domain.controllers.Player;
+import system.domain.IngredientCard;
+import system.domain.Potion;
 
 public interface Mediator {
 	
@@ -32,4 +34,8 @@ public interface Mediator {
     void playerPlayedTurn();
     
     String getPlayerName();
+    
+    void addResultToPlayer(IngredientCard ing1, IngredientCard ing2, Potion p);
+    
+    String getPlayersResults();
 }
