@@ -48,13 +48,12 @@ public class GameBoardController {
     }
 
     //authentication sends players to gameboard and gameboard readies the game areas
-    public void initializeTheBoard(Player player1, Player player2) {
-        players.add(player1);
-        players.add(player2); 
-        gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
+    public void initializeTheBoard(List<Player> players) {
+        this.players = players;
+        gameLog.GameLogControllerInit(players.get(0), players.get(1)); //initalize the gamelog with the players
 
         Random random = new Random();
-        int firstPlayer = random.nextInt(2);
+        int firstPlayer = random.nextInt(this.players.size());
         players.get(firstPlayer).changeTurn();
         mediator.connectPlayer(players.get(firstPlayer));
         this.ingredientStorage = new IngredientStorageController();
