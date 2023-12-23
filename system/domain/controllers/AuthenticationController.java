@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import javax.swing.Icon;
+import java.util.ArrayList;
 
 import system.domain.interfaces.Observer;
 
@@ -28,7 +29,10 @@ public class AuthenticationController {
         }
         //creates 2 players and calls the initializeTheBoard method
         else{
-            GameBoardController.getInstance().initializeTheBoard(new Player(username1, token1), new Player(username2, token2));
+        	ArrayList<Player> players = new ArrayList<Player>();
+        	players.add(new Player(username1, token1));
+        	players.add(new Player(username2, token2));
+            GameBoardController.getInstance().initializeTheBoard(players);
             authenticationUI.update("VALID");
     }
 }
