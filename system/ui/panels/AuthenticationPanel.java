@@ -73,18 +73,18 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		txtrPlayer1Username.setBounds(152, 176, 212, 32);
     	txtrPlayer1Username.setEditable(false);
 		add(txtrPlayer1Username);
-
+/* 
 		//created a text area for the player 2 username
 		JTextArea txtrPlayer2Username = new JTextArea();
 		txtrPlayer2Username.setText("Player 2 username:\n");
 		txtrPlayer2Username.setForeground(Color.WHITE);
 		txtrPlayer2Username.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
 		txtrPlayer2Username.setBackground(new Color(58, 77, 108));
-		/*txtrPlayer2Username.setBounds(905, 212, 141, 32);*/
+		//txtrPlayer2Username.setBounds(905, 212, 141, 32);
 		txtrPlayer2Username.setBounds(687, 177, 221, 32);
    		txtrPlayer2Username.setEditable(false);
 		add(txtrPlayer2Username);
-
+*/
 		//created a text area for the player 1 token
         JTextArea txtrPlayer1TokenChoose = new JTextArea();
 		txtrPlayer1TokenChoose.setText("Player 1 choose a token:\n");
@@ -95,18 +95,18 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		txtrPlayer1TokenChoose.setBounds(152, 307, 332, 32);
     	txtrPlayer1TokenChoose.setEditable(false);
 		add(txtrPlayer1TokenChoose);
-
+/* 
 		//created a text area for the player 2 token
 		JTextArea txtrPlayer2TokenChoose = new JTextArea();
 		txtrPlayer2TokenChoose.setText("Player 2 choose a token:\n");
 		txtrPlayer2TokenChoose.setForeground(Color.WHITE);
 		txtrPlayer2TokenChoose.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
 		txtrPlayer2TokenChoose.setBackground(new Color(58, 77, 108));
-		/*txtrPlayer2TokenChoose.setBounds(880, 397, 296, 32);*/
+		//txtrPlayer2TokenChoose.setBounds(880, 397, 296, 32);
     	txtrPlayer2TokenChoose.setBounds(687, 307, 296, 32);
     	txtrPlayer2TokenChoose.setEditable(false);
 		add(txtrPlayer2TokenChoose);
-
+*/
 		//created a text field for the player 1 to get username as input
 		username1 = new JTextField();
 		username1.setFont(new Font("Tahoma", Font.PLAIN, 21));
@@ -114,15 +114,15 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		/*username1.setBounds(270, 276, 166, 53);*/
 		add(username1);
 		username1.setColumns(10);
-
+/* 
 		//created a text field for the player 2 to get username as input
 		username2 = new JTextField();
 		username2.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		username2.setBounds(691, 229, 166, 53);
-		/*username2.setBounds(905, 276, 166, 53);*/
+		//username2.setBounds(905, 276, 166, 53);
 		username2.setColumns(10);
 		add(username2);
-
+*/
 		//created a combo box for the player 1 to choose a token
 		token1 = new JComboBox();
 		token1.setBounds(152, 357, 348, 268);
@@ -135,7 +135,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
     	});
 		add(token1);
 		token1.setVisible(true);
-
+/* 
 		//created a combo box for the player 2 to choose a token
 		token2 = new JComboBox();
 		token2.setBounds(687, 357, 351, 268);
@@ -148,7 +148,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		});
 		add(token2);
 		token2.setVisible(true);
-
+*/
 		//created a button for the players to login
 		JButton loginButton = new JButton("LOGIN");
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -157,11 +157,9 @@ public class AuthenticationPanel extends JPanel implements Observer {
 			public void actionPerformed(ActionEvent e) {
 				//get the username and token from the text fields and combo boxes
 	                String player1username = username1.getText();
-	                String player2username = username2.getText();
 	                Icon player1token = (Icon) token1.getSelectedItem();
-	                Icon player2token = (Icon) token2.getSelectedItem();
 					//call the login method from the authentication controller
-	                authController.login(player1username, player1token, player2username, player2token);
+	                authController.login(player1username, player1token);
 	            
 			}
 		});
@@ -196,8 +194,11 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	//update the observer
 	@Override
 	public void update(String msg) {
-		 if (!msg.equals("VALID")) {
-	            JOptionPane.showMessageDialog(this, msg);
-	        }
+		if (!msg.equals("VALID")) {
+	        JOptionPane.showMessageDialog(this, msg);
+	    }
+		username1.setText("");
+		token1.setSelectedIndex(0);
+
 	}
 }

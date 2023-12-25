@@ -19,6 +19,7 @@ public class GameBoardController {
 
     private static GameBoardController instance;
     private static List<Player> players;
+    private int noPlayers;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
@@ -36,11 +37,18 @@ public class GameBoardController {
     private String[] usages = {null,null,"Immediate effect." };
 
     private GameBoardController() {
-        this.players = new ArrayList<Player>();
+        players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
         this.gameLog = new GameLogController(); //create the gamelog
 
+    }
 
+    public void setNoPlayers(int noPlayers) {
+        this.noPlayers = noPlayers;
+    }
+
+    public int getNoPlayers() {
+        return noPlayers;
     }
     // alchemies are created from the Alchemy class according to the actual game in here 
     public void setAlchemy() {
@@ -82,12 +90,14 @@ public class GameBoardController {
         return instance;
     }
 
+    public void registerPlayer(Player player) {
+        players.add(player);
+        gameLog.GameLogControllerInit(player);
+    }
 
     //authentication sends players to gameboard and gameboard readies the game areas
-    public void initializeTheBoard(Player player1, Player player2) {
-        players.add(player1);
-        players.add(player2); 
-        gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
+    public void initializeTheBoard() {
+        //gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
 
         Random random = new Random();
         int firstPlayer = random.nextInt(2);

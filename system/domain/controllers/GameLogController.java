@@ -15,9 +15,8 @@ public class GameLogController {
     } //creation without players
 
 
-    public void GameLogControllerInit(Player player1, Player player2){
-        gameActions.put(player1,  new ArrayList<>());
-        gameActions.put(player2,  new ArrayList<>());
+    public void GameLogControllerInit(Player player){
+        gameActions.put(player,  new ArrayList<>());
     }//initalizing the gameActions map with players inputted.
 
     public void recordLog(Player player, GameAction gameAction) {

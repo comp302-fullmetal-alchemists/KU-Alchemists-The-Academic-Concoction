@@ -47,7 +47,7 @@ public class Gameboard extends JFrame implements Observer{
 		setBounds(70, 50, 650, 400);
 		this.gameController = GameBoardController.getInstance();
 		gameController.setObserver(this);
-		this.authPanel = new AuthenticationPanel() ;
+		this.authPanel = new AuthenticationPanel();
 		authPanel.setBounds(600, 153, 0, 0);
 		getContentPane().add(authPanel);
 		authPanel.setLayout(null);
@@ -85,6 +85,15 @@ public class Gameboard extends JFrame implements Observer{
 		});
 		menuBar.add(pauseButton);
 		validate();
+
+		GameBoardController.getInstance().setNoPlayers(JOptionPane.showOptionDialog(this, 
+				"Please select the number of players", 
+				"Number of Players", 
+				JOptionPane.YES_NO_CANCEL_OPTION, 
+				JOptionPane.QUESTION_MESSAGE, 
+				null, 
+				new String[] {"2", "3", "4"}, 
+				"2") + 2);
 	}
 
 	@Override
