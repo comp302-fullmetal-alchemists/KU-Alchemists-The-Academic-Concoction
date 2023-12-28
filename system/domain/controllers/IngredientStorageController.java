@@ -22,7 +22,6 @@ public class IngredientStorageController implements Collector{
     private Observer ingredientStorageUI;
     private Mediator mediator;
     private GameLogController gameLog;
-    private GameAction gameAction;
     private Boolean active = false;
     private IngredientCard ingToSell;
 
@@ -57,11 +56,8 @@ public class IngredientStorageController implements Collector{
         }
 
         //gameStart is logged in for both players.
-        gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getPlayer(0).getName(), "Game has started!", 0);
-        gameLog.recordLog(GameBoardController.getInstance().getPlayer(0), gameAction);
-
-        gameAction = new GameAction("KU Alchemist", GameBoardController.getInstance().getPlayer(1).getName(), "Game has started!", 0);
-        gameLog.recordLog(GameBoardController.getInstance().getPlayer(1), gameAction);
+        gameLog.recordLog(GameBoardController.getInstance().getPlayer(0), "KU Alchemist", GameBoardController.getInstance().getPlayer(0).getName(), "Game has started!", 0);
+        gameLog.recordLog(GameBoardController.getInstance().getPlayer(1), "KU Alchemist", GameBoardController.getInstance().getPlayer(1).getName(), "Game has started!", 0);
 
 
     }
@@ -81,8 +77,7 @@ public class IngredientStorageController implements Collector{
     		mediator.updatePlayerGold(2);
             ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
             //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
             ingToSell = null;
             mediator.playerPlayedTurn();
     	}
@@ -106,8 +101,7 @@ public class IngredientStorageController implements Collector{
                 ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
                 
                 //GAME LOG RECORDS: When a player buys an artifact card.
-                gameAction = new GameAction("Artifact Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
-                gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+                gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), "Artifact Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
                 
                 useArtifact(artifact);
                 mediator.playerPlayedTurn();
@@ -131,8 +125,7 @@ public class IngredientStorageController implements Collector{
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
 
             //GAME LOG RECORDS: When a player draws a card.
-            gameAction = new GameAction("Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), "Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
             
             mediator.playerPlayedTurn();
         }
@@ -158,8 +151,7 @@ public class IngredientStorageController implements Collector{
         }
 
         //GAME LOG RECORDS: When a player uses their artifact card
-        gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "themselves",  String.format("%s is Used", card.getName()), 0);
-        gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+        gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "themselves",  String.format("%s is Used", card.getName()), 0);
     }
 
     @Override

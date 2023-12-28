@@ -24,7 +24,6 @@ public class GameBoardController {
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
     private GameLogController gameLog; 
-    private GameAction gameAction; //to be used for start game gameAction
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
@@ -87,7 +86,8 @@ public class GameBoardController {
     public void initializeTheBoard(Player player1, Player player2) {
         players.add(player1);
         players.add(player2); 
-        gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
+        gameLog.GameLogControllerInitPlayer(player1); //initalize the gamelog with the players
+        gameLog.GameLogControllerInitPlayer(player2); 
 
         Random random = new Random();
         int firstPlayer = random.nextInt(2);
@@ -128,8 +128,7 @@ public class GameBoardController {
      */
     public void changePlayer() {
         //GAMELOG RECORDS LOG: When the round is over for a player
-        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
-        gameLog.recordLog(getCurrentPlayer(), gameAction);
+        gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
 
         gameboardUI.update("CHANGING_PLAYER");
         
@@ -139,8 +138,7 @@ public class GameBoardController {
         gameboardUI.update("CHANGED_PLAYER");
 
         //GAMELOG RECORDS LOG: When its a different players turn to play
-        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
-        gameLog.recordLog(getCurrentPlayer(), gameAction);
+        gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
 
     }
     
