@@ -1,8 +1,9 @@
 package system.ui.panels;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import system.ui.frame.Gameboard;
 
@@ -11,28 +12,31 @@ import java.awt.event.ActionListener;
 
 public class WelcomePagePanel extends JPanel {
 
-    JButton offlineButton;
-    JTextArea onlineGameOptions;
+    JButton startGameButton;
+    JComboBox<Integer> numberOfPlayers;
     JButton hostGameButton;
     JButton joinGameButton;
 
-
     public WelcomePagePanel(Gameboard gameboard) {
-        
-        // I need two button offline and online
-        //if offline is clicked, authPanel will show up
 
-        offlineButton = new JButton("Offline");
-        offlineButton.addActionListener(new ActionListener() {
+        // Offline Section
+        JLabel offlineLabel = new JLabel("Oflfline Game Options");
+        add(offlineLabel);
+        numberOfPlayers = new JComboBox<>(new Integer[]{1, 2, 3, 4});
+        add(numberOfPlayers);
+        startGameButton = new JButton("Start Game");
+        startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameboard.showAuthenticationPanel();
             }
         });
-        add(offlineButton);
+        add(startGameButton);
 
-        onlineGameOptions = new JTextArea("Online Game Options");
-        add(onlineGameOptions);
+        // Online Section
+        JLabel onlineLabel = new JLabel("Online Game Options");
+        add(onlineLabel);
+
 
         hostGameButton = new JButton("Host Game");
         hostGameButton.addActionListener(new ActionListener() {
@@ -51,6 +55,5 @@ public class WelcomePagePanel extends JPanel {
             }
         });
         add(joinGameButton);
-
     }
 }
