@@ -32,7 +32,7 @@ public class AuthenticationController {
         	ArrayList<Player> players = new ArrayList<Player>();
         	players.add(new Player(username1, token1));
         	players.add(new Player(username2, token2));
-            GameBoardController.getInstance().initializeTheBoard(players);
+            GameBoardController.getInstance().initializeTheBoard(players.get(0), players.get(1));
             authenticationUI.update("VALID");
     }
 }
