@@ -42,7 +42,6 @@ public class Gameboard extends JFrame implements Observer{
 		welcomePage.setBounds(0, 0, 1200, 800);
 		setVisible(true);
 		setResizable(false);
-		this.onlinePanel = new OnlineGamePanel(this);
 		welcomePage.setBounds(0, 0, 1200, 800);
 		welcomePage.setBounds(0, 0, 1200, 800);
 		setVisible(true);

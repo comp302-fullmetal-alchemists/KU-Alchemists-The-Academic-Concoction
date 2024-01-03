@@ -5,10 +5,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import system.network.Server;
 import system.ui.frame.Gameboard;
+import system.network.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class WelcomePagePanel extends JPanel {
 
@@ -42,7 +45,15 @@ public class WelcomePagePanel extends JPanel {
         hostGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameboard.showOnlineGamePanel();
+                try {
+                    Server server = new Server(8080);
+                    server.run();
+
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                
             }
         });
         add(hostGameButton);
@@ -51,7 +62,14 @@ public class WelcomePagePanel extends JPanel {
         joinGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameboard.showOnlineGamePanel();
+                try {
+                    Client client = new Client();
+                    client.run(client.getSocket());
+                    
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
         add(joinGameButton);
