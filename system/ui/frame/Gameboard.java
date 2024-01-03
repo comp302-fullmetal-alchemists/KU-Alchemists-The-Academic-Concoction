@@ -32,20 +32,6 @@ public class Gameboard extends JFrame implements Observer{
 	WelcomePagePanel welcomePage;
 	OnlineGamePanel onlinePanel;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Gameboard frame = new Gameboard();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(70, 50, 650, 400);
@@ -53,12 +39,12 @@ public class Gameboard extends JFrame implements Observer{
 		gameController.setObserver(this);
 		this.authPanel = new AuthenticationPanel() ;
 		welcomePage = new WelcomePagePanel(this);
-		this.onlinePanel = new OnlineGamePanel(this);
 		welcomePage.setBounds(0, 0, 1200, 800);
+		setVisible(true);
+		setResizable(false);
 		getContentPane().add(welcomePage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.helpScreen = new HelpScreenPanel(); // Help screen panel object
-
 	
 
 		JMenuBar menuBar = new JMenuBar();
@@ -88,6 +74,7 @@ public class Gameboard extends JFrame implements Observer{
 		});
 		menuBar.add(pauseButton);
 		validate();
+		repaint();
 	}
 
 	@Override
