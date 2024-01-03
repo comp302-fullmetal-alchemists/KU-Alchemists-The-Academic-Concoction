@@ -39,23 +39,6 @@ public class IngredientStorageController implements Collector{
         this.ingredientStorageUI = observer;
     }
 
-    public void initializePiles() {
-        ingredientPile = IngredientFactory.getInstance().createIngredients(24);
-        Collections.shuffle(ingredientPile);
-
-        for (int i = 0; i < GameBoardController.getInstance().getArtifactStrings().length - 1; i++) {
-            artifactPile.add(new ArtifactCard(GameBoardController.getInstance().getArtifactStrings()[i], GameBoardController.getInstance().getArtifactEffect()[i], GameBoardController.getInstance().getArtifactUsage()[i]));
-        }
-
-        //gameStart is logged in for both players.
-        gameLog.recordLog(GameBoardController.getInstance().getPlayer(0), "KU Alchemist", GameBoardController.getInstance().getPlayer(0).getName(), "Game has started!", 0);
-        gameLog.recordLog(GameBoardController.getInstance().getPlayer(1), "KU Alchemist", GameBoardController.getInstance().getPlayer(1).getName(), "Game has started!", 0);
-    }
-    
-    //This function is for gameboard to use when sending initial cards to players
-    public IngredientCard pullIngredientCard() {
-    	return ingredientPile.remove(0);
-    }
     
     public boolean hasIngToSell() {
     	return ingToSell != null;

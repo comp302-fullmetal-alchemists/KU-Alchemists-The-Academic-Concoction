@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Observer;
+import system.domain.util.IngredientFactory;
 
 import javax.swing.Icon;
 
@@ -22,7 +23,7 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
-      
+        
     }
 
     public void setPlayerUI(Observer observer) {

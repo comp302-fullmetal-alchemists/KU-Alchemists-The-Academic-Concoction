@@ -14,7 +14,6 @@ import system.domain.util.ConcreteMediator;
 public class GameBoardController {
 
     private static GameBoardController instance;
-    private List<Player> players;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
@@ -23,12 +22,8 @@ public class GameBoardController {
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
-    private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
-    private String[] usages = {null,null,"Immediate effect." };
 
     private GameBoardController() {
-        this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
         this.gameLog = new GameLogController(); //create the gamelog
     }
@@ -46,44 +41,17 @@ public class GameBoardController {
     }
 
     //authentication sends players to gameboard and gameboard readies the game areas
-    public void initializeTheBoard(Player player1, Player player2) {
-        players.add(player1);
-        players.add(player2); 
-        gameLog.GameLogControllerInitPlayer(player1); //initalize the gamelog with the players
-        gameLog.GameLogControllerInitPlayer(player2); 
-
-        Random random = new Random();
-        int firstPlayer = random.nextInt(this.players.size());
-        players.get(firstPlayer).changeTurn();
-        mediator.connectPlayer(players.get(firstPlayer));
+    public void initializeTheBoard() {
+        //gameLog.GameLogControllerInitPlayer(player1); //initalize the gamelog with the players
+        //gameLog.GameLogControllerInitPlayer(player2); 
         this.ingredientStorage = new IngredientStorageController();
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
-        this.ingredientStorage.initializePiles();
-        for (Player p: players) {
-        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
-        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
-        }
     }
 
-    public Player getPlayer(int index) {
-        return players.get(index);
-    }
-        
-    public String[] getArtifactStrings() {
-        return artifacts;
-    }
-
-    public String[] getArtifactEffect() {
-        return effects;
-    }
-
-    public String[] getArtifactUsage() {
-        return usages;
-    }
 
     /*	when a player is going to be changed, first the game areas are cleared and items remaining in them
     	are sent back to the previous player because the previous player may have objects left in those areas, 
@@ -93,7 +61,7 @@ public class GameBoardController {
      */
     public void changePlayer() {
         //GAMELOG RECORDS LOG: When the round is over for a player
-        gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
+        //gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
 
         gameboardUI.update("CHANGING_PLAYER");
         
@@ -105,14 +73,6 @@ public class GameBoardController {
         //GAMELOG RECORDS LOG: When its a different players turn to play
         gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
 
-    }
-    
-    public Player getCurrentPlayer() {
-        if (players.get(0).isInTurn()) {
-            return players.get(0);
-        } else {
-            return players.get(1);
-        }
     }
 
     
