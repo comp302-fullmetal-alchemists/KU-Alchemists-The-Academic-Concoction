@@ -28,19 +28,6 @@ public class Gameboard extends JFrame implements Observer{
     GameBoardController gameController;
 	private HelpScreenPanel helpScreen;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Gameboard frame = new Gameboard();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
