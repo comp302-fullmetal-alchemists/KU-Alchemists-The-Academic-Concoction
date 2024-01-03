@@ -28,9 +28,14 @@ public class Gameboard extends JFrame implements Observer{
     PlayerContentPane playerPane;
     GameContentPane gamePane;
     GameBoardController gameController;
+<<<<<<< HEAD
 	HelpScreenPanel helpScreen;
 	WelcomePagePanel welcomePage;
 	OnlineGamePanel onlinePanel;
+=======
+	private HelpScreenPanel helpScreen;
+
+>>>>>>> 14c68f9 (removed an unnecessary function)
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
