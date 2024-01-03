@@ -72,24 +72,7 @@ public class InventoryController {
     }
  
 
-    public void giveIngredient(IngredientCard card) {
-    	//delete card from ingredient card list of the corresponding players inventory
-        for(IngredientCard icard : ingredientCards){
-            if(icard == card){
-                ingredientCards.remove(card);
-                
-            }
-        }
-
-    }
-    
-    public void showInventory(Player player) {
-       //observer will use this
-        return;
-    }
-
     public int updateGold(int amount) {
-    	
     	setGold(gold + amount) ;
         inventoryUI.update("GOLD_UPDATE");
     	return gold;

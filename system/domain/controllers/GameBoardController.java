@@ -3,11 +3,7 @@ package system.domain.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
 
-import system.domain.Alchemy;
 import system.domain.ArtifactCard;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
@@ -18,7 +14,7 @@ import system.domain.util.ConcreteMediator;
 public class GameBoardController {
 
     private static GameBoardController instance;
-    private static List<Player> players;
+    private List<Player> players;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
@@ -27,9 +23,6 @@ public class GameBoardController {
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad Stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
-    private Alchemy[] alchemies = new Alchemy[8];
-    private Map<String, Alchemy> alchemyMap = new HashMap<String, Alchemy>();
     private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
     private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
     private String[] usages = {null,null,"Immediate effect." };
@@ -38,35 +31,7 @@ public class GameBoardController {
         this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
         this.gameLog = new GameLogController(); //create the gamelog
-
-
     }
-    // alchemies are created from the Alchemy class according to the actual game in here 
-    public void setAlchemy() {
-         alchemies[0] = new Alchemy(-Alchemy.AlchemicalConstants.SMALL, Alchemy.AlchemicalConstants.SMALL, -Alchemy.AlchemicalConstants.LARGE); 
-         alchemies[1] = new Alchemy(Alchemy.AlchemicalConstants.LARGE, Alchemy.AlchemicalConstants.LARGE, Alchemy.AlchemicalConstants.LARGE);
-         alchemies[2] = new Alchemy(-Alchemy.AlchemicalConstants.LARGE, -Alchemy.AlchemicalConstants.LARGE, -Alchemy.AlchemicalConstants.LARGE);
-         alchemies[3] = new Alchemy(-Alchemy.AlchemicalConstants.SMALL, Alchemy.AlchemicalConstants.LARGE, Alchemy.AlchemicalConstants.SMALL);
-         alchemies[4] = new Alchemy(Alchemy.AlchemicalConstants.LARGE, Alchemy.AlchemicalConstants.SMALL, -Alchemy.AlchemicalConstants.SMALL);
-         alchemies[5] = new Alchemy(Alchemy.AlchemicalConstants.SMALL,- Alchemy.AlchemicalConstants.LARGE, -Alchemy.AlchemicalConstants.SMALL);
-         alchemies[6] = new Alchemy(Alchemy.AlchemicalConstants.SMALL, -Alchemy.AlchemicalConstants.SMALL, Alchemy.AlchemicalConstants.LARGE);
-         alchemies[7] = new Alchemy(-Alchemy.AlchemicalConstants.LARGE, -Alchemy.AlchemicalConstants.SMALL, Alchemy.AlchemicalConstants.SMALL);
-    }
-
-    
-    //when game starts, alchemies are randomly assigned to ingredients
-    public void assignRandomAlchemy() {
-        ArrayList<Integer> alchemyIndex = new ArrayList<Integer>();
-        for (int i = 0; i < 8; i++) {
-            alchemyIndex.add(i);
-        }
-        Collections.shuffle(alchemyIndex);
-        for (int i = 0; i < 8; i++) {
-            alchemyMap.put(ingredients[i], alchemies[alchemyIndex.get(i)]);
-        }
-    }
-
-  
 
     public void setObserver(Observer observer) {
         this.gameboardUI = observer;
@@ -75,12 +40,10 @@ public class GameBoardController {
     //GameboardController is a singleton class, this is the lazy initialization method
     public static GameBoardController getInstance() {
         if (instance == null) {
-            instance = new GameBoardController();
-            
+            instance = new GameBoardController();  
         }
         return instance;
     }
-
 
     //authentication sends players to gameboard and gameboard readies the game areas
     public void initializeTheBoard(Player player1, Player player2) {
@@ -90,11 +53,9 @@ public class GameBoardController {
         gameLog.GameLogControllerInitPlayer(player2); 
 
         Random random = new Random();
-        int firstPlayer = random.nextInt(2);
+        int firstPlayer = random.nextInt(this.players.size());
         players.get(firstPlayer).changeTurn();
         mediator.connectPlayer(players.get(firstPlayer));
-        setAlchemy();
-        assignRandomAlchemy();
         this.ingredientStorage = new IngredientStorageController();
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
@@ -102,6 +63,10 @@ public class GameBoardController {
         this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
+        for (Player p: players) {
+        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
+        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
+        }
     }
 
     public Player getPlayer(int index) {
@@ -182,12 +147,6 @@ public class GameBoardController {
         return mediator;
     }
 
-   
-
-    public String[] getIngredients(){
-        return ingredients;
-    }
-
 
     public int calculateFinalScore(Player player) {
         //to do: get rep, gold, artifact from player's inventory
@@ -238,14 +197,9 @@ public class GameBoardController {
     /* 
      * The random assignment of aclhemies to ingredients is needed for some parts of the game, this is to get it.
      * */    
-    public Map<String, Alchemy> getAlchemyMap() {
-        return alchemyMap;
-    }
+    
     public void startGame() {
         return;
     }
 
-    public Alchemy[] getAlchemies() {
-        return alchemies;
-    }
 }
