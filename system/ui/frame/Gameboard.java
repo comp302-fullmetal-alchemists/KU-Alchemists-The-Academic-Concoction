@@ -28,20 +28,9 @@ public class Gameboard extends JFrame implements Observer{
     PlayerContentPane playerPane;
     GameContentPane gamePane;
     GameBoardController gameController;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	HelpScreenPanel helpScreen;
 	WelcomePagePanel welcomePage;
 	OnlineGamePanel onlinePanel;
-=======
-	private HelpScreenPanel helpScreen;
-=======
-	HelpScreenPanel helpScreen;
-	WelcomePagePanel welcomePage;
-	OnlineGamePanel onlinePanel;
->>>>>>> 821a5bc (writing backend code for online/offlinw option)
-
->>>>>>> 14c68f9 (removed an unnecessary function)
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,18 +39,17 @@ public class Gameboard extends JFrame implements Observer{
 		gameController.setObserver(this);
 		this.authPanel = new AuthenticationPanel() ;
 		welcomePage = new WelcomePagePanel(this);
-<<<<<<< HEAD
 		welcomePage.setBounds(0, 0, 1200, 800);
 		setVisible(true);
 		setResizable(false);
-=======
 		this.onlinePanel = new OnlineGamePanel(this);
 		welcomePage.setBounds(0, 0, 1200, 800);
->>>>>>> 821a5bc (writing backend code for online/offlinw option)
+		welcomePage.setBounds(0, 0, 1200, 800);
+		setVisible(true);
+		setResizable(false);
 		getContentPane().add(welcomePage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.helpScreen = new HelpScreenPanel(); // Help screen panel object
-
 	
 
 		JMenuBar menuBar = new JMenuBar();
