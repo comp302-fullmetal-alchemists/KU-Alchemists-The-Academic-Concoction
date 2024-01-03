@@ -13,6 +13,7 @@ public class Server extends Thread{
 
     public Server(int port) throws IOException {
     serverSocket = new ServerSocket(port);
+    //Socket clientSocket = serverSocket.accept();
     //serverSocket.setSoTimeout(10000);
     }
 

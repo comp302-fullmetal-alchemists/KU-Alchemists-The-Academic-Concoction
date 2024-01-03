@@ -14,13 +14,12 @@ import system.domain.util.ConcreteMediator;
 public class GameBoardController {
 
     private static GameBoardController instance;
-    private static List<Player> players;
+    private List<Player> players;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
     private GameLogController gameLog; 
-    private GameAction gameAction; //to be used for start game gameAction
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
@@ -41,16 +40,17 @@ public class GameBoardController {
     //GameboardController is a singleton class, this is the lazy initialization method
     public static GameBoardController getInstance() {
         if (instance == null) {
-            instance = new GameBoardController();
-            
+            instance = new GameBoardController();  
         }
         return instance;
     }
 
     //authentication sends players to gameboard and gameboard readies the game areas
-    public void initializeTheBoard(List<Player> players) {
-        this.players = players;
-        gameLog.GameLogControllerInit(players.get(0), players.get(1)); //initalize the gamelog with the players
+    public void initializeTheBoard(Player player1, Player player2) {
+        players.add(player1);
+        players.add(player2); 
+        gameLog.GameLogControllerInitPlayer(player1); //initalize the gamelog with the players
+        gameLog.GameLogControllerInitPlayer(player2); 
 
         Random random = new Random();
         int firstPlayer = random.nextInt(this.players.size());
@@ -63,6 +63,10 @@ public class GameBoardController {
         this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
         this.ingredientStorage.initializePiles();
+        for (Player p: players) {
+        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
+        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
+        }
     }
 
     public Player getPlayer(int index) {
@@ -89,8 +93,7 @@ public class GameBoardController {
      */
     public void changePlayer() {
         //GAMELOG RECORDS LOG: When the round is over for a player
-        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
-        gameLog.recordLog(getCurrentPlayer(), gameAction);
+        gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
 
         gameboardUI.update("CHANGING_PLAYER");
         
@@ -100,8 +103,7 @@ public class GameBoardController {
         gameboardUI.update("CHANGED_PLAYER");
 
         //GAMELOG RECORDS LOG: When its a different players turn to play
-        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
-        gameLog.recordLog(getCurrentPlayer(), gameAction);
+        gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
 
     }
     
