@@ -1,14 +1,9 @@
 package system.ui.panels;
 
 import javax.swing.JButton;
-<<<<<<< HEAD
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-=======
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
->>>>>>> 821a5bc (writing backend code for online/offlinw option)
 
 import system.ui.frame.Gameboard;
 
@@ -17,7 +12,6 @@ import java.awt.event.ActionListener;
 
 public class WelcomePagePanel extends JPanel {
 
-<<<<<<< HEAD
     JButton startGameButton;
     JComboBox<Integer> numberOfPlayers;
     JButton hostGameButton;
@@ -32,39 +26,17 @@ public class WelcomePagePanel extends JPanel {
         add(numberOfPlayers);
         startGameButton = new JButton("Start Game");
         startGameButton.addActionListener(new ActionListener() {
-=======
-    JButton offlineButton;
-    JTextArea onlineGameOptions;
-    JButton hostGameButton;
-    JButton joinGameButton;
-
-
-    public WelcomePagePanel(Gameboard gameboard) {
-        
-        // I need two button offline and online
-        //if offline is clicked, authPanel will show up
-
-        offlineButton = new JButton("Offline");
-        offlineButton.addActionListener(new ActionListener() {
->>>>>>> 821a5bc (writing backend code for online/offlinw option)
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameboard.showAuthenticationPanel();
             }
         });
-<<<<<<< HEAD
         add(startGameButton);
 
         // Online Section
         JLabel onlineLabel = new JLabel("Online Game Options");
         add(onlineLabel);
 
-=======
-        add(offlineButton);
-
-        onlineGameOptions = new JTextArea("Online Game Options");
-        add(onlineGameOptions);
->>>>>>> 821a5bc (writing backend code for online/offlinw option)
 
         hostGameButton = new JButton("Host Game");
         hostGameButton.addActionListener(new ActionListener() {
@@ -83,9 +55,5 @@ public class WelcomePagePanel extends JPanel {
             }
         });
         add(joinGameButton);
-<<<<<<< HEAD
-=======
-
->>>>>>> 821a5bc (writing backend code for online/offlinw option)
     }
 }
