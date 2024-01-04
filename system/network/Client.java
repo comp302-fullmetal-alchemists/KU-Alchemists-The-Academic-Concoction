@@ -21,6 +21,7 @@ public class Client {
     }
 
     public void run (Socket socket) throws IOException {
+        socket = new Socket(HOST, PORT);
         BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         BufferedReader fromUser = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter toServer = new PrintWriter(socket.getOutputStream(), true);
