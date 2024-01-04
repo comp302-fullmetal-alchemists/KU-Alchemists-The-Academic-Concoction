@@ -5,6 +5,7 @@ import system.domain.GameAction;
 import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
+import system.domain.util.IngredientFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -15,13 +16,12 @@ public class TheoryController {
     private List<Theory> theories;
     private Observer theoryUI;
     private GameLogController gameLog;
-    private GameAction gameAction;
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
 
     public TheoryController() {
         this.theories = new ArrayList<Theory>(); //add theories to the list
         this.gameLog = GameBoardController.getInstance().getGameLog();
-        this.alchemyMap = GameBoardController.getInstance().getAlchemyMap();
+        this.alchemyMap = IngredientFactory.getInstance().getAlchemyMap();
 
     }
 
@@ -51,8 +51,7 @@ public class TheoryController {
             theoryUI.update("THEORY_PUBLISHED");
 
             //GAMELOG RECORDS LOG: When a player publishes a theory
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             //increase the turn count
             GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
@@ -71,10 +70,9 @@ public class TheoryController {
                             GameBoardController.getInstance().getMediator().playerPlayedTurn();
 
                             //GAMELOG RECORDS LOG FOR DEBUNKER
-                            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
-                            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+                            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
                             //GAMELOG RECORDS LOG FOR DEBUNKEE
-                            gameLog.recordLog(theory.getOwner(), gameAction);
+                            gameLog.recordLog(theory.getOwner(), GameBoardController.getInstance().getCurrentPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
 
                             i.setAlchemy(alchemy);
                             i.setOwner(GameBoardController.getInstance().getCurrentPlayer());

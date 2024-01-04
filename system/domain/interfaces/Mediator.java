@@ -21,6 +21,8 @@ public interface Mediator {
 
     void disconnectCollector();
 
+	void disconnectPlayer();
+
     <T> void sendToPlayer(T item);
 
     <T> boolean sendToCollector(T item);

@@ -17,22 +17,15 @@ public class DeductionBoard extends JPanel{
     public DeductionBoard() {
         super();
         setBackground(new Color(58, 77, 108));
-        this.back = createNavButton("village", "Back to the village");
-        add(back);
+        setLayout(null);
+        
+        JButton navBtn = new JButton("Back to the Village");
+        navBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		((GameContentPane) DeductionBoard.this.getParent()).changeView("village");
+        	}
+        });
+        navBtn.setBounds(20, 10, 150, 30);
+        add(navBtn);
     }
-
-    public JButton createNavButton(String nav, String text) {
-        JButton button = new JButton(text);
-        button.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((GameContentPane) DeductionBoard.this.getParent()).changeView(nav);
-                }
-
-            }
-        );
-        return button;
-    }
-    
 }
