@@ -38,9 +38,6 @@ public class Gameboard extends JFrame implements Observer{
 		this.gameController = GameBoardController.getInstance();
 		gameController.setObserver(this);
 		this.authPanel = new AuthenticationPanel();
-		authPanel.setBounds(600, 153, 0, 0);
-		getContentPane().add(authPanel);
-		authPanel.setLayout(null);
 		setSize(1200, 800);
 		this.setResizable(false);
 		welcomePage = new WelcomePagePanel(this);
@@ -99,6 +96,9 @@ public class Gameboard extends JFrame implements Observer{
         else if (msg.equals("AUTHORIZATION")) {
             changePlayer();
         }
+		else if (msg.equals("AUTHENTICATION")) {
+			showAuthenticationPanel();
+		}
 	}
 	
 	public void clear() {
@@ -126,7 +126,7 @@ public class Gameboard extends JFrame implements Observer{
 
 
 	public void showAuthenticationPanel() {
-		getContentPane().remove(welcomePage);
+		getContentPane().removeAll();
 		getContentPane().add(authPanel);
 		authPanel.setBounds(600, 153, 0, 0);
 		authPanel.setLayout(null);

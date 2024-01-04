@@ -10,7 +10,7 @@ import java.util.Collections;
 public class OfflineServer implements IServerAdapter {
 
     private GameBoardState gbState;
-    private int playerNo;
+    private int playerNo = 3;
     private int currPlayer = 0;
     private int rounds = 0;
     private List<Player> players;
@@ -23,6 +23,11 @@ public class OfflineServer implements IServerAdapter {
     // host decides the number of players
     public void setNoPlayers(int playerNo) {
         this.playerNo = playerNo;
+    }
+
+    public void startAuthentication() {
+        GameBoardController.getInstance().setServer(this);
+        GameBoardController.getInstance().startAuthentication();
     }
 
     // for checking in authentication
@@ -39,13 +44,15 @@ public class OfflineServer implements IServerAdapter {
         if (players.size() == playerNo) {
             initializeGame();            
         }
+        else {
+            GameBoardController.getInstance().startAuthentication();
+        }
     }
 
     public void initializeGame() {
         Collections.shuffle(players);
         for (Player p: players) {
-            p.getInventory().addIngredient(gbState.getIngredientPile().remove(0));
-            p.getInventory().addIngredient(gbState.getIngredientPile().remove(0));
+            p.getInventory().initializeIngredients(gbState.getIngredientPile().remove(0), gbState.getIngredientPile().remove(0));
         }
 
         GameBoardController.getInstance().initializeTheBoard();

@@ -21,7 +21,7 @@ public class TheoryController {
     public TheoryController() {
         this.theories = new ArrayList<Theory>(); //add theories to the list
         this.gameLog = GameBoardController.getInstance().getGameLog();
-        this.alchemyMap = IngredientFactory.getInstance().getAlchemyMap();
+        //this.alchemyMap = IngredientFactory.getInstance().getAlchemyMap();
 
     }
 

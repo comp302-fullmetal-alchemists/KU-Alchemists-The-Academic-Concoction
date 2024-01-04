@@ -51,6 +51,10 @@ public class GameBoardController {
         return instance;
     }
 
+    public void startAuthentication() {
+        gameboardUI.update("AUTHENTICATION");
+    }   
+
     //authentication sends players to gameboard and gameboard readies the game areas
     public void initializeTheBoard() {
         //gameLog.GameLogControllerInitPlayer(player1); //initalize the gamelog with the players
@@ -110,6 +114,10 @@ public class GameBoardController {
 
     public Mediator getMediator() {
         return mediator;
+    }
+
+    public OfflineServer getServer() {
+        return server;
     }
 
 

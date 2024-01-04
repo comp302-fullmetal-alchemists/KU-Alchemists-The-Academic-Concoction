@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import system.domain.controllers.GameBoardController;
+import system.network.OfflineServer;
 import system.ui.frame.Gameboard;
 
 import java.awt.event.ActionEvent;
@@ -28,10 +30,14 @@ public class WelcomePagePanel extends JPanel {
         offlineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameboard.showAuthenticationPanel();
+                OfflineServer server = new OfflineServer();
+                server.startAuthentication();
+                //GameBoardController.getInstance().setServer(server);
+                //gameboard.showAuthenticationPanel();
             }
         });
         add(offlineButton);
+
 
         onlineGameOptions = new JTextArea("Online Game Options");
         add(onlineGameOptions);

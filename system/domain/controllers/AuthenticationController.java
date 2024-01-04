@@ -11,16 +11,16 @@ import system.domain.interfaces.Observer;
 public class AuthenticationController {
  
     private Observer authenticationUI;
-    private List<Player> players;
 
     public AuthenticationController() {
-        this.players = new ArrayList<Player>();
+
     }
 
     // This method is called by the UI when the user clicks the login button
     public void setObserver(Observer observer) {
         this.authenticationUI = observer;
     }
+    
     /* 
     // This method is called by the UI when the user clicks the login button
     public void login(String username1, Icon token1, String username2, Icon token2) {
@@ -49,28 +49,15 @@ public class AuthenticationController {
             authenticationUI.update("Please fill all the fields");
         }
 
-        else if (checkUsername(username)){
+        else if (GameBoardController.getInstance().getServer().validateUserChoices(username)){
             Player player = new Player(username, token);
-            players.add(player);
-            GameBoardController.getInstance().registerPlayer(player);
+            GameBoardController.getInstance().getServer().registerPlayer(player);
             authenticationUI.update("VALID");
-            if (players.size() == GameBoardController.getInstance().getNoPlayers()){
-                GameBoardController.getInstance().initializeTheBoard();
-            }
         }
-        //creates a player and calls the initializeTheBoard method
+        
         else{
             authenticationUI.update("Username already exists");
         }
-    }
-
-    public boolean checkUsername(String username){
-        for (Player i : players){
-            if (i.getName().equals(username)){
-                return false;
-            }
-        }
-        return true;
     }
 }
 
