@@ -9,6 +9,7 @@ import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
+import system.network.OfflineServer;
 
 
 public class GameBoardController {
@@ -22,6 +23,8 @@ public class GameBoardController {
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
+    private OfflineServer server;
+    private Player player;
 
     private GameBoardController() {
         this.mediator = new ConcreteMediator();
@@ -30,6 +33,14 @@ public class GameBoardController {
 
     public void setObserver(Observer observer) {
         this.gameboardUI = observer;
+    }
+
+    public void setServer(OfflineServer server) {
+        this.server = server;
+    }
+
+    public void setPlayer(Player p) {
+        this.player = p;
     }
     
     //GameboardController is a singleton class, this is the lazy initialization method
@@ -52,29 +63,23 @@ public class GameBoardController {
         gameboardUI.update("INITIALIZE_BOARD");
     }
 
-
-    /*	when a player is going to be changed, first the game areas are cleared and items remaining in them
-    	are sent back to the previous player because the previous player may have objects left in those areas, 
-    	like an ingredient that is going to be sold.This was the "CHANGING_PLAYER" update.
-    	 Then it changes the view to the next player, this is the "CHANGED_PLAYER" update.
-     
-     */
-    public void changePlayer() {
-        //GAMELOG RECORDS LOG: When the round is over for a player
-        //gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
-
-        gameboardUI.update("CHANGING_PLAYER");
-        
-        players.get(0).changeTurn();
-        players.get(1).changeTurn();
-        mediator.connectPlayer(getCurrentPlayer());
-        gameboardUI.update("CHANGED_PLAYER");
-
-        //GAMELOG RECORDS LOG: When its a different players turn to play
-        gameLog.recordLog(getCurrentPlayer(), "KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
-
+    public void deauthorizePlayer() {
+        gameboardUI.update("DEAUTHORIZATION");
+        mediator.disconnectPlayer();
     }
 
+    public void authorizePlayer() {
+        mediator.connectPlayer(player);
+        gameboardUI.update("AUTHORIZATION");   
+    }
+
+    public void finishTurn() {
+        server.changePlayer();
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
     
     /*
      UI objects get their controllers from GameBoardController.
@@ -108,6 +113,8 @@ public class GameBoardController {
     }
 
 
+    /////// This is to be changed accordingly.
+/* 
     public int calculateFinalScore(Player player) {
         //to do: get rep, gold, artifact from player's inventory
             int finalScore = 0;
@@ -152,7 +159,7 @@ public class GameBoardController {
                 return player2; 
             }
             }
-
+*/
         
     /* 
      * The random assignment of aclhemies to ingredients is needed for some parts of the game, this is to get it.

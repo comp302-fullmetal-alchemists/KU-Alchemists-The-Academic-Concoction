@@ -12,6 +12,7 @@ public class OfflineServer implements IServerAdapter {
     private GameBoardState gbState;
     private int playerNo;
     private int currPlayer = 0;
+    private int rounds = 0;
     private List<Player> players;
 
     public OfflineServer() {
@@ -36,36 +37,50 @@ public class OfflineServer implements IServerAdapter {
     public void registerPlayer(Player p) {
         players.add(p);
         if (players.size() == playerNo) {
-            ///start playing the game.
+            initializeGame();            
         }
     }
 
     public void initializeGame() {
-        GameBoardController.getInstance().initializeTheBoard();
         Collections.shuffle(players);
         for (Player p: players) {
             p.getInventory().addIngredient(gbState.getIngredientPile().remove(0));
             p.getInventory().addIngredient(gbState.getIngredientPile().remove(0));
         }
-        changePlayer();
+
+        GameBoardController.getInstance().initializeTheBoard();
+        authorizePlayer();
     }
 
     public void changePlayer() {
-        players.get(currPlayer).changeTurn();
-        GameBoardController.getInstance().getMediator().connectPlayer(players.get(currPlayer));
+        //first remove the old player
+        deauthorizePlayer();
+        //then find new player, change round number if needed
+        setNextPlayer();
+        //finally, give permission to new player
+        authorizePlayer();
     }
 
 
-    
-    
-    // TODO: Add class members and methods here
-    
+    public void deauthorizePlayer() {
+        //remove players connection to mediator.
+        players.get(currPlayer).changeTurn();
+        GameBoardController.getInstance().deauthorizePlayer();        
+    }
 
+    public void authorizePlayer() {
+        GameBoardController.getInstance().setPlayer(players.get(currPlayer));
+        players.get(currPlayer).changeTurn();
+        GameBoardController.getInstance().authorizePlayer();
+    }
 
-    
-    // TODO: Implement the functionality of the OfflineServer class
-    
-    // TODO: Add constructors, getters, and setters if needed
-    
-    // TODO: Add any additional methods required by the OfflineServer class
+    public void setNextPlayer() {
+        currPlayer += 1;
+        if (currPlayer == playerNo) {
+            rounds += 1;
+            currPlayer = 0;
+            // if round is 3 finish the game.
+        }
+    }
+
 }

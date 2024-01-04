@@ -88,10 +88,10 @@ public class Gameboard extends JFrame implements Observer{
 		if (msg.equals("INITIALIZE_BOARD")) {
             initializeTheBoard();
         }
-		else if (msg.equals("CHANGING_PLAYER")) {
+		else if (msg.equals("DEAUTHORIZATION")) {
 			clear();
 		}
-        else if (msg.equals("CHANGED_PLAYER")) {
+        else if (msg.equals("AUTHORIZATION")) {
             changePlayer();
         }
 	}
@@ -100,23 +100,22 @@ public class Gameboard extends JFrame implements Observer{
 		gamePane.changeView("village");
 	}
 	
-	public void changePlayer() { 
-		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getCurrentPlayer().getName()));
-        playerPane.changeView(gameController.getCurrentPlayer().getName());
+	public void changePlayer() {
+		playerPane.addPlayerDashboard(gameController.getPlayer());
+		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getPlayer().getName()));
+        playerPane.changeView(gameController.getPlayer().getName());
     }
 
     public void initializeTheBoard() { 
         authPanel.setVisible(false);
         getContentPane().remove(authPanel);
-        this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1));
         this.gamePane = new GameContentPane();
+		this.playerPane = new PlayerContentPane();
         playerPane.setBounds(832,32, 335, 700);
-        gamePane.setBounds(37,32,752, 700);
-        playerPane.changeView(gameController.getCurrentPlayer().getName());
+        gamePane.setBounds(37,32,752, 700); 
         getContentPane().setLayout(null);
         getContentPane().add(gamePane);
         getContentPane().add(playerPane);
-		
         revalidate();
     }
 

@@ -33,19 +33,26 @@ public class ConcreteMediator implements Mediator {
         this.collector = null;
     }
 
+    @Override 
+    public void disconnectPlayer() {
+        this.player = null;
+    }
+
     // Mediator instead of player decides actions to be done because, if it were the player
     // then player's method needed to have these dispatches as well because it is for sure that
     // player holds artifacts, ingredients and potions
     @Override
     public <T> void sendToPlayer(T item) {
-        if (item instanceof IngredientCard) {
+        if (player != null) {
+            if (item instanceof IngredientCard) {
             player.getInventory().addIngredient((IngredientCard) item);
-        }
-        else if (item instanceof ArtifactCard) {
-            player.getInventory().addArtifact((ArtifactCard) item);
-        }
-        else if (item instanceof Potion) {
-            player.getInventory().addPotion((Potion) item);
+            }
+            else if (item instanceof ArtifactCard) {
+                player.getInventory().addArtifact((ArtifactCard) item);
+            }
+            else if (item instanceof Potion) {
+                player.getInventory().addPotion((Potion) item);
+            }
         }
     }
     // Collector will decide its action based on item type, since they may not need all types of items

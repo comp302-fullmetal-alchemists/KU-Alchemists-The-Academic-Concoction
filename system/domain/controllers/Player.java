@@ -58,7 +58,7 @@ public class Player {
     public void playedTurn() {
         turnsLeft -= 1;
         if (turnsLeft == 0) {
-            GameBoardController.getInstance().changePlayer();
+            GameBoardController.getInstance().finishTurn();
         }
     }
 
