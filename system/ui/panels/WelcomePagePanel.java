@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.WelcomeController;
 import system.network.OfflineServer;
 import system.ui.frame.Gameboard;
 
@@ -19,9 +20,10 @@ public class WelcomePagePanel extends JPanel {
     JTextArea onlineGameOptions;
     JButton hostGameButton;
     JButton joinGameButton;
-
+    private WelcomeController controller;
 
     public WelcomePagePanel(Gameboard gameboard) {
+        this.controller = new WelcomeController();
         
         // I need two button offline and online
         //if offline is clicked, authPanel will show up
@@ -30,8 +32,7 @@ public class WelcomePagePanel extends JPanel {
         offlineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OfflineServer server = new OfflineServer();
-                server.startAuthentication();
+                controller.offlineHostingMode();
                 //GameBoardController.getInstance().setServer(server);
                 //gameboard.showAuthenticationPanel();
             }

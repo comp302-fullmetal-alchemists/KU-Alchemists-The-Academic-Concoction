@@ -49,9 +49,9 @@ public class AuthenticationController {
             authenticationUI.update("Please fill all the fields");
         }
 
-        else if (GameBoardController.getInstance().getServer().validateUserChoices(username)){
+        else if (GameBoardController.getInstance().getClientAdapter().validateUserChoices(username)){
             Player player = new Player(username, token);
-            GameBoardController.getInstance().getServer().registerPlayer(player);
+            GameBoardController.getInstance().getClientAdapter().registerPlayer(player);
             authenticationUI.update("VALID");
         }
         

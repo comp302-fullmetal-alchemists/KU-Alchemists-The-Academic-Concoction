@@ -19,8 +19,6 @@ public class IngredientStorageController implements Collector{
     //artifact pile: List<artifactCard>	transmuteIngredient(ingredientCard)
     //buyArtifact()
 
-    private List<IngredientCard> ingredientPile;
-    private List<ArtifactCard> artifactPile;
     private Observer ingredientStorageUI;
     private Mediator mediator;
     private GameLogController gameLog;
@@ -29,8 +27,6 @@ public class IngredientStorageController implements Collector{
 
     public IngredientStorageController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
-        this.ingredientPile = new ArrayList<IngredientCard>();
-        this.artifactPile = new ArrayList<ArtifactCard>();
         this.mediator = GameBoardController.getInstance().getMediator();
         
     }
@@ -55,7 +51,7 @@ public class IngredientStorageController implements Collector{
     		mediator.updatePlayerGold(2);
             ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
             //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
+            //gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
             ingToSell = null;
             mediator.playerPlayedTurn();
     	}
@@ -79,7 +75,7 @@ public class IngredientStorageController implements Collector{
                 ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
                 
                 //GAME LOG RECORDS: When a player buys an artifact card.
-                gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), "Artifact Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
+                //gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), "Artifact Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
                 
                 useArtifact(artifact);
                 mediator.playerPlayedTurn();
@@ -93,43 +89,45 @@ public class IngredientStorageController implements Collector{
     }
 
     public void drawIngredient() {
-        if (ingredientPile.isEmpty()) {
+        if (GameBoardController.getInstance().getClientAdapter().ingPileIsEmpty()) {
             ingredientStorageUI.update("EMPTY_PILE");
         }
         else {
-            IngredientCard drawn = ingredientPile.remove(0);
+            IngredientCard drawn = GameBoardController.getInstance().getClientAdapter().drawIngredient();
 
             mediator.sendToPlayer(drawn);
             ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
 
             //GAME LOG RECORDS: When a player draws a card.
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), "Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
+            //gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), "Ingredient Pile", GameBoardController.getInstance().getCurrentPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
             
             mediator.playerPlayedTurn();
         }
     }
     // draw an artifact card from the pile according to the rule of taking the last card from the pile
     public ArtifactCard drawArtifact() {
-        if (artifactPile.isEmpty()) {
+        if (GameBoardController.getInstance().getClientAdapter().artifactPileIsEmpty()) {
             return null;
         }
-        ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
+        ArtifactCard drawed = GameBoardController.getInstance().getClientAdapter().drawArtifact();
+        //ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
         return drawed;
     }
     // since the phase I. stated that the Elixir of Insight card must be implemented, this method is only
     // being used to show the top 3 cards of the ingredient pile, later on other artifact cards will be implemented 
     public void useArtifact(ArtifactCard card) {  
         if (card.getName().equals("Elixir of Insight")) {
-            String cardNames = "";
+            /*String cardNames = "";
             for (int i = 0; i < (ingredientPile.size() < 3? ingredientPile.size(): 3); i++) {
                 cardNames += ingredientPile.get(i).getName() + ", ";
 
             }
             ingredientStorageUI.update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
+            */
         }
 
         //GAME LOG RECORDS: When a player uses their artifact card
-        gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "themselves",  String.format("%s is Used", card.getName()), 0);
+        //gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "themselves",  String.format("%s is Used", card.getName()), 0);
     }
 
     @Override

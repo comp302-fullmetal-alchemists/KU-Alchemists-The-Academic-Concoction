@@ -25,6 +25,8 @@ public class PlayerContentPane extends JPanel {
     public void addPlayerDashboard(Player player) {
         if (!playerNames.contains(player.getName())) {
             PlayerDashboard playerDB = new PlayerDashboard(player);
+            playerNames.add(player.getName());
+
             add(playerDB, player.getName());
         }
     }

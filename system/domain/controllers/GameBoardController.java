@@ -9,6 +9,7 @@ import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
+import system.network.OfflineClient;
 import system.network.OfflineServer;
 
 
@@ -23,7 +24,7 @@ public class GameBoardController {
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private OfflineServer server;
+    private OfflineClient clientAdapter;
     private Player player;
 
     private GameBoardController() {
@@ -35,8 +36,8 @@ public class GameBoardController {
         this.gameboardUI = observer;
     }
 
-    public void setServer(OfflineServer server) {
-        this.server = server;
+    public void setClientAdapter(OfflineClient clientAdapter) {
+        this.clientAdapter = clientAdapter;
     }
 
     public void setPlayer(Player p) {
@@ -77,8 +78,8 @@ public class GameBoardController {
         gameboardUI.update("AUTHORIZATION");   
     }
 
-    public void finishTurn() {
-        server.changePlayer();
+    public void endPlayerTurn() {
+        clientAdapter.endPlayerTurn();
     }
 
     public Player getPlayer() {
@@ -116,9 +117,10 @@ public class GameBoardController {
         return mediator;
     }
 
-    public OfflineServer getServer() {
-        return server;
+    public OfflineClient getClientAdapter() {
+        return clientAdapter;
     }
+
 
 
     /////// This is to be changed accordingly.

@@ -23,7 +23,6 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
-        
     }
 
     public void setPlayerUI(Observer observer) {
@@ -58,7 +57,7 @@ public class Player {
     public void playedTurn() {
         turnsLeft -= 1;
         if (turnsLeft == 0) {
-            GameBoardController.getInstance().finishTurn();
+            GameBoardController.getInstance().endPlayerTurn();
         }
     }
 
