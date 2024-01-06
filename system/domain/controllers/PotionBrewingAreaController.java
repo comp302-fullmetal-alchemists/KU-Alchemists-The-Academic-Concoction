@@ -53,7 +53,7 @@ public class PotionBrewingAreaController implements Collector{
             potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
 
             //GAMELOG RECORDS LOG: When a player brews a potion
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
+            //gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
         
             ing1 = null;
             ing2 = null;
@@ -119,7 +119,7 @@ public class PotionBrewingAreaController implements Collector{
             }
 
 			//GAMELOG RECORDS LOG: When a potion is sold
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), mediator.getPlayerName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
+            //gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), mediator.getPlayerName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
         
             mediator.updatePlayerGold(offer);
             potionToSell = null;//this makes sure the potion is removed from inventory
