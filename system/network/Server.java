@@ -6,51 +6,71 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server extends Thread{
     //this will be our server for TCP/IP connections
+    String hostName = "127.0.0.1";
     private ServerSocket serverSocket;
+    private ArrayList<ClientHandler> clients = new ArrayList<>();
+    private static ExecutorService executorService = Executors.newFixedThreadPool(4);
+    
 
     public Server(int port) throws IOException {
-    serverSocket = new ServerSocket(port);
+        this.serverSocket = new ServerSocket(port);
     //Socket clientSocket = serverSocket.accept();
     //serverSocket.setSoTimeout(10000);
     }
-
-    public void run() {
-        while(true) {
-            try {
-                System.out.println("Waiting for players on port " + serverSocket.getLocalPort() + "...");
-                Socket player1 = serverSocket.accept();
-                System.out.println("Player 1 connected.");
-
-                Socket player2 = serverSocket.accept();
-                System.out.println("Player 2 connected.");
-
-                BufferedReader fromPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-	            PrintWriter toPlayer1 = new PrintWriter(player1.getOutputStream(), true);
-	            BufferedReader fromPlayer2 = new BufferedReader(new InputStreamReader(player2.getInputStream()));
-	            PrintWriter toPlayer2 = new PrintWriter(player2.getOutputStream(), true);
     
-                toPlayer1.println("Player 1");
-                toPlayer2.println("Player 2");
 
-                String player1Name = fromPlayer1.readLine();
-                String player2Name = fromPlayer2.readLine();
+    public void startServer() {
+        try {
+            while (true) {
+                System.out.println("Waiting for clients on port " + serverSocket.getLocalPort() + "...");
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected.");
 
-                System.out.println("Player 1 name: " + player1Name);
-                System.out.println("Player 2 name: " + player2Name);
-
-                toPlayer1.println(player2Name);
-                toPlayer2.println(player1Name);
-
-                
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                clients.add(clientHandler);
+                executorService.execute(clientHandler);
             }
-            
-            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            stopServer();
+        }
+    }
+
+    public void stopServer() {
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+            executorService.shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static char[] getRandomNumber() {
+        char[] random = new char[4];
+        for (int i = 0; i < 4; i++) {
+            random[i] = (char) (Math.random() * 10 + '0');
+        }
+        return random;
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            Server server = new Server(8080);
+            server.startServer();
+        } catch (IOException e) {
+            System.out.println("Cannot start server");
+            e.printStackTrace();
         }
     }
 
