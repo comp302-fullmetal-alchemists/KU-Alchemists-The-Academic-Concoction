@@ -19,29 +19,38 @@ public class Server extends Thread{
     
 
     public Server(int port) throws IOException {
-    serverSocket = new ServerSocket(port);
-    Thread t = new Thread(this);
+        this.serverSocket = new ServerSocket(port);
     //Socket clientSocket = serverSocket.accept();
     //serverSocket.setSoTimeout(10000);
     }
     
 
-    public void run() {
-        while(true) {
-            System.out.println("Waiting for players on port " + serverSocket.getLocalPort() + "...");
-            try (Socket player1 = serverSocket.accept()) {
-                System.out.println("Player 1 connected.");
-                ClientHandler clientHandler = new ClientHandler(player1);
+    public void startServer() {
+        try {
+            while (true) {
+                System.out.println("Waiting for clients on port " + serverSocket.getLocalPort() + "...");
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected.");
+
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
                 clients.add(clientHandler);
                 executorService.execute(clientHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            
-            System.out.println("Player 1 connected.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            stopServer();
+        }
+    }
 
-            
-            
+    public void stopServer() {
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+            executorService.shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -52,6 +61,17 @@ public class Server extends Thread{
             random[i] = (char) (Math.random() * 10 + '0');
         }
         return random;
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            Server server = new Server(8080);
+            server.startServer();
+        } catch (IOException e) {
+            System.out.println("Cannot start server");
+            e.printStackTrace();
+        }
     }
 
 

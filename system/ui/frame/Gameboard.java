@@ -14,6 +14,7 @@ import system.domain.interfaces.Observer;
 import system.ui.panels.AuthenticationPanel;
 import system.ui.panels.HelpScreenPanel;
 import system.ui.panels.OnlineGamePanel;
+import system.ui.panels.WaitingScreen;
 import system.ui.panels.WelcomePagePanel;
 
 import javax.swing.JMenuBar;
@@ -31,6 +32,7 @@ public class Gameboard extends JFrame implements Observer{
 	HelpScreenPanel helpScreen;
 	WelcomePagePanel welcomePage;
 	OnlineGamePanel onlinePanel;
+	WaitingScreen waitingScreen;
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,15 +42,17 @@ public class Gameboard extends JFrame implements Observer{
 		this.authPanel = new AuthenticationPanel() ;
 		welcomePage = new WelcomePagePanel(this);
 		welcomePage.setBounds(0, 0, 1200, 800);
+		this.waitingScreen = new WaitingScreen(this);
+		waitingScreen.setBounds(0, 0, 1200, 800);
 		setVisible(true);
 		setResizable(false);
-		welcomePage.setBounds(0, 0, 1200, 800);
 		welcomePage.setBounds(0, 0, 1200, 800);
 		setVisible(true);
 		setResizable(false);
 		getContentPane().add(welcomePage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.helpScreen = new HelpScreenPanel(); // Help screen panel object
+
 	
 
 		JMenuBar menuBar = new JMenuBar();
@@ -121,7 +125,7 @@ public class Gameboard extends JFrame implements Observer{
 
 
 	public void showAuthenticationPanel() {
-		getContentPane().remove(welcomePage);
+		getContentPane().remove(waitingScreen);
 		getContentPane().add(authPanel);
 		authPanel.setBounds(600, 153, 0, 0);
 		authPanel.setLayout(null);
@@ -133,21 +137,20 @@ public class Gameboard extends JFrame implements Observer{
 	}
 
 
-	public void showOnlineGamePanel() {
-		getContentPane().remove(welcomePage);
-		getContentPane().add(onlinePanel);
-		setVisible(true);
-		revalidate();
-		repaint();
-	}
-
 
     public void showWelcomePagePanel() {
-		getContentPane().remove(onlinePanel);
 		getContentPane().add(welcomePage);
 		setVisible(true);
 		revalidate();
 		repaint();
     }
+
+	public void showWaitingScreen() {
+		getContentPane().remove(welcomePage);
+		getContentPane().add(waitingScreen);
+		setVisible(true);
+		revalidate();
+		repaint();
+	}
 
 }

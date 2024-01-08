@@ -4,8 +4,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
-import system.network.Server;
 import system.ui.frame.Gameboard;
 import system.network.*;
 
@@ -19,6 +20,7 @@ public class WelcomePagePanel extends JPanel {
     JComboBox<Integer> numberOfPlayers;
     JButton hostGameButton;
     JButton joinGameButton;
+    
 
     public WelcomePagePanel(Gameboard gameboard) {
 
@@ -40,14 +42,20 @@ public class WelcomePagePanel extends JPanel {
         JLabel onlineLabel = new JLabel("Online Game Options");
         add(onlineLabel);
 
-
+        JTextField port = new JTextField();
+        port.setBounds(157, 229, 166, 53);
+        add(port);
+        
         hostGameButton = new JButton("Host Game");
         hostGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gameboard.showWaitingScreen();
                 try {
-                    Server server = new Server(8080);
-                    server.run();
+                    
+                    Integer portno= Integer.parseInt(port.getText());
+                    Server server = new Server(portno);
+                    server.startServer();
 
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
@@ -63,8 +71,10 @@ public class WelcomePagePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Client client = new Client();
-                    client.run(client.getSocket());
+                    Integer portno= Integer.parseInt(port.getText());
+                    Client client = new Client(portno);
+                    client.run();
+                    
                     
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block

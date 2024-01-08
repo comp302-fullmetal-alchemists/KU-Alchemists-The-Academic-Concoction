@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientHandler implements Runnable{
+public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private BufferedReader fromClient;
     private PrintWriter toClient;
@@ -20,30 +20,30 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
         try {
-
-            while (true) {
-                String input = fromClient.readLine();
-                if (input.equals("Hello")) {
+            String input;
+            while ((input = fromClient.readLine()) != null) {
+                if ("Hello".equals(input)) {
                     toClient.println(Server.getRandomNumber());
-                }
-                else {
+                } else {
                     toClient.println("Error");
                 }
             }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             System.out.println("Client disconnected.");
-        }
-        finally {
+        } finally {
             try {
-                fromClient.close();
-                toClient.close();
-            }
-            catch (IOException e) {
+                if (fromClient != null) {
+                    fromClient.close();
+                }
+                if (toClient != null) {
+                    toClient.close();
+                }
+                if (clientSocket != null) {
+                    clientSocket.close();
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-    
 }
