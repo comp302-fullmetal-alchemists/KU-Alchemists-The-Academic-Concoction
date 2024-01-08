@@ -3,7 +3,6 @@ package system.network;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
-import system.domain.controllers.Player;
 import system.domain.util.ArtifactFactory;
 import system.domain.util.IngredientFactory;
 
@@ -30,11 +29,14 @@ public class OfflineServer implements IServerAdapter {
         artifactPile = artifactFactory.createArtifacts();
     }
 
+
     // host decides the number of clients
+    @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = playerNum;
     }
 
+    @Override
     public void acceptClients() {
         /// in offline mode there is only one client (local computer)
         clients.add(new OfflineClient(this));
@@ -43,10 +45,12 @@ public class OfflineServer implements IServerAdapter {
         startAuthentication();
     }
 
+    @Override
     public void startAuthentication() {
         clients.get(0).startAuthentication();
     }
 
+    @Override
     public void initializeGame() {
         Collections.shuffle(clients);
         for (OfflineClient client: clients) {
@@ -55,23 +59,27 @@ public class OfflineServer implements IServerAdapter {
         authorizeClient();
     }
 
+    @Override
     public boolean ingPileIsEmpty() {
         return ingPile.isEmpty();
     }
 
+    @Override
     public IngredientCard drawIngredient() {
         return ingPile.remove(0);
     }
 
+    @Override
     public boolean artifactPileIsEmpty() {
         return artifactPile.isEmpty();
     }
 
+    @Override
     public ArtifactCard drawArtifact() {
         return artifactPile.remove(0);
     }
 
-
+    @Override
     public void changePlayer() {
         //first remove the old player
         deauthorizeClient();
@@ -81,22 +89,26 @@ public class OfflineServer implements IServerAdapter {
         authorizeClient();
     }
 
-
+    @Override
     public void deauthorizeClient() {
         //remove players connection to mediator.
         clients.get(currentClient).deauthorize();    
     }
 
+    
+    @Override
     public void authorizeClient() {
         clients.get(currentClient).authorize();
     }
 
+    @Override
     public void newRound() {
         currentClient = 0;
         rounds += 1;
-        System.out.println(rounds);
         //if round is 3 call a function to finish game
     }
+
+    @Override
     public void setNextClient() {
         clients.get(currentClient).changePlayer();
         /* 

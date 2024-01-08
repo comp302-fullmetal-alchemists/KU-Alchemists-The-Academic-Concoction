@@ -1,9 +1,5 @@
 package system.domain.controllers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;

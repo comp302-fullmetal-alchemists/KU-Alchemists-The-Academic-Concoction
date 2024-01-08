@@ -9,7 +9,7 @@ import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
-public class OfflineClient {
+public class OfflineClient implements IClientAdapter {
 
     private OfflineServer server;
     private List<Player> players;
@@ -21,6 +21,12 @@ public class OfflineClient {
         this.players = new ArrayList<Player>();
     }
 
+    @Override 
+    public void connectToServer() {
+        // in offline there is no need for this method
+    }
+    
+    @Override
     public void startAuthentication() {
         GameBoardController.getInstance().startAuthentication();
     }
@@ -30,6 +36,7 @@ public class OfflineClient {
     }
 
     // for checking in authentication
+    @Override
     public boolean validateUserChoices(String username) {
         for (Player p: players) {
             if (p.getName().equals(username)) return false;
@@ -38,6 +45,7 @@ public class OfflineClient {
     }
 
     // after check, register the players
+    @Override
     public void registerPlayer(Player p) {
         // get ingredients from server and add them to the player here
         p.getInventory().initializeIngredients(server.drawIngredient(), server.drawIngredient());
@@ -50,26 +58,30 @@ public class OfflineClient {
         }
     }
 
+    @Override
     public void initialize() {
         GameBoardController.getInstance().initializeTheBoard();
         Collections.shuffle(players);
     }
 
+    @Override
     public void authorize() {
         GameBoardController.getInstance().setPlayer(players.get(currentPlayer));
         players.get(currentPlayer).changeTurn();
         GameBoardController.getInstance().authorizePlayer();
     }
 
+    @Override
     public void deauthorize() {
         players.get(currentPlayer).changeTurn();
         GameBoardController.getInstance().deauthorizePlayer();    
     }
 
+
     public void endPlayerTurn() {
         server.changePlayer();
     }
-
+    
     public void changePlayer() {
         currentPlayer += 1;
         if (currentPlayer == playerNum) {
@@ -77,7 +89,7 @@ public class OfflineClient {
             server.newRound();
         }
     }
-
+    
     public boolean ingPileIsEmpty() {
         return server.ingPileIsEmpty();
     }

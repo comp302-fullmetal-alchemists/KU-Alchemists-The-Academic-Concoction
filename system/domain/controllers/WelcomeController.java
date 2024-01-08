@@ -1,5 +1,7 @@
 package system.domain.controllers;
 
+import system.network.IServerAdapter;
+import system.network.OfflineClient;
 import system.network.OfflineServer;
 
 public class WelcomeController {
@@ -9,7 +11,7 @@ public class WelcomeController {
     }
 
     public void offlineHostingMode() {
-        OfflineServer server = new OfflineServer();
+        IServerAdapter server = new OfflineServer();
         server.acceptClients();
     }
 

@@ -1,16 +1,10 @@
 package system.domain.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import system.domain.ArtifactCard;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
-import system.network.OfflineClient;
-import system.network.OfflineServer;
+import system.network.IClientAdapter;
 
 
 public class GameBoardController {
@@ -24,7 +18,7 @@ public class GameBoardController {
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private OfflineClient clientAdapter;
+    private IClientAdapter clientAdapter;
     private Player player;
 
     private GameBoardController() {
@@ -36,7 +30,7 @@ public class GameBoardController {
         this.gameboardUI = observer;
     }
 
-    public void setClientAdapter(OfflineClient clientAdapter) {
+    public void setClientAdapter(IClientAdapter clientAdapter) {
         this.clientAdapter = clientAdapter;
     }
 
@@ -117,7 +111,7 @@ public class GameBoardController {
         return mediator;
     }
 
-    public OfflineClient getClientAdapter() {
+    public IClientAdapter getClientAdapter() {
         return clientAdapter;
     }
 
