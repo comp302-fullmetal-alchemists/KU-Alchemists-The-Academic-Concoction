@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Observer;
+import system.domain.util.IngredientFactory;
 
 import javax.swing.Icon;
 
@@ -22,11 +23,12 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
-      
     }
 
     public void setPlayerUI(Observer observer) {
     	this.playerUI = observer;
+        GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
+
     }
     
     /**********Getters and Setters******************/
@@ -57,7 +59,7 @@ public class Player {
     public void playedTurn() {
         turnsLeft -= 1;
         if (turnsLeft == 0) {
-            GameBoardController.getInstance().changePlayer();
+            GameBoardController.getInstance().endPlayerTurn();
         }
     }
 

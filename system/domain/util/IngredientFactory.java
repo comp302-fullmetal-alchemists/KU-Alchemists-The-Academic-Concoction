@@ -11,7 +11,6 @@ import system.domain.IngredientCard;
 
 public class IngredientFactory{
 	
-	private static IngredientFactory instance;
 	private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad Stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
 	private Alchemy[] alchemies;
 	private Map<String, Alchemy> alchemyMap;
@@ -21,13 +20,6 @@ public class IngredientFactory{
 		this.alchemyMap = new HashMap<String, Alchemy>();
 		setAlchemy();
 		assignRandomAlchemy();
-	}
-	
-	public static IngredientFactory getInstance() {
-		if (instance == null) {
-			instance = new IngredientFactory();
-		}
-		return instance;
 	}
 
 
@@ -72,6 +64,7 @@ public class IngredientFactory{
 		for (int i = 0; i < num; i++) {
 			ingredientList.add(createIngredient(ingredients[i%8]));
 	    }
+		Collections.shuffle(ingredientList);
 		return ingredientList;
 	}
 	

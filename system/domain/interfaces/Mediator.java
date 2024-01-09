@@ -21,15 +21,12 @@ public interface Mediator {
 
     void disconnectCollector();
 
+	void disconnectPlayer();
+
     <T> void sendToPlayer(T item);
 
     <T> boolean sendToCollector(T item);
 
-    void updatePlayerGold(int updateAmount);
+	Player getPlayer();
 
-    boolean playerGoldAtLeast(int threshold);
-
-    void playerPlayedTurn();
-    
-    String getPlayerName();
 }
