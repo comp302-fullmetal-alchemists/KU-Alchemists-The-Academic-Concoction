@@ -10,8 +10,9 @@ public class WelcomeController {
     public WelcomeController() {
     }
 
-    public void offlineHostingMode() {
+    public void offlineHostingMode(int numberOfPlayers) {
         IServerAdapter server = new OfflineServer();
+        server.setPlayerNumber(numberOfPlayers);
         server.acceptClients();
     }
 
