@@ -17,6 +17,8 @@ public class TheoryController {
     private Observer theoryUI;
     private GameLogController gameLog;
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
+    private String ingredient;
+
 
     public TheoryController() {
         this.theories = new ArrayList<Theory>(); //add theories to the list
@@ -30,14 +32,26 @@ public class TheoryController {
         this.theoryUI = observer;
     }
 
-    public void publishTheory(Alchemy alchemy, String ingredient) {
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
+
+    public void publishTheory(Alchemy alchemy) {
         //check if the theory is already published
+        if (ingredient == null) {
+            theoryUI.update("NO_INGREDIENT_CHOSEN");
+            return;
+        }
         for (Theory i : theories) {
-            if (i.getAlchemy() == alchemy || i.getIngredient() == ingredient) {
+            if (i.getAlchemy().equals(alchemy) || i.getIngredient() == ingredient) {
                 theoryUI.update("DUPLICATE_THEORY");
                 return;
             }
-        } 
+        }
         //check if the player has enough gold to publish a theory
         if (GameBoardController.getInstance().getPlayer().getInventory().getGold() < 1) {
             theoryUI.update("NOT_ENOUGH_GOLD");
@@ -49,11 +63,12 @@ public class TheoryController {
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getPlayer());
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
-
+            ingredient = null;
+            GameBoardController.getInstance().getPublicationAreaController().setAlchemy(0);
             //GAMELOG RECORDS LOG: When a player publishes a theory
             gameLog.recordLog(GameBoardController.getInstance().getPlayer(), GameBoardController.getInstance().getPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             //increase the turn count
-            GameBoardController.getInstance().getMediator().playerPlayedTurn();
+            GameBoardController.getInstance().getPlayer().playedTurn();
         }
         return;
     }

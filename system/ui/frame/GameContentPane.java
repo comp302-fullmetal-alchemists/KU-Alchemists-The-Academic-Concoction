@@ -34,6 +34,7 @@ public class GameContentPane extends JPanel {
     public void changeView(String cardName) {
     	if (ingredientStorage.isVisible()) ingredientStorage.clear();
     	else if (potionBrewingArea.isVisible()) potionBrewingArea.clear();
+        else if (publicationArea.isVisible()) publicationArea.clear();
         cards.show(this, cardName);
         if (cardName.equals("ingredientStorage")) ingredientStorage.activate();
         else if (cardName.equals("potionBrewingArea")) potionBrewingArea.activate();
