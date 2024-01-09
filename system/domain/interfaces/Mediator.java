@@ -27,11 +27,6 @@ public interface Mediator {
 
     <T> boolean sendToCollector(T item);
 
-    void updatePlayerGold(int updateAmount);
+	Player getPlayer();
 
-    boolean playerGoldAtLeast(int threshold);
-
-    void playerPlayedTurn();
-    
-    String getPlayerName();
 }

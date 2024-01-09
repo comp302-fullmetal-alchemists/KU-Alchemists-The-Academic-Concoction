@@ -7,6 +7,7 @@ import java.util.List;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.GameLogController;
 import system.domain.controllers.Player;
 
 public class OfflineClient implements IClientAdapter {
@@ -60,6 +61,9 @@ public class OfflineClient implements IClientAdapter {
 
     @Override
     public void initialize() {
+        for (Player p: players) {
+            GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
+        }
         GameBoardController.getInstance().initializeTheBoard();
         Collections.shuffle(players);
     }
