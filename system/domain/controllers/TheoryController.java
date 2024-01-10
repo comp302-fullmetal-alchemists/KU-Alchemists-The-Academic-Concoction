@@ -41,11 +41,12 @@ public class TheoryController {
     }
 
     public void publishTheory(Alchemy alchemy) {
-        //check if the theory is already published
+        
         if (ingredient == null) {
             theoryUI.update("NO_INGREDIENT_CHOSEN");
             return;
         }
+        //check if the theory is already published
         for (Theory i : theories) {
             if (i.getAlchemy().equals(alchemy) || i.getIngredient() == ingredient) {
                 theoryUI.update("DUPLICATE_THEORY");
@@ -71,6 +72,41 @@ public class TheoryController {
             GameBoardController.getInstance().getPlayer().playedTurn();
         }
         return;
+    }
+
+    public void endorseTheory() {
+        //check if the theory is already endorsed
+        if (ingredient == null) {
+            theoryUI.update("NO_THEORY_CHOSEN");
+            return;
+        }
+
+        for (Theory theory : theories) {
+            if (theory.getIngredient() == ingredient) {
+                if (theory.isEndorsed()) {
+                    theoryUI.update("THEORY_ALREADY_ENDORSED");
+                    return;
+                }
+                //check if the player has enough gold to endorse a theory
+                if (GameBoardController.getInstance().getPlayer().getInventory().getGold() < 2) {
+                    theoryUI.update("NOT_ENOUGH_GOLD");
+                    return;
+                }
+                if(theory.getOwner() == GameBoardController.getInstance().getPlayer()) {
+                        theoryUI.update("CANNOT_ENDORSE_YOUR_OWN_THEORY");
+                        return;
+                    }
+                //endorse the theory
+                else {
+                    GameBoardController.getInstance().getPlayer().getInventory().updateGold(-2);
+                    theory.getOwner().getInventory().updateGold(1);
+                    theory.setEndorsed(true);
+                    theoryUI.update("THEORY_ENDORSED");
+                    //increase the turn count
+                    GameBoardController.getInstance().getPlayer().playedTurn();
+                }
+            }
+        }
     }
 
     public void debunkTheory(Alchemy alchemy, Theory theory, Player player) {
@@ -112,6 +148,7 @@ public class TheoryController {
         }
         return;
     }
+
 
     public List<Theory> getTheories() {
         return theories;

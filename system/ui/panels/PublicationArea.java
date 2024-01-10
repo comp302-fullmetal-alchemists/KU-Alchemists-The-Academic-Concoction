@@ -1,6 +1,7 @@
 package system.ui.panels;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.event.AncestorListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -197,6 +198,20 @@ public class PublicationArea extends JPanel implements Observer{
         );  
         add(debunkButton);
 
+        // create endorse button
+        JButton endorseButton = new JButton("Endorse");
+        endorseButton.setBounds(525, 643, 128, 31);
+        endorseButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    theoryController.endorseTheory();
+                }
+            }
+        );
+        add(endorseButton);
+
+
         this.theoryController = GameBoardController.getInstance().getTheoryController();
         theoryController.setObserver(this);
     }
@@ -267,6 +282,19 @@ public class PublicationArea extends JPanel implements Observer{
         }
         else if (msg.contains("CANNOT_DEBUNK_SAME_ALCHEMY")) {
             JOptionPane.showMessageDialog(this, "Cannot debunk same alchemy");
+        }
+
+        else if (msg.contains("NO_THEORY_CHOSEN")){
+            JOptionPane.showMessageDialog(this, "No theory chosen");
+        }
+        else if(msg.contains("THEORY_ALREADY_ENDORSED")){
+            JOptionPane.showMessageDialog(this, "Theory already endorsed");
+        }
+        else if (msg.contains("CANNOT_ENDORSE_YOUR_OWN_THEORY")){
+            JOptionPane.showMessageDialog(this, "Cannot endorse your own theory");
+        }
+        else if (msg.contains("THEORY_ENDORSED")){
+            JOptionPane.showMessageDialog(this, "Theory endorsed");
         }
     }
 }

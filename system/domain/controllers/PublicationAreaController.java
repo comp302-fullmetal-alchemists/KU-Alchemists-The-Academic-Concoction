@@ -59,8 +59,5 @@ public class PublicationAreaController {
             GameBoardController.getInstance().getTheoryController().publishTheory(alchemy);
         }
     }
-
-
-
          
 }

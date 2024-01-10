@@ -8,6 +8,7 @@ public class Theory {
         private String ingredient;
         private Player owner;
         private boolean debunked;
+        private boolean endorsed;
         
 
     public Theory(Alchemy alchemy, String ingredient, Player owner) {
@@ -15,6 +16,7 @@ public class Theory {
         this.ingredient = ingredient;
         this.owner = owner;
         this.debunked = false;
+        this.endorsed = false;
         
     }
 
@@ -50,4 +52,11 @@ public class Theory {
         this.debunked = debunked;
     }
     
+    public boolean isEndorsed() {
+        return endorsed;
+    }
+
+    public void setEndorsed(boolean endorsed) {
+        this.endorsed = endorsed;
+    }
 }
