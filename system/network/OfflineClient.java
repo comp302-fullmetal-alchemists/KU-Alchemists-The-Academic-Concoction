@@ -77,7 +77,7 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().deauthorizePlayer();    
     }
 
-
+    @Override
     public void endPlayerTurn() {
         server.changePlayer();
     }
@@ -90,18 +90,19 @@ public class OfflineClient implements IClientAdapter {
         }
     }
     
+    @Override   
     public boolean ingPileIsEmpty() {
         return server.ingPileIsEmpty();
     }
-
+    @Override
     public IngredientCard drawIngredient() {
         return server.drawIngredient();
     }
-
+    @Override
     public boolean artifactPileIsEmpty() {
         return server.artifactPileIsEmpty();
     }
-
+    @Override
     public ArtifactCard drawArtifact() {
         return server.drawArtifact();
     }
