@@ -14,6 +14,8 @@ import system.ui.frame.GameContentPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class DeductionBoard extends JPanel implements Observer{
@@ -40,6 +42,14 @@ public class DeductionBoard extends JPanel implements Observer{
         add(navBtn);
         
         deductionGrid = new JPanel();
+        deductionGrid.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		// use an image that seperates blocks as this, find the regions as below.
+        		System.out.println(e.getX() / 79);
+        		System.out.println(e.getY() / 40);
+        	}
+        });
         deductionGrid.setBounds(62, 370, 628, 320);
         add(deductionGrid);
         deductionGrid.setLayout(null);

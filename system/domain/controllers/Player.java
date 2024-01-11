@@ -1,7 +1,9 @@
 package system.domain.controllers;
 
+import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
 import system.domain.ResultsTriangle;
+import system.domain.util.IngredientFactory;
 
 import javax.swing.Icon;
 
@@ -16,6 +18,7 @@ public class Player {
     private ResultsTriangle resultsTriangle;
     private InventoryController inventory;
     private Observer playerUI;
+    private Mediator mediator;
 
     public Player(String name, Icon token) {
         this.name = name;
@@ -25,11 +28,14 @@ public class Player {
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
         this.resultsTriangle = new ResultsTriangle();
-      
+        this.mediator = GameBoardController.getInstance().getMediator();
+
     }
 
     public void setPlayerUI(Observer observer) {
     	this.playerUI = observer;
+        GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
+
     }
     
     /**********Getters and Setters******************/
@@ -60,7 +66,7 @@ public class Player {
     public void playedTurn() {
         turnsLeft -= 1;
         if (turnsLeft == 0) {
-            GameBoardController.getInstance().changePlayer();
+            GameBoardController.getInstance().endPlayerTurn();
         }
     }
 
@@ -94,6 +100,10 @@ public class Player {
     
     public ResultsTriangle getResultsTriangle() {
     	return resultsTriangle;
+    }
+    
+    public void sendResults() {
+    	mediator.sendToCollector(resultsTriangle);
     }
 
 

@@ -1,41 +1,41 @@
 package system.domain.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import system.domain.ArtifactCard;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
+import system.network.IClientAdapter;
 
 
 public class GameBoardController {
 
     private static GameBoardController instance;
-    private List<Player> players;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
     private PublicationAreaController publicationArea;
     private GameLogController gameLog; 
-    private GameAction gameAction; //to be used for start game gameAction
     private TheoryController theory;
     private Mediator mediator;
     private Observer gameboardUI;
-    private String[] artifacts = {"Philosopher's Compass", "Elixir of Insight", "Discount Card", "Amulet of Rhetoric"};
-    private String[] effects = {"Once per round, the player can swap the position of two alchemy markers on the Deduction Board.","Allows a player to view the top three cards of the ingredient deck and rearrange them in any order.", "Your next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", "Gain 5 points of reputation." };
-    private String[] usages = {null,null,"Immediate effect." };
+    private IClientAdapter clientAdapter;
+    private Player player;
 
     private GameBoardController() {
-        this.players = new ArrayList<Player>();
         this.mediator = new ConcreteMediator();
         this.gameLog = new GameLogController(); //create the gamelog
     }
 
     public void setObserver(Observer observer) {
         this.gameboardUI = observer;
+    }
+
+    public void setClientAdapter(IClientAdapter clientAdapter) {
+        this.clientAdapter = clientAdapter;
+    }
+
+    public void setPlayer(Player p) {
+        this.player = p;
     }
     
     //GameboardController is a singleton class, this is the lazy initialization method
@@ -46,77 +46,40 @@ public class GameBoardController {
         return instance;
     }
 
-    //authentication sends players to gameboard and gameboard readies the game areas
-    public void initializeTheBoard(Player player1, Player player2) {
-        players.add(player1);
-        players.add(player2); 
-        gameLog.GameLogControllerInit(player1, player2); //initalize the gamelog with the players
+    public void startAuthentication() {
+        gameboardUI.update("AUTHENTICATION");
+    }   
 
-        Random random = new Random();
-        int firstPlayer = random.nextInt(2);
-        players.get(firstPlayer).changeTurn();
-        mediator.connectPlayer(players.get(firstPlayer));
+    //authentication sends players to gameboard and gameboard readies the game areas
+    public void initializeTheBoard() { 
         this.ingredientStorage = new IngredientStorageController();
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
         this.potionBrewingArea = new PotionBrewingAreaController();
         this.theory = new TheoryController();
         gameboardUI.update("INITIALIZE_BOARD");
-        this.ingredientStorage.initializePiles();
-        for (Player p: players) {
-        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
-        	p.getInventory().addIngredient(ingredientStorage.pullIngredientCard());
-        }
     }
 
-    public Player getPlayer(int index) {
-        return players.get(index);
-    }
-        
-    public String[] getArtifactStrings() {
-        return artifacts;
+    public void deauthorizePlayer() {
+        gameLog.recordLog(player, "KU Alchemist", player.getName(),  String.format("Round over!"), 0);
+        gameboardUI.update("DEAUTHORIZATION");
+        mediator.disconnectPlayer();
     }
 
-    public String[] getArtifactEffect() {
-        return effects;
+    public void authorizePlayer() {
+        mediator.connectPlayer(player);
+        gameboardUI.update("AUTHORIZATION"); 
+        gameLog.recordLog(player, "KU Alchemist", player.getName(),  String.format("Its Your Turn!"), 0);
+  
     }
 
-    public String[] getArtifactUsage() {
-        return usages;
+    public void endPlayerTurn() {
+        clientAdapter.endPlayerTurn();
     }
 
-    /*	when a player is going to be changed, first the game areas are cleared and items remaining in them
-    	are sent back to the previous player because the previous player may have objects left in those areas, 
-    	like an ingredient that is going to be sold.This was the "CHANGING_PLAYER" update.
-    	 Then it changes the view to the next player, this is the "CHANGED_PLAYER" update.
-     
-     */
-    public void changePlayer() {
-        //GAMELOG RECORDS LOG: When the round is over for a player
-        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Round over!"), 0);
-        gameLog.recordLog(getCurrentPlayer(), gameAction);
-
-        gameboardUI.update("CHANGING_PLAYER");
-        
-        players.get(0).changeTurn();
-        players.get(1).changeTurn();
-        mediator.connectPlayer(getCurrentPlayer());
-        gameboardUI.update("CHANGED_PLAYER");
-
-        //GAMELOG RECORDS LOG: When its a different players turn to play
-        gameAction = new GameAction("KU Alchemist", getCurrentPlayer().getName(),  String.format("Its Your Turn!"), 0);
-        gameLog.recordLog(getCurrentPlayer(), gameAction);
-
+    public Player getPlayer() {
+        return player;
     }
-    
-    public Player getCurrentPlayer() {
-        if (players.get(0).isInTurn()) {
-            return players.get(0);
-        } else {
-            return players.get(1);
-        }
-    }
-
     
     /*
      UI objects get their controllers from GameBoardController.
@@ -149,7 +112,14 @@ public class GameBoardController {
         return mediator;
     }
 
+    public IClientAdapter getClientAdapter() {
+        return clientAdapter;
+    }
 
+
+
+    /////// This is to be changed accordingly.
+/* 
     public int calculateFinalScore(Player player) {
         //to do: get rep, gold, artifact from player's inventory
             int finalScore = 0;
@@ -194,7 +164,7 @@ public class GameBoardController {
                 return player2; 
             }
             }
-
+*/
         
     /* 
      * The random assignment of aclhemies to ingredients is needed for some parts of the game, this is to get it.

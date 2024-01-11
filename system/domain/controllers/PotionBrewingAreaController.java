@@ -28,7 +28,6 @@ public class PotionBrewingAreaController implements Collector{
     private Observer potionBrewingUI;
     private Mediator mediator;
     private GameLogController gameLog;
-    private GameAction gameAction;
     private Boolean active = false;
     private int offer;
 
@@ -51,16 +50,15 @@ public class PotionBrewingAreaController implements Collector{
         if (ing1 != null && ing2 != null) {
             Potion brewed = new Potion(ing1, ing2);
             mediator.sendToPlayer(brewed);
-            mediator.addResultToPlayer(ing1, ing2, brewed);
+            mediator.getPlayer().getResultsTriangle().newResult(ing1, ing2, brewed);
             potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
 
             //GAMELOG RECORDS LOG: When a player brews a potion
-            gameAction = new GameAction(GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
         
             ing1 = null;
             ing2 = null;
-            mediator.playerPlayedTurn();
+            mediator.getPlayer().playedTurn();
         }
         else {
             potionBrewingUI.update("ABSENT_INGREDIENTS");
@@ -122,16 +120,15 @@ public class PotionBrewingAreaController implements Collector{
             }
 
 			//GAMELOG RECORDS LOG: When a potion is sold
-            gameAction = new GameAction(mediator.getPlayerName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), gameAction);
+            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
         
-            mediator.updatePlayerGold(offer);
+            mediator.getPlayer().getInventory().updateGold(offer);
             potionToSell = null;//this makes sure the potion is removed from inventory
             potionBrewingUI.update(String.format("SOLD_POTION:%d", offer));//send a message to the UI so its updated
 
 
 
-            mediator.playerPlayedTurn();
+            mediator.getPlayer().playedTurn();
         }
         else{ //If there is no potions to sell
             potionBrewingUI.update("ABSENT_POTION");//tell the UI so it gives the appropriate message
@@ -183,8 +180,10 @@ public class PotionBrewingAreaController implements Collector{
         active = false;
     }
 
+    
     @Override
     public boolean isActive() {
         return active;
     }
+    
 }

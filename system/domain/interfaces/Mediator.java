@@ -23,19 +23,12 @@ public interface Mediator {
 
     void disconnectCollector();
 
+	void disconnectPlayer();
+
     <T> void sendToPlayer(T item);
 
     <T> boolean sendToCollector(T item);
 
-    void updatePlayerGold(int updateAmount);
+	Player getPlayer();
 
-    boolean playerGoldAtLeast(int threshold);
-
-    void playerPlayedTurn();
-    
-    String getPlayerName();
-    
-    void addResultToPlayer(IngredientCard ing1, IngredientCard ing2, Potion p);
-    
-    String getPlayersResults();
 }

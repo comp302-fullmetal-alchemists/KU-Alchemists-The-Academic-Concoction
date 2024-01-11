@@ -32,7 +32,6 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.setBounds(150, 150, 335, 700);
         this.player = player;
         this.playerLabel = new JLabel(player.getName());
-        player.setPlayerUI(this);
         playerLabel.setForeground(Color.LIGHT_GRAY);
         playerLabel.setBounds(157, 5, 81, 16);
         add(playerLabel);
@@ -69,6 +68,9 @@ public class PlayerDashboard extends JPanel implements Observer {
         lblGameLog.setForeground(Color.LIGHT_GRAY);
         lblGameLog.setBounds(22, 464, 88, 13);
         add(lblGameLog);
+
+        player.setPlayerUI(this);
+
     }
 
     public Player getPlayer(){

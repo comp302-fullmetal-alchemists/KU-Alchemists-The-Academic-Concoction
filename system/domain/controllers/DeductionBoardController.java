@@ -5,7 +5,7 @@ import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.ResultsTriangle;
 
-public class DeductionBoardController {
+public class DeductionBoardController implements Collector{
 
     //build: deduction grid
 
@@ -13,7 +13,7 @@ public class DeductionBoardController {
 	private int[][] deductionGrid;
 	private Observer deductionBoardUI;
 	private Mediator mediator;
-	private boolean active;
+	private boolean active = false;
 	
 	public DeductionBoardController() {
 		this.deductionGrid = new int[8][8];
@@ -23,11 +23,34 @@ public class DeductionBoardController {
 	public void setObserver(Observer observer) {
 		this.deductionBoardUI = observer;
 	}
-	
-	
-	public void activate() {
-		deductionBoardUI.update(mediator.getPlayersResults());
+
+	@Override
+	public <T> void collectItem(T item) {
+		if (item instanceof ResultsTriangle) {
+			ResultsTriangle trig = (ResultsTriangle) item;
+			deductionBoardUI.update(trig.getResultList());
+		}
+		
 	}
+
+	@Override
+	public void activate() {
+		mediator.connectCollector(this);
+        active = true;
+        mediator.getPlayer().sendResults();
+	}
+
+	@Override
+	public void deactivate() {
+		mediator.disconnectCollector();
+        active = false;
+	}
+
+	@Override
+	public boolean isActive() {
+		 return active;
+	}
+	
 
 
 

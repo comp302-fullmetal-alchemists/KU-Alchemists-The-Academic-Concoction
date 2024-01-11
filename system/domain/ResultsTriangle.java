@@ -18,7 +18,7 @@ public class ResultsTriangle {
 		// or I fix an internal implementation order and do everything with it. 
 		// former is more open to bugs & errors, this function is for the internal order of the latter.
 		String ingFirst, ingSecond;
-		if (IngredientFactory.getInstance().getIngredientOrder(ing1) < IngredientFactory.getInstance().getIngredientOrder(ing2)) {
+		if (ing1.getIngredientOrder() < ing2.getIngredientOrder()) {
 			ingFirst = ing1.getName();
 			ingSecond = ing2.getName();
 		}
