@@ -175,9 +175,9 @@ public class PublicationArea extends JPanel implements Observer{
                             if (i.getIngredient().equals(theoryBoard.getIngredient())) {
                                 int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                                 //debunk theory use case
-                                theoryController.debunkTheory(IngredientFactory.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
+                            //    theoryController.debunkTheory(IngredientFactory.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
                                 if(i.isDebunked()) {
-                                    theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+                            //        theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
                                 }
                                 return;
                             }
@@ -232,7 +232,7 @@ public class PublicationArea extends JPanel implements Observer{
                         //convert last character of alchemy to int to get the index of alchemy
                         int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
                         //call publish theory method from theory controller
-                        theoryController.publishTheory(IngredientFactory.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
+                       // theoryController.publishTheory(IngredientFactory.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
                         System.out.println("Theory published");
                         //reset alchemy and ingredient
 
@@ -259,7 +259,7 @@ public class PublicationArea extends JPanel implements Observer{
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
               //create theory book
-              theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+             // theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
         }
         else if (msg.contains("THEORY_DEBUNKED")) {
             JOptionPane.showMessageDialog(this, "Theory debunked");

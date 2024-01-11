@@ -53,7 +53,7 @@ public class TheoryController {
             //GAMELOG RECORDS LOG: When a player publishes a theory
             gameLog.recordLog(GameBoardController.getInstance().getPlayer(), GameBoardController.getInstance().getPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             //increase the turn count
-            GameBoardController.getInstance().getMediator().playerPlayedTurn();
+        //    GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
         return;
     }
@@ -67,7 +67,7 @@ public class TheoryController {
                         if (alchemyMap.get(theory.getIngredient()) == alchemy) {
                             //alchemyMap contains true match of the ingredient and the alchemy, if the alchemy is the same as the theory's alchemy, then the theory is debunked
                             theoryUI.update("THEORY_DEBUNKED");
-                            GameBoardController.getInstance().getMediator().playerPlayedTurn();
+                     //       GameBoardController.getInstance().getMediator().playerPlayedTurn();
 
                             //GAMELOG RECORDS LOG FOR DEBUNKER
                             gameLog.recordLog(GameBoardController.getInstance().getPlayer(), GameBoardController.getInstance().getPlayer().getName(), theory.getOwner().getName(), "Debunked the theory!", 0);
@@ -87,7 +87,7 @@ public class TheoryController {
             }
 
         theoryUI.update("THEORY_NOT_DEBUNKED");
-        GameBoardController.getInstance().getMediator().playerPlayedTurn();
+       // GameBoardController.getInstance().getMediator().playerPlayedTurn();
         }
         else if (theory.getOwner() == GameBoardController.getInstance().getPlayer()){
             theoryUI.update("CANNOT_DEBUNK_YOUR_OWN_THEORY");

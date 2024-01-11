@@ -103,9 +103,21 @@ public class OfflineServer implements IServerAdapter {
 
     @Override
     public void newRound() {
-        currentClient = 0;
-        rounds += 1;
+        if(rounds <= 3){
+            currentClient = 0;
+            rounds += 1;
+        }
+        else{
+            //offline clientstan winner() çağır
+           for(OfflineClient c: clients){
+                c.winner();
+           }
+            //display Game over screen 
+            //announce game over call calculate Final score func.
+        }
+        
         //if round is 3 call a function to finish game
+        
     }
 
     @Override
@@ -119,5 +131,7 @@ public class OfflineServer implements IServerAdapter {
         }
         */ 
     }
+
+
 
 }

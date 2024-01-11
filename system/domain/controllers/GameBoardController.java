@@ -1,5 +1,8 @@
 package system.domain.controllers;
 
+import java.util.Iterator;
+
+import system.domain.ArtifactCard;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
@@ -119,7 +122,11 @@ public class GameBoardController {
 
 
     /////// This is to be changed accordingly.
-/* 
+
+
+      
+        /* 
+        //eskisi:
     public int calculateFinalScore(Player player) {
         //to do: get rep, gold, artifact from player's inventory
             int finalScore = 0;
@@ -139,6 +146,7 @@ public class GameBoardController {
     
     
         public Player winner(){
+            //hashmap player ve score
             Player player1 = players.get(0);
             Player player2 = players.get(1);
             int score1 = calculateFinalScore(player1); 
