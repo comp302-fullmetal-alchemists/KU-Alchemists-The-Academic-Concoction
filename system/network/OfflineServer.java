@@ -19,7 +19,7 @@ public class OfflineServer implements IServerAdapter {
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
         ingredients = new ArrayList<Integer>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 24; i++) {
             ingredients.add(i % 8);
         }
         Collections.shuffle(ingredients);
