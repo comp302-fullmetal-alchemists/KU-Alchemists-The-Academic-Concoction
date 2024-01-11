@@ -27,6 +27,8 @@ public class Player {
 
     public void setPlayerUI(Observer observer) {
     	this.playerUI = observer;
+        GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
+
     }
     
     /**********Getters and Setters******************/

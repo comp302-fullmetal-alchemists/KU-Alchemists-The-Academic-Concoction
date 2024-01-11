@@ -51,9 +51,7 @@ public class GameBoardController {
     }   
 
     //authentication sends players to gameboard and gameboard readies the game areas
-    public void initializeTheBoard() {
-        //gameLog.GameLogControllerInitPlayer(player1); //initalize the gamelog with the players
-        //gameLog.GameLogControllerInitPlayer(player2); 
+    public void initializeTheBoard() { 
         this.ingredientStorage = new IngredientStorageController();
         this.publicationArea = new PublicationAreaController();
         this.deductionBoard = new DeductionBoardController();
@@ -63,13 +61,16 @@ public class GameBoardController {
     }
 
     public void deauthorizePlayer() {
+        gameLog.recordLog(player, "KU Alchemist", player.getName(),  String.format("Round over!"), 0);
         gameboardUI.update("DEAUTHORIZATION");
         mediator.disconnectPlayer();
     }
 
     public void authorizePlayer() {
         mediator.connectPlayer(player);
-        gameboardUI.update("AUTHORIZATION");   
+        gameboardUI.update("AUTHORIZATION"); 
+        gameLog.recordLog(player, "KU Alchemist", player.getName(),  String.format("Its Your Turn!"), 0);
+  
     }
 
     public void endPlayerTurn() {

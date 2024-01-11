@@ -1,8 +1,5 @@
 package system.network;
 
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
-
 //this will be an interface for the server adapter
 public interface IServerAdapter {
     
@@ -18,16 +15,6 @@ public interface IServerAdapter {
     // after authentication, each client (local computer) should initialize their gameboards
     void initializeGame();
 
-    // ingredient pile is open to all clients, server holds it
-    boolean ingPileIsEmpty();
-
-    IngredientCard drawIngredient();
-
-    // artifact pile is open to all clients, server holds it
-    boolean artifactPileIsEmpty();
-    
-    ArtifactCard drawArtifact();
-
     // players are changed with the following steps
     void changePlayer();
 
@@ -42,5 +29,7 @@ public interface IServerAdapter {
 
     // add 1 more to the rounds
     void newRound();
+
+    int requestIngredient();
 
 }

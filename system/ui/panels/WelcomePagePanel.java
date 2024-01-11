@@ -31,13 +31,13 @@ public class WelcomePagePanel extends JPanel {
         // Offline Section
         JLabel offlineLabel = new JLabel("Oflfline Game Options");
         add(offlineLabel);
-        numberOfPlayers = new JComboBox<>(new Integer[]{1, 2, 3, 4});
+        numberOfPlayers = new JComboBox<>(new Integer[]{2, 3, 4});
         add(numberOfPlayers);
         startGameButton = new JButton("Start Game");
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.offlineHostingMode();
+                controller.offlineHostingMode((Integer) numberOfPlayers.getSelectedItem());
                 //GameBoardController.getInstance().setServer(server);
                 //gameboard.showAuthenticationPanel();
             }
