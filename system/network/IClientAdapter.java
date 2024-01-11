@@ -4,6 +4,8 @@ import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.Player;
 
+import java.util.List;
+
 public interface IClientAdapter {
     
     // client connecting to server, only required for OnlineClient
@@ -18,6 +20,9 @@ public interface IClientAdapter {
     // clientAdapter sends authenticated player to server
     void registerPlayer(Player p);
 
+    // sets the alchemyMap for this game, it will be obtained from server
+    void setAlchemyMap(List<Integer> alchemyIndex);
+
     // local computer is initialized for playing
     void initialize();
 
@@ -31,11 +36,5 @@ public interface IClientAdapter {
     void endPlayerTurn();
 
     // clientAdapter talks to server to get the relevant information on gameobjects
-    boolean ingPileIsEmpty();
-
     IngredientCard drawIngredient();
-
-    boolean artifactPileIsEmpty();
-    
-    ArtifactCard drawArtifact();
 }

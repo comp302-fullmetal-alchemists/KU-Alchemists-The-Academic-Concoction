@@ -5,9 +5,12 @@ import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Collector;
 import system.domain.interfaces.Mediator;
+import system.domain.util.ArtifactFactory;
 import system.domain.util.IngredientFactory;
 import system.domain.Cards;
 import system.domain.GameAction;
+
+import java.util.List;
 
 public class IngredientStorageController implements Collector{
     // public storage 
@@ -20,10 +23,14 @@ public class IngredientStorageController implements Collector{
     private GameLogController gameLog;
     private Boolean active = false;
     private IngredientCard ingToSell;
+    private ArtifactFactory artifactFactory;
+    private List<ArtifactCard> artifactPile;
 
     public IngredientStorageController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
         this.mediator = GameBoardController.getInstance().getMediator();
+        this.artifactFactory = new ArtifactFactory();
+        this.artifactPile = artifactFactory.createArtifacts();
         
     }
 
@@ -85,10 +92,7 @@ public class IngredientStorageController implements Collector{
     }
 
     public void drawIngredient() {
-        if (GameBoardController.getInstance().getClientAdapter().ingPileIsEmpty()) {
-            ingredientStorageUI.update("EMPTY_PILE");
-        }
-        else {
+        try {
             IngredientCard drawn = GameBoardController.getInstance().getClientAdapter().drawIngredient();
 
             mediator.sendToPlayer(drawn);
@@ -99,14 +103,16 @@ public class IngredientStorageController implements Collector{
             
             mediator.getPlayer().playedTurn();
         }
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("EMPTY_PILE");
+        }
     }
     // draw an artifact card from the pile according to the rule of taking the last card from the pile
     public ArtifactCard drawArtifact() {
-        if (GameBoardController.getInstance().getClientAdapter().artifactPileIsEmpty()) {
+        if (artifactPile.isEmpty()) {
             return null;
         }
-        ArtifactCard drawed = GameBoardController.getInstance().getClientAdapter().drawArtifact();
-        //ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
+        ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
         return drawed;
     }
     // since the phase I. stated that the Elixir of Insight card must be implemented, this method is only
