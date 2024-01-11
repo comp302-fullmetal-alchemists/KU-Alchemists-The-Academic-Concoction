@@ -137,5 +137,12 @@ public class OnlineServer extends Thread implements IServerAdapter {
     public void newRound() {
         
     }
+
+
+    @Override
+    public int requestIngredient() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'requestIngredient'");
+    }
     
 }

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
@@ -110,6 +111,12 @@ public class OnlineClient implements IClientAdapter {
     
     public ArtifactCard drawArtifact() {
         return null;}
+
+    @Override
+    public void setAlchemyMap(List<Integer> alchemyIndex) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAlchemyMap'");
+    }
 
     
 }
