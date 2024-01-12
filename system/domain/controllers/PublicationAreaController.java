@@ -54,7 +54,7 @@ public class PublicationAreaController {
         }
         else {
             // to be changed
-            alchemy = new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.SMALL, -AlchemicalConstants.LARGE);
+            alchemy = Alchemy.getAlchemy(alchemyIndex - 1);
             // 
             GameBoardController.getInstance().getTheoryController().publishTheory(alchemy);
         }

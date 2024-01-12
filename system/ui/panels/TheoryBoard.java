@@ -1,4 +1,5 @@
 package system.ui.panels;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -46,6 +47,8 @@ public class TheoryBoard extends JPanel{
 		theoryBook1.setOpaque(true);
 		theoryBook1.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook1.setBounds(32, 53, 100, 118);
+		// set a photo for the theory book
+		theoryBook1.setIcon(new ImageIcon(getClass().getResource("/resources/theory.png")));
 		//theoryBook1.setBounds(32, 53, 150, 140);
         theoryBook1.addMouseListener(new MouseAdapter() {
 			@Override

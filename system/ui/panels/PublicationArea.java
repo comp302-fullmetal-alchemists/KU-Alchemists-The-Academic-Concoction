@@ -237,9 +237,8 @@ public class PublicationArea extends JPanel implements Observer{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     publicationAreaController.publishTheory();
+                    clear();
                 }
-                
-
             }
         );
     }

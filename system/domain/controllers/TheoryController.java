@@ -64,7 +64,6 @@ public class TheoryController {
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getPlayer());
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
-            ingredient = null;
             GameBoardController.getInstance().getPublicationAreaController().setAlchemy(0);
             //GAMELOG RECORDS LOG: When a player publishes a theory
             gameLog.recordLog(GameBoardController.getInstance().getPlayer(), GameBoardController.getInstance().getPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
