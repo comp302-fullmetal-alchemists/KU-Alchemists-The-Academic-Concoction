@@ -46,6 +46,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook1.setOpaque(true);
 		theoryBook1.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook1.setBounds(32, 53, 100, 118);
+		//theoryBook1.setBounds(32, 53, 150, 140);
         theoryBook1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -180,6 +181,11 @@ public class TheoryBoard extends JPanel{
         theoryBook.setText("<html><br>"+ theoryController.getIngredient() + "<br><br>" + alchemy + "<br><br>" + player + "</html>");
         
     }
+
+	// add username of the player who endorsed the theory
+	public void addEndorsement(String player) {
+		theoryBook.setText(theoryBook.getText().replace("</html>", "<br>" + player + "</html>"));
+	}
 
 	public void clear() {
 		theoryController.setIngredient(null);

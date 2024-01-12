@@ -295,6 +295,8 @@ public class PublicationArea extends JPanel implements Observer{
         }
         else if (msg.contains("THEORY_ENDORSED")){
             JOptionPane.showMessageDialog(this, "Theory endorsed");
+            // add username of the player who endorsed the theory
+            theoryBoard.addEndorsement(GameBoardController.getInstance().getPlayer().getName());
         }
     }
 }
