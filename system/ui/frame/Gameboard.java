@@ -153,7 +153,7 @@ public class Gameboard extends JFrame implements Observer{
 	public void showWaitingScreen() {
 		getContentPane().remove(welcomePage);
 		getContentPane().add(waitingScreen);
-		setVisible(true);
+		waitingScreen.setVisible(true);
 		revalidate();
 		repaint();
 	}

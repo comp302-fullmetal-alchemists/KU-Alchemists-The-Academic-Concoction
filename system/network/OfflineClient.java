@@ -106,6 +106,7 @@ public class OfflineClient implements IClientAdapter {
         }
     }
 
+
     @Override
     public IngredientCard drawIngredient(){
         int index = server.requestIngredient();
