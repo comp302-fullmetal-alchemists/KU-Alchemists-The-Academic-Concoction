@@ -24,10 +24,6 @@ public class OfflineClient implements IClientAdapter {
         this.ingFactory = new IngredientFactory();
     }
 
-    @Override 
-    public void connectToServer() {
-        // in offline there is no need for this method
-    }
     
     @Override
     public void startAuthentication() {
@@ -116,6 +112,10 @@ public class OfflineClient implements IClientAdapter {
         return ingFactory.createIngredient(index);
     }
 
+    @Override 
+    public void connectToServer() {
+        // in offline there is no need for this method
+    }
 
 
 
