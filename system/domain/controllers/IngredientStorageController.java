@@ -92,21 +92,22 @@ public class IngredientStorageController implements Collector{
     }
 
     public void drawIngredient() {
-        try {
-            IngredientCard drawn = GameBoardController.getInstance().getClientAdapter().drawIngredient();
-
-            mediator.sendToPlayer(drawn);
-            ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
-
-            //GAME LOG RECORDS: When a player draws a card.
-            gameLog.recordLog(mediator.getPlayer(), "Ingredient Pile", mediator.getPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
-            
-            mediator.getPlayer().playedTurn();
-        }
-        catch (NullPointerException e) {
-            ingredientStorageUI.update("EMPTY_PILE");
-        }
+        GameBoardController.getInstance().getClientAdapter().requestIngredient();
     }
+
+    public void emptyPileError() {
+        ingredientStorageUI.update("EMPTY_PILE");
+    }
+
+    public void takeIngredient(IngredientCard drawn) {
+        mediator.sendToPlayer(drawn);
+        ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
+
+        gameLog.recordLog(mediator.getPlayer(), "Ingredient Pile", mediator.getPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
+            
+        mediator.getPlayer().playedTurn();
+    }
+
     // draw an artifact card from the pile according to the rule of taking the last card from the pile
     public ArtifactCard drawArtifact() {
         if (artifactPile.isEmpty()) {

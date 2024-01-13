@@ -30,6 +30,6 @@ public interface IServerAdapter {
     // add 1 more to the rounds
     void newRound();
 
-    int requestIngredient();
+    void requestIngredient();
 
 }

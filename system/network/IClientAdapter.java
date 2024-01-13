@@ -36,5 +36,10 @@ public interface IClientAdapter {
     void endPlayerTurn();
 
     // clientAdapter talks to server to get the relevant information on gameobjects
-    IngredientCard drawIngredient();
+    void requestIngredient();
+
+    void emptyPile();
+
+    void takeIngredientIndex(int index);
+
 }
