@@ -47,8 +47,8 @@ public class AuthenticationController {
 
     public void validUsername() {
         Player player = new Player(tempUsername, tempToken);
-        GameBoardController.getInstance().getClientAdapter().registerPlayer(player);
         authenticationUI.update("VALID");
+        GameBoardController.getInstance().getClientAdapter().registerPlayer(player);
     }
     
 }

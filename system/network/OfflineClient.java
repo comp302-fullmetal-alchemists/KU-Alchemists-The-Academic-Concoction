@@ -3,6 +3,7 @@ package system.network;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import system.domain.IngredientCard;
 import system.domain.controllers.AuthenticationController;
@@ -66,8 +67,9 @@ public class OfflineClient implements IClientAdapter {
 
     @Override
     public void initialize() {
+        Random random = new Random();
         for (Player p: players) {
-            p.getInventory().initializeIngredients(drawIngredient(), drawIngredient());
+            p.getInventory().initializeIngredients(ingFactory.createIngredient(random.nextInt(8)), ingFactory.createIngredient(random.nextInt(8)));
             GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
         }
         GameBoardController.getInstance().initializeTheBoard();
@@ -104,18 +106,26 @@ public class OfflineClient implements IClientAdapter {
 
 
     @Override
-    public IngredientCard drawIngredient(){
-        int index = server.requestIngredient();
-        if (index == -1) {
-            throw new NullPointerException();
-        }
-        return ingFactory.createIngredient(index);
+    public void requestIngredient() {
+        server.requestIngredient();
+    }
+
+    @Override
+    public void emptyPile() {
+        GameBoardController.getInstance().getIngredientStorageController().emptyPileError();
+    }
+
+    @Override
+    public void takeIngredientIndex(int index) {
+        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(ingFactory.createIngredient(index));
     }
 
     @Override 
     public void connectToServer() {
         // in offline there is no need for this method
     }
+
+
 
 
 

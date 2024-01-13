@@ -109,9 +109,9 @@ public class OfflineServer implements IServerAdapter {
     }
 
     @Override 
-    public int requestIngredient() {
-        if (ingredients.isEmpty()) return -1;
-        return ingredients.remove(0);
+    public void requestIngredient() {
+        if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
+        else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
     }
 
 }
