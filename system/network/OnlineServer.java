@@ -110,6 +110,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
         public void handleClientMessage(String message) {
             try {
                 if (message.equals("authentication_done")) {
+                    currentClient += 1;
                     if (currentClient == clients.size()) {
                         currentClient = 0;
                         System.out.println("[SERVER] All clients authenticated.");
@@ -162,9 +163,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
         try {
             System.out.println("[SERVER] Sending authentication request to client " + currentClient);
             clients.get(currentClient).getWriter().writeUTF("authentication");
-            currentClient += 1;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

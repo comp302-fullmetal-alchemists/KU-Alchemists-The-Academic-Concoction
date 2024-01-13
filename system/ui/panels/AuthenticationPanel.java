@@ -38,7 +38,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		setLayout(null);
 		setSize(1200, 800);
 		
-		this.authController = new AuthenticationController();
+		this.authController = AuthenticationController.getInstance();
         authController.setObserver(this);
 		
 		//created a text area for the welcome message

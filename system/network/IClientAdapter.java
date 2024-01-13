@@ -15,7 +15,7 @@ public interface IClientAdapter {
     void startAuthentication();
 
     // clientAdapter talks to server to validate choices
-    boolean validateUserChoices(String username);
+    void validateUserChoices(String username);
 
     // clientAdapter sends authenticated player to server
     void registerPlayer(Player p);

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.xml.crypto.Data;
 
 import system.domain.IngredientCard;
+import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
@@ -61,6 +62,12 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 if(message.equals("authentication")) {
                     startAuthentication();
                 }
+                else if (message.equals("duplicateUsername")){
+                    AuthenticationController.getInstance().invalidUsername();
+                }
+                else if (message.equals("validUsername")){
+                    AuthenticationController.getInstance().validUsername();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -109,20 +116,24 @@ public class OnlineClient extends Thread implements IClientAdapter {
     }
 
     @Override
-    public boolean validateUserChoices(String username) {
+    public void validateUserChoices(String username) {
         try {
             toServer.writeUTF("validateUsername:"+username);
-
-            if (fromServer.readUTF().equals("validUsername")) {
-                System.out.println("[CLIENT] Username is valid");
-                return true;
-            }
-            else {
-                return false;
-            }
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+        }
+    }
+
+    
+    @Override
+    public void registerPlayer(Player p) {
+        System.out.println("[CLIENT] Registering player");
+        GameBoardController.getInstance().setPlayer(p);
+        try {
+            toServer.writeUTF("authentication_done");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -152,12 +163,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
         return null; // Placeholder return value
     }
 
-    @Override
-    public void registerPlayer(Player p) {
-        System.out.println("[CLIENT] Registering player");
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'registerPlayer'");
-    }
 
     @Override
     public void setAlchemyMap(List<Integer> alchemyIndex) {

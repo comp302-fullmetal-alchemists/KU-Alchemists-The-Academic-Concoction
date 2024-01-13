@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import system.domain.IngredientCard;
+import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 import system.domain.util.IngredientFactory;
@@ -39,11 +40,15 @@ public class OfflineClient implements IClientAdapter {
 
     // for checking in authentication
     @Override
-    public boolean validateUserChoices(String username) {
+    public void validateUserChoices(String username) {
         for (Player p: players) {
-            if (p.getName().equals(username)) return false;
+            if (p.getName().equals(username)) {
+                AuthenticationController.getInstance().invalidUsername();
+                return;
+            }
+            
         }
-        return true;
+        AuthenticationController.getInstance().validUsername();
     }
 
     // after check, register the players
