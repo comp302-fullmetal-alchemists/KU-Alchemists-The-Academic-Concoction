@@ -20,7 +20,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private DataInputStream fromServer;
     private DataOutputStream toServer;
     private BufferedReader fromUser;
-
+    
     private static final String HOST = "127.0.0.1"; 
 
     public OnlineClient(int port) throws IOException {

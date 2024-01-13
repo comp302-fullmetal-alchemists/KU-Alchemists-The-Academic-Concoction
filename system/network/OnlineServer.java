@@ -70,7 +70,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
         private final OnlineServer server;
         private DataOutputStream writer;
         private DataInputStream reader;
-    
+                
         public ClientHandler(Socket socket, OnlineServer server) {
             this.clientSocket = socket;
             this.server = server;
