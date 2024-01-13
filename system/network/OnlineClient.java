@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.crypto.Data;
@@ -15,12 +16,14 @@ import system.domain.IngredientCard;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
+import system.domain.util.IngredientFactory;
 
 public class OnlineClient extends Thread implements IClientAdapter {
     private Socket socket;
     private DataInputStream fromServer;
     private DataOutputStream toServer;
     private BufferedReader fromUser;
+    private IngredientFactory ingFactory;
     
     private static final String HOST = "127.0.0.1"; 
 
@@ -30,6 +33,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
         this.toServer = new DataOutputStream(socket.getOutputStream());
         this.fromUser = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("[CLIENT] Connected to server on port " + port);
+        this.ingFactory = new IngredientFactory();
     }
 
     public void run() {
@@ -62,11 +66,28 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 if(message.equals("authentication")) {
                     startAuthentication();
                 }
-                else if (message.equals("duplicateUsername")){
+                else if (message.equals("duplicateUsername")) {
                     AuthenticationController.getInstance().invalidUsername();
                 }
-                else if (message.equals("validUsername")){
+                else if (message.equals("validUsername")) {
                     AuthenticationController.getInstance().validUsername();
+                }
+                else if (message.contains("initialize")) {
+                    // Extracting the part after the colon
+                    String alchemyIndex = message.split(":")[1];
+                
+                    // Removing the square brackets
+                    alchemyIndex = alchemyIndex.replace("[", "").replace("]", "");
+                
+                    List<Integer> alchemyMap = new ArrayList<Integer>();
+                
+                    // Splitting the string by comma and trimming to avoid white space issues
+                    for (String s : alchemyIndex.split(",")) {
+                        alchemyMap.add(Integer.parseInt(s.trim()));
+                    }
+                
+                    System.out.println("[CLIENT] Alchemy map: " + alchemyMap);
+                    setAlchemyMap(alchemyMap);
                 }
 
             } catch (Exception e) {
@@ -166,8 +187,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
 
     @Override
     public void setAlchemyMap(List<Integer> alchemyIndex) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAlchemyMap'");
+        ingFactory.setAlchemyMap(alchemyIndex);
     }
 
 

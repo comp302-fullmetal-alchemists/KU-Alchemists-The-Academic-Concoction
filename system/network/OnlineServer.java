@@ -114,6 +114,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
                     if (currentClient == clients.size()) {
                         currentClient = 0;
                         System.out.println("[SERVER] All clients authenticated.");
+                        initializeGame();
                     }
                     else {
                         startAuthentication();
@@ -128,9 +129,6 @@ public class OnlineServer extends Thread implements IServerAdapter {
                         usernames.add(username);
                         writer.writeUTF("validUsername");
                     }
-                    
-
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -170,8 +168,27 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
     @Override
     public void initializeGame() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initializeGame'");
+        List<Integer> alchemyIndex = assignRandomAlchemy();
+        Collections.shuffle(clients);
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                System.out.println("[SERVER] Sending initialize request to client " + i);
+                clients.get(i).getWriter().writeUTF("initializeSetAlchemy:"+alchemyIndex.toString());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("[SERVER] All clients initialized."); 
+    }
+
+    public List<Integer> assignRandomAlchemy() {
+        ArrayList<Integer> alchemyIndex = new ArrayList<Integer>();
+        for (int i = 0; i < 8; i++) {
+            alchemyIndex.add(i);
+        }
+        Collections.shuffle(alchemyIndex);
+        return alchemyIndex;
     }
 
     @Override
