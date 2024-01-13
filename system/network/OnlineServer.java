@@ -1,148 +1,219 @@
 package system.network;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.net.SocketTimeoutException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
+import javax.xml.crypto.Data;
+
+import java.util.ArrayList;
 
 public class OnlineServer extends Thread implements IServerAdapter {
-    
-    String hostName = "127.0.0.1";
-    private ServerSocket serverSocket;
-    private ArrayList<ClientHandler> clients = new ArrayList<>();
-    private static ExecutorService executorService = Executors.newFixedThreadPool(4);
-    
+
+    private final ServerSocket serverSocket;
+    private int playerNum;
+    private final ExecutorService clientExecutor;
+    private List<ClientHandler> clients;
+    private int currentClient = 0;
+    private static final int MAX_CLIENTS = 4;
+    private BufferedReader fromServer;
+    private List<String> usernames;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
-        //Socket clientSocket = serverSocket.accept();
-        //serverSocket.setSoTimeout(10000);
+        this.clientExecutor = Executors.newCachedThreadPool();
+        this.clients = Collections.synchronizedList(new ArrayList<ClientHandler>());
+        fromServer = new BufferedReader(new InputStreamReader(System.in));
+        usernames = new ArrayList<String>();
     }
+
+    public void run() {
+        while (true) {
+            try {
+                if (clients.size() < MAX_CLIENTS) {
+                    System.out.println("[SERVER] Waiting for clients on port " + serverSocket.getLocalPort() + "...");
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("[SERVER] Client connected: " + clientSocket);
+                    ClientHandler clientHandler = new ClientHandler(clientSocket, this);
+                    clients.add(clientHandler);
+                    clientExecutor.execute(clientHandler);
+                }
+            } catch (IOException e) {
+                if (!serverSocket.isClosed()) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+    public void removeClient(ClientHandler clientHandler) {
+        clients.remove(clientHandler);
+    }
+
+    private class ClientHandler implements Runnable {
+        private final Socket clientSocket;
+        private final OnlineServer server;
+        private DataOutputStream writer;
+        private DataInputStream reader;
     
+        public ClientHandler(Socket socket, OnlineServer server) {
+            this.clientSocket = socket;
+            this.server = server;
+        }
+    
+        public void run() {
+            try {
+                this.reader = new DataInputStream((clientSocket.getInputStream()));
+                this.writer = new DataOutputStream(clientSocket.getOutputStream()); 
 
-    public void startServer() {
-        try {
-            while (true) {
-                System.out.println("Waiting for clients on port " + serverSocket.getLocalPort() + "...");
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connected.");
+                System.out.println("[SERVER] ClientHandler running for client "+ clients.size()+".: " + clientSocket);
 
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                clients.add(clientHandler);
-                executorService.execute(clientHandler);
+                writer.writeUTF("Welcome to the Server!");
+
+                String clientMessage;
+
+                while (true) {
+                    clientMessage = reader.readUTF();
+                    handleClientMessage(clientMessage);
+                }
+    
+            } catch (IOException e) {
+                System.out.println("Exception in ClientHandler: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                try {
+                    clientSocket.close();
+                } catch (IOException ex) {
+                    System.out.println("Exception while closing client socket: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                server.removeClient(this);
+                System.out.println("ClientHandler terminated for client: " + clientSocket);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            stopServer();
         }
-    }
 
-    public void stopServer() {
-        try {
-            if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
+        public void handleClientMessage(String message) {
+            try {
+                if (message.equals("authentication_done")) {
+                    if (currentClient == clients.size()) {
+                        currentClient = 0;
+                        System.out.println("[SERVER] All clients authenticated.");
+                    }
+                    else {
+                        startAuthentication();
+                    }
+                }
+                if (message.contains("validateUsername")) {
+                    String username = message.split(":")[1];
+                    if (usernames.contains(username)) {
+                        writer.writeUTF("duplicateUsername");
+                    }
+                    else {
+                        usernames.add(username);
+                        writer.writeUTF("validUsername");
+                    }
+                    
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            executorService.shutdown();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+
+        public DataOutputStream getWriter() {
+            return writer;
         }
     }
-
-
-    public static char[] getRandomNumber() {
-        char[] random = new char[4];
-        for (int i = 0; i < 4; i++) {
-            random[i] = (char) (Math.random() * 10 + '0');
-        }
-        return random;
-    }
-
-
+    /*
     public static void main(String[] args) {
+        int port = 6060;
         try {
-            Server server = new Server(8080);
-            server.startServer();
+            Thread serverThread = new OnlineServer(port);
+            serverThread.run();
         } catch (IOException e) {
-            System.out.println("Cannot start server");
+            e.printStackTrace();
+        }
+    }
+    */
+
+    @Override
+    public void setPlayerNumber(int playerNum) {
+        this.playerNum = clients.size();
+    }
+
+    @Override
+    public void startAuthentication() {
+        try {
+            System.out.println("[SERVER] Sending authentication request to client " + currentClient);
+            clients.get(currentClient).getWriter().writeUTF("authentication");
+            currentClient += 1;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-      // host sets the number of players that will join the game
-    public void setPlayerNumber(int playerNum) {
-        //this will be get from welcompagecontroller
-    }
-
-    // after number of players is set, server starts accepting clients (local computers)
-    public void acceptClients() {
-        // this online mode, sockets will be used
-        // to communicate with clients, we will use bufferedReader and printWriter
-    }
-
-    // after clients are accepted, authentication as players must be done
-    public void startAuthentication() {
-        // after pressing start button, this method will be called
-    }
-
-    // after authentication, each client (local computer) should initialize their gameboards
+    @Override
     public void initializeGame() {
-        // after authentication, this method will be called - 
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initializeGame'");
     }
 
-    // ingredient pile is open to all clients, server holds it
-    public boolean ingPileIsEmpty() {
-        return false;
-    }
-
-    public IngredientCard drawIngredient() {
-        return null;
-    }
-
-    // artifact pile is open to all clients, server holds it
-    public boolean artifactPileIsEmpty() {
-        return false;
-    }
-    
-    public ArtifactCard drawArtifact() {
-        return null;
-    }
-
-    // players are changed with the following steps
+    @Override
     public void changePlayer() {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'changePlayer'");
     }
 
-    // 1) current client is deauthorized
+    @Override
     public void deauthorizeClient() {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deauthorizeClient'");
     }
 
-    // 2) next client is figured out
+    @Override
     public void setNextClient() {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setNextClient'");
     }
 
-    // 3) the client that is to be the next is given authorization to play
+    @Override
     public void authorizeClient() {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'authorizeClient'");
     }
 
-    // add 1 more to the rounds
+    @Override
     public void newRound() {
-        
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'newRound'");
     }
-
 
     @Override
     public int requestIngredient() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'requestIngredient'");
     }
-    
+
+    @Override
+    public void acceptClients() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'acceptClients'");
+    }
 }

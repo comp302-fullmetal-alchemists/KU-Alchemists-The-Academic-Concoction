@@ -10,6 +10,7 @@ import system.network.IClientAdapter;
 public class GameBoardController {
 
     private static GameBoardController instance;
+    private WelcomeController welcomeController;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
@@ -24,6 +25,7 @@ public class GameBoardController {
     private GameBoardController() {
         this.mediator = new ConcreteMediator();
         this.gameLog = new GameLogController(); //create the gamelog
+        this.welcomeController = new WelcomeController();
     }
 
     public void setObserver(Observer observer) {
@@ -84,6 +86,11 @@ public class GameBoardController {
     /*
      UI objects get their controllers from GameBoardController.
      */
+
+    public WelcomeController getWelcomeController() {
+        return welcomeController;   
+    }
+    
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorage;
     }

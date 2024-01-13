@@ -1,116 +1,163 @@
 package system.network;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.List;
 
-import system.domain.ArtifactCard;
+import javax.xml.crypto.Data;
+
 import system.domain.IngredientCard;
+import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
-public class OnlineClient implements IClientAdapter {
-    private static final String HOST = "127.0.0.1";
-    Socket socket;
+public class OnlineClient extends Thread implements IClientAdapter {
+    private Socket socket;
+    private DataInputStream fromServer;
+    private DataOutputStream toServer;
+    private BufferedReader fromUser;
 
-    public OnlineClient(Integer Port) throws UnknownHostException, IOException {
-        this.socket = new Socket(HOST, Port);
-        System.out.println("Connected to server on port " + Port);
+    private static final String HOST = "127.0.0.1"; 
+
+    public OnlineClient(int port) throws IOException {
+        this.socket = new Socket(HOST, port);
+        this.fromServer = new DataInputStream(socket.getInputStream());
+        this.toServer = new DataOutputStream(socket.getOutputStream());
+        this.fromUser = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("[CLIENT] Connected to server on port " + port);
     }
 
-    public void run () throws IOException {
+    public void run() {
         try {
-            BufferedReader fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedReader fromUser = new BufferedReader(new InputStreamReader(System.in));
-            PrintWriter toServer = new PrintWriter(socket.getOutputStream(), true);
-
-            String userInput;
-            while ((userInput = fromUser.readLine()) != null) {
-                toServer.println(userInput);
-                System.out.println("Server says: " + fromServer.readLine());
+            while (true) { 
+                handleServerMessage(fromServer.readUTF());
             }
         } catch (IOException e) {
-            System.out.println("Error in client communication");
             e.printStackTrace();
         } finally {
-            try {
-                if (socket != null) {
-                    socket.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error closing the client socket");
-                e.printStackTrace();
-            }
+            closeResources();
         }
-
     }
 
-    public static void main(String[] args) {
+    public String readFromServer() {
         try {
-            Client client = new Client(8080);
-            client.run();
+            return fromServer.readUTF();
         } catch (IOException e) {
-            System.out.println("Cannot start client");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void handleServerMessage(String message) {
+        // Handle different types of messages from the server
+        System.out.println("[CLIENT] Server says: " + message);
+
+        // Example: if it's the player's turn, read input and send to server
+            try {
+                if(message.equals("authentication")) {
+                    startAuthentication();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        
+        // Add other message handling logic here
+    }
+
+    private void closeResources() {
+        try {
+
+            if (socket != null) {
+                socket.close();
+            }
+            if (fromServer != null) {
+                fromServer.close();
+            }
+            if (toServer != null) {
+                toServer.close();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    /* 
+    public static void main(String[] args) {
+        try {
+            OnlineClient client = new OnlineClient(6060);
+            client.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    */
 
-    // client connecting to server, only required for OnlineClient
+
+    @Override
     public void connectToServer() {
-
+        // Connection is already established in the constructor
     }
 
-    // Authentication on a local computer
+    @Override
     public void startAuthentication() {
-
+        // Authentication logic goes here
+        GameBoardController.getInstance().startAuthentication();
     }
 
-    // clientAdapter talks to server to validate choices
-     public boolean validateUserChoices(String username) {
-        return false;
-     }
+    @Override
+    public boolean validateUserChoices(String username) {
+        try {
+            toServer.writeUTF("validateUsername:"+username);
 
-    // clientAdapter sends authenticated player to server
-    public void registerPlayer(Player p) {
-
+            if (fromServer.readUTF().equals("validUsername")) {
+                System.out.println("[CLIENT] Username is valid");
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    // local computer is initialized for playing
+    @Override
     public void initialize() {
-
+        // Initialize client-side game elements
     }
 
-    // local computer is given the authority to play
+    @Override
     public void authorize() {
-
+        // Authorization logic
     }
-    
-    // local computer is taken the authority to play
+
+    @Override
     public void deauthorize() {
-
+        // Deauthorization logic
     }
 
-    // clientAdapter informs the server that player turn has ended
+    @Override
     public void endPlayerTurn() {
-
+        // Notify server that player turn has ended
     }
 
-
-    // clientAdapter talks to server to get the relevant information on gameobjects
-    public boolean ingPileIsEmpty() {
-        return false;}
-
+    @Override
     public IngredientCard drawIngredient() {
-        return null;}
+        // Request an ingredient card from the server
+        return null; // Placeholder return value
+    }
 
-    public boolean artifactPileIsEmpty() {
-        return false;}
-    
-    public ArtifactCard drawArtifact() {
-        return null;}
+    @Override
+    public void registerPlayer(Player p) {
+        System.out.println("[CLIENT] Registering player");
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'registerPlayer'");
+    }
 
     @Override
     public void setAlchemyMap(List<Integer> alchemyIndex) {
@@ -118,5 +165,5 @@ public class OnlineClient implements IClientAdapter {
         throw new UnsupportedOperationException("Unimplemented method 'setAlchemyMap'");
     }
 
-    
+
 }

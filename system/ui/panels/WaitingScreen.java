@@ -6,16 +6,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import system.domain.controllers.GameBoardController;
+import system.domain.controllers.WelcomeController;
 import system.ui.frame.Gameboard;
 
 public class WaitingScreen extends JPanel{
 
     JButton startGameButton;
     JButton backButton;
+    private WelcomeController controller;
 
     public WaitingScreen(Gameboard gameBoard) {
         this.startGameButton = new JButton("Start Game");
         this.backButton = new JButton("Back");
+        this.controller = GameBoardController.getInstance().getWelcomeController();
 
         //if waiting screen called by when we click host game in the welcome page,we will put a start gamebutton and
         // also a text saying waiting for other player to join
@@ -28,7 +32,9 @@ public class WaitingScreen extends JPanel{
 
         startGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-				gameBoard.showAuthenticationPanel();
+                controller.authentication();
+				//gameBoard.showAuthenticationPanel();
+                //server ın bir şey demesi gerekiyor burada aslında
 			}
 			
 		});
