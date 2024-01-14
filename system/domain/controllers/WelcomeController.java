@@ -16,7 +16,7 @@ public class WelcomeController {
     private IServerAdapter server;
 
     public WelcomeController() {
-
+        System.out.println(System.getProperty("os.name"));
     }
 
     public void offlineHostingMode(int numberOfPlayers) {
@@ -61,27 +61,72 @@ public class WelcomeController {
     }
 
     public String learnIP() {
-        try {
-            Process process = Runtime.getRuntime().exec("ipconfig getifaddr en0");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            
-            String line;
-            StringBuilder ipAddress = new StringBuilder();
-            
-            while ((line = reader.readLine()) != null) {
-                ipAddress.append(line);
+        if (System.getProperty("os.name").contains("MAC")) {
+            try {
+                Process process = Runtime.getRuntime().exec("ipconfig getifaddr en0");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                
+                String line;
+                StringBuilder ipAddress = new StringBuilder();
+                
+                while ((line = reader.readLine()) != null) {
+                    ipAddress.append(line);
+                }
+                
+                // Close the reader
+                reader.close();
+                
+                // Print the IP address
+                return ipAddress.toString();
+            } catch (Exception e) {
+                System.err.println("An error occurred: " + e.getMessage());
             }
-            
-            // Close the reader
-            reader.close();
-            
-            // Print the IP address
-            return ipAddress.toString();
-        } catch (Exception e) {
-            System.err.println("An error occurred: " + e.getMessage());
+        }
+        else if (System.getProperty("os.name").contains("Windows")) {
+            try {
+                Process process = Runtime.getRuntime().exec("ipconfig");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                
+                String line;
+                StringBuilder ipAddress = new StringBuilder();
+                
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("IPv4 Address")) {
+                        ipAddress.append(line.substring(line.indexOf(":") + 2));
+                    }
+                }
+                
+                // Close the reader
+                reader.close();
+                
+                // Print the IP address
+                return ipAddress.toString();
+            } catch (Exception e) {
+                System.err.println("An error occurred: " + e.getMessage());
+            }
+        }
+        else if (System.getProperty("os.name").contains("Linux")) {
+            try {
+                Process process = Runtime.getRuntime().exec("hostname -I");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                
+                String line;
+                StringBuilder ipAddress = new StringBuilder();
+                
+                while ((line = reader.readLine()) != null) {
+                    ipAddress.append(line);
+                }
+                
+                // Close the reader
+                reader.close();
+                
+                // Print the IP address
+                return ipAddress.toString();
+            } catch (Exception e) {
+                System.err.println("An error occurred: " + e.getMessage());
+            }
         }
         return null;
     }
-
 
 }
