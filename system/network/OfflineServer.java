@@ -1,10 +1,7 @@
 package system.network;
 
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
-import system.domain.util.ArtifactFactory;
-import system.domain.util.IngredientFactory;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -16,17 +13,16 @@ public class OfflineServer implements IServerAdapter {
     private int playerNum = 3;
     private int currentClient = 0;
     private List<OfflineClient> clients;
-    private IngredientFactory ingFactory;
-    private ArtifactFactory artifactFactory;
-    private List<IngredientCard> ingPile;
-    private List<ArtifactCard> artifactPile;
+    private List<Integer> ingredients;
+
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
-        this.ingFactory = new IngredientFactory();
-        this.artifactFactory = new ArtifactFactory();
-        ingPile = ingFactory.createIngredients(24);
-        artifactPile = artifactFactory.createArtifacts();
+        ingredients = new ArrayList<Integer>();
+        for (int i = 0; i < 24; i++) {
+            ingredients.add(i % 8);
+        }
+        Collections.shuffle(ingredients);
     }
 
 
@@ -34,9 +30,9 @@ public class OfflineServer implements IServerAdapter {
     @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = playerNum;
+        acceptClients();
     }
 
-    @Override
     public void acceptClients() {
         /// in offline mode there is only one client (local computer)
         clients.add(new OfflineClient(this));
@@ -52,32 +48,24 @@ public class OfflineServer implements IServerAdapter {
 
     @Override
     public void initializeGame() {
+        List<Integer> alchemyIndex = assignRandomAlchemy();
         Collections.shuffle(clients);
         for (OfflineClient client: clients) {
+            client.setAlchemyMap(alchemyIndex);
             client.initialize();
         }
         authorizeClient();
     }
 
-    @Override
-    public boolean ingPileIsEmpty() {
-        return ingPile.isEmpty();
+    public List<Integer> assignRandomAlchemy() {
+        ArrayList<Integer> alchemyIndex = new ArrayList<Integer>();
+        for (int i = 0; i < 8; i++) {
+            alchemyIndex.add(i);
+        }
+        Collections.shuffle(alchemyIndex);
+        return alchemyIndex;
     }
 
-    @Override
-    public IngredientCard drawIngredient() {
-        return ingPile.remove(0);
-    }
-
-    @Override
-    public boolean artifactPileIsEmpty() {
-        return artifactPile.isEmpty();
-    }
-
-    @Override
-    public ArtifactCard drawArtifact() {
-        return artifactPile.remove(0);
-    }
 
     @Override
     public void changePlayer() {
@@ -111,13 +99,12 @@ public class OfflineServer implements IServerAdapter {
     @Override
     public void setNextClient() {
         clients.get(currentClient).changePlayer();
-        /* 
-        *** this would work for online server's method
-        currentClient += 1;
-        if (currentClient == playerNum) {
-            newRound();
-        }
-        */ 
+    }
+
+    @Override 
+    public void requestIngredient() {
+        if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
+        else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
     }
 
 }

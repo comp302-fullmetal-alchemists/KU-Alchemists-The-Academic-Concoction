@@ -4,18 +4,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.WelcomeController;
-import system.network.OfflineServer;
 import system.ui.frame.Gameboard;
 import system.network.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class WelcomePagePanel extends JPanel {
 
@@ -27,7 +24,7 @@ public class WelcomePagePanel extends JPanel {
 
 
     public WelcomePagePanel(Gameboard gameboard) {
-        this.controller = new WelcomeController();
+        this.controller = GameBoardController.getInstance().getWelcomeController();
         // Offline Section
         JLabel offlineLabel = new JLabel("Oflfline Game Options");
         add(offlineLabel);
@@ -48,44 +45,33 @@ public class WelcomePagePanel extends JPanel {
         JLabel onlineLabel = new JLabel("Online Game Options");
         add(onlineLabel);
 
-        JTextField port = new JTextField();
-        port.setBounds(157, 229, 166, 53);
+        JTextField port = new JTextField("Port: ",10);
         add(port);
+
+        JTextField ip = new JTextField("IP: ",10);
+        add(ip);
+
         
         hostGameButton = new JButton("Host Game");
         hostGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameboard.showWaitingScreen();
-                try {
-                    
-                    Integer portno= Integer.parseInt(port.getText());
-                    Server server = new Server(portno);
-                    server.startServer();
-
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                gameboard.showHostingScreen();
+                Integer portno= Integer.parseInt(port.getText());
+                controller.onlineHostingMode(portno);
                 
             }
         });
         add(hostGameButton);
 
+
         joinGameButton = new JButton("Join Game");
         joinGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Integer portno= Integer.parseInt(port.getText());
-                    Client client = new Client(portno);
-                    client.run();
-                    
-                    
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                gameboard.showWaitingScreen();
+                Integer portno= Integer.parseInt(port.getText());
+                controller.onlineJoiningMode(ip.getText(),portno);
             }
         });
         add(joinGameButton);

@@ -24,6 +24,20 @@ public class Alchemy {
         alchemical[AlchemicalConstants.BLUE][1] = Integer.signum(blueAspect);
     }
 
+    public static Alchemy getAlchemy(int index) {
+        switch(index) {
+            case 0: return new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.SMALL, -AlchemicalConstants.LARGE); 
+            case 1: return new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.LARGE, AlchemicalConstants.LARGE);
+            case 2: return new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE, -AlchemicalConstants.LARGE);
+            case 3: return new Alchemy(-AlchemicalConstants.SMALL, AlchemicalConstants.LARGE, AlchemicalConstants.SMALL);
+            case 4: return new Alchemy(AlchemicalConstants.LARGE, AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL);
+            case 5: return new Alchemy(AlchemicalConstants.SMALL,- AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL);
+            case 6: return new Alchemy(AlchemicalConstants.SMALL, -AlchemicalConstants.SMALL, AlchemicalConstants.LARGE);
+            case 7: return new Alchemy(-AlchemicalConstants.LARGE, -AlchemicalConstants.SMALL, AlchemicalConstants.SMALL);
+        }
+        return null;
+    }
+
     public int[][] getAlchemical() {
         return alchemical;
     }
@@ -53,6 +67,11 @@ public class Alchemy {
             else res += "-";
         }
         return res;
+    }
+
+    
+    public boolean equals(Alchemy alch) {
+        return this.toString().equals(alch.toString());
     }
 }
 

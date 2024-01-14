@@ -3,12 +3,13 @@ package system.network;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
+import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
-import system.domain.controllers.GameLogController;
 import system.domain.controllers.Player;
+import system.domain.util.IngredientFactory;
 
 public class OfflineClient implements IClientAdapter {
 
@@ -22,10 +23,6 @@ public class OfflineClient implements IClientAdapter {
         this.players = new ArrayList<Player>();
     }
 
-    @Override 
-    public void connectToServer() {
-        // in offline there is no need for this method
-    }
     
     @Override
     public void startAuthentication() {
@@ -38,18 +35,20 @@ public class OfflineClient implements IClientAdapter {
 
     // for checking in authentication
     @Override
-    public boolean validateUserChoices(String username) {
+    public void validateUserChoices(String username) {
         for (Player p: players) {
-            if (p.getName().equals(username)) return false;
+            if (p.getName().equals(username)) {
+                AuthenticationController.getInstance().invalidUsername();
+                return;
+            }
+            
         }
-        return true;
+        AuthenticationController.getInstance().validUsername();
     }
 
     // after check, register the players
     @Override
     public void registerPlayer(Player p) {
-        // get ingredients from server and add them to the player here
-        p.getInventory().initializeIngredients(server.drawIngredient(), server.drawIngredient());
         players.add(p);
         if (players.size() == playerNum) {
             server.initializeGame();            
@@ -60,13 +59,22 @@ public class OfflineClient implements IClientAdapter {
     }
 
     @Override
+    public void setAlchemyMap(List<Integer> alchemyIndex) {
+        IngredientFactory.getInstance().setAlchemyMap(alchemyIndex);
+    }
+
+    @Override
     public void initialize() {
+        Random random = new Random();
         for (Player p: players) {
+            p.getInventory().initializeIngredients(IngredientFactory.getInstance().createIngredient(random.nextInt(8)), 
+                                                   IngredientFactory.getInstance().createIngredient(random.nextInt(8)));
             GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
         }
         GameBoardController.getInstance().initializeTheBoard();
         Collections.shuffle(players);
     }
+
 
     @Override
     public void authorize() {
@@ -81,11 +89,12 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().deauthorizePlayer();    
     }
 
-
+    @Override
     public void endPlayerTurn() {
         server.changePlayer();
     }
     
+
     public void changePlayer() {
         currentPlayer += 1;
         if (currentPlayer == playerNum) {
@@ -93,23 +102,21 @@ public class OfflineClient implements IClientAdapter {
             server.newRound();
         }
     }
-    
-    public boolean ingPileIsEmpty() {
-        return server.ingPileIsEmpty();
+
+
+    @Override
+    public void requestIngredient() {
+        server.requestIngredient();
     }
 
-    public IngredientCard drawIngredient() {
-        return server.drawIngredient();
+    @Override
+    public void emptyPile() {
+        GameBoardController.getInstance().getIngredientStorageController().emptyPileError();
     }
 
-    public boolean artifactPileIsEmpty() {
-        return server.artifactPileIsEmpty();
+    @Override
+    public void takeIngredientIndex(int index) {
+        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
-
-    public ArtifactCard drawArtifact() {
-        return server.drawArtifact();
-    }
-
-
 
 }

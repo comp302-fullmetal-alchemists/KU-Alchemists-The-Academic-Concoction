@@ -5,9 +5,12 @@ import system.domain.IngredientCard;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Collector;
 import system.domain.interfaces.Mediator;
+import system.domain.util.ArtifactFactory;
 import system.domain.util.IngredientFactory;
 import system.domain.Cards;
 import system.domain.GameAction;
+
+import java.util.List;
 
 public class IngredientStorageController implements Collector{
     // public storage 
@@ -20,10 +23,14 @@ public class IngredientStorageController implements Collector{
     private GameLogController gameLog;
     private Boolean active = false;
     private IngredientCard ingToSell;
+    private ArtifactFactory artifactFactory;
+    private List<ArtifactCard> artifactPile;
 
     public IngredientStorageController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
         this.mediator = GameBoardController.getInstance().getMediator();
+        this.artifactFactory = new ArtifactFactory();
+        this.artifactPile = artifactFactory.createArtifacts();
         
     }
 
@@ -43,70 +50,85 @@ public class IngredientStorageController implements Collector{
     }
 
     public void transmuteIngredient() {
-    	if (ingToSell != null) {
-    		mediator.getPlayer().getInventory().updateGold(2);
-            ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
-            //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
-            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
-            ingToSell = null;
-            mediator.getPlayer().playedTurn();
-    	}
-    	else {
-    		ingredientStorageUI.update("ABSENT_INGREDIENT");
-    	}
+        try {
+            if (ingToSell != null) {
+                mediator.getPlayer().getInventory().updateGold(2);
+                ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
+                //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
+                gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
+                ingToSell = null;
+                mediator.getPlayer().playedTurn();
+            }
+            else {
+                ingredientStorageUI.update("ABSENT_INGREDIENT");
+            }
+        }
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
+        }
     	
     }
 
     public void buyArtifact() {
         // control if the player has enough gold
-        if (mediator.getPlayer().getInventory().getGold() >= 3) {
-            //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
-            ArtifactCard artifact = drawArtifact();       
-            if (artifact == null) {
-                ingredientStorageUI.update("EMPTY_PILE");
+        try {
+            if (mediator.getPlayer().getInventory().getGold() >= 3) {
+                //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
+                ArtifactCard artifact = drawArtifact();       
+                if (artifact == null) {
+                    ingredientStorageUI.update("EMPTY_PILE");
+                }
+                else {
+                    mediator.getPlayer().getInventory().updateGold(-3);
+                    mediator.sendToPlayer(artifact);
+                    ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
+                    
+                    //GAME LOG RECORDS: When a player buys an artifact card.
+                    gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
+                    
+                    useArtifact(artifact);
+                    mediator.getPlayer().playedTurn();
+                    
+                }
             }
             else {
-                mediator.getPlayer().getInventory().updateGold(-3);
-                mediator.sendToPlayer(artifact);
-                ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
-                
-                //GAME LOG RECORDS: When a player buys an artifact card.
-                gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
-                
-                useArtifact(artifact);
-                mediator.getPlayer().playedTurn();
-                
+                ingredientStorageUI.update("NOT_ENOUGH_GOLD");
             }
         }
-        else {
-            ingredientStorageUI.update("NOT_ENOUGH_GOLD");
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
 
     }
 
     public void drawIngredient() {
-        if (GameBoardController.getInstance().getClientAdapter().ingPileIsEmpty()) {
-            ingredientStorageUI.update("EMPTY_PILE");
+        if (mediator.getPlayer() != null) {
+            GameBoardController.getInstance().getClientAdapter().requestIngredient();
         }
         else {
-            IngredientCard drawn = GameBoardController.getInstance().getClientAdapter().drawIngredient();
-
-            mediator.sendToPlayer(drawn);
-            ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
-
-            //GAME LOG RECORDS: When a player draws a card.
-            gameLog.recordLog(mediator.getPlayer(), "Ingredient Pile", mediator.getPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
-            
-            mediator.getPlayer().playedTurn();
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
     }
+
+    public void emptyPileError() {
+        ingredientStorageUI.update("EMPTY_PILE");
+    }
+
+    public void takeIngredient(IngredientCard drawn) {
+        mediator.sendToPlayer(drawn);
+        ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
+
+        gameLog.recordLog(mediator.getPlayer(), "Ingredient Pile", mediator.getPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
+            
+        mediator.getPlayer().playedTurn();
+    }
+
     // draw an artifact card from the pile according to the rule of taking the last card from the pile
     public ArtifactCard drawArtifact() {
-        if (GameBoardController.getInstance().getClientAdapter().artifactPileIsEmpty()) {
+        if (artifactPile.isEmpty()) {
             return null;
         }
-        ArtifactCard drawed = GameBoardController.getInstance().getClientAdapter().drawArtifact();
-        //ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
+        ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
         return drawed;
     }
     // since the phase I. stated that the Elixir of Insight card must be implemented, this method is only

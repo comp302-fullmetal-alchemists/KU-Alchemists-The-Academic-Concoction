@@ -1,27 +1,17 @@
 package system.ui.panels;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-import system.domain.Alchemy;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
-import system.domain.controllers.Player;
 import system.domain.controllers.TheoryController;
-import system.ui.frame.GameContentPane;
 
-
-public class TheoryBoard extends JPanel {
+public class TheoryBoard extends JPanel{
     private TheoryController theoryController;
     private JLabel theoryBook1;
     private JLabel theoryBook2;
@@ -31,15 +21,13 @@ public class TheoryBoard extends JPanel {
     private JLabel theoryBook6;
     private JLabel theoryBook7;
     private JLabel theoryBook8;
-    private String ingredient;
     private JLabel theoryBook;
 
 
     public TheoryBoard(){
         super();
         setLayout(null);
-        this.theoryController = new TheoryController();
-        
+        this.theoryController = GameBoardController.getInstance().getTheoryController();
         //create theory books
         theoryBook1 = new JLabel("<html><br>Solaris Root</html>"); //ingredient name of the theory
 
@@ -48,10 +36,13 @@ public class TheoryBoard extends JPanel {
 		theoryBook1.setOpaque(true);
 		theoryBook1.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook1.setBounds(32, 53, 100, 118);
+		// set a photo for the theory book
+		theoryBook1.setIcon(new ImageIcon(getClass().getResource("/resources/theory.png")));
+		//theoryBook1.setBounds(32, 53, 150, 140);
         theoryBook1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Solaris Root"; //set the ingredient to the ingredient name of the theory
+                theoryController.setIngredient("Solaris Root"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook1; //set the theory book to the theory book of the ingredient
 
 			}
@@ -68,7 +59,7 @@ public class TheoryBoard extends JPanel {
         theoryBook2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Bat Wing"; //set the ingredient to the ingredient name of the theory
+                theoryController.setIngredient("Bat Wing"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook2; //set the theory book to the theory book of the ingredient
 
 			}
@@ -85,7 +76,7 @@ public class TheoryBoard extends JPanel {
         theoryBook3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Toad Stool"; //set the ingredient to the ingredient name of the theory
+				theoryController.setIngredient("Toad Stool"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook3; //set the theory book to the theory book of the ingredient
 
 			}
@@ -102,7 +93,7 @@ public class TheoryBoard extends JPanel {
         theoryBook4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Owl Feather"; //set the ingredient to the ingredient name of the theory
+				theoryController.setIngredient("Owl Feather"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook4;   //set the theory book to the theory book of the ingredient
 
 			}
@@ -119,7 +110,7 @@ public class TheoryBoard extends JPanel {
         theoryBook5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Snake Venom"; //set the ingredient to the ingredient name of the theory
+				theoryController.setIngredient("Snake Venom"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook5; //set the theory book to the theory book of the ingredient
 			}
 		});
@@ -134,7 +125,7 @@ public class TheoryBoard extends JPanel {
         theoryBook6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Rat Tail"; //set the ingredient to the ingredient name of the theory
+				theoryController.setIngredient("Rat Tail"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook6; //set the theory book to the theory book of the ingredient
 			}
 		});
@@ -150,7 +141,7 @@ public class TheoryBoard extends JPanel {
         theoryBook7.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Spider Web";  //set the ingredient to the ingredient name of the theory
+				theoryController.setIngredient("Spider Web"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook7; //set the theory book to the theory book of the ingredient
 
 			}
@@ -167,7 +158,7 @@ public class TheoryBoard extends JPanel {
         theoryBook8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                ingredient = "Newt Eye"; //set the ingredient to the ingredient name of the theory
+				theoryController.setIngredient("Newt Eye"); //set the ingredient to the ingredient name of the theory
                 theoryBook = theoryBook8; //set the theory book to the theory book of the ingredient
 
 			}
@@ -179,17 +170,19 @@ public class TheoryBoard extends JPanel {
 
     //create theory book prints the theory to the theory book of the ingredient
     public void createTheoryBook(String alchemy, String player) {
-        theoryBook.setText("<html><br>"+ ingredient + "<br><br>" + alchemy + "<br><br>" + player + "</html>");
+        theoryBook.setText("<html><br>"+ theoryController.getIngredient() + "<br><br>" + alchemy + "<br><br>" + player + "</html>");
         
     }
 
-    //get ingredient returns the ingredient
-    public String getIngredient (){
-        return ingredient;
-    }
-    //set ingredient sets the ingredient
-    public void setIngredient (String ingredient){
-        this.ingredient = ingredient;
-    }
+	// add username of the player who endorsed the theory
+	public void addEndorsement(String player) {
+		theoryBook.setText(theoryBook.getText().replace("</html>", "<br>" + player + "</html>"));
+	}
+
+	public void clear() {
+		theoryController.setIngredient(null);
+		theoryBook = null;
+	}
+	
 }
 
