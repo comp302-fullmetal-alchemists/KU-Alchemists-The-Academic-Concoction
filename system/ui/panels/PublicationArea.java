@@ -1,6 +1,7 @@
 package system.ui.panels;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.event.AncestorListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -14,6 +15,7 @@ import system.domain.Alchemy;
 import system.domain.Theory;
 import system.domain.controllers.TheoryController;
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.PublicationAreaController;
 import system.domain.util.IngredientFactory;
 import system.domain.interfaces.Observer;
 import system.ui.frame.GameContentPane;
@@ -30,13 +32,16 @@ public class PublicationArea extends JPanel implements Observer{
     private JButton alchemy6;
     private JButton alchemy7;
     private JButton alchemy8;
-    private String alchemy = "";
+    private PublicationAreaController publicationAreaController;
     private TheoryController theoryController;
     private JButton submitButton;
     private JButton debunkButton; //debunk theory use case button
 
     public PublicationArea() {
         super();
+        this.publicationAreaController = GameBoardController.getInstance().getPublicationAreaController();
+        publicationAreaController.setObserver(this);
+        GameBoardController.getInstance().getTheoryController().setObserver(this);
         setLayout(null);
         setBackground(new Color(58, 77, 108));
         //create back button
@@ -50,7 +55,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 1 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 1";
+                publicationAreaController.setAlchemy(1);
 			}
 		});
 		alchemy1.setBounds(183, 25, 95, 39);
@@ -62,7 +67,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 2 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 2";
+                publicationAreaController.setAlchemy(2);
 			}
 		});
 		alchemy2.setBounds(330, 25, 95, 39);
@@ -74,7 +79,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 3 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 3";
+                publicationAreaController.setAlchemy(3);
 			}
 		});
 		alchemy3.setBounds(478, 25, 95, 39);
@@ -86,7 +91,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 4 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 4";
+                publicationAreaController.setAlchemy(4);
 			}
 		});
 		alchemy4.setBounds(624, 25, 95, 39);
@@ -98,7 +103,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 5 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 5";
+                publicationAreaController.setAlchemy(5);
 			}
 		});
 		alchemy5.setBounds(183, 87, 95, 39);
@@ -110,7 +115,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 6 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 6";
+                publicationAreaController.setAlchemy(6);
 			}
 		});
 		alchemy6.setBounds(330, 87, 95, 39);
@@ -122,7 +127,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 7 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 7";
+                publicationAreaController.setAlchemy(7);
 			}
 		});
 		alchemy7.setBounds(478, 87, 95, 39);
@@ -134,7 +139,7 @@ public class PublicationArea extends JPanel implements Observer{
             //set alchemy to alchemy 8 after clicking
 
 			public void actionPerformed(ActionEvent e) {
-                alchemy = "Alchemy 8";
+                publicationAreaController.setAlchemy(8);
 			}
 		});
 		alchemy8.setBounds(624, 87, 95, 39);
@@ -161,6 +166,7 @@ public class PublicationArea extends JPanel implements Observer{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     //if ingredient and alchemy is empty, do not let debunk
+                    
                     if (theoryBoard.getIngredient() == null)
                     {
                         System.err.println("Please select an ingredient"); 
@@ -192,6 +198,20 @@ public class PublicationArea extends JPanel implements Observer{
         );  
         add(debunkButton);
 
+        // create endorse button
+        JButton endorseButton = new JButton("Endorse");
+        endorseButton.setBounds(525, 643, 128, 31);
+        endorseButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    theoryController.endorseTheory();
+                }
+            }
+        );
+        add(endorseButton);
+
+
         this.theoryController = GameBoardController.getInstance().getTheoryController();
         theoryController.setObserver(this);
     }
@@ -216,35 +236,17 @@ public class PublicationArea extends JPanel implements Observer{
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //check if alchemy and ingredient is selected
-                    if (alchemy.isEmpty()) {
-                        System.err.println("Please select an alchemy");
-                        theoryBoard.setIngredient(null);
-                    }
-                    else if (theoryBoard.getIngredient() == null)
-                    {
-                        System.err.println("Please select an ingredient");
-                        alchemy = "";
-                    }
-                    else {
-                        //alchemy and ingredient is selected properly
-                        System.out.println(String.format("Alchemy = %s, Ingredient = %s", alchemy, theoryBoard.getIngredient()));
-                        //convert last character of alchemy to int to get the index of alchemy
-                        int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
-                        //call publish theory method from theory controller
-                        theoryController.publishTheory(IngredientFactory.getInstance().getAlchemies()[index-1], theoryBoard.getIngredient());
-                        System.out.println("Theory published");
-                        //reset alchemy and ingredient
-
-                        alchemy = "";
-                        theoryBoard.setIngredient(null);
-                    }
+                    publicationAreaController.publishTheory();
+                    clear();
                 }
-
             }
         );
     }
 
+    public void clear() {
+        publicationAreaController.setAlchemy(0);
+        theoryBoard.clear();
+    }
     //update method for observer
 
     @Override
@@ -253,13 +255,20 @@ public class PublicationArea extends JPanel implements Observer{
               JOptionPane.showMessageDialog(this, "Duplicate theory");
               
         }
+        else if (msg.contains("NO_ALCHEMY_CHOSEN")) {
+                JOptionPane.showMessageDialog(this, "No alchemy chosen!");
+        }
+        else if (msg.contains("NO_INGREDIENT_CHOSEN")) {
+                JOptionPane.showMessageDialog(this, "No ingredient chosen!");
+        }
          else if (msg.contains("NOT_ENOUGH_GOLD")) {
               JOptionPane.showMessageDialog(this, "Not enough gold");
         }
          else if (msg.contains("THEORY_PUBLISHED")) {
               JOptionPane.showMessageDialog(this, "Theory published");
               //create theory book
-              theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
+              String alchemyName = String.format("Alchemy %d", publicationAreaController.getAlchemyIndex());
+              theoryBoard.createTheoryBook(alchemyName, GameBoardController.getInstance().getPlayer().getName());
         }
         else if (msg.contains("THEORY_DEBUNKED")) {
             JOptionPane.showMessageDialog(this, "Theory debunked");
@@ -272,6 +281,21 @@ public class PublicationArea extends JPanel implements Observer{
         }
         else if (msg.contains("CANNOT_DEBUNK_SAME_ALCHEMY")) {
             JOptionPane.showMessageDialog(this, "Cannot debunk same alchemy");
+        }
+
+        else if (msg.contains("NO_THEORY_CHOSEN")){
+            JOptionPane.showMessageDialog(this, "No theory chosen");
+        }
+        else if(msg.contains("THEORY_ALREADY_ENDORSED")){
+            JOptionPane.showMessageDialog(this, "Theory already endorsed");
+        }
+        else if (msg.contains("CANNOT_ENDORSE_YOUR_OWN_THEORY")){
+            JOptionPane.showMessageDialog(this, "Cannot endorse your own theory");
+        }
+        else if (msg.contains("THEORY_ENDORSED")){
+            JOptionPane.showMessageDialog(this, "Theory endorsed");
+            // add username of the player who endorsed the theory
+            theoryBoard.addEndorsement(GameBoardController.getInstance().getPlayer().getName());
         }
     }
 }

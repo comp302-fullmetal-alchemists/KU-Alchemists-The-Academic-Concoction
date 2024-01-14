@@ -17,6 +17,8 @@ public class TheoryController {
     private Observer theoryUI;
     private GameLogController gameLog;
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
+    private String ingredient;
+
 
     public TheoryController() {
         this.theories = new ArrayList<Theory>(); //add theories to the list
@@ -30,14 +32,27 @@ public class TheoryController {
         this.theoryUI = observer;
     }
 
-    public void publishTheory(Alchemy alchemy, String ingredient) {
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
+
+    public void publishTheory(Alchemy alchemy) {
+        
+        if (ingredient == null) {
+            theoryUI.update("NO_INGREDIENT_CHOSEN");
+            return;
+        }
         //check if the theory is already published
         for (Theory i : theories) {
-            if (i.getAlchemy() == alchemy || i.getIngredient() == ingredient) {
+            if (i.getAlchemy().equals(alchemy) || i.getIngredient() == ingredient) {
                 theoryUI.update("DUPLICATE_THEORY");
                 return;
             }
-        } 
+        }
         //check if the player has enough gold to publish a theory
         if (GameBoardController.getInstance().getPlayer().getInventory().getGold() < 1) {
             theoryUI.update("NOT_ENOUGH_GOLD");
@@ -49,13 +64,48 @@ public class TheoryController {
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getPlayer());
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
-
+            GameBoardController.getInstance().getPublicationAreaController().setAlchemy(0);
             //GAMELOG RECORDS LOG: When a player publishes a theory
             gameLog.recordLog(GameBoardController.getInstance().getPlayer(), GameBoardController.getInstance().getPlayer().getName(), "Everyone", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
             //increase the turn count
-            GameBoardController.getInstance().getMediator().getPlayer().playedTurn();
+            GameBoardController.getInstance().getPlayer().playedTurn();
         }
         return;
+    }
+
+    public void endorseTheory() {
+        //check if the theory is already endorsed
+        if (ingredient == null) {
+            theoryUI.update("NO_THEORY_CHOSEN");
+            return;
+        }
+
+        for (Theory theory : theories) {
+            if (theory.getIngredient() == ingredient) {
+                if (theory.isEndorsed()) {
+                    theoryUI.update("THEORY_ALREADY_ENDORSED");
+                    return;
+                }
+                //check if the player has enough gold to endorse a theory
+                if (GameBoardController.getInstance().getPlayer().getInventory().getGold() < 2) {
+                    theoryUI.update("NOT_ENOUGH_GOLD");
+                    return;
+                }
+                if(theory.getOwner() == GameBoardController.getInstance().getPlayer()) {
+                        theoryUI.update("CANNOT_ENDORSE_YOUR_OWN_THEORY");
+                        return;
+                    }
+                //endorse the theory
+                else {
+                    GameBoardController.getInstance().getPlayer().getInventory().updateGold(-2);
+                    theory.getOwner().getInventory().updateGold(1);
+                    theory.setEndorsed(true);
+                    theoryUI.update("THEORY_ENDORSED");
+                    //increase the turn count
+                    GameBoardController.getInstance().getPlayer().playedTurn();
+                }
+            }
+        }
     }
 
     public void debunkTheory(Alchemy alchemy, Theory theory, Player player) {
@@ -97,6 +147,7 @@ public class TheoryController {
         }
         return;
     }
+
 
     public List<Theory> getTheories() {
         return theories;

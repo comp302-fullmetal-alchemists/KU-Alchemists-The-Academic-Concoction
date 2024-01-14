@@ -68,6 +68,11 @@ public class Alchemy {
         }
         return res;
     }
+
+    
+    public boolean equals(Alchemy alch) {
+        return this.toString().equals(alch.toString());
+    }
 }
 
 
