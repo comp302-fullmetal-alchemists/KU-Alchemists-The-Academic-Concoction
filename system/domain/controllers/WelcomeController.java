@@ -1,6 +1,8 @@
 package system.domain.controllers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import system.network.IClientAdapter;
 import system.network.IServerAdapter;
@@ -27,7 +29,7 @@ public class WelcomeController {
             this.server = new OnlineServer(Port);
             Thread serverThread = new Thread((Runnable) server);
             serverThread.start();
-            IClientAdapter client = new OnlineClient(Port);
+            IClientAdapter client = new OnlineClient(learnIP(),Port);
             GameBoardController.getInstance().setClientAdapter(client);
             Thread clientThread = new Thread((Runnable) client);
             clientThread.start();
@@ -37,9 +39,9 @@ public class WelcomeController {
         }
     }
 
-    public void onlineJoiningMode(int Port) {
+    public void onlineJoiningMode(String ip, int Port) {
         try {
-            IClientAdapter client = new OnlineClient(Port);
+            IClientAdapter client = new OnlineClient(ip,Port);
             GameBoardController.getInstance().setClientAdapter(client);
             Thread clientThread = new Thread((Runnable) client);
             clientThread.start();
@@ -56,6 +58,29 @@ public class WelcomeController {
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String learnIP() {
+        try {
+            Process process = Runtime.getRuntime().exec("ipconfig getifaddr en0");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            
+            String line;
+            StringBuilder ipAddress = new StringBuilder();
+            
+            while ((line = reader.readLine()) != null) {
+                ipAddress.append(line);
+            }
+            
+            // Close the reader
+            reader.close();
+            
+            // Print the IP address
+            return ipAddress.toString();
+        } catch (Exception e) {
+            System.err.println("An error occurred: " + e.getMessage());
+        }
+        return null;
     }
 
 

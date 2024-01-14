@@ -13,6 +13,7 @@ import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import system.ui.panels.AuthenticationPanel;
 import system.ui.panels.HelpScreenPanel;
+import system.ui.panels.HostingScreen;
 import system.ui.panels.OnlineGamePanel;
 import system.ui.panels.WaitingScreen;
 import system.ui.panels.WelcomePagePanel;
@@ -33,6 +34,7 @@ public class Gameboard extends JFrame implements Observer{
 	WelcomePagePanel welcomePage;
 	OnlineGamePanel onlinePanel;
 	WaitingScreen waitingScreen;
+	HostingScreen hostingScreen;
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,6 +48,8 @@ public class Gameboard extends JFrame implements Observer{
 		welcomePage.setBounds(0, 0, 1200, 800);
 		this.waitingScreen = new WaitingScreen(this);
 		waitingScreen.setBounds(0, 0, 1200, 800);
+		this.hostingScreen = new HostingScreen(this);
+		hostingScreen.setBounds(0, 0, 1200, 800);
 		setVisible(true);
 		setResizable(false);
 		welcomePage.setBounds(0, 0, 1200, 800);
@@ -161,6 +165,14 @@ public class Gameboard extends JFrame implements Observer{
 	public void showWaitingScreen() {
 		getContentPane().remove(welcomePage);
 		getContentPane().add(waitingScreen);
+		waitingScreen.setVisible(true);
+		revalidate();
+		repaint();
+	}
+
+	public void showHostingScreen() {
+		getContentPane().remove(welcomePage);
+		getContentPane().add(hostingScreen);
 		waitingScreen.setVisible(true);
 		revalidate();
 		repaint();

@@ -24,8 +24,8 @@ public class OnlineClient extends Thread implements IClientAdapter {
     
     private static final String HOST = "127.0.0.1"; 
 
-    public OnlineClient(int port) throws IOException {
-        this.socket = new Socket(HOST, port);
+    public OnlineClient(String ip, int port) throws IOException {
+        this.socket = new Socket(ip, port);
         this.fromServer = new DataInputStream(socket.getInputStream());
         this.toServer = new DataOutputStream(socket.getOutputStream());
         this.fromUser = new BufferedReader(new InputStreamReader(System.in));

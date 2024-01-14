@@ -45,15 +45,18 @@ public class WelcomePagePanel extends JPanel {
         JLabel onlineLabel = new JLabel("Online Game Options");
         add(onlineLabel);
 
-        JTextField port = new JTextField(10);
-        //port.setBounds(157, 229, 166, 53);
+        JTextField port = new JTextField("Port: ",10);
         add(port);
+
+        JTextField ip = new JTextField("IP: ",10);
+        add(ip);
+
         
         hostGameButton = new JButton("Host Game");
         hostGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameboard.showWaitingScreen();
+                gameboard.showHostingScreen();
                 Integer portno= Integer.parseInt(port.getText());
                 controller.onlineHostingMode(portno);
                 
@@ -61,13 +64,14 @@ public class WelcomePagePanel extends JPanel {
         });
         add(hostGameButton);
 
+
         joinGameButton = new JButton("Join Game");
         joinGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameboard.showWaitingScreen();
                 Integer portno= Integer.parseInt(port.getText());
-                controller.onlineJoiningMode(portno);
+                controller.onlineJoiningMode(ip.getText(),portno);
             }
         });
         add(joinGameButton);
