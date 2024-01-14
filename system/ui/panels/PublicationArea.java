@@ -1,22 +1,16 @@
 package system.ui.panels;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.event.AncestorListener;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.awt.Color;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.List;
 
-import system.domain.Alchemy;
-import system.domain.Theory;
+
 import system.domain.controllers.TheoryController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.PublicationAreaController;
-import system.domain.util.IngredientFactory;
 import system.domain.interfaces.Observer;
 import system.ui.frame.GameContentPane;
 
@@ -165,36 +159,9 @@ public class PublicationArea extends JPanel implements Observer{
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //if ingredient and alchemy is empty, do not let debunk
-                    
-                    if (theoryBoard.getIngredient() == null)
-                    {
-                        System.err.println("Please select an ingredient"); 
-                        
-                    }
-                    else if (alchemy.isEmpty()){
-                        System.err.println("Please select an alchemy");
-                    }
-                    else {
-                        for (Theory i : theoryController.getTheories()) {
-                            //after finding the theory, debunk it if a theory is not found then do not debunk
-                            if (i.getIngredient().equals(theoryBoard.getIngredient())) {
-                                int index = Integer.parseInt(alchemy.substring(alchemy.length() - 1));
-                                //debunk theory use case
-                                theoryController.debunkTheory(IngredientFactory.getInstance().getAlchemies()[index-1], i, GameBoardController.getInstance().getCurrentPlayer());
-                                if(i.isDebunked()) {
-                                    theoryBoard.createTheoryBook(alchemy, GameBoardController.getInstance().getCurrentPlayer().getName());
-                                }
-                                return;
-                            }
-                        }
-                        //after looping through all theories and not finding the theory, make null alchemy and ingredient
-                        alchemy = "";
-                        theoryBoard.setIngredient(null);
-                    }
-
+                    publicationAreaController.debunkTheory();
+                }
             }
-        }
         );  
         add(debunkButton);
 
@@ -272,6 +239,8 @@ public class PublicationArea extends JPanel implements Observer{
         }
         else if (msg.contains("THEORY_DEBUNKED")) {
             JOptionPane.showMessageDialog(this, "Theory debunked");
+            String alchemyName = String.format("Alchemy %d", publicationAreaController.getAlchemyIndex());
+            theoryBoard.createTheoryBook(alchemyName, GameBoardController.getInstance().getPlayer().getName());
         }
         else if (msg.contains("THEORY_NOT_DEBUNKED")) {
             JOptionPane.showMessageDialog(this, "Theory not debunked");

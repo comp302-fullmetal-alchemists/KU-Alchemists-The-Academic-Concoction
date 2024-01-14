@@ -21,7 +21,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private DataInputStream fromServer;
     private DataOutputStream toServer;
     private BufferedReader fromUser;
-    private IngredientFactory ingFactory;
     
     private static final String HOST = "127.0.0.1"; 
 
@@ -31,7 +30,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
         this.toServer = new DataOutputStream(socket.getOutputStream());
         this.fromUser = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("[CLIENT] Connected to server on port " + port);
-        this.ingFactory = new IngredientFactory();
     }
 
     public void run() {
@@ -156,10 +154,15 @@ public class OnlineClient extends Thread implements IClientAdapter {
     }
 
     @Override
+    public void setAlchemyMap(List<Integer> alchemyIndex) {
+        IngredientFactory.getInstance().setAlchemyMap(alchemyIndex);
+    }
+
+    @Override
     public void initialize() {
         Random random = new Random();
         Player p = GameBoardController.getInstance().getPlayer();
-        p.getInventory().initializeIngredients(ingFactory.createIngredient(random.nextInt(8)), ingFactory.createIngredient(random.nextInt(8)));
+        p.getInventory().initializeIngredients(IngredientFactory.getInstance().createIngredient(random.nextInt(8)), IngredientFactory.getInstance().createIngredient(random.nextInt(8)));
         GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
         GameBoardController.getInstance().initializeTheBoard();
         GameBoardController.getInstance().initializePlayer();
@@ -190,11 +193,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
     }
 
     @Override
-    public void setAlchemyMap(List<Integer> alchemyIndex) {
-        ingFactory.setAlchemyMap(alchemyIndex);
-    }
-
-    @Override
     public void requestIngredient() {
         try {
             toServer.writeUTF("request_ingredient");
@@ -210,7 +208,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
 
     @Override
     public void takeIngredientIndex(int index) {
-        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(ingFactory.createIngredient(index));
+        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
 }

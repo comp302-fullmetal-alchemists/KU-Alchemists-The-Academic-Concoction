@@ -17,12 +17,10 @@ public class OfflineClient implements IClientAdapter {
     private List<Player> players;
     private int playerNum;
     private int currentPlayer;
-    private IngredientFactory ingFactory;
     
     public OfflineClient(OfflineServer server) {
         this.server = server;
         this.players = new ArrayList<Player>();
-        this.ingFactory = new IngredientFactory();
     }
 
     
@@ -62,14 +60,15 @@ public class OfflineClient implements IClientAdapter {
 
     @Override
     public void setAlchemyMap(List<Integer> alchemyIndex) {
-        ingFactory.setAlchemyMap(alchemyIndex);
+        IngredientFactory.getInstance().setAlchemyMap(alchemyIndex);
     }
 
     @Override
     public void initialize() {
         Random random = new Random();
         for (Player p: players) {
-            p.getInventory().initializeIngredients(ingFactory.createIngredient(random.nextInt(8)), ingFactory.createIngredient(random.nextInt(8)));
+            p.getInventory().initializeIngredients(IngredientFactory.getInstance().createIngredient(random.nextInt(8)), 
+                                                   IngredientFactory.getInstance().createIngredient(random.nextInt(8)));
             GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
         }
         GameBoardController.getInstance().initializeTheBoard();
@@ -117,7 +116,7 @@ public class OfflineClient implements IClientAdapter {
 
     @Override
     public void takeIngredientIndex(int index) {
-        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(ingFactory.createIngredient(index));
+        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
 }

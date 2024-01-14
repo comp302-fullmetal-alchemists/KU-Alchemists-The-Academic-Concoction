@@ -1,26 +1,15 @@
 package system.ui.panels;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-import system.domain.Alchemy;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
-import system.domain.controllers.Player;
 import system.domain.controllers.TheoryController;
-import system.ui.frame.GameContentPane;
-
 
 public class TheoryBoard extends JPanel{
     private TheoryController theoryController;

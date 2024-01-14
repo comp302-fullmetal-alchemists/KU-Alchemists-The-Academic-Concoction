@@ -1,11 +1,9 @@
 package system.domain.controllers;
 
-import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
 import system.network.IClientAdapter;
-
 
 public class GameBoardController {
 

@@ -1,13 +1,9 @@
 package system.domain.controllers;
 
 import java.util.List;
-
 import system.domain.Alchemy;
-import system.domain.Alchemy.AlchemicalConstants;
-import system.domain.GameAction;
 import system.domain.Theory;
 import system.domain.interfaces.Observer;
-import system.domain.util.IngredientFactory;
 
 public class PublicationAreaController {
 
@@ -57,6 +53,18 @@ public class PublicationAreaController {
             alchemy = Alchemy.getAlchemy(alchemyIndex - 1);
             // 
             GameBoardController.getInstance().getTheoryController().publishTheory(alchemy);
+        }
+    }
+
+    public void debunkTheory() {
+        if (alchemyIndex == 0) {
+            publicationAreaUI.update("NO_ALCHEMY_CHOSEN");
+        }
+        else {
+            // to be changed
+            alchemy = Alchemy.getAlchemy(alchemyIndex - 1);
+            // 
+            GameBoardController.getInstance().getTheoryController().debunkTheory(alchemy);
         }
     }
          
