@@ -59,7 +59,7 @@ public class ConcreteMediator implements Mediator {
     // or they dont hold some types of items at all
     @Override 
     public <T> boolean sendToCollector(T item) {
-        if (collector != null) {
+        if (collector != null && player != null) {
             return collector.collectItem(item);
         }
         return false;
@@ -67,7 +67,8 @@ public class ConcreteMediator implements Mediator {
 
     @Override
     public Player getPlayer() {
-        return player;
+        if (player != null) return player;
+        throw new NullPointerException("Player is not connected to the mediator");
     }
 
 }

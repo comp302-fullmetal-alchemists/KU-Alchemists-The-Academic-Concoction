@@ -20,7 +20,6 @@ public class WelcomeController {
     public void offlineHostingMode(int numberOfPlayers) {
         this.server = new OfflineServer();
         server.setPlayerNumber(numberOfPlayers);
-        server.acceptClients();
     }
 
     public void onlineHostingMode(int Port) {

@@ -93,6 +93,9 @@ public class Gameboard extends JFrame implements Observer{
 		if (msg.equals("INITIALIZE_BOARD")) {
             initializeTheBoard();
         }
+		else if (msg.equals("INITIALIZE_PLAYER")) {
+			initializePlayer();
+		}
 		else if (msg.equals("DEAUTHORIZATION")) {
 			clear();
 		}
@@ -106,6 +109,11 @@ public class Gameboard extends JFrame implements Observer{
 	
 	public void clear() {
 		gamePane.changeView("village");
+	}
+
+	public void initializePlayer() {
+		playerPane.addPlayerDashboard(gameController.getPlayer());
+		playerPane.changeView(gameController.getPlayer().getName());
 	}
 	
 	public void changePlayer() {

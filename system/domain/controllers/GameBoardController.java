@@ -62,6 +62,10 @@ public class GameBoardController {
         gameboardUI.update("INITIALIZE_BOARD");
     }
 
+    public void initializePlayer() {
+        gameboardUI.update("INITIALIZE_PLAYER");
+    }
+
     public void deauthorizePlayer() {
         gameLog.recordLog(player, "KU Alchemist", player.getName(),  String.format("Round over!"), 0);
         gameboardUI.update("DEAUTHORIZATION");

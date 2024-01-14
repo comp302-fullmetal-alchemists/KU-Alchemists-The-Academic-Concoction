@@ -5,14 +5,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-import javax.xml.crypto.Data;
-
-import system.domain.IngredientCard;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
@@ -72,7 +70,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.equals("validUsername")) {
                     AuthenticationController.getInstance().validUsername();
                 }
-                else if (message.contains("initialize")) {
+                else if (message.contains("SetAlchemy")) {
                     // Extracting the part after the colon
                     String alchemyIndex = message.split(":")[1];
                 
@@ -88,6 +86,22 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 
                     System.out.println("[CLIENT] Alchemy map: " + alchemyMap);
                     setAlchemyMap(alchemyMap);
+                }
+                else if (message.equals("initialize")) {
+                    initialize();
+                }
+                else if (message.equals("authorize")) {
+                    authorize();
+                }
+                else if (message.equals("deauthorize")) {
+                    deauthorize();
+                }
+                else if (message.equals("empty_ingredient_pile")) {
+                    emptyPile();
+                }
+                else if (message.contains("ingredient")) {
+                    int index = Integer.parseInt(message.split(":")[1]);
+                    takeIngredientIndex(index);
                 }
 
             } catch (Exception e) {
@@ -113,23 +127,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
             e.printStackTrace();
         }
     }
-    /* 
-    public static void main(String[] args) {
-        try {
-            OnlineClient client = new OnlineClient(6060);
-            client.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
-
-    @Override
-    public void connectToServer() {
-        // Connection is already established in the constructor
-    }
-
+ 
     @Override
     public void startAuthentication() {
         // Authentication logic goes here
@@ -145,7 +143,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
         }
     }
 
-    
     @Override
     public void registerPlayer(Player p) {
         System.out.println("[CLIENT] Registering player");
@@ -160,35 +157,60 @@ public class OnlineClient extends Thread implements IClientAdapter {
 
     @Override
     public void initialize() {
-        // Initialize client-side game elements
+        Random random = new Random();
+        Player p = GameBoardController.getInstance().getPlayer();
+        p.getInventory().initializeIngredients(ingFactory.createIngredient(random.nextInt(8)), ingFactory.createIngredient(random.nextInt(8)));
+        GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
+        GameBoardController.getInstance().initializeTheBoard();
+        GameBoardController.getInstance().initializePlayer();
     }
 
     @Override
     public void authorize() {
         // Authorization logic
+        GameBoardController.getInstance().getPlayer().changeTurn();
+        GameBoardController.getInstance().authorizePlayer();
     }
 
     @Override
     public void deauthorize() {
         // Deauthorization logic
+        GameBoardController.getInstance().getPlayer().changeTurn();
+        GameBoardController.getInstance().deauthorizePlayer();   
     }
 
     @Override
     public void endPlayerTurn() {
         // Notify server that player turn has ended
+        try {
+            toServer.writeUTF("change_player");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    @Override
-    public IngredientCard drawIngredient() {
-        // Request an ingredient card from the server
-        return null; // Placeholder return value
-    }
-
 
     @Override
     public void setAlchemyMap(List<Integer> alchemyIndex) {
         ingFactory.setAlchemyMap(alchemyIndex);
     }
 
+    @Override
+    public void requestIngredient() {
+        try {
+            toServer.writeUTF("request_ingredient");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void emptyPile() {
+        GameBoardController.getInstance().getIngredientStorageController().emptyPileError();
+    }
+
+    @Override
+    public void takeIngredientIndex(int index) {
+        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(ingFactory.createIngredient(index));
+    }
 
 }

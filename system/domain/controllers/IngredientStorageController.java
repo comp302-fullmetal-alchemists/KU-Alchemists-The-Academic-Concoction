@@ -50,49 +50,64 @@ public class IngredientStorageController implements Collector{
     }
 
     public void transmuteIngredient() {
-    	if (ingToSell != null) {
-    		mediator.getPlayer().getInventory().updateGold(2);
-            ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
-            //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
-            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
-            ingToSell = null;
-            mediator.getPlayer().playedTurn();
-    	}
-    	else {
-    		ingredientStorageUI.update("ABSENT_INGREDIENT");
-    	}
+        try {
+            if (ingToSell != null) {
+                mediator.getPlayer().getInventory().updateGold(2);
+                ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
+                //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
+                gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
+                ingToSell = null;
+                mediator.getPlayer().playedTurn();
+            }
+            else {
+                ingredientStorageUI.update("ABSENT_INGREDIENT");
+            }
+        }
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
+        }
     	
     }
 
     public void buyArtifact() {
         // control if the player has enough gold
-        if (mediator.getPlayer().getInventory().getGold() >= 3) {
-            //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
-            ArtifactCard artifact = drawArtifact();       
-            if (artifact == null) {
-                ingredientStorageUI.update("EMPTY_PILE");
+        try {
+            if (mediator.getPlayer().getInventory().getGold() >= 3) {
+                //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
+                ArtifactCard artifact = drawArtifact();       
+                if (artifact == null) {
+                    ingredientStorageUI.update("EMPTY_PILE");
+                }
+                else {
+                    mediator.getPlayer().getInventory().updateGold(-3);
+                    mediator.sendToPlayer(artifact);
+                    ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
+                    
+                    //GAME LOG RECORDS: When a player buys an artifact card.
+                    gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
+                    
+                    useArtifact(artifact);
+                    mediator.getPlayer().playedTurn();
+                    
+                }
             }
             else {
-                mediator.getPlayer().getInventory().updateGold(-3);
-                mediator.sendToPlayer(artifact);
-                ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
-                
-                //GAME LOG RECORDS: When a player buys an artifact card.
-                gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
-                
-                useArtifact(artifact);
-                mediator.getPlayer().playedTurn();
-                
+                ingredientStorageUI.update("NOT_ENOUGH_GOLD");
             }
         }
-        else {
-            ingredientStorageUI.update("NOT_ENOUGH_GOLD");
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
 
     }
 
     public void drawIngredient() {
-        GameBoardController.getInstance().getClientAdapter().requestIngredient();
+        if (mediator.getPlayer() != null) {
+            GameBoardController.getInstance().getClientAdapter().requestIngredient();
+        }
+        else {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
+        }
     }
 
     public void emptyPileError() {

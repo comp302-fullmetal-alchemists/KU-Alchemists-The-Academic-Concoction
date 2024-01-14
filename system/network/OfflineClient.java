@@ -120,13 +120,4 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(ingFactory.createIngredient(index));
     }
 
-    @Override 
-    public void connectToServer() {
-        // in offline there is no need for this method
-    }
-
-
-
-
-
 }

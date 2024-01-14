@@ -7,9 +7,6 @@ import system.domain.controllers.Player;
 import java.util.List;
 
 public interface IClientAdapter {
-    
-    // client connecting to server, only required for OnlineClient
-    void connectToServer();
 
     // Authentication on a local computer
     void startAuthentication();

@@ -2,35 +2,29 @@ package system.network;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.xml.crypto.Data;
-
 import java.util.ArrayList;
 
 public class OnlineServer extends Thread implements IServerAdapter {
 
     private final ServerSocket serverSocket;
     private int playerNum;
+    private int rounds = 0;
     private final ExecutorService clientExecutor;
     private List<ClientHandler> clients;
     private int currentClient = 0;
     private static final int MAX_CLIENTS = 4;
     private BufferedReader fromServer;
     private List<String> usernames;
+    private List<Integer> ingredientPile;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -38,6 +32,11 @@ public class OnlineServer extends Thread implements IServerAdapter {
         this.clients = Collections.synchronizedList(new ArrayList<ClientHandler>());
         fromServer = new BufferedReader(new InputStreamReader(System.in));
         usernames = new ArrayList<String>();
+        ingredientPile = new ArrayList<Integer>();
+        for (int i = 0; i < 24; i++) {
+            ingredientPile.add(i % 8);
+        }
+        Collections.shuffle(ingredientPile);
     }
 
     public void run() {
@@ -120,7 +119,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
                         startAuthentication();
                     }
                 }
-                if (message.contains("validateUsername")) {
+                else if (message.contains("validateUsername")) {
                     String username = message.split(":")[1];
                     if (usernames.contains(username)) {
                         writer.writeUTF("duplicateUsername");
@@ -130,6 +129,13 @@ public class OnlineServer extends Thread implements IServerAdapter {
                         writer.writeUTF("validUsername");
                     }
                 }
+                else if (message.contains("change_player")) {
+                    changePlayer();
+                }
+                else if (message.contains("request_ingredient")) {
+                    requestIngredient();
+                }
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -139,17 +145,6 @@ public class OnlineServer extends Thread implements IServerAdapter {
             return writer;
         }
     }
-    /*
-    public static void main(String[] args) {
-        int port = 6060;
-        try {
-            Thread serverThread = new OnlineServer(port);
-            serverThread.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
     @Override
     public void setPlayerNumber(int playerNum) {
@@ -173,13 +168,14 @@ public class OnlineServer extends Thread implements IServerAdapter {
         for (int i = 0; i < clients.size(); i++) {
             try {
                 System.out.println("[SERVER] Sending initialize request to client " + i);
-                clients.get(i).getWriter().writeUTF("initializeSetAlchemy:"+alchemyIndex.toString());
-
+                clients.get(i).getWriter().writeUTF("SetAlchemy:"+alchemyIndex.toString());
+                clients.get(i).getWriter().writeUTF("initialize");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         System.out.println("[SERVER] All clients initialized."); 
+        authorizeClient();
     }
 
     public List<Integer> assignRandomAlchemy() {
@@ -192,44 +188,59 @@ public class OnlineServer extends Thread implements IServerAdapter {
     }
 
     @Override
-    public void changePlayer() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changePlayer'");
-    }
-
-    @Override
-    public void deauthorizeClient() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deauthorizeClient'");
+    public void authorizeClient() {
+        try {
+            clients.get(currentClient).getWriter().writeUTF("authorize");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void setNextClient() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setNextClient'");
+        currentClient += 1;
+        if (currentClient == playerNum) {
+            newRound();
+        }
     }
 
     @Override
-    public void authorizeClient() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'authorizeClient'");
+    public void deauthorizeClient() {
+        try {
+            clients.get(currentClient).getWriter().writeUTF("deauthorize");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void changePlayer() {
+        //first remove the old player
+        deauthorizeClient();
+        //then find new player, change round number if needed
+        setNextClient();
+        //finally, give permission to new player
+        authorizeClient();
     }
 
     @Override
     public void newRound() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'newRound'");
+        currentClient = 0;
+        rounds += 1;
     }
 
     @Override
-    public int requestIngredient() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'requestIngredient'");
-    }
-
-    @Override
-    public void acceptClients() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'acceptClients'");
+    public void requestIngredient() {
+        try {
+            if (ingredientPile.isEmpty()) {
+                clients.get(currentClient).getWriter().writeUTF("empty_ingredient_pile");
+            }
+            else {
+                clients.get(currentClient).getWriter().writeUTF("ingredient:"+ingredientPile.remove(0));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+  
     }
 }
