@@ -61,11 +61,10 @@ public class WelcomeController {
     }
 
     public String learnIP() {
-        if (System.getProperty("os.name").contains("MAC")) {
+        if (System.getProperty("os.name").contains("Mac")) {
             try {
                 Process process = Runtime.getRuntime().exec("ipconfig getifaddr en0");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                
                 String line;
                 StringBuilder ipAddress = new StringBuilder();
                 
