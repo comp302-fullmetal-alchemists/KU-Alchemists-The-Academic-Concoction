@@ -90,7 +90,7 @@ public class InventoryController {
         inventoryUI.update(String.format("NEW_INGREDIENT:%s", ingredient.getName()));
 
         //GAMELOG LOGS SILENTLY TO SAVE GAME STATUS
-       // gameLog.recordLogSilent(GameBoardController.getInstance().getCurrentPlayer(), "KU Alchemist", GameBoardController.getInstance().getCurrentPlayer().getName(),  String.format("Added ingredient %s", ingredient.getName()), 0);
+        gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Added ingredient %s", ingredient.getName()), 0);
     }
     
     public void addArtifact(ArtifactCard artifact) {
@@ -98,7 +98,7 @@ public class InventoryController {
         inventoryUI.update(String.format("NEW_ARTIFACT:%s", artifact.getName()));
 
         //GAMELOG LOGS SILENTLY TO SAVE GAME STATUS
-        //gameLog.recordLogSilent(GameBoardController.getInstance().getCurrentPlayer(), "KU Alchemist", GameBoardController.getInstance().getCurrentPlayer().getName(),  String.format("Added artifact card %s", artifact.getName()), 0);
+        gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Added artifact card %s", artifact.getName()), 0);
     }
 
     public void addPotion(Potion potion) {
@@ -106,7 +106,7 @@ public class InventoryController {
         inventoryUI.update(String.format("NEW_POTION:%s", potion.getStatus()));
 
         //GAMELOG LOGS SILENTLY TO SAVE GAME STATUS
-        //gameLog.recordLogSilent(GameBoardController.getInstance().getCurrentPlayer(), "KU Alchemist", GameBoardController.getInstance().getCurrentPlayer().getName(),  String.format("Added potion %s", potion.getStatus()), 0);
+        gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Added potion %s", potion.getStatus()), 0);
     }
 
     public void removeIngredient(IngredientCard ingredient) {
@@ -150,6 +150,35 @@ public class InventoryController {
             }
         }
     }
+
+    public void removeArtifact(ArtifactCard artifactCard) {
+        if (artifactCard.getEffect().equals("immediate")) {
+            artifactCards.remove(artifactCard);
+            inventoryUI.update(String.format("REMOVED_ARTIFACT_CARD:%s", artifactCard.getCardName()));
+
+        }
+        artifactCards.remove(artifactCard);
+        inventoryUI.update(String.format("REMOVED_ARTIFACT_CARD:%s", artifactCard.getCardName()));
+
+        //GAMELOG LOGS SILENTLY TO SAVE GAME STATUS
+        // do we get the current player with getPlayer()
+        gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Removed artifact %s", artifactCard.getName()), 0);
+    }
+
+    public void sendArtifactCard(String artifactName) {
+        for (ArtifactCard artifact: artifactCards){
+            if (artifact.getName().equals(artifactName)) {
+                    //GameBoardController.getInstance().getIngredientStorageController().useArtifact(artifact);
+                    artifact.performUseArtifact();
+                    removeArtifact(artifact);
+                break;
+            }
+        }
+        //gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Used artifact %s", artifactName), 0);
+
+    }
+
+
     /**********/
 
 }

@@ -38,6 +38,7 @@ public class IngredientStorageController implements Collector{
         this.ingredientStorageUI = observer;
     }
 
+
     
     public boolean hasIngToSell() {
     	return ingToSell != null;
@@ -86,7 +87,7 @@ public class IngredientStorageController implements Collector{
                     //GAME LOG RECORDS: When a player buys an artifact card.
                     gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
                     
-                    useArtifact(artifact);
+                
                     mediator.getPlayer().playedTurn();
                     
                 }
@@ -97,6 +98,44 @@ public class IngredientStorageController implements Collector{
         }
         catch (NullPointerException e) {
             ingredientStorageUI.update("UNAUTHORIZED_ACTION");
+        }
+
+    }
+
+    public void buyArtifact2(String cardName) {
+
+        if (mediator.getPlayer().getInventory().getGold() >= 3 && !artifactPile.isEmpty()) {
+            //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
+            if (cardName == null && ingredientStorageUI != null) {
+                ingredientStorageUI.update("EMPTY_PILE");
+
+
+
+
+
+            }
+            else {
+                ArtifactCard card = null;
+                for (ArtifactCard ac: artifactPile) {
+                    if (cardName.equals(ac.getCardName())) {
+                         card = ac;
+                    }
+                }
+                mediator.getPlayer().getInventory().updateGold(-3);
+                mediator.sendToPlayer(card);
+                if (ingredientStorageUI != null) {
+                    ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", card));
+                }
+
+
+                mediator.getPlayer().playedTurn();
+
+            }
+        }
+        else {
+            if (ingredientStorageUI != null) {
+                ingredientStorageUI.update("NOT_ENOUGH_GOLD");
+            }
         }
 
     }
@@ -133,8 +172,8 @@ public class IngredientStorageController implements Collector{
     }
     // since the phase I. stated that the Elixir of Insight card must be implemented, this method is only
     // being used to show the top 3 cards of the ingredient pile, later on other artifact cards will be implemented 
-    public void useArtifact(ArtifactCard card) {  
-        /* 
+    /*public void useArtifact(ArtifactCard card) {  
+        /
         if (card.getName().equals("Elixir of Insight")) {
             String cardNames = "";
             for (int i = 0; i < (ingredientPile.size() < 3? ingredientPile.size(): 3); i++) {
@@ -147,7 +186,11 @@ public class IngredientStorageController implements Collector{
 
         //GAME LOG RECORDS: When a player uses their artifact card
         gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "themselves",  String.format("%s is Used", card.getName()), 0);
-        */
+        
+    }*/
+
+    public Observer getIngredientStorageUI() {
+        return this.ingredientStorageUI;
     }
 
     @Override

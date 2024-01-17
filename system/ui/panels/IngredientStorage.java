@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,9 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifactPile;
     private JLabel lblIngToSell;
     private JButton transmuteIngBtn;
+    private JLabel lblArtifact;
+    private JPanel artifactPanel;
+    private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
     
     
     public IngredientStorage() {
@@ -58,6 +62,58 @@ public class IngredientStorage extends JPanel implements Observer {
         lblIngPile.setHorizontalAlignment(SwingConstants.CENTER);
         lblIngPile.setBounds(111, 117, 150, 160);
         add(lblIngPile);
+
+        lblArtifact = new JLabel("Artifacts:");
+        lblArtifact.setBounds(140, 500, 550, 90);
+        add(lblArtifact);
+        artifactPanel = new JPanel();
+        artifactPanel.setBounds(150, 550, 550, 90);
+        artifactPanel.setLayout(null);
+        add(artifactPanel);
+
+
+       artifactPanel.removeAll();
+       artifactPanel.revalidate();
+
+       int x = 6; // Initial X position
+       int y = 4; // Y position 
+       int labelWidth = 100; // Width of the label
+       int labelHeight = 60; // Height of the label
+       int buttonWidth = 100; // Width of the button
+       int buttonHeight = 20; // Height of the button
+       int spacingX = 110; // Horizontal spacing between items
+
+       for (int i = 0; i < artifacts.length; i++) {
+           String artifactName = artifacts[i];
+
+           // Calculating the X position for this iteration
+           int currentX = x + spacingX * i;
+
+
+           JLabel artifactLabel = new JLabel("<html>" + artifactName.replaceAll(" ", "<br>") + "</html>");
+           artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
+           artifactLabel.setOpaque(true);
+           artifactLabel.setBackground(new Color(117, 67, 108));
+           artifactLabel.setForeground(Color.WHITE);
+           artifactLabel.setBounds(currentX, y, labelWidth, labelHeight);
+           artifactPanel.add(artifactLabel);
+
+
+           JButton buyButton = new JButton("Buy");
+           buyButton.setBounds(currentX, y + labelHeight, buttonWidth, buttonHeight);
+           buyButton.addActionListener(new ActionListener() {
+               public void actionPerformed(ActionEvent e) {
+                   System.out.println("Buying artifact: " + artifactName);
+                   ingController.buyArtifact2(artifactName);
+               }
+           });
+           artifactPanel.add(buyButton);
+       }
+
+       artifactPanel.revalidate();
+       artifactPanel.repaint();
+
+        
         
         lblArtifactPile = new JLabel("Buy Artifact");
         lblArtifactPile.addMouseListener(new MouseAdapter() {
@@ -131,8 +187,29 @@ public class IngredientStorage extends JPanel implements Observer {
             showMessageDialog(String.format("You have drawn %s!", msg.split(":")[1]));
         }
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
-            showMessageDialog(String.format("You have drawn the elixir of insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
+            showMessageDialog(String.format("You have drawn the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
+
+        else if (msg.contains("MAGIC_MORTAR")) {
+            showMessageDialog(String.format("You have drawn the Magic Mortar card!"));
+
+        }
+
+        else if (msg.contains("DISCOUNT_CARD")) {
+            showMessageDialog(String.format("You have drawn the Discount card!"));
+
+        }
+
+        else if (msg.contains("PRINTING_PRESS")) {
+            showMessageDialog(String.format("You have drawn the Printing Press card!"));
+
+        }
+
+        else if (msg.contains("WISDOM_IDOL")) {
+            showMessageDialog(String.format("You have drawn the Wiadom Idol card!"));
+
+        }
+
         else if (msg.contains("NEW_INGREDIENT")) {
         	String[] ingName = msg.split(":")[1].split(" ");
         	lblIngToSell.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
@@ -150,9 +227,10 @@ public class IngredientStorage extends JPanel implements Observer {
     		lblIngToSell.setBackground(Color.LIGHT_GRAY);
             showMessageDialog(String.format("You have sold %s!", msg.split(":")[1]));
         }
-        else if (msg.contains("ARTIFACT_BOUGHT")) {
+        /*else if (msg.contains("ARTIFACT_BOUGHT")) {
+            System.out.println(msg);
             showMessageDialog(String.format("You have bought %s!", msg.split(":")[1]));
-        }
+        }*/
         else if (msg.contains("NOT_ENOUGH_GOLD")) {
             showMessageDialog("You do not have enough gold!");
         }

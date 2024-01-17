@@ -1,7 +1,9 @@
 package system.domain;
 
+import system.domain.interfaces.IUsingBehavior;
+import system.domain.util.LimitedArtifactBehavior;
+import system.domain.util.UnlimitedArtifactBehavior;
 
-import java.util.Map;
 public class ArtifactCard extends Cards{
 
     //ArtifactCard	card name : String
@@ -10,11 +12,19 @@ public class ArtifactCard extends Cards{
     private String name;
     private String effect;
     private String usage;
+    private IUsingBehavior usingBehavior;
 
     public ArtifactCard(String name, String effect, String usage) {
         super(name);
         this.name = name;
         this.effect = effect;
+        if (usage.equals("immediate")) {
+            usingBehavior = new LimitedArtifactBehavior();
+        }
+        else {
+            usingBehavior = new UnlimitedArtifactBehavior();
+        }
+    
     }
 
     public String getName() {
@@ -27,5 +37,14 @@ public class ArtifactCard extends Cards{
 
     public String getUsage() {
         return usage;
+    }
+
+    public IUsingBehavior getUsingBehavior() {
+        return this.usingBehavior;
+    }
+
+    public void performUseArtifact() {
+        usingBehavior.useArtifact(this);
+        
     }
 }
