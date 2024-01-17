@@ -18,6 +18,7 @@ public class ArtifactCard extends Cards{
         super(name);
         this.name = name;
         this.effect = effect;
+        this.usage = usage;
         if (usage.equals("immediate")) {
             usingBehavior = new LimitedArtifactBehavior();
         }

@@ -152,13 +152,13 @@ public class InventoryController {
     }
 
     public void removeArtifact(ArtifactCard artifactCard) {
-        if (artifactCard.getEffect().equals("immediate")) {
+        if (artifactCard.getUsage().equals("immediate")) {
             artifactCards.remove(artifactCard);
-            inventoryUI.update(String.format("REMOVED_ARTIFACT_CARD:%s", artifactCard.getCardName()));
+            inventoryUI.update(String.format("REMOVED_ARTIFACT_CARD:%s", artifactCard.getName()));
 
         }
-        artifactCards.remove(artifactCard);
-        inventoryUI.update(String.format("REMOVED_ARTIFACT_CARD:%s", artifactCard.getCardName()));
+        //artifactCards.remove(artifactCard);
+       // inventoryUI.update(String.format("REMOVED_ARTIFACT_CARD:%s", artifactCard.getCardName()));
 
         //GAMELOG LOGS SILENTLY TO SAVE GAME STATUS
         // do we get the current player with getPlayer()

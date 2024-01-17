@@ -117,7 +117,7 @@ public class IngredientStorageController implements Collector{
             else {
                 ArtifactCard card = null;
                 for (ArtifactCard ac: artifactPile) {
-                    if (cardName.equals(ac.getCardName())) {
+                    if (cardName.equals(ac.getName())) {
                          card = ac;
                     }
                 }
