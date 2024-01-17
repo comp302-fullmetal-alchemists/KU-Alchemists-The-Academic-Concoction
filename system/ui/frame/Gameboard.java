@@ -109,6 +109,7 @@ public class Gameboard extends JFrame implements Observer{
 		else if (msg.equals("AUTHENTICATION")) {
 			showAuthenticationPanel();
 		}
+		
 	}
 	
 	public void clear() {

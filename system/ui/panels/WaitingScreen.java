@@ -31,7 +31,7 @@ public class WaitingScreen extends JPanel{
         JLabel message = new JLabel("Waiting for host to start the game...");
         message.setFont(new Font("Lucida Grande", Font.PLAIN, 26));
         message.setForeground(new Color(255, 255, 255));
-        message.setBounds(326, 225, 438, 74);
+        message.setBounds(326, 230, 530, 74);
         backButton.setBounds(467,32,129,59);
         setLayout(null);
         add(message);

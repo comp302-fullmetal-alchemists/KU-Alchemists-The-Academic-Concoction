@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import system.domain.interfaces.Observer;
 import system.network.IClientAdapter;
 import system.network.IServerAdapter;
 import system.network.OfflineClient;
@@ -14,9 +15,12 @@ import system.network.OnlineServer;
 public class WelcomeController {
 
     private IServerAdapter server;
+    private int player_count = 0;
+    private Observer observer;
 
     public WelcomeController() {
         System.out.println(System.getProperty("os.name"));
+
     }
 
     public void offlineHostingMode(int numberOfPlayers) {
@@ -24,6 +28,9 @@ public class WelcomeController {
         server.setPlayerNumber(numberOfPlayers);
     }
 
+    public int getPlayerCount(){
+        return player_count;
+    }
     public void onlineHostingMode(int Port) {
         try {
             this.server = new OnlineServer(Port);
@@ -127,5 +134,11 @@ public class WelcomeController {
         }
         return null;
     }
+
+    public void incrementPlayerCount(){
+        player_count++;
+        observer.update("PLAYER_JOINED") ;
+    }
+    
 
 }
