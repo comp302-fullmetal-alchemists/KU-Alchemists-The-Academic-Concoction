@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 
 
 import system.domain.controllers.TheoryController;
-import system.domain.Theory;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.PublicationAreaController;
 import system.domain.interfaces.Observer;
