@@ -58,12 +58,12 @@ public class WelcomePagePanel extends JPanel { //class ismi değiştir
         onlineLabel.setFont(new Font("Telugu MN", Font.BOLD | Font.ITALIC, 30));
         add(onlineLabel);
 
-        JTextField port = new JTextField("Port: ",10);
+        JTextField port = new JTextField(10);
         port.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
         port.setBounds(211, 472, 250, 53);
         add(port);
 
-        JTextField ip = new JTextField("IP: ",10);
+        JTextField ip = new JTextField(10);
         ip.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
         ip.setBounds(211, 559, 250, 53);
         add(ip);
@@ -131,5 +131,17 @@ public class WelcomePagePanel extends JPanel { //class ismi değiştir
 		lblNewLabel_5.setFont(new Font("Telugu MN", Font.BOLD | Font.ITALIC, 21));
 		lblNewLabel_5.setBounds(122, 375, 623, 39);
 		add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("PORT:");
+		lblNewLabel_6.setForeground(new Color(255, 255, 255));
+		lblNewLabel_6.setFont(new Font("Telugu MN", Font.BOLD | Font.ITALIC, 16));
+		lblNewLabel_6.setBounds(142, 482, 85, 34);
+		add(lblNewLabel_6);
+		
+		JLabel lblNewLabel_6_1 = new JLabel("IP:");
+		lblNewLabel_6_1.setForeground(Color.WHITE);
+		lblNewLabel_6_1.setFont(new Font("Telugu MN", Font.BOLD | Font.ITALIC, 16));
+		lblNewLabel_6_1.setBounds(157, 569, 85, 34);
+		add(lblNewLabel_6_1);
     }
 }
