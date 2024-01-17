@@ -185,6 +185,6 @@ public class OfflineClient implements IClientAdapter {
             }
             
 
-//cfs da winner dw buraya al serverda çağır
 
+            
 }

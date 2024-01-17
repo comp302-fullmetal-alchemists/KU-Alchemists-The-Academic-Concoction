@@ -12,8 +12,10 @@ import javax.swing.JOptionPane;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import system.ui.panels.AuthenticationPanel;
+import system.ui.panels.EndGamePanel;
 import system.ui.panels.HelpScreenPanel;
 import system.ui.panels.OnlineGamePanel;
+import system.ui.panels.PlayerDashboard;
 import system.ui.panels.WaitingScreen;
 import system.ui.panels.WelcomePagePanel;
 
@@ -33,6 +35,9 @@ public class Gameboard extends JFrame implements Observer{
 	WelcomePagePanel welcomePage;
 	OnlineGamePanel onlinePanel;
 	WaitingScreen waitingScreen;
+	EndGamePanel endGamePanel;
+	PlayerContentPane playerContentPane;
+	GameContentPane gameContentPane;
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,6 +107,9 @@ public class Gameboard extends JFrame implements Observer{
 		else if (msg.equals("AUTHENTICATION")) {
 			showAuthenticationPanel();
 		}
+		else if(msg.equals("END_GAME")){
+			showEndGamePanel();
+		}
 	}
 	
 	public void clear() {
@@ -157,5 +165,15 @@ public class Gameboard extends JFrame implements Observer{
 		revalidate();
 		repaint();
 	}
+	public void showEndGamePanel() {
+		getContentPane().remove(playerContentPane);
+		getContentPane().remove(gameContentPane);
+		getContentPane().add(endGamePanel);
+		setVisible(true);
+		revalidate();
+		repaint();
+	}
+
+
 
 }

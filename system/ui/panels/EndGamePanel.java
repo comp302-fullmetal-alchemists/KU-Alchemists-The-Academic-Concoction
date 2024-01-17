@@ -28,7 +28,7 @@ public class EndGamePanel extends JPanel{
 
 		//Server will call to display this at the end, change text fields accordingly and make it prettier
 		
-	    JLabel playerLbl = new JLabel( "Player1 Score:");
+	    JLabel playerLbl = new JLabel( "Player1 Score:" );
 	    playerLbl.setForeground(Color.WHITE);
 	    playerLbl.setBounds(18, 98, 96, 16);
 	    add(playerLbl);

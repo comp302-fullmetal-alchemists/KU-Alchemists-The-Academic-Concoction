@@ -3,6 +3,7 @@ package system.network;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
+import system.domain.interfaces.Observer;
 import system.domain.util.ArtifactFactory;
 import system.domain.util.IngredientFactory;
 
@@ -20,6 +21,7 @@ public class OfflineServer implements IServerAdapter {
     private ArtifactFactory artifactFactory;
     private List<IngredientCard> ingPile;
     private List<ArtifactCard> artifactPile;
+    private Observer observer;
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
@@ -111,6 +113,8 @@ public class OfflineServer implements IServerAdapter {
             //offline clientstan winner() çağır
            for(OfflineClient c: clients){
                 c.winner();
+                observer.update("END_GAME");
+                
            }
             //display Game over screen 
             //announce game over call calculate Final score func.
