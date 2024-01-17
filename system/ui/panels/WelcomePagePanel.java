@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
 
-public class WelcomePagePanel extends JPanel { //class ismi değiştir
+public class WelcomePagePanel extends JPanel { 
  
     JButton startGameButton;
     JComboBox<Integer> numberOfPlayers;
@@ -26,7 +26,7 @@ public class WelcomePagePanel extends JPanel { //class ismi değiştir
 
 
     public WelcomePagePanel(Gameboard gameboard) {
-    	setBackground(new Color(58, 77, 108)); //isimleri değiştirdim tek
+    	setBackground(new Color(58, 77, 108)); 
         this.controller = GameBoardController.getInstance().getWelcomeController();
         setLayout(null);
         // Offline Section
