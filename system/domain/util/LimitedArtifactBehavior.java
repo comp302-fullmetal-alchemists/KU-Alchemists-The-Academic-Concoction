@@ -8,15 +8,21 @@ import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.IngredientStorageController;
+import system.domain.controllers.TheoryController;
+
 import system.domain.controllers.InventoryController;
 
 
 public class LimitedArtifactBehavior implements IUsingBehavior{
+
+    
+
     @Override
     public void useArtifact(ArtifactCard ac) {
-        IngredientStorageController ingredientStorage = GameBoardController.getInstance().getIngredientStorageController();
-
-        if (ac.getCardName().equals("Printing Press")) {
+       if (ac.getCardName().equals("Printing Press")) {
+        TheoryController theoryController =  GameBoardController.getInstance().getTheoryController();
+        System.out.println("Using artifact: Printing Press");
+        theoryController.printingPressButton();
 
        }
        
