@@ -3,6 +3,8 @@ import system.domain.Alchemy;
 import system.domain.Theory;
 import system.domain.interfaces.Observer;
 import system.domain.util.IngredientFactory;
+import system.domain.ArtifactCard;
+
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ public class TheoryController {
     private GameLogController gameLog;
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
     private String ingredient;
+    private Boolean printingPress = false;    
 
 
     public TheoryController() {
@@ -36,6 +39,11 @@ public class TheoryController {
         return ingredient;
     }
 
+    public void printingPressButton() {
+        printingPress = true;
+    }
+
+
     public void publishTheory(Alchemy alchemy) {
         
         if (ingredient == null) {
@@ -56,7 +64,21 @@ public class TheoryController {
         }
         //publish the theory
         else{
-            GameBoardController.getInstance().getPlayer().getInventory().updateGold(-1);
+
+            // check if the player has the Printing Press card in their inventory first
+            /*Boolean containsCard = false;
+            for (ArtifactCard ac : GameBoardController.getInstance().getPlayer().getInventory().getArtifactCards()) {
+                if (ac.getName().equals("Printing Press")) {
+                    containsCard = true;
+                }
+            }*/
+            if (printingPress) {
+                this.printingPress = false;
+            }
+            else if (!printingPress) {
+                GameBoardController.getInstance().getPlayer().getInventory().updateGold(-1);
+            }
+            //GameBoardController.getInstance().getPlayer().getInventory().updateGold(-1);
             Theory theory = new Theory(alchemy, ingredient, GameBoardController.getInstance().getPlayer());
             theories.add(theory);
             theoryUI.update("THEORY_PUBLISHED");
@@ -175,5 +197,7 @@ public class TheoryController {
     public void getTrueAlchemy() {
         
     }
+
+   
     
 }
