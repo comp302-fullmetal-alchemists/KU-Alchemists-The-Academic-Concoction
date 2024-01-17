@@ -19,10 +19,14 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
     @Override
     public void useArtifact(ArtifactCard ac) {
-       if (ac.getCardName().equals("Printing Press")) {
-        TheoryController theoryController =  GameBoardController.getInstance().getTheoryController();
-        System.out.println("Using artifact: Printing Press");
-        theoryController.printingPressButton();
+        
+        IngredientStorageController ingredientStorage = GameBoardController.getInstance().getIngredientStorageController();
+
+
+        if (ac.getCardName().equals("Printing Press")) {
+            TheoryController theoryController =  GameBoardController.getInstance().getTheoryController();
+            System.out.println("Using artifact: Printing Press");
+            theoryController.printingPressButton();
 
        }
        
