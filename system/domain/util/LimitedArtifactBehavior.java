@@ -35,7 +35,7 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
             IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
             inventoryController.addIngredient(lastIngredientCard);
 
-            ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard));
+            ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard.getCardName()));
 
        }
         else if (ac.getCardName().equals("Elixir of Insight")) {
