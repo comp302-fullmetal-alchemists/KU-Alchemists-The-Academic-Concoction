@@ -3,6 +3,7 @@ package system.ui.panels;
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.IngredientStorageController;
 import system.domain.ArtifactCard;
+import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 
@@ -34,7 +35,7 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifact;
     private JPanel artifactPanel;
     private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
-    
+
     
     public IngredientStorage() {
         super();
@@ -187,11 +188,11 @@ public class IngredientStorage extends JPanel implements Observer {
             showMessageDialog(String.format("You have drawn %s!", msg.split(":")[1]));
         }
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
-            showMessageDialog(String.format("You have drawn the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
+            showMessageDialog(String.format("You have used the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
 
         else if (msg.contains("MAGIC_MORTAR")) {
-            showMessageDialog(String.format("You have drawn the Magic Mortar card!"));
+            showMessageDialog(String.format("You have used the Magic Mortar card! You got the ingredient %s!", msg.split(":")[1]));
 
         }
 

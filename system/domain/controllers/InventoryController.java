@@ -35,6 +35,8 @@ public class InventoryController {
     private Observer inventoryUI;
     private Mediator mediator;
     private GameLogController gameLog;
+    private IngredientCard lastIngredientCard;
+
 
     public InventoryController() {
         this.gold = 10;
@@ -45,6 +47,11 @@ public class InventoryController {
         this.gameLog = GameBoardController.getInstance().getGameLog();
 
     }
+
+    public IngredientCard getLastIngredientCard() {
+        return lastIngredientCard;
+    }
+
 
     public void setObserver(Observer observer) {
         this.inventoryUI = observer;
@@ -110,6 +117,8 @@ public class InventoryController {
     }
 
     public void removeIngredient(IngredientCard ingredient) {
+        lastIngredientCard = ingredient;
+        System.out.printf("Last ing set to %s\n", lastIngredientCard.getCardName()); //TESTING DELETE LATER
         ingredientCards.remove(ingredient);
         inventoryUI.update(String.format("REMOVED_INGREDIENT:%s", ingredient.getName()));
 
@@ -168,9 +177,8 @@ public class InventoryController {
     public void sendArtifactCard(String artifactName) {
         for (ArtifactCard artifact: artifactCards){
             if (artifact.getName().equals(artifactName)) {
-                    //GameBoardController.getInstance().getIngredientStorageController().useArtifact(artifact);
-                    artifact.performUseArtifact();
-                    removeArtifact(artifact);
+                artifact.performUseArtifact();
+                removeArtifact(artifact);
                 break;
             }
         }

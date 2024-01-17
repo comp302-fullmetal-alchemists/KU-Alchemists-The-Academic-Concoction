@@ -1,5 +1,6 @@
 package system.ui.panels;
 
+import system.domain.IngredientCard;
 import system.domain.controllers.InventoryController;
 import system.domain.interfaces.Observer;
 
@@ -306,7 +307,7 @@ public class Inventory extends JPanel implements Observer {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     Inventory.this.invController.sendArtifactCard(artifactName);;
-                    
+                    System.out.printf("artifact Clicked: %s\n", artifactName); //Testing RM LATER
                 }
                 }); 
 
