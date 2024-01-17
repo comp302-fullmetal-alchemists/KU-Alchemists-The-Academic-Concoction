@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import system.domain.Alchemy;
+import system.domain.Theory;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
@@ -25,7 +27,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private static final String HOST = "127.0.0.1"; 
 
     public OnlineClient(String ip, int port) throws IOException {
-        this.socket = new Socket(ip, port);
+        this.socket = new Socket(HOST, port);
         this.fromServer = new DataInputStream(socket.getInputStream());
         this.toServer = new DataOutputStream(socket.getOutputStream());
         this.fromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -100,6 +102,15 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.contains("ingredient")) {
                     int index = Integer.parseInt(message.split(":")[1]);
                     takeIngredientIndex(index);
+                }
+                else if (message.contains("publish")) {
+                    addPublishTheory(message);
+                }
+                else if (message.contains("debunk")) {
+                    addDebunkTheory(message);
+                }
+                else if (message.contains("endorse")) {
+                    addEndorsedTheory(message);
                 }
 
             } catch (Exception e) {
@@ -211,4 +222,64 @@ public class OnlineClient extends Thread implements IClientAdapter {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
+    @Override
+    public void reportPuplishTheroryToServer(Theory a) {
+        //I need to find theory's alchmey's index and ingredient
+        try {
+            toServer.writeUTF("publish_theory:"+a.getAlchemy().toString()+":"+a.getIngredient()+":"+a.getOwner());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void reportDebunkTheoryToServer(Theory a) {
+        try {
+            toServer.writeUTF("debunk_theory:"+a.getAlchemy().toString()+":"+a.getIngredient()+":"+a.getOwner());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void reportEndorseTheoryToServer(Theory a) {
+        try {
+            toServer.writeUTF("endorse_theory:"+a.getIngredient() + a.getEndorser());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void addPublishTheory(String message) {
+        Alchemy alchemy = Alchemy.findAlchemy(message.split(":")[1]);
+        String ingredient = message.split(":")[2];
+        Theory theory = new Theory(alchemy, ingredient, message.split(":")[3]);
+        if (!GameBoardController.getInstance().getPlayer().getName().equals(message.split(":")[3])) {
+            GameBoardController.getInstance().getTheoryController().getTheories().add(theory);
+            GameBoardController.getInstance().getPublicationAreaController().serverUpdateUIForPublishedd(theory);
+        } 
+    }
+
+    private void addEndorsedTheory(String message) {
+        for (Theory theory : GameBoardController.getInstance().getTheoryController().getTheories()) {
+            if (theory.getIngredient() == message.split(":")[1] & !theory.getEndorser().equals(message.split(":")[2])) {
+                theory.endorsed(message.split(":")[2]);
+                GameBoardController.getInstance().getPublicationAreaController().serverUpdateUIForEndorsedd(theory);
+            }
+        }
+    }
+
+    private void addDebunkTheory(String message) {
+        for (Theory theory : GameBoardController.getInstance().getTheoryController().getTheories()) {
+            if (theory.getIngredient() == message.split(":")[1] & !theory.getOwner().equals(message.split(":")[3])) {
+                theory.setDebunked(true);
+                theory.setOwner(message.split(":")[3]);
+                theory.setAlchemy(Alchemy.findAlchemy(message.split(":")[2]));
+                GameBoardController.getInstance().getPublicationAreaController().serverUpdateUIForDebunkedd(theory);
+            }
+        }
+    }
 }

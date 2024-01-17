@@ -135,11 +135,22 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 else if (message.contains("request_ingredient")) {
                     requestIngredient();
                 }
+                else if (message.contains("publish")) {
+                    reportPublishTheoryToClients(message);
+                }
+                else if (message.contains("debunk")) {
+                    reportDebunkTheoryToClients(message);
+                }
+                else if (message.contains("endorse")) {
+                    reportEndorseTheoryToClients(message);
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+        
 
         public DataOutputStream getWriter() {
             return writer;
@@ -149,6 +160,47 @@ public class OnlineServer extends Thread implements IServerAdapter {
     @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = clients.size();
+    }
+
+    private void reportPublishTheoryToClients(String message) {
+        String[] messageParts = message.split(":");
+        String alchemy = messageParts[1];
+        String ingredient = messageParts[2];
+        String owner = messageParts[3];
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                clients.get(i).getWriter().writeUTF("publish:"+alchemy+":"+ingredient+":"+owner);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }                    
+    }
+
+    private void reportDebunkTheoryToClients(String message) {
+        String[] messageParts = message.split(":");
+        String alchemy = messageParts[1];
+        String ingredient = messageParts[2];
+        String owner = messageParts[3];
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                clients.get(i).getWriter().writeUTF("debunk:"+alchemy+":"+ingredient+":"+owner);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }                    
+    }
+
+    private void reportEndorseTheoryToClients(String message) {
+        String[] messageParts = message.split(":");
+        String ingredient = messageParts[2];
+        String endorser = messageParts[4];
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                clients.get(i).getWriter().writeUTF("endorse:"+ingredient+ ":" + endorser);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }                    
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import system.domain.IngredientCard;
+import system.domain.Theory;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
@@ -117,6 +118,27 @@ public class OfflineClient implements IClientAdapter {
     @Override
     public void takeIngredientIndex(int index) {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
+    }
+
+
+    @Override
+    public void reportPuplishTheroryToServer(Theory a) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reportPuplishTheroryToServer'");
+    }
+
+
+    @Override
+    public void reportDebunkTheoryToServer(Theory a) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reportDebunkTheoryToServer'");
+    }
+
+
+    @Override
+    public void reportEndorseTheoryToServer(Theory a) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reportEndorseTheoryToServer'");
     }
 
 }

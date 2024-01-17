@@ -183,6 +183,51 @@ public class TheoryBoard extends JPanel{
 		theoryController.setIngredient(null);
 		theoryBook = null;
 	}
+
+	public void setTheoryBook(String ingredient) {
+		switch (ingredient) {
+			case "Solaris Root":
+				theoryController.setIngredient("Solaris Root");
+				theoryBook = theoryBook1;
+				break;
+			case "Bat Wing":
+				theoryController.setIngredient("Bat Wing");
+				theoryBook = theoryBook2;
+				break;
+			case "Toad Stool":
+				theoryController.setIngredient("Toad Stool");
+				theoryBook = theoryBook3;
+				break;
+			case "Owl Feather":
+				theoryController.setIngredient("Owl Feather");
+				theoryBook = theoryBook4;
+				break;
+			case "Snake Venom":
+				theoryController.setIngredient("Snake Venom");
+				theoryBook = theoryBook5;
+				break;
+			case "Rat Tail":
+				theoryController.setIngredient("Rat Tail");
+				theoryBook = theoryBook6;
+				break;
+			case "Spider Web":
+				theoryController.setIngredient("Spider Web");
+				theoryBook = theoryBook7;
+				break;
+			case "Newt Eye":
+				theoryController.setIngredient("Newt Eye");
+				theoryBook = theoryBook8;
+				break;
+			default:
+				break;
+		}
+	}
+
+	public void serverCreateTheoryBook(String alchemy, String ingredient, String player) {
+		setTheoryBook(ingredient);
+		createTheoryBook(alchemy, player);
+		clear();
+	}
 	
 }
 

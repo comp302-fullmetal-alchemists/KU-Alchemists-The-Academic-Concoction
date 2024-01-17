@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 
 
 import system.domain.controllers.TheoryController;
+import system.domain.Theory;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.PublicationAreaController;
 import system.domain.interfaces.Observer;
@@ -232,10 +233,10 @@ public class PublicationArea extends JPanel implements Observer{
               JOptionPane.showMessageDialog(this, "Not enough gold");
         }
          else if (msg.contains("THEORY_PUBLISHED")) {
-              JOptionPane.showMessageDialog(this, "Theory published");
-              //create theory book
-              String alchemyName = String.format("Alchemy %d", publicationAreaController.getAlchemyIndex());
-              theoryBoard.createTheoryBook(alchemyName, GameBoardController.getInstance().getPlayer().getName());
+            JOptionPane.showMessageDialog(this, "Theory published");
+            //create theory book
+            String alchemyName = String.format("Alchemy %d", publicationAreaController.getAlchemyIndex());
+            theoryBoard.createTheoryBook(alchemyName, GameBoardController.getInstance().getPlayer().getName());
         }
         else if (msg.contains("THEORY_DEBUNKED")) {
             JOptionPane.showMessageDialog(this, "Theory debunked");
@@ -266,5 +267,16 @@ public class PublicationArea extends JPanel implements Observer{
             // add username of the player who endorsed the theory
             theoryBoard.addEndorsement(GameBoardController.getInstance().getPlayer().getName());
         }
+        else if (msg.contains("Server updated:publish")) {
+            theoryBoard.serverCreateTheoryBook( msg.split(",")[1],msg.split(",")[2], msg.split(",")[3]);
+        }
+        else if (msg.contains("Server updated: debunk")) {
+            theoryBoard.serverCreateTheoryBook( msg.split(",")[1],msg.split(",")[2], msg.split(",")[3]);
+        }
+        else if (msg.contains("Server updated: endorse")) {
+            theoryBoard.setTheoryBook(msg.split(",")[2]);
+            theoryBoard.addEndorsement(msg.split(",")[3]);
+        }
     }
+
 }
