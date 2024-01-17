@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.WelcomeController;
+import system.network.IClientAdapter;
 import system.ui.frame.Gameboard;
 import java.awt.Color;
 import java.awt.Font;
@@ -38,6 +39,12 @@ public class WaitingScreen extends JPanel{
 
         //if waiting screen called by when we click join game in the welcome page,we will put a text saying waiting for
         // host to start the game
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gameBoard.showWelcomePagePanel();
+                GameBoardController.getInstance().getClientAdapter().closeResources();
+            }
+        });
         this.add(backButton);
         
         JLabel lblNewLabel = new JLabel("Please wait while others join.");

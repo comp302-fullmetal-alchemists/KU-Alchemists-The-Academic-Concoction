@@ -119,4 +119,11 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
+
+    @Override
+    public void closeResources() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'closeResources'");
+    }
+
 }

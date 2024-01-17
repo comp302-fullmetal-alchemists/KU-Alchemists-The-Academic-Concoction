@@ -39,4 +39,6 @@ public interface IClientAdapter {
 
     void takeIngredientIndex(int index);
 
+    void closeResources();
+
 }

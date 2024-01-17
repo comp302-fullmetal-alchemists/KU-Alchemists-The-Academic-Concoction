@@ -139,6 +139,10 @@ public class WelcomeController {
         player_count++;
         observer.update("PLAYER_JOINED") ;
     }
+
+    public IServerAdapter getServer() {
+        return server;
+    }
     
 
 }

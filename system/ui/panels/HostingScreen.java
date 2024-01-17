@@ -35,7 +35,7 @@ public class HostingScreen extends JPanel {
         backButton.setBackground(new Color(204, 51, 204));
         this.controller = GameBoardController.getInstance().getWelcomeController();
         setLayout(null);
-        playerCount =1;
+        this.playerCount =1;
 
         //if waiting screen called by when we click host game in the welcome page,we will put a start gamebutton and
         // also a text saying waiting for other player to join
@@ -70,6 +70,13 @@ public class HostingScreen extends JPanel {
 		});
 
         this.add(startGameButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gameBoard.showWelcomePagePanel();
+                controller.getServer().stopServer();
+            }
+        });
         this.add(backButton);
         
         JLabel lblNewLabel_1 = new JLabel("Current number of players:");

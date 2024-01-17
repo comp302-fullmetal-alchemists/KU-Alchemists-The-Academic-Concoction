@@ -29,6 +29,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
     private List<String> usernames;
     private List<Integer> ingredientPile;
     private GameBoardController gameBoardController;
+    private volatile boolean running = true;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -43,8 +44,20 @@ public class OnlineServer extends Thread implements IServerAdapter {
         Collections.shuffle(ingredientPile);
     }
 
+    public void stopServer() {
+        running = false;
+        try {
+            for (ClientHandler client: clients) {
+                client.clientSocket.close();
+            }
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void run() {
-        while (true) {
+        while (running) {
             try {
                 if (clients.size() < MAX_CLIENTS) {
                     System.out.println("[SERVER] Waiting for clients on port " + serverSocket.getLocalPort() + "...");
@@ -56,9 +69,11 @@ public class OnlineServer extends Thread implements IServerAdapter {
                     clientExecutor.execute(clientHandler);
                 }
             } catch (IOException e) {
-                if (!serverSocket.isClosed()) {
-                    e.printStackTrace();
+                if (!running) {
+                    System.out.println("[SERVER] Server stopped.");
+                    break;
                 }
+                e.printStackTrace();
             }
         }
     }
