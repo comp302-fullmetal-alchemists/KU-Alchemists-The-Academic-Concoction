@@ -102,12 +102,15 @@ public class IngredientStorageController implements Collector{
     }
 
     public void drawIngredient() {
-        if (mediator.getPlayer() != null) {
-            GameBoardController.getInstance().getClientAdapter().requestIngredient();
+        try {
+            if (mediator.getPlayer() != null) {
+                GameBoardController.getInstance().getClientAdapter().requestIngredient();
+            }
         }
-        else {
+        catch (NullPointerException e) {
             ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
+        
     }
 
     public void emptyPileError() {

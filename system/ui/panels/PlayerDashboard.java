@@ -121,10 +121,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
         }
-        else if (msg.contains("CHAT")) {
-            appendToGameLog(msg);
-        }
-        else if (msg.contains("REPUTATION:")) {
+        else if (msg.contains("REPUTATION")) {
             lblReputation.setText("Reputation: " + player.getReputation());
         }
     }

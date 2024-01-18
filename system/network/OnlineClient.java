@@ -40,7 +40,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
             e.printStackTrace();
             System.out.println("Can't connect to the server");
             throw new RuntimeException("Can't connect to the server");
-            //GameBoardController.getInstance().showError("Can't connect to the server");
         }
     }
 
