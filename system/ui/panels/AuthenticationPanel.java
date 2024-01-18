@@ -157,9 +157,10 @@ public class AuthenticationPanel extends JPanel implements Observer {
 			public void actionPerformed(ActionEvent e) {
 				//get the username and token from the text fields and combo boxes
 	                String player1username = username1.getText();
-	                Icon player1token = (Icon) token1.getSelectedItem();
+					int tokenIndex = token1.getSelectedIndex() + 1;
+	                //Icon player1token = (Icon) token1.getSelectedItem();
 					//call the login method from the authentication controller
-	                authController.login(player1username, player1token);
+	                authController.login(player1username, tokenIndex);
 	            
 			}
 		});
@@ -177,6 +178,8 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		txtrAGameBy.setBounds(880, 695, 300, 32);
     	txtrAGameBy.setEditable(false);
 		add(txtrAGameBy);
+		//("/resources/token" + tokenIndex + ".png")
+		// "/resources/tokenWinner" + tokenIndex + ".png"
 	}
 
     //load images to the combobox   

@@ -39,14 +39,14 @@ public class AuthenticationController {
     */
 
     // This method is called by the UI when the user clicks the login button
-    public void login(String username, Icon token){
+    public void login(String username, int tokenIndex){
         //checks whether username is empty
         if (username.equals("")){
             authenticationUI.update("Please fill all the fields");
         }
 
         else if (checkUsername(username)){
-            Player player = new Player(username, token);
+            Player player = new Player(username, tokenIndex);
             players.add(player);
             GameBoardController.getInstance().registerPlayer(player);
             authenticationUI.update("VALID");

@@ -11,16 +11,16 @@ public class Player {
     private String name;
     private Boolean turn;
     private int turnsLeft;
-    private Icon token;
+    private int tokenIndex;
     private int reputationPoint;
     private int sicknessPoint;
     private InventoryController inventory;
     private Observer playerUI;
 
-    public Player(String name, Icon token) {
+    public Player(String name, int tokenIndex) {
         this.name = name;
         this.turn = false;
-        this.token = token;
+        this.tokenIndex = tokenIndex;
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
@@ -63,12 +63,12 @@ public class Player {
         }
     }
 
-	public void setToken(Icon token) {
-		this.token = token;
+	public void setToken(int tokenIndex) {
+		this.tokenIndex = tokenIndex;
 	}
     
-    public Icon getToken() {
-        return token;
+    public int getTokenIndex() {
+        return tokenIndex;
     }
 
     public int getReputation() {
