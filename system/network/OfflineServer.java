@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class OfflineServer implements IServerAdapter {
 
-    private int rounds = 0;
+    private int rounds = 2;
     private int playerNum = 3;
     private int currentClient = 0;
     private List<OfflineClient> clients;

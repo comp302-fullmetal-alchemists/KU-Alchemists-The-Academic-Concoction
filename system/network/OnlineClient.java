@@ -150,7 +150,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
 
     private void calculateMyScore() {
         Player p =  GameBoardController.getInstance().getPlayer();
-        String score = String.format("my_score:%s:%d", p.getName(), GameBoardController.getInstance().calculateFinalScore(p));
+        String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
         try {
             toServer.writeUTF(score);
         } catch (IOException e) {
