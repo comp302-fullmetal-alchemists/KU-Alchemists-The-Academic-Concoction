@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 import system.domain.controllers.GameBoardController;
@@ -45,6 +46,8 @@ public class Gameboard extends JFrame implements Observer{
 		setSize(1200, 800);
 		this.setResizable(false);
 		welcomePage = new WelcomePagePanel(this);
+		endGamePanel = new EndGamePanel();
+		endGamePanel.setBounds(0, 0, 1200, 800);
 		welcomePage.setBounds(0, 0, 1200, 800);
 		this.waitingScreen = new WaitingScreen(this);
 		waitingScreen.setBounds(0, 0, 1200, 800);
@@ -207,8 +210,10 @@ public class Gameboard extends JFrame implements Observer{
 		repaint();
 	}
 	public void showEndGamePanel() {
-		getContentPane().remove(playerContentPane);
-		getContentPane().remove(gameContentPane);
+		// atadığın fşelddan info çek
+		HashMap<String, Integer> populatedWinnerList = GameBoardController.getInstance().getWinnerList();
+		endGamePanel.updateWinnerList(populatedWinnerList);
+		getContentPane().removeAll();
 		getContentPane().add(endGamePanel);
 		setVisible(true);
 		revalidate();
