@@ -2,7 +2,6 @@ package system.domain.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import system.domain.ArtifactCard;
 import system.domain.Cards;
 import system.domain.GameAction;

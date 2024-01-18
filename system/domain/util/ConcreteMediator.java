@@ -59,30 +59,16 @@ public class ConcreteMediator implements Mediator {
     // or they dont hold some types of items at all
     @Override 
     public <T> boolean sendToCollector(T item) {
-        if (collector != null) {
+        if (collector != null && player != null) {
             return collector.collectItem(item);
         }
         return false;
     }
 
     @Override
-    public void updatePlayerGold(int updateAmount) {
-        player.getInventory().updateGold(updateAmount);
+    public Player getPlayer() {
+        if (player != null) return player;
+        throw new NullPointerException("Player is not connected to the mediator");
     }
 
-    @Override
-    public boolean playerGoldAtLeast(int threshold) {
-        return player.getInventory().getGold() >= threshold;
-    }
-
-    
-    @Override
-    public void playerPlayedTurn() {
-        player.playedTurn();
-    }
-    
-    @Override
-    public String getPlayerName() {
-    	return player.getName();
-    }
 }

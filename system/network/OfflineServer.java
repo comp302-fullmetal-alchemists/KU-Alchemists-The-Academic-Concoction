@@ -1,7 +1,7 @@
 package system.network;
 
 import system.domain.controllers.GameBoardController;
-import system.domain.controllers.Player;
+import system.domain.interfaces.Observer;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -9,85 +9,132 @@ import java.util.Collections;
 
 public class OfflineServer implements IServerAdapter {
 
-    private GameBoardState gbState;
-    private int playerNo = 3;
-    private int currPlayer = 0;
     private int rounds = 0;
-    private List<Player> players;
+    private int playerNum = 3;
+    private int currentClient = 0;
+    private List<OfflineClient> clients;
+    private List<Integer> ingredients;
+    private Observer observer;
 
     public OfflineServer() {
-        this.players = new ArrayList<Player>();
-        this.gbState = new GameBoardState();
+        this.clients = new ArrayList<OfflineClient>();
+        ingredients = new ArrayList<Integer>();
+        for (int i = 0; i < 24; i++) {
+            ingredients.add(i % 8);
+        }
+        Collections.shuffle(ingredients);
     }
 
-    // host decides the number of players
-    public void setNoPlayers(int playerNo) {
-        this.playerNo = playerNo;
+
+    // host decides the number of clients
+    @Override
+    public void setPlayerNumber(int playerNum) {
+        this.playerNum = playerNum;
+        acceptClients();
     }
 
+    public void acceptClients() {
+        /// in offline mode there is only one client (local computer)
+        clients.add(new OfflineClient(this));
+        GameBoardController.getInstance().setClientAdapter(clients.get(0));
+        clients.get(0).setPlayerNum(playerNum);
+        startAuthentication();
+    }
+
+    @Override
     public void startAuthentication() {
-        GameBoardController.getInstance().setServer(this);
-        GameBoardController.getInstance().startAuthentication();
+        clients.get(0).startAuthentication();
     }
 
-    // for checking in authentication
-    public boolean validateUserChoices(String username) {
-        for (Player p: players) {
-            if (p.getName().equals(username)) return false;
-        }
-        return true;
-    }
-
-    // after check, register the players
-    public void registerPlayer(Player p) {
-        players.add(p);
-        if (players.size() == playerNo) {
-            initializeGame();            
-        }
-        else {
-            GameBoardController.getInstance().startAuthentication();
-        }
-    }
-
+    @Override
     public void initializeGame() {
-        Collections.shuffle(players);
-        for (Player p: players) {
-            p.getInventory().initializeIngredients(gbState.getIngredientPile().remove(0), gbState.getIngredientPile().remove(0));
+        List<Integer> alchemyIndex = assignRandomAlchemy();
+        Collections.shuffle(clients);
+        for (OfflineClient client: clients) {
+            client.setAlchemyMap(alchemyIndex);
+            client.initialize();
         }
-
-        GameBoardController.getInstance().initializeTheBoard();
-        authorizePlayer();
+        authorizeClient();
     }
 
+    public List<Integer> assignRandomAlchemy() {
+        ArrayList<Integer> alchemyIndex = new ArrayList<Integer>();
+        for (int i = 0; i < 8; i++) {
+            alchemyIndex.add(i);
+        }
+        Collections.shuffle(alchemyIndex);
+        return alchemyIndex;
+    }
+
+
+    @Override
     public void changePlayer() {
         //first remove the old player
-        deauthorizePlayer();
+        deauthorizeClient();
         //then find new player, change round number if needed
-        setNextPlayer();
+        setNextClient();
         //finally, give permission to new player
-        authorizePlayer();
+        authorizeClient();
     }
 
-
-    public void deauthorizePlayer() {
+    @Override
+    public void deauthorizeClient() {
         //remove players connection to mediator.
-        players.get(currPlayer).changeTurn();
-        GameBoardController.getInstance().deauthorizePlayer();        
+        clients.get(currentClient).deauthorize();    
     }
 
-    public void authorizePlayer() {
-        GameBoardController.getInstance().setPlayer(players.get(currPlayer));
-        players.get(currPlayer).changeTurn();
-        GameBoardController.getInstance().authorizePlayer();
+    
+    @Override
+    public void authorizeClient() {
+        clients.get(currentClient).authorize();
     }
 
-    public void setNextPlayer() {
-        currPlayer += 1;
-        if (currPlayer == playerNo) {
+    @Override
+    public void newRound() {
+        if(rounds <= 3){
+            currentClient = 0;
             rounds += 1;
-            currPlayer = 0;
-            // if round is 3 finish the game.
+        }
+        else{
+            //offline clientstan winner() çağır
+           for(OfflineClient c: clients){
+                c.winner();
+                observer.update("END_GAME");
+                
+           }
+            //display Game over screen 
+            //announce game over call calculate Final score func.
+        }
+        
+        //if round is 3 call a function to finish game
+        if (rounds == 3) {
+            //endgame
         }
     }
+
+    @Override
+    public void setNextClient() {
+        clients.get(currentClient).changePlayer();
+    }
+
+    @Override 
+    public void requestIngredient() {
+        if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
+        else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
+    }
+
+
+    @Override
+    public void stopServer() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stopServer'");
+    }
+
+    @Override
+    public Integer getClientSize() {
+        return clients.size();
+    }
+
+
 
 }

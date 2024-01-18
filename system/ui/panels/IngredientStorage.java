@@ -156,5 +156,8 @@ public class IngredientStorage extends JPanel implements Observer {
         else if (msg.contains("NOT_ENOUGH_GOLD")) {
             showMessageDialog("You do not have enough gold!");
         }
+        else if (msg.contains("UNAUTHORIZED_ACTION")) {
+            showMessageDialog("You cannot perform action! Wait for your turn!");
+        }
     }
 }

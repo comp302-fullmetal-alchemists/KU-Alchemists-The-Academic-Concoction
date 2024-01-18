@@ -53,11 +53,11 @@ public class PotionBrewingAreaController implements Collector{
             potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
 
             //GAMELOG RECORDS LOG: When a player brews a potion
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), GameBoardController.getInstance().getCurrentPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
+            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
         
             ing1 = null;
             ing2 = null;
-            mediator.playerPlayedTurn();
+            mediator.getPlayer().playedTurn();
         }
         else {
             potionBrewingUI.update("ABSENT_INGREDIENTS");
@@ -107,6 +107,10 @@ public class PotionBrewingAreaController implements Collector{
     
 
     public void sellPotion(){
+        if (mediator.getPlayer().getRound() == 1) {
+            potionBrewingUI.update("NO_SELL_FIRST_ROUND");
+            return;
+        }
         if(potionToSell != null){//If there is a potion to sell
             if (potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("+")){ //if its positive give 3 golds
                 offer = 3;
@@ -119,15 +123,15 @@ public class PotionBrewingAreaController implements Collector{
             }
 
 			//GAMELOG RECORDS LOG: When a potion is sold
-            gameLog.recordLog(GameBoardController.getInstance().getCurrentPlayer(), mediator.getPlayerName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
+            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Adventurer", String.format("Sold potion %s", potionToSell.getStatus()), 0);
         
-            mediator.updatePlayerGold(offer);
+            mediator.getPlayer().getInventory().updateGold(offer);
             potionToSell = null;//this makes sure the potion is removed from inventory
             potionBrewingUI.update(String.format("SOLD_POTION:%d", offer));//send a message to the UI so its updated
 
 
 
-            mediator.playerPlayedTurn();
+            mediator.getPlayer().playedTurn();
         }
         else{ //If there is no potions to sell
             potionBrewingUI.update("ABSENT_POTION");//tell the UI so it gives the appropriate message
