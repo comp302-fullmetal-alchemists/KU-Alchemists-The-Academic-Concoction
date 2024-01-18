@@ -140,6 +140,9 @@ public class Gameboard extends JFrame implements Observer{
 		else if(msg.equals("END_GAME")){
 			showEndGamePanel();
 		}
+		else if (msg.equals("Can't connect to the server")) {
+			JOptionPane.showMessageDialog(this, "Can't connect to the server");
+		}
 	}
 	
 	public void clear() {

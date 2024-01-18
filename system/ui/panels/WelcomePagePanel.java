@@ -3,17 +3,20 @@ package system.ui.panels;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.WelcomeController;
+import system.domain.interfaces.Observer;
 import system.ui.frame.Gameboard;
 import system.network.*;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.Font;
 
 public class WelcomePagePanel extends JPanel { //class ismi değiştir
@@ -88,10 +91,14 @@ public class WelcomePagePanel extends JPanel { //class ismi değiştir
         joinGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameboard.showWaitingScreen();
-                Integer portno= Integer.parseInt(port.getText());
-                controller.onlineJoiningMode(ip.getText(),portno);
+                try {
+                    Integer portno= Integer.parseInt(port.getText());
+                    controller.onlineJoiningMode(ip.getText(),portno);
+                    gameboard.showWaitingScreen();
+                } catch (Exception e1) {
+                    JOptionPane.showMessageDialog(null, "Server did not respond. Please try again.");
             }
+        }
         });
         add(joinGameButton);
         
@@ -144,4 +151,5 @@ public class WelcomePagePanel extends JPanel { //class ismi değiştir
 		lblNewLabel_6_1.setBounds(157, 569, 85, 34);
 		add(lblNewLabel_6_1);
     }
+
 }

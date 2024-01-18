@@ -97,11 +97,6 @@ public class OfflineServer implements IServerAdapter {
         }
         else{
             //offline clientstan winner() çağır
-           for(OfflineClient c: clients){
-                c.winner();
-                observer.update("END_GAME");
-                
-           }
             //display Game over screen 
             //announce game over call calculate Final score func.
         }

@@ -15,7 +15,6 @@ import system.network.OnlineServer;
 public class WelcomeController {
 
     private IServerAdapter server;
-    private Observer observer;
 
     public WelcomeController() {
         System.out.println(System.getProperty("os.name"));
@@ -48,9 +47,12 @@ public class WelcomeController {
             GameBoardController.getInstance().setClientAdapter(client);
             Thread clientThread = new Thread((Runnable) client);
             clientThread.start();
-        } catch (IOException e) { 
-            e.printStackTrace();
         }
+        catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        
     }
 
     public void authentication() {
@@ -134,6 +136,7 @@ public class WelcomeController {
     public IServerAdapter getServer() {
         return server;
     }
+
     
 
 }

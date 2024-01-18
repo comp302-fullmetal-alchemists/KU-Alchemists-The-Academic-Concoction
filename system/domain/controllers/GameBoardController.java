@@ -240,4 +240,9 @@ public class GameBoardController {
         return winnerList;
     }
 
+    public void showError(String string) {
+        // TODO Auto-generated method stub
+        gameboardUI.update(string);
+    }
+
 }

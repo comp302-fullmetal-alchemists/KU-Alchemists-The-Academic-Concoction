@@ -353,7 +353,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
     @Override
     public void newRound() {
         currentClient = 0;
-        rounds += 3;//DEĞİTİR
+        rounds += 1;
         if (rounds == 3) {
             for (ClientHandler client: clients) {
                 try {

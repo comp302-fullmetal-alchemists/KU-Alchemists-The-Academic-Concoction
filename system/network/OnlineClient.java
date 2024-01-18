@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import system.domain.Alchemy;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
@@ -23,15 +25,23 @@ public class OnlineClient extends Thread implements IClientAdapter {
     
     private static final String LOCALHOST = "127.0.0.1"; 
 
-    public OnlineClient(String ip, int port) throws IOException {
+    public OnlineClient(String ip, int port) {
         this.gamelog = GameBoardController.getInstance().getGameLog();
         if (ip.equals("")) {
             ip = LOCALHOST;
         }
-        this.socket = new Socket(ip, port);
-        this.fromServer = new DataInputStream(socket.getInputStream());
-        this.toServer = new DataOutputStream(socket.getOutputStream());
-        System.out.println("[CLIENT] Connected to server on port " + port);
+        try {
+            this.socket = new Socket(ip, port);
+            this.fromServer = new DataInputStream(socket.getInputStream());
+            this.toServer = new DataOutputStream(socket.getOutputStream());
+            System.out.println("[CLIENT] Connected to server on port " + port);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("Can't connect to the server");
+            throw new RuntimeException("Can't connect to the server");
+            //GameBoardController.getInstance().showError("Can't connect to the server");
+        }
     }
 
     public void run() {
