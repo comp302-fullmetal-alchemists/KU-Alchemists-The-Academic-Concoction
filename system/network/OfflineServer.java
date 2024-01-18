@@ -86,24 +86,17 @@ public class OfflineServer implements IServerAdapter {
     
     @Override
     public void authorizeClient() {
-        clients.get(currentClient).authorize();
+        if (rounds < 3) clients.get(currentClient).authorize();
     }
 
     @Override
     public void newRound() {
-        if(rounds <= 3){
-            currentClient = 0;
-            rounds += 1;
-        }
-        else{
-            //offline clientstan winner() çağır
-            //display Game over screen 
-            //announce game over call calculate Final score func.
-        }
+        currentClient = 0;
+        rounds += 1;
         
-        //if round is 3 call a function to finish game
         if (rounds == 3) {
-            //endgame
+            clients.get(0).endGame();
+
         }
     }
 

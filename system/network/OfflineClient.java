@@ -1,5 +1,6 @@
 package system.network;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -180,6 +181,41 @@ public class OfflineClient implements IClientAdapter {
     @Override
     public void reportExitGameToServer() {
         System.exit(0);
+    }
+
+
+    @Override
+    public void send(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'send'");
+    }
+
+    public void endGame() {
+        System.out.println("adsgfdhfjgj");
+        List<String> scoreList = new ArrayList<String>();
+        for (Player p: players) {
+            String score = String.format("my_score:%s:%d", p.getName(), GameBoardController.getInstance().calculateFinalScore(p));
+            scoreList.add(score);
+        }
+        Collections.sort(scoreList, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String[] score1 = s1.split(":");
+                String[] score2 = s2.split(":");
+
+                // Convert score[2] to integer for comparison
+                int score1Int = Integer.parseInt(score1[2]);
+                int score2Int = Integer.parseInt(score2[2]);
+
+                // For descending order
+                return Integer.compare(score2Int, score1Int);
+            }
+        });
+        String message = "show_endgame_screen";
+        for (String score: scoreList) {
+            message += ":" + score ;
+        }
+        GameBoardController.getInstance().showEndgameScreen(message);
     }
     
 }

@@ -46,6 +46,12 @@ public class Player {
         }
     }
 
+    public void appendToChatLog(String text) {
+        if (playerUI != null) {
+            playerUI.update(text);
+        }
+    }
+
     public void setName(String name) {
 		this.name = name;
 	}

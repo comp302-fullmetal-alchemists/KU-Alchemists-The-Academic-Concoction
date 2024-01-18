@@ -132,6 +132,9 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.contains("show_endgame_screen")) {
                     showEndgameScreen(message);
                 }
+                else if (message.contains("CHAT:")) {
+                    gamelog.recordchat(message);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -146,7 +149,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private void calculateMyScore() {
         Player p =  GameBoardController.getInstance().getPlayer();
         String score = String.format("my_score:%s:%d", p.getName(), GameBoardController.getInstance().calculateFinalScore(p));
-        System.out.println(score);
         try {
             toServer.writeUTF(score);
         } catch (IOException e) {
@@ -341,6 +343,16 @@ public class OnlineClient extends Thread implements IClientAdapter {
         try {
             toServer.writeUTF("exit_game");
         } catch (IOException e) {
+        }
+    }
+
+    @Override
+    public void send(String msg) {
+        try {
+            toServer.writeUTF(msg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }

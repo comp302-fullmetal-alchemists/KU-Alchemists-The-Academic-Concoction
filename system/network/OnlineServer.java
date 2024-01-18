@@ -178,7 +178,11 @@ public class OnlineServer extends Thread implements IServerAdapter {
                     scoreList.add(message);
                     if (scoreList.size() == clients.size()) {
                         showEndgameScreen();
-                        System.out.println("[SERVER] All scores reported.");
+                    }
+                }
+                else if (message.contains("CHAT:")) {
+                    for (ClientHandler client: clients) {
+                        client.getWriter().writeUTF(message);
                     }
                 }
                 

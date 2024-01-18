@@ -1,15 +1,19 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
+import system.ui.frame.Gameboard;
 import system.domain.IngredientCard;
+import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Font;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.Color;
 
 import javax.swing.JLabel;
@@ -21,6 +25,7 @@ public class PlayerDashboard extends JPanel implements Observer {
     private JLabel playerLabel;
     private JTextArea gameLogDisplayText;
     private JScrollPane gameLogDisplay;
+    private JTextField userInputField;
     private JLabel lblReputation;
     private JLabel lblSickness;
 
@@ -60,7 +65,23 @@ public class PlayerDashboard extends JPanel implements Observer {
         lblInventory.setBounds(22, 50, 88, 13);
         add(lblInventory);
         
-        //Scrollable GameLog inside players dashboard
+        //USER IN TEXT GİRDİĞİ YER
+        userInputField = new JTextField("write message");
+        userInputField.setBounds(22, 466, 88, 25); // Adjust the position and size as needed
+        userInputField.setFont(new Font("Arial", Font.PLAIN, 20));
+        userInputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Get the user's input;
+                    String userInput = userInputField.getText();
+                    String message = player.getName() + ": " + userInput + "\n";
+                    GameBoardController.getInstance().getClientAdapter().send("CHAT:" + message);
+                }
+            }
+        });
+        add(userInputField);
+
         gameLogDisplayInit();
         add(gameLogDisplay);
         
@@ -95,6 +116,9 @@ public class PlayerDashboard extends JPanel implements Observer {
     public void update(String msg) {//Observer messager
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
+        }
+        else if (msg.contains("CHAT")) {
+            appendToGameLog(msg);
         }
         else if (msg.contains("REPUTATION:")) {
             lblReputation.setText("Reputation: " + player.getReputation());
