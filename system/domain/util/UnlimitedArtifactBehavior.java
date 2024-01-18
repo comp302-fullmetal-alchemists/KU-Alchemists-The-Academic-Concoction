@@ -7,10 +7,7 @@ import system.domain.controllers.*;
 public class UnlimitedArtifactBehavior implements IUsingBehavior{
     @Override
     public void useArtifact(ArtifactCard ac) {
-       if (ac.getCardName().equals("Wisdom Idol")) {
-        
-       }
-       else if (ac.getCardName().equals("Discount Card")) {
+        if (ac.getCardName().equals("Discount Card")) {
 
         IngredientStorageController ingController = GameBoardController.getInstance().getIngredientStorageController();
         InventoryController invController = GameBoardController.getInstance().getPlayer().getInventory();

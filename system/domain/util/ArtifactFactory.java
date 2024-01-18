@@ -17,7 +17,7 @@ public class ArtifactFactory {
     "Wisdom Idol help you to keep/increase your reputation points. You may choose to use this artifact card whenever another player wants to debunk your theory. Using this artifact, you do not not lose any reputation points even if your theory has been proven to be wrong. If you choose to keep this artifact until the end of the game, you gain an additional 1 reputation point."
 
 };
-    private String[] usages = {"immediate","immediate", "permanent", "immediate", "permanent" };
+    private String[] usages = {"immediate","immediate", "permanent", "immediate", "immediate" };
     
     public ArtifactFactory() {}
     

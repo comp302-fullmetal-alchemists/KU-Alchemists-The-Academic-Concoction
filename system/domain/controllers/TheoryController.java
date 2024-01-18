@@ -161,6 +161,11 @@ public class TheoryController {
                     theory.setAlchemy(alchemy);
                     theory.setOwner(GameBoardController.getInstance().getPlayer());
                     theory.setDebunked(true);
+
+                    if (GameBoardController.getInstance().getPlayer().getInventory()) {
+                        GameBoardController.getInstance().getPlayer().getInventory().updateGold(2);
+
+                    }
                     GameBoardController.getInstance().getPlayer().getInventory().updateGold(2);
 
 

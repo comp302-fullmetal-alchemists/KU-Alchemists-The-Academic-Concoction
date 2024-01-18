@@ -46,6 +46,13 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
             
             ingredientStorage.getIngredientStorageUI().update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
        }
+
+        else if (ac.getCardName().equals("Wisdom Idol")) {
+            inventoryController.wisdomIdolButton();
+            ingredientStorage.getIngredientStorageUI().update(String.format("WISDOM_IDOL"));
+
+        
+        }
         
     }
     

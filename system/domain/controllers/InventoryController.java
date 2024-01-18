@@ -38,6 +38,7 @@ public class InventoryController {
     private IngredientCard lastIngredientCard;
     private int discountCard = -1;
     private boolean printingPress = false;
+    private boolean wisdomIdol = false;
 
 
     public InventoryController() {
@@ -72,8 +73,17 @@ public class InventoryController {
     public void setPrintingPress(boolean state) {
         this.printingPress = state;
     }
+    
+    public boolean getWisdomIdol() {
+        return wisdomIdol;
+    }
+    public void wisdomIdolButton() {
+        wisdomIdol = true;
+    }
 
-
+    public void setWisdomIdol(boolean state) {
+        this.wisdomIdol = state;
+    }
 
     public void setObserver(Observer observer) {
         this.inventoryUI = observer;
