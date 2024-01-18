@@ -67,5 +67,20 @@ public class PublicationAreaController {
             GameBoardController.getInstance().getTheoryController().debunkTheory(alchemy);
         }
     }
+
+    public void serverUpdateUIForPublishedd(Theory theory) {
+        String alchemyName = String.format("Alchemy %d", theory.getAlchemy().findAlchemyIndex(theory.getAlchemy().toString()));
+        publicationAreaUI.update("Server updated:publish," + alchemyName +","+ theory.getIngredient() +","+ theory.getOwner());
+    }
+
+    public void serverUpdateUIForEndorsedd(Theory theory) {
+        String alchemyName = String.format("Alchemy %d", theory.getAlchemy().findAlchemyIndex(theory.getAlchemy().toString()));
+        publicationAreaUI.update("Server updated:endorse," + alchemyName +","+ theory.getIngredient() +","+ theory.getOwner() +","+ theory.getEndorser());
+    }
+
+    public void serverUpdateUIForDebunkedd(Theory theory) {
+        String alchemyName = String.format("Alchemy %d", theory.getAlchemy().findAlchemyIndex(theory.getAlchemy().toString()));
+        publicationAreaUI.update("Server updated:debunk," + alchemyName +","+ theory.getIngredient() +","+ theory.getOwner());
+    }
          
 }

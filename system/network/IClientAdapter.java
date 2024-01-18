@@ -1,7 +1,9 @@
 package system.network;
 
+import system.domain.Alchemy;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
+import system.domain.Theory;
 import system.domain.controllers.Player;
 
 import java.util.List;
@@ -38,5 +40,11 @@ public interface IClientAdapter {
     void emptyPile();
 
     void takeIngredientIndex(int index);
+
+    void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName);
+
+    void reportEndorseTheoryToServer(String ingredient, String playerName, String ownerName);
+
+    void reportDebunkTheoryToServer(Alchemy alchemy, String ingredient, String playerName, String ownerName);
 
 }

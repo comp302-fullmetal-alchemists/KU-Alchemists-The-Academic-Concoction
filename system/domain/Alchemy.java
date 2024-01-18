@@ -73,6 +73,24 @@ public class Alchemy {
     public boolean equals(Alchemy alch) {
         return this.toString().equals(alch.toString());
     }
+
+    public static Alchemy findAlchemy(String alchemy) {
+        for (int i = 0; i < 8; i++) {
+            if (alchemy.equals(Alchemy.getAlchemy(i).toString())) {
+                return Alchemy.getAlchemy(i);
+            }
+        }
+        return null;
+    }
+
+    public Integer findAlchemyIndex(String alchemy) {
+        for (int i = 0; i < 8; i++) {
+            if (alchemy.equals(Alchemy.getAlchemy(i).toString())) {
+                return i + 1;
+            }
+        }
+        return -1;
+    }
 }
 
 

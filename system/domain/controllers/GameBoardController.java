@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Observer;
+import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
 import system.network.IClientAdapter;
@@ -80,6 +81,7 @@ public class GameBoardController {
     public void endPlayerTurn() {
         clientAdapter.endPlayerTurn();
     }
+
 
     public Player getPlayer() {
         return player;
