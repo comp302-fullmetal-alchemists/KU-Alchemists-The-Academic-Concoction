@@ -66,9 +66,7 @@ public class InventoryController {
     public boolean getPrintingPress() {
         return printingPress;
     }
-    public void printingPressButton() {
-        printingPress = true;
-    }
+    
 
     public void setPrintingPress(boolean state) {
         this.printingPress = state;
@@ -77,9 +75,7 @@ public class InventoryController {
     public boolean getWisdomIdol() {
         return wisdomIdol;
     }
-    public void wisdomIdolButton() {
-        wisdomIdol = true;
-    }
+    
 
     public void setWisdomIdol(boolean state) {
         this.wisdomIdol = state;

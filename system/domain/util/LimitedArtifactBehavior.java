@@ -26,7 +26,7 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
         if (ac.getCardName().equals("Printing Press")) {
 
-            inventoryController.printingPressButton();
+            inventoryController.setPrintingPress(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("PRINTING_PRESS"));
 
        }
@@ -48,7 +48,7 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
        }
 
         else if (ac.getCardName().equals("Wisdom Idol")) {
-            inventoryController.wisdomIdolButton();
+            inventoryController.setWisdomIdol(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("WISDOM_IDOL"));
 
         
