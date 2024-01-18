@@ -10,8 +10,8 @@ public class Potion {
 
 
     public Potion(IngredientCard ing1, IngredientCard ing2) {
-        Alchemy alch1 = GameBoardController.getInstance().getAlchemyMap().get(ing1.getName());
-        Alchemy alch2 = GameBoardController.getInstance().getAlchemyMap().get(ing2.getName());
+        Alchemy alch1 = ing1.getAlchemy();
+        Alchemy alch2 = ing2.getAlchemy();
         this.status = Alchemy.combine(alch1, alch2);
     }
 

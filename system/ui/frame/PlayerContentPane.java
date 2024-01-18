@@ -6,26 +6,31 @@ import system.ui.panels.*;
 import javax.swing.JPanel;
 
 import java.awt.CardLayout;
+import java.util.List;
+import java.util.ArrayList;
 
 public class PlayerContentPane extends JPanel {
     
     private CardLayout cards;
-    private PlayerDashboard player1;
-    private PlayerDashboard player2;
-
+    private List<String> playerNames;
+    
     // this should take player objects in the initialization and create dashboards here in itself
-    public PlayerContentPane(Player p1, Player p2) { 
+    public PlayerContentPane() { 
         super();
         this.cards = new CardLayout();
         setLayout(cards);
-        player1 = new PlayerDashboard(p1);
-        player2 = new PlayerDashboard(p2);
-        add(player1, p1.getName());
-        add(player2, p2.getName());
+        playerNames = new ArrayList<String>();
     }
 
-    public void changeView(String cardName) {
-        cards.show(this, cardName);
+    public void addPlayerDashboard(Player player) {
+        if (!playerNames.contains(player.getName())) {
+            PlayerDashboard playerDB = new PlayerDashboard(player);
+            add(playerDB, player.getName());
+        }
+    }
+
+    public void changeView(String playerName) {
+        cards.show(this, playerName);
     }
 
 }

@@ -213,6 +213,13 @@ public class Inventory extends JPanel implements Observer {
         potionPanel.setLayout(null);
         add(potionPanel);
         
+
+        initializeIng();
+    }
+
+    public void initializeIng() {
+        addIngredientToInventory(invController.getIngredientCards().get(0).getName());
+        addIngredientToInventory(invController.getIngredientCards().get(1).getName());
     }
     
     public void updateGold() {

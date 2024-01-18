@@ -13,6 +13,8 @@ import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import system.ui.panels.AuthenticationPanel;
 import system.ui.panels.HelpScreenPanel;
+import system.ui.panels.OnlineGamePanel;
+import system.ui.panels.WelcomePagePanel;
 
 import javax.swing.JMenuBar;
 import java.awt.event.ActionListener;
@@ -26,21 +28,9 @@ public class Gameboard extends JFrame implements Observer{
     PlayerContentPane playerPane;
     GameContentPane gamePane;
     GameBoardController gameController;
-	private HelpScreenPanel helpScreen;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Gameboard frame = new Gameboard();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	HelpScreenPanel helpScreen;
+	WelcomePagePanel welcomePage;
+	OnlineGamePanel onlinePanel;
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,12 +38,18 @@ public class Gameboard extends JFrame implements Observer{
 		this.gameController = GameBoardController.getInstance();
 		gameController.setObserver(this);
 		this.authPanel = new AuthenticationPanel();
-		authPanel.setBounds(600, 153, 0, 0);
-		getContentPane().add(authPanel);
-		authPanel.setLayout(null);
 		setSize(1200, 800);
 		this.setResizable(false);
+		welcomePage = new WelcomePagePanel(this);
+		welcomePage.setBounds(0, 0, 1200, 800);
 		setVisible(true);
+		setResizable(false);
+		this.onlinePanel = new OnlineGamePanel(this);
+		welcomePage.setBounds(0, 0, 1200, 800);
+		welcomePage.setBounds(0, 0, 1200, 800);
+		setVisible(true);
+		setResizable(false);
+		getContentPane().add(welcomePage);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.helpScreen = new HelpScreenPanel(); // Help screen panel object
 	
@@ -85,15 +81,7 @@ public class Gameboard extends JFrame implements Observer{
 		});
 		menuBar.add(pauseButton);
 		validate();
-
-		GameBoardController.getInstance().setNoPlayers(JOptionPane.showOptionDialog(this, 
-				"Please select the number of players", 
-				"Number of Players", 
-				JOptionPane.YES_NO_CANCEL_OPTION, 
-				JOptionPane.QUESTION_MESSAGE, 
-				null, 
-				new String[] {"2", "3", "4"}, 
-				"2") + 2);
+		repaint();
 	}
 
 	@Override
@@ -102,36 +90,69 @@ public class Gameboard extends JFrame implements Observer{
 		if (msg.equals("INITIALIZE_BOARD")) {
             initializeTheBoard();
         }
-		else if (msg.equals("CHANGING_PLAYER")) {
+		else if (msg.equals("DEAUTHORIZATION")) {
 			clear();
 		}
-        else if (msg.equals("CHANGED_PLAYER")) {
+        else if (msg.equals("AUTHORIZATION")) {
             changePlayer();
         }
+		else if (msg.equals("AUTHENTICATION")) {
+			showAuthenticationPanel();
+		}
 	}
 	
 	public void clear() {
 		gamePane.changeView("village");
 	}
 	
-	public void changePlayer() { 
-		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getCurrentPlayer().getName()));
-        playerPane.changeView(gameController.getCurrentPlayer().getName());
+	public void changePlayer() {
+		playerPane.addPlayerDashboard(gameController.getPlayer());
+		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getPlayer().getName()));
+        playerPane.changeView(gameController.getPlayer().getName());
     }
 
     public void initializeTheBoard() { 
         authPanel.setVisible(false);
         getContentPane().remove(authPanel);
-        this.playerPane = new PlayerContentPane(gameController.getPlayer(0), gameController.getPlayer(1));
         this.gamePane = new GameContentPane();
+		this.playerPane = new PlayerContentPane();
         playerPane.setBounds(832,32, 335, 700);
-        gamePane.setBounds(37,32,752, 700);
-        playerPane.changeView(gameController.getCurrentPlayer().getName());
+        gamePane.setBounds(37,32,752, 700); 
         getContentPane().setLayout(null);
         getContentPane().add(gamePane);
         getContentPane().add(playerPane);
-		
         revalidate();
+    }
+
+
+	public void showAuthenticationPanel() {
+		getContentPane().removeAll();
+		getContentPane().add(authPanel);
+		authPanel.setBounds(600, 153, 0, 0);
+		authPanel.setLayout(null);
+		setSize(1200, 800);
+		this.setResizable(false);
+		setVisible(true);
+		revalidate();
+		repaint();
+	}
+
+
+	public void showOnlineGamePanel() {
+		getContentPane().remove(welcomePage);
+		getContentPane().add(onlinePanel);
+		setVisible(true);
+		revalidate();
+		repaint();
+	}
+
+
+    public void showWelcomePagePanel() {
+		getContentPane().remove(onlinePanel);
+		getContentPane().add(welcomePage);
+		setVisible(true);
+		revalidate();
+		repaint();
     }
 
 }

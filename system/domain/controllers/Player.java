@@ -1,10 +1,9 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Observer;
+import system.domain.util.IngredientFactory;
 
 import javax.swing.Icon;
-
-import system.ui.panels.PlayerDashboard;
 
 public class Player {
     
@@ -24,7 +23,7 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
-      
+        
     }
 
     public void setPlayerUI(Observer observer) {
@@ -59,7 +58,7 @@ public class Player {
     public void playedTurn() {
         turnsLeft -= 1;
         if (turnsLeft == 0) {
-            GameBoardController.getInstance().changePlayer();
+            GameBoardController.getInstance().finishTurn();
         }
     }
 
@@ -78,10 +77,10 @@ public class Player {
     public int getSickness(){
         return sicknessPoint;
     }
+    
     public InventoryController getInventory() {
         return inventory;
     }
-
 
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;

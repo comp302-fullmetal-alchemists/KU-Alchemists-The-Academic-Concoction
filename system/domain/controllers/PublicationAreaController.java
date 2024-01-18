@@ -12,7 +12,6 @@ public class PublicationAreaController {
     // alchemy markers for each alchemy formula, players will use them to publish or debunk theory
     
     private GameLogController gameLog;
-    private GameAction gameAction;
     private List<Alchemy> alchemyMarkers;
     private List<Theory> theories;
 
