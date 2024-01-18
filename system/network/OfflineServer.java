@@ -30,9 +30,9 @@ public class OfflineServer implements IServerAdapter {
     @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = playerNum;
+        acceptClients();
     }
 
-    @Override
     public void acceptClients() {
         /// in offline mode there is only one client (local computer)
         clients.add(new OfflineClient(this));
@@ -99,19 +99,12 @@ public class OfflineServer implements IServerAdapter {
     @Override
     public void setNextClient() {
         clients.get(currentClient).changePlayer();
-        /* 
-        *** this would work for online server's method
-        currentClient += 1;
-        if (currentClient == playerNum) {
-            newRound();
-        }
-        */ 
     }
 
     @Override 
-    public int requestIngredient() {
-        if (ingredients.isEmpty()) return -1;
-        return ingredients.remove(0);
+    public void requestIngredient() {
+        if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
+        else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
     }
 
 }

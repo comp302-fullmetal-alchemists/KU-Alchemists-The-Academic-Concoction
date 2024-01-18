@@ -6,9 +6,6 @@ public interface IServerAdapter {
     // host sets the number of players that will join the game
     void setPlayerNumber(int playerNum);
 
-    // after number of players is set, server starts accepting clients (local computers)
-    void acceptClients();
-
     // after clients are accepted, authentication as players must be done
     void startAuthentication();
 
@@ -30,6 +27,6 @@ public interface IServerAdapter {
     // add 1 more to the rounds
     void newRound();
 
-    int requestIngredient();
+    void requestIngredient();
 
 }

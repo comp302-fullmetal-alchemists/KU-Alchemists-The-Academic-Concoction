@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Mediator;
+import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.ResultsTriangle;
 import system.domain.util.IngredientFactory;
@@ -29,19 +30,24 @@ public class Player {
         this.inventory = new InventoryController();
         this.resultsTriangle = new ResultsTriangle();
         this.mediator = GameBoardController.getInstance().getMediator();
-
-    }
-
-    public void setPlayerUI(Observer observer) {
-    	this.playerUI = observer;
+        GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(this);
         GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
 
+    }
+     
+    public void setPlayerUI(Observer observer) {
+    	this.playerUI = observer;
+        for(GameAction g: GameBoardController.getInstance().getGameLog().getGameActionsOf(this)) {
+            appendToGameLog(g.toString());
+        }
     }
     
     /**********Getters and Setters******************/
 
     public void appendToGameLog(String text) {
-        playerUI.update("GAMELOG:"+text);
+        if (playerUI != null) {
+            playerUI.update("GAMELOG:"+text);
+        }
     }
 
     public void setName(String name) {
@@ -54,6 +60,10 @@ public class Player {
 
     public Boolean isInTurn() {
         return turn;
+    }
+
+    public int getTurn() {
+        return turnsLeft;
     }
 
     public void changeTurn() {
@@ -92,6 +102,7 @@ public class Player {
 
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
+        playerUI.update("REPUTATION:"+reputationPoint);
     }
 
     public void updateSickness(int updateVal) {

@@ -12,11 +12,19 @@ import system.domain.IngredientCard;
 public class IngredientFactory{
 	
 	private String[] ingredients;
+	private static IngredientFactory instance = null;
 	private Map<String, Alchemy> alchemyMap;
 	
-	public IngredientFactory() {
+	private IngredientFactory() {
 		this.alchemyMap = new HashMap<String, Alchemy>();
 		this.ingredients = IngredientCard.getIngredientNames();
+	}
+
+	public static IngredientFactory getInstance() {
+		if (instance == null) {
+			instance = new IngredientFactory();
+		}
+		return instance;
 	}
 
 	//when game starts, alchemies are randomly assigned to ingredients

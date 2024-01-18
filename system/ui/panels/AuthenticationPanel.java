@@ -38,7 +38,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		setLayout(null);
 		setSize(1200, 800);
 		
-		this.authController = new AuthenticationController();
+		this.authController = AuthenticationController.getInstance();
         authController.setObserver(this);
 		
 		//created a text area for the welcome message
@@ -197,6 +197,9 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		if (!msg.equals("VALID")) {
 	        JOptionPane.showMessageDialog(this, msg);
 	    }
+		else {
+			JOptionPane.showMessageDialog(this, "You have succesfully authenticated yourself! Please wait for other players.");
+		}
 		username1.setText("");
 		token1.setSelectedIndex(0);
 

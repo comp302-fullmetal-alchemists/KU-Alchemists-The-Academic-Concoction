@@ -1,15 +1,15 @@
 package system.domain.controllers;
 
-import system.domain.GameAction;
 import system.domain.interfaces.Observer;
+import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
 import system.network.IClientAdapter;
 
-
 public class GameBoardController {
 
     private static GameBoardController instance;
+    private WelcomeController welcomeController;
     private IngredientStorageController ingredientStorage;
     private PotionBrewingAreaController potionBrewingArea;
     private DeductionBoardController deductionBoard;
@@ -24,6 +24,7 @@ public class GameBoardController {
     private GameBoardController() {
         this.mediator = new ConcreteMediator();
         this.gameLog = new GameLogController(); //create the gamelog
+        this.welcomeController = new WelcomeController();
     }
 
     public void setObserver(Observer observer) {
@@ -60,6 +61,10 @@ public class GameBoardController {
         gameboardUI.update("INITIALIZE_BOARD");
     }
 
+    public void initializePlayer() {
+        gameboardUI.update("INITIALIZE_PLAYER");
+    }
+
     public void deauthorizePlayer() {
         gameLog.recordLog(player, "KU Alchemist", player.getName(),  String.format("Round over!"), 0);
         gameboardUI.update("DEAUTHORIZATION");
@@ -77,6 +82,7 @@ public class GameBoardController {
         clientAdapter.endPlayerTurn();
     }
 
+
     public Player getPlayer() {
         return player;
     }
@@ -84,6 +90,11 @@ public class GameBoardController {
     /*
      UI objects get their controllers from GameBoardController.
      */
+
+    public WelcomeController getWelcomeController() {
+        return welcomeController;   
+    }
+    
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorage;
     }

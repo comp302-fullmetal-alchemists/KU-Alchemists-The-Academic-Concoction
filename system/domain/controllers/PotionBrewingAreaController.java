@@ -143,7 +143,7 @@ public class PotionBrewingAreaController implements Collector{
      * PotionBrewing area handles the objects it receives accordingly.
      * */
     @Override
-    public <T> void collectItem(T item) {
+    public <T> boolean collectItem(T item) {
         if (item instanceof IngredientCard) {
             IngredientCard ing = (IngredientCard) item;
             if (ing1==null) {
@@ -156,6 +156,7 @@ public class PotionBrewingAreaController implements Collector{
 	
 	            potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
             }
+            return true;
         }
 
         if (item instanceof Potion) { //if the clicked item is a potion
@@ -165,7 +166,9 @@ public class PotionBrewingAreaController implements Collector{
             }
             this.potionToSell = potion; //make the holding potion the clicked potion
             potionBrewingUI.update(String.format("NEW_POTION:%s", potion.getStatus())); //send a message to UI to update
+            return true;
         }
+        return false;
     }
 
     @Override

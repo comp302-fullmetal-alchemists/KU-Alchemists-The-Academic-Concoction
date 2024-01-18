@@ -50,63 +50,82 @@ public class IngredientStorageController implements Collector{
     }
 
     public void transmuteIngredient() {
-    	if (ingToSell != null) {
-    		mediator.getPlayer().getInventory().updateGold(2);
-            ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
-            //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
-            gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
-            ingToSell = null;
-            mediator.getPlayer().playedTurn();
-    	}
-    	else {
-    		ingredientStorageUI.update("ABSENT_INGREDIENT");
-    	}
+        try {
+            if (ingToSell != null) {
+                mediator.getPlayer().getInventory().updateGold(2);
+                ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
+                //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
+                gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
+                ingToSell = null;
+                mediator.getPlayer().playedTurn();
+            }
+            else {
+                ingredientStorageUI.update("ABSENT_INGREDIENT");
+            }
+        }
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
+        }
     	
     }
 
     public void buyArtifact() {
         // control if the player has enough gold
-        if (mediator.getPlayer().getInventory().getGold() >= 3) {
-            //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
-            ArtifactCard artifact = drawArtifact();       
-            if (artifact == null) {
-                ingredientStorageUI.update("EMPTY_PILE");
+        try {
+            if (mediator.getPlayer().getInventory().getGold() >= 3) {
+                //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
+                ArtifactCard artifact = drawArtifact();       
+                if (artifact == null) {
+                    ingredientStorageUI.update("EMPTY_PILE");
+                }
+                else {
+                    mediator.getPlayer().getInventory().updateGold(-3);
+                    mediator.sendToPlayer(artifact);
+                    ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
+                    
+                    //GAME LOG RECORDS: When a player buys an artifact card.
+                    gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
+                    
+                    useArtifact(artifact);
+                    mediator.getPlayer().playedTurn();
+                    
+                }
             }
             else {
-                mediator.getPlayer().getInventory().updateGold(-3);
-                mediator.sendToPlayer(artifact);
-                ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", artifact.getName()));
-                
-                //GAME LOG RECORDS: When a player buys an artifact card.
-                gameLog.recordLog(mediator.getPlayer(), "Artifact Pile", mediator.getPlayer().getName(), String.format("Bought %s", artifact.getName()), 0);
-                
-                useArtifact(artifact);
-                mediator.getPlayer().playedTurn();
-                
+                ingredientStorageUI.update("NOT_ENOUGH_GOLD");
             }
         }
-        else {
-            ingredientStorageUI.update("NOT_ENOUGH_GOLD");
+        catch (NullPointerException e) {
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
 
     }
 
     public void drawIngredient() {
         try {
-            IngredientCard drawn = GameBoardController.getInstance().getClientAdapter().drawIngredient();
-
-            mediator.sendToPlayer(drawn);
-            ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
-
-            //GAME LOG RECORDS: When a player draws a card.
-            gameLog.recordLog(mediator.getPlayer(), "Ingredient Pile", mediator.getPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
-            
-            mediator.getPlayer().playedTurn();
+            if (mediator.getPlayer() != null) {
+                GameBoardController.getInstance().getClientAdapter().requestIngredient();
+            }
         }
         catch (NullPointerException e) {
-            ingredientStorageUI.update("EMPTY_PILE");
+            ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
+        
     }
+
+    public void emptyPileError() {
+        ingredientStorageUI.update("EMPTY_PILE");
+    }
+
+    public void takeIngredient(IngredientCard drawn) {
+        mediator.sendToPlayer(drawn);
+        ingredientStorageUI.update(String.format("CARDREMOVAL: %s", drawn.getName()));
+
+        gameLog.recordLog(mediator.getPlayer(), "Ingredient Pile", mediator.getPlayer().getName(), String.format("Drawn %s", drawn.getName()), 0);
+            
+        mediator.getPlayer().playedTurn();
+    }
+
     // draw an artifact card from the pile according to the rule of taking the last card from the pile
     public ArtifactCard drawArtifact() {
         if (artifactPile.isEmpty()) {
@@ -135,7 +154,7 @@ public class IngredientStorageController implements Collector{
     }
 
     @Override
-    public <T> void collectItem(T item) {
+    public <T> boolean collectItem(T item) {
         if (item instanceof IngredientCard) {
             IngredientCard ing = (IngredientCard) item;
             if (ingToSell != null) {
@@ -143,7 +162,9 @@ public class IngredientStorageController implements Collector{
             }
             ingToSell = ing;
             ingredientStorageUI.update("NEW_INGREDIENT:" + ing.getName());
+            return true;
         }
+        return false;
     }
 
     @Override

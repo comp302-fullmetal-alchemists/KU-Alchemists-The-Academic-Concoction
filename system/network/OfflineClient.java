@@ -3,9 +3,14 @@ package system.network;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
+import system.domain.Alchemy;
 import system.domain.IngredientCard;
+import system.domain.Theory;
+import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.GameLogController;
 import system.domain.controllers.Player;
 import system.domain.util.IngredientFactory;
 
@@ -15,18 +20,14 @@ public class OfflineClient implements IClientAdapter {
     private List<Player> players;
     private int playerNum;
     private int currentPlayer;
-    private IngredientFactory ingFactory;
+    private GameLogController gamelog;
     
     public OfflineClient(OfflineServer server) {
         this.server = server;
         this.players = new ArrayList<Player>();
-        this.ingFactory = new IngredientFactory();
+        this.gamelog = GameBoardController.getInstance().getGameLog();
     }
 
-    @Override 
-    public void connectToServer() {
-        // in offline there is no need for this method
-    }
     
     @Override
     public void startAuthentication() {
@@ -39,11 +40,15 @@ public class OfflineClient implements IClientAdapter {
 
     // for checking in authentication
     @Override
-    public boolean validateUserChoices(String username) {
+    public void validateUserChoices(String username) {
         for (Player p: players) {
-            if (p.getName().equals(username)) return false;
+            if (p.getName().equals(username)) {
+                AuthenticationController.getInstance().invalidUsername();
+                return;
+            }
+            
         }
-        return true;
+        AuthenticationController.getInstance().validUsername();
     }
 
     // after check, register the players
@@ -60,14 +65,15 @@ public class OfflineClient implements IClientAdapter {
 
     @Override
     public void setAlchemyMap(List<Integer> alchemyIndex) {
-        ingFactory.setAlchemyMap(alchemyIndex);
+        IngredientFactory.getInstance().setAlchemyMap(alchemyIndex);
     }
 
     @Override
     public void initialize() {
+        Random random = new Random();
         for (Player p: players) {
-            p.getInventory().initializeIngredients(drawIngredient(), drawIngredient());
-            GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
+            p.getInventory().initializeIngredients(IngredientFactory.getInstance().createIngredient(random.nextInt(8)), 
+                                                   IngredientFactory.getInstance().createIngredient(random.nextInt(8)));
         }
         GameBoardController.getInstance().initializeTheBoard();
         Collections.shuffle(players);
@@ -101,15 +107,62 @@ public class OfflineClient implements IClientAdapter {
         }
     }
 
+
     @Override
-    public IngredientCard drawIngredient(){
-        int index = server.requestIngredient();
-        if (index == -1) {
-            throw new NullPointerException();
-        }
-        return ingFactory.createIngredient(index);
+    public void requestIngredient() {
+        server.requestIngredient();
     }
 
+    @Override
+    public void emptyPile() {
+        GameBoardController.getInstance().getIngredientStorageController().emptyPileError();
+    }
+
+    @Override
+    public void takeIngredientIndex(int index) {
+        GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
+    }
+
+
+    @Override
+    public void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName) {
+        for (Player p: players) {
+            if (!p.getName().equals(playerName)) {
+                gamelog.recordLog(p, "Academy", p.getName(), String.format("%s published the Theory with %s and %s!", playerName, ingredient, alchemy.toString()), 2);
+            }
+        }
+    }
+
+    @Override
+    public void reportEndorseTheoryToServer(String ingredient, String playerName, String ownerName) {
+        for (Player p: players) {
+            if (!p.getName().equals(playerName)) {
+                if (p.getName().equals(ownerName)) {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s paid 1 gold to endorse your theory!", playerName), 2);
+                    p.getInventory().updateGold(1);
+                }
+                else {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", playerName, ownerName, ingredient), 2);
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void reportDebunkTheoryToServer(Alchemy alchemy, String ingredient, String playerName, String ownerName) {
+        for (Player p: players) {
+            if (!p.getName().equals(playerName)) {
+                if (p.getName().equals(ownerName)) {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
+                }
+                else {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked the Theory of %s about %s!", playerName, ownerName, ingredient), 0);
+
+                }
+            }
+        }
+    }
 
 
 

@@ -25,11 +25,13 @@ public class DeductionBoardController implements Collector{
 	}
 
 	@Override
-	public <T> void collectItem(T item) {
+	public <T> boolean collectItem(T item) {
 		if (item instanceof ResultsTriangle) {
 			ResultsTriangle trig = (ResultsTriangle) item;
 			deductionBoardUI.update(trig.getResultList());
+			return true;
 		}
+		return false;
 		
 	}
 
