@@ -112,12 +112,13 @@ public class IngredientStorageController implements Collector{
                 ingredientStorageUI.update("EMPTY_PILE");
 
             }
-            else if (mediator.getPlayer().getInventory().getGold() < 3 && mediator.getPlayer().getInventory().getGold()==0) {
-
+            else if ( (mediator.getPlayer().getInventory().getGold() < 3 && mediator.getPlayer().getInventory().getDiscountCard() == -1) || 
+            (mediator.getPlayer().getInventory().getGold() == 1 && mediator.getPlayer().getInventory().getDiscountCard() != 0)) {
+                ingredientStorageUI.update("NOT_ENOUGH_GOLD");
             }
             
-           // if gold = 1 discount card 0 mustbuy 
-            // if gold = 2 discount card > 1 must buy 
+           // if gold = 1 discount card 0 must buy  
+            // if gold = 2 discount card > 1 must buy  
              
             else {
                 ArtifactCard card = null;
@@ -149,7 +150,7 @@ public class IngredientStorageController implements Collector{
 
     }
 
-    
+
     public void decreaseGold() {
         if (mediator.getPlayer().getInventory().getDiscountCard() == 0) {
             mediator.getPlayer().getInventory().updateGold(-1);
