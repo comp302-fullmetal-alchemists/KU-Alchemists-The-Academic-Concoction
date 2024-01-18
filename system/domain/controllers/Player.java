@@ -26,7 +26,7 @@ public class Player {
         this.turn = false;
         this.token = token;
         this.reputationPoint = 0;
-        this.sicknessPoint = 0;
+        this.sicknessPoint = 2;
         this.inventory = new InventoryController();
         this.resultsTriangle = new ResultsTriangle();
         this.mediator = GameBoardController.getInstance().getMediator();
@@ -102,11 +102,25 @@ public class Player {
 
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
-        playerUI.update("REPUTATION:"+reputationPoint);
+        playerUI.update("REPUTATION");
+    }
+    
+    public void performSurgery() {
+    	playerUI.update("SURGERY");
+    	sicknessPoint = 0;
+    	inventory.updateGold(-inventory.getGold());
+    	playerUI.update("SICKNESS");
     }
 
     public void updateSickness(int updateVal) {
-        sicknessPoint = sicknessPoint + updateVal;
+    	if (sicknessPoint != 0 || updateVal != -1) {
+	        sicknessPoint = sicknessPoint + updateVal;
+			playerUI.update("SICKNESS");
+    		if (sicknessPoint == 3) {
+    			performSurgery();
+    		}
+
+    	}
     }
     
     public ResultsTriangle getResultsTriangle() {

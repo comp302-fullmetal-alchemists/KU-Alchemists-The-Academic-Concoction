@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class PlayerDashboard extends JPanel implements Observer {
     
@@ -98,6 +99,12 @@ public class PlayerDashboard extends JPanel implements Observer {
         }
         else if (msg.contains("REPUTATION")) {
             lblReputation.setText("Reputation: " + player.getReputation());
+        }
+        else if (msg.contains("SICKNESS")) {
+            lblSickness.setText("Sickness: "  + player.getSickness());
+        }
+        else if (msg.contains("SURGERY")) {
+        	JOptionPane.showMessageDialog(this, "You are in critical condition and in need of a surgery!");
         }
     }
 }   
