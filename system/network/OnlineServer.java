@@ -65,14 +65,13 @@ public class OnlineServer extends Thread implements IServerAdapter {
     public void run() {
         while (running) {
             try {
-                if (clients.size() < MAX_CLIENTS) {
+
                     System.out.println("[SERVER] Waiting for clients on port " + serverSocket.getLocalPort() + "...");
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("[SERVER] Client connected: " + clientSocket);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                     clients.add(clientHandler);
                     clientExecutor.execute(clientHandler);
-                }
             } catch (IOException e) {
                 if (!running) {
                     System.out.println("[SERVER] Server stopped.");
@@ -110,6 +109,10 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
                 writer.writeUTF("Welcome to the Server!");
 
+                if (clients.size() > MAX_CLIENTS) {
+                    writer.writeUTF("server_full");
+                    removeClient(this);
+                }
                 String clientMessage;
 
                 while (true) {

@@ -134,6 +134,9 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.contains("CHAT:")) {
                     gamelog.recordchat(message);
                 }
+                else if (message.equals("server_full")) {
+                    GameBoardController.getInstance().showError(message);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
