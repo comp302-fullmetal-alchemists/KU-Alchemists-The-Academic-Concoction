@@ -45,12 +45,12 @@ public class PlayerDashboard extends JPanel implements Observer {
         lblNewLabel.setBounds(80, 5, 110, 16);
         add(lblNewLabel);
 
-        lblReputation = new JLabel("Reputation: \n" + player.getReputation());
+        lblReputation = new JLabel("Reputation: " + player.getReputation());
         lblReputation.setForeground(Color.LIGHT_GRAY);
         lblReputation.setBounds(53, 31, 88, 16);
         add(lblReputation);
 
-        lblSickness = new JLabel("Sickness: \n"  + player.getSickness()  );
+        lblSickness = new JLabel("Sickness: "  + player.getSickness()  );
         lblSickness.setForeground(Color.LIGHT_GRAY);
         lblSickness.setBounds(190, 31, 88, 16);
         add(lblSickness);
@@ -95,6 +95,9 @@ public class PlayerDashboard extends JPanel implements Observer {
     public void update(String msg) {//Observer messager
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
+        }
+        else if (msg.contains("REPUTATION:")) {
+            lblReputation.setText("Reputation: " + player.getReputation());
         }
     }
 }   

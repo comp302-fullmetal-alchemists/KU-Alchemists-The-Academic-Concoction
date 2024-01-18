@@ -26,11 +26,11 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private BufferedReader fromUser;
     private GameLogController gamelog;
     
-    private static final String HOST = "127.0.0.1"; 
+    private static final String LOCALHOST = "127.0.0.1"; 
 
     public OnlineClient(String ip, int port) throws IOException {
         this.gamelog = GameBoardController.getInstance().getGameLog();
-        this.socket = new Socket(HOST, port);
+        this.socket = new Socket(ip, port);
         this.fromServer = new DataInputStream(socket.getInputStream());
         this.toServer = new DataOutputStream(socket.getOutputStream());
         this.fromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -295,6 +295,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
             GameBoardController.getInstance().getTheoryController().debunkTheory(alchemy, ingredient, debunkerName);
             if (p.getName().equals(ownerName)) {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", debunkerName, ingredient), 0);
+                p.updateReputation(-1);
             }
             else {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", debunkerName, ownerName, ingredient), 2);

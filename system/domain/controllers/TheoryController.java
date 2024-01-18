@@ -57,7 +57,7 @@ public class TheoryController {
         }
         //check if the theory is already published
         for (Theory i : theories) {
-            if (i.getAlchemy().equals(alchemy) || i.getIngredient() == ingredient) {
+            if (i.getAlchemy().equals(alchemy) || i.getIngredient().equals(ingredient)) {
                 theoryUI.update("DUPLICATE_THEORY");
                 return;
             }
@@ -102,7 +102,7 @@ public class TheoryController {
                         return;
                     }
                     //check if the player has enough gold to endorse a theory
-                    else if (mediator.getPlayer().getInventory().getGold() < 2) {
+                    else if (mediator.getPlayer().getInventory().getGold() < 1) {
                         theoryUI.update("NOT_ENOUGH_GOLD");
                         return;
                     }
@@ -112,7 +112,7 @@ public class TheoryController {
                     }
                     //endorse the theory
                     else {
-                        mediator.getPlayer().getInventory().updateGold(-2);
+                        mediator.getPlayer().getInventory().updateGold(-1);
                         endorseTheory(ingredient, mediator.getPlayer().getName());
                         gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Academy", String.format("Endorsed the Theory of %s about %s!", theory.getOwner(), ingredient), 2);
                         GameBoardController.getInstance().getClientAdapter().reportEndorseTheoryToServer(ingredient, mediator.getPlayer().getName(), theory.getOwner());
@@ -163,6 +163,7 @@ public class TheoryController {
             if(!theory.getAlchemy().equals(alchemy) && !theory.getOwner().equals(mediator.getPlayer().getName())) {
                 if (alchemyMap.get(theory.getIngredient()).equals(alchemy)) {
                     mediator.getPlayer().getInventory().updateGold(2);
+                    mediator.getPlayer().updateReputation(1);
                     String owner = theory.getOwner();
                     debunkTheory(alchemy, ingredient, mediator.getPlayer().getName());
                     //GAMELOG RECORDS LOG FOR DEBUNKER

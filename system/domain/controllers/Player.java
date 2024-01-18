@@ -96,6 +96,7 @@ public class Player {
 
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
+        playerUI.update("REPUTATION:"+reputationPoint);
     }
 
     public void updateSickness(int updateVal) {
