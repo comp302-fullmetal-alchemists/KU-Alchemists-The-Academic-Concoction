@@ -36,6 +36,8 @@ public class InventoryController {
     private Mediator mediator;
     private GameLogController gameLog;
     private IngredientCard lastIngredientCard;
+    private int discountCard = -1;
+    private boolean printingPress = false;
 
 
     public InventoryController() {
@@ -51,6 +53,26 @@ public class InventoryController {
     public IngredientCard getLastIngredientCard() {
         return lastIngredientCard;
     }
+
+    public void discountCardButton() {
+        discountCard++;
+    }
+
+    public int getDiscountCard() {
+        return discountCard;
+    }
+
+    public boolean getPrintingPress() {
+        return printingPress;
+    }
+    public void printingPressButton() {
+        printingPress = true;
+    }
+
+    public void setPrintingPress(boolean state) {
+        this.printingPress = state;
+    }
+
 
 
     public void setObserver(Observer observer) {

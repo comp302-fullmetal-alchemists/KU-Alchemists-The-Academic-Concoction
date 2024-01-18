@@ -120,7 +120,7 @@ public class IngredientStorage extends JPanel implements Observer {
         lblArtifactPile.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		ingController.buyArtifact();
+        		//ingController.buyArtifact();
         	}
         });
     	lblArtifactPile.setOpaque(true);
@@ -197,10 +197,9 @@ public class IngredientStorage extends JPanel implements Observer {
         }
 
         else if (msg.contains("DISCOUNT_CARD")) {
-            showMessageDialog(String.format("You have drawn the Discount card!"));
+            showMessageDialog(String.format("You have used the Discount card! Your next artifact card will cost 2 gold less from the original price. After that every artifact card will cost you 1 gold less!"));
 
         }
-
         else if (msg.contains("PRINTING_PRESS")) {
             showMessageDialog(String.format("You have used the Printing Press card! Your next theory will be published free of charge."));
 
@@ -208,7 +207,12 @@ public class IngredientStorage extends JPanel implements Observer {
     
 
         else if (msg.contains("WISDOM_IDOL")) {
-            showMessageDialog(String.format("You have drawn the Wiadom Idol card!"));
+            showMessageDialog(String.format("You have drawn the Wisdom Idol card!"));
+
+        }
+
+        else if (msg.contains("DISCOUNT_CARD")) {
+            showMessageDialog(String.format("You have used the Discount C card!"));
 
         }
 

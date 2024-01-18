@@ -21,19 +21,17 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
     public void useArtifact(ArtifactCard ac) {
         
         IngredientStorageController ingredientStorage = GameBoardController.getInstance().getIngredientStorageController();
+        InventoryController inventoryController = GameBoardController.getInstance().getPlayer().getInventory();
 
 
         if (ac.getCardName().equals("Printing Press")) {
-            TheoryController theoryController =  GameBoardController.getInstance().getTheoryController();
-            System.out.println("Using artifact: Printing Press");
-            theoryController.printingPressButton();
 
+            inventoryController.printingPressButton();
             ingredientStorage.getIngredientStorageUI().update(String.format("PRINTING_PRESS"));
 
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {
-            InventoryController inventoryController = GameBoardController.getInstance().getPlayer().getInventory();
             IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
             inventoryController.addIngredient(lastIngredientCard);
 

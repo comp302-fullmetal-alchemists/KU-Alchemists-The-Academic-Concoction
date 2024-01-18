@@ -25,6 +25,7 @@ public class IngredientStorageController implements Collector{
     private IngredientCard ingToSell;
     private ArtifactFactory artifactFactory;
     private List<ArtifactCard> artifactPile;
+ 
 
     public IngredientStorageController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
@@ -37,6 +38,8 @@ public class IngredientStorageController implements Collector{
     public void setObserver(Observer observer) {
         this.ingredientStorageUI = observer;
     }
+
+     
 
 
     
@@ -70,7 +73,7 @@ public class IngredientStorageController implements Collector{
     	
     }
 
-    public void buyArtifact() {
+   /*  public void buyArtifact() {
         // control if the player has enough gold
         try {
             if (mediator.getPlayer().getInventory().getGold() >= 3) {
@@ -100,20 +103,22 @@ public class IngredientStorageController implements Collector{
             ingredientStorageUI.update("UNAUTHORIZED_ACTION");
         }
 
-    }
+    }*/
 
     public void buyArtifact2(String cardName) {
 
-        if (mediator.getPlayer().getInventory().getGold() >= 3 && !artifactPile.isEmpty()) {
-            //draw an artifact card object from the pile and add it to the artifact card list of the corresponding players inventory
+        if (mediator.getPlayer().getInventory().getGold() >= 1 && !artifactPile.isEmpty()) {
             if (cardName == null && ingredientStorageUI != null) {
                 ingredientStorageUI.update("EMPTY_PILE");
 
-
-
-
+            }
+            else if (mediator.getPlayer().getInventory().getGold() < 3 && mediator.getPlayer().getInventory().getGold()==0) {
 
             }
+            
+           // if gold = 1 discount card 0 mustbuy 
+            // if gold = 2 discount card > 1 must buy 
+             
             else {
                 ArtifactCard card = null;
                 for (ArtifactCard ac: artifactPile) {
@@ -122,7 +127,8 @@ public class IngredientStorageController implements Collector{
                          
                     }
                 }
-                mediator.getPlayer().getInventory().updateGold(-3);
+               
+                decreaseGold();
                 mediator.sendToPlayer(card);
                 if (ingredientStorageUI != null) {
                     ingredientStorageUI.update(String.format("ARTIFACT_BOUGHT:%s", card));
@@ -133,6 +139,8 @@ public class IngredientStorageController implements Collector{
 
             }
         }
+
+
         else {
             if (ingredientStorageUI != null) {
                 ingredientStorageUI.update("NOT_ENOUGH_GOLD");
@@ -140,6 +148,27 @@ public class IngredientStorageController implements Collector{
         }
 
     }
+
+    
+    public void decreaseGold() {
+        if (mediator.getPlayer().getInventory().getDiscountCard() == 0) {
+            mediator.getPlayer().getInventory().updateGold(-1);
+            mediator.getPlayer().getInventory().discountCardButton();
+
+        }
+
+
+        else if (mediator.getPlayer().getInventory().getDiscountCard() > 0) {
+            mediator.getPlayer().getInventory().updateGold(-2);
+            mediator.getPlayer().getInventory().discountCardButton();
+        }
+
+        else {
+            mediator.getPlayer().getInventory().updateGold(-3);
+        }
+    
+    }
+ 
 
     public void drawIngredient() {
         if (mediator.getPlayer() != null) {
@@ -163,14 +192,15 @@ public class IngredientStorageController implements Collector{
         mediator.getPlayer().playedTurn();
     }
 
-    // draw an artifact card from the pile according to the rule of taking the last card from the pile
-    public ArtifactCard drawArtifact() {
+    // draw an artifact card from the pile according to the rule of taking the last card from the pile, NOT USED IN THE NEW VERSION
+    
+   /*  public ArtifactCard drawArtifact() {
         if (artifactPile.isEmpty()) {
             return null;
         }
         ArtifactCard drawed = artifactPile.remove(artifactPile.size() - 1);
         return drawed;
-    }
+    }*/
     // since the phase I. stated that the Elixir of Insight card must be implemented, this method is only
     // being used to show the top 3 cards of the ingredient pile, later on other artifact cards will be implemented 
     /*public void useArtifact(ArtifactCard card) {  

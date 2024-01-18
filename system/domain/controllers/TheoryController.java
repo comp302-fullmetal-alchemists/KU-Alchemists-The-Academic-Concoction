@@ -16,7 +16,6 @@ public class TheoryController {
     private GameLogController gameLog;
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
     private String ingredient;
-    private Boolean printingPress = false;    
 
 
     public TheoryController() {
@@ -39,9 +38,7 @@ public class TheoryController {
         return ingredient;
     }
 
-    public void printingPressButton() {
-        printingPress = true;
-    }
+    
 
 
     public void publishTheory(Alchemy alchemy) {
@@ -66,10 +63,10 @@ public class TheoryController {
         else{
 
             // check if the player used the Printing Press Artifact card first 
-            if (printingPress) {
-                this.printingPress = false;
+            if (GameBoardController.getInstance().getPlayer().getInventory().getPrintingPress()) {
+                GameBoardController.getInstance().getPlayer().getInventory().setPrintingPress(false);
             }
-            else if (!printingPress) {
+            else if (!GameBoardController.getInstance().getPlayer().getInventory().getPrintingPress()) {
                 GameBoardController.getInstance().getPlayer().getInventory().updateGold(-1);
             }
             //GameBoardController.getInstance().getPlayer().getInventory().updateGold(-1);
