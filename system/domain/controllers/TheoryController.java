@@ -4,6 +4,7 @@ import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
 import system.domain.util.IngredientFactory;
+import system.network.IClientAdapter;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class TheoryController {
     private Map<String, Alchemy> alchemyMap; // map of ingredient and alchemy, used for debunking theory
     private String ingredient;
     private Mediator mediator;
+    private IClientAdapter clientAdapter;
 
 
     public TheoryController() {
@@ -23,6 +25,8 @@ public class TheoryController {
         this.gameLog = GameBoardController.getInstance().getGameLog();
         this.alchemyMap = IngredientFactory.getInstance().getAlchemyMap();
         this.mediator = GameBoardController.getInstance().getMediator();
+        this.clientAdapter = GameBoardController.getInstance().getClientAdapter();
+
     }
 
     public void setObserver(Observer observer) {
@@ -38,10 +42,10 @@ public class TheoryController {
         return ingredient;
     }
 
-    public void publishTheory(Alchemy alchemy, String ingredient, String playerName) {
-        Theory theory = new Theory(alchemy, ingredient, mediator.getPlayer());
+    public void publishTheory(Alchemy alchemy, String ingredient, String authorName) {
+        Theory theory = new Theory(alchemy, ingredient, authorName);
         theories.add(theory);
-        theoryUI.update(String.format("THEORY_PUBLISHED:%s,%s,%s", alchemy.toString(), ingredient, playerName));
+        theoryUI.update(String.format("THEORY_PUBLISHED:%s,%s,%s", alchemy.toString(), ingredient, authorName));
         GameBoardController.getInstance().getPublicationAreaController().setAlchemy(0);
     }
 
@@ -78,10 +82,10 @@ public class TheoryController {
         }
     }
 
-    public void endorseTheory(String ingredient, String playerName) {
+    public void endorseTheory(String ingredient, String endorserName) {
         Theory theory = getTheoryOfIngredient(ingredient);
-        theory.endorsed(mediator.getPlayer());
-        theoryUI.update(String.format("THEORY_ENDORSED:%s,%s", ingredient, playerName));
+        theory.endorsed(endorserName);
+        theoryUI.update(String.format("THEORY_ENDORSED:%s,%s", ingredient, endorserName));
     }
 
     public void endorseTheory() {
@@ -92,7 +96,7 @@ public class TheoryController {
         }
         try {
             for (Theory theory : theories) {
-                if (theory.getIngredient() == ingredient) {
+                if (theory.getIngredient().equals(ingredient)) {
                     if (theory.isEndorsed()) {
                         theoryUI.update("THEORY_ALREADY_ENDORSED");
                         return;
@@ -102,7 +106,7 @@ public class TheoryController {
                         theoryUI.update("NOT_ENOUGH_GOLD");
                         return;
                     }
-                    else if(theory.getOwner() == mediator.getPlayer()) {
+                    else if(theory.getOwner().equals(mediator.getPlayer().getName())) {
                         theoryUI.update("CANNOT_ENDORSE_YOUR_OWN_THEORY");
                         return;
                     }
@@ -110,8 +114,8 @@ public class TheoryController {
                     else {
                         mediator.getPlayer().getInventory().updateGold(-2);
                         endorseTheory(ingredient, mediator.getPlayer().getName());
-                        gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Academy", String.format("Endorsed the Theory of %s about %s!", theory.getOwner().getName(), ingredient), 2);
-                        GameBoardController.getInstance().getClientAdapter().reportEndorseTheoryToServer(ingredient, mediator.getPlayer().getName(), theory.getOwner().getName());
+                        gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Academy", String.format("Endorsed the Theory of %s about %s!", theory.getOwner(), ingredient), 2);
+                        GameBoardController.getInstance().getClientAdapter().reportEndorseTheoryToServer(ingredient, mediator.getPlayer().getName(), theory.getOwner());
                         mediator.getPlayer().playedTurn();
                         return;
                     }
@@ -127,19 +131,19 @@ public class TheoryController {
     public Theory getTheoryOfIngredient(String ingredient) {
         //get the chosen theory
         for (Theory theory : theories) {
-            if (theory.getIngredient() == ingredient) {
+            if (theory.getIngredient().equals(ingredient)) {
                 return theory;
             }
         }
         return null;
     }
 
-    public void debunkTheory(Alchemy alchemy, String ingredient, String playerName) {
+    public void debunkTheory(Alchemy alchemy, String ingredient, String debunkerName) {
         Theory theory = getTheoryOfIngredient(ingredient);
         theory.setAlchemy(alchemy);
-        theory.setOwner(mediator.getPlayer());
+        theory.setOwner(debunkerName);
         theory.setDebunked(true);
-        theoryUI.update(String.format("THEORY_DEBUNKED:%s,%s,%s", alchemy.toString(), theory.getIngredient(), playerName));
+        theoryUI.update(String.format("THEORY_DEBUNKED:%s,%s,%s", alchemy.toString(), theory.getIngredient(), debunkerName));
     }
 
     public void debunkTheory(Alchemy alchemy) {
@@ -156,12 +160,10 @@ public class TheoryController {
                 return;
             }
 
-            if(!theory.getAlchemy().equals(alchemy) && theory.getOwner() != mediator.getPlayer()) {
+            if(!theory.getAlchemy().equals(alchemy) && !theory.getOwner().equals(mediator.getPlayer().getName())) {
                 if (alchemyMap.get(theory.getIngredient()).equals(alchemy)) {
                     mediator.getPlayer().getInventory().updateGold(2);
-                    //alchemyMap contains true match of the ingredient and the alchemy, if the alchemy is the same as the theory's alchemy, then the theory is debunked
-                    //reputation düşürme theory nin eski sahibi için
-                    String owner = theory.getOwner().getName();
+                    String owner = theory.getOwner();
                     debunkTheory(alchemy, ingredient, mediator.getPlayer().getName());
                     //GAMELOG RECORDS LOG FOR DEBUNKER
                     gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Academy", String.format("Debunked the theory of %s!", owner), 0);
@@ -177,7 +179,7 @@ public class TheoryController {
                     return;
                 }
             }
-            else if (theory.getOwner() == mediator.getPlayer()){
+            else if (theory.getOwner().equals(mediator.getPlayer().getName())){
                 theoryUI.update("CANNOT_DEBUNK_YOUR_OWN_THEORY");
             }
             else if (theory.getAlchemy().equals(alchemy)) {
@@ -196,8 +198,5 @@ public class TheoryController {
         return theories;
     }
 
-    public void getTrueAlchemy() {
-        
-    }
     
 }

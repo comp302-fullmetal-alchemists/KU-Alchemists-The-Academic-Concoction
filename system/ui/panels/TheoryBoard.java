@@ -21,7 +21,7 @@ public class TheoryBoard extends JPanel{
     private JLabel theoryBook6;
     private JLabel theoryBook7;
     private JLabel theoryBook8;
-    private JLabel theoryBook;
+	private JLabel theoryBook;
 	private HashMap<String, JLabel> bookMap = new HashMap<String, JLabel>();
 
     public TheoryBoard(){
@@ -43,8 +43,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
                 theoryController.setIngredient("Solaris Root"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook1; //set the theory book to the theory book of the ingredient
-
 			}
 		});
 		bookMap.put("Solaris Root", theoryBook1);
@@ -61,8 +59,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
                 theoryController.setIngredient("Bat Wing"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook2; //set the theory book to the theory book of the ingredient
-
 			}
 		});
 		bookMap.put("Bat Wing", theoryBook2);
@@ -79,8 +75,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				theoryController.setIngredient("Toad Stool"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook3; //set the theory book to the theory book of the ingredient
-
 			}
 		});
 		bookMap.put("Toad Stool", theoryBook3);
@@ -97,8 +91,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				theoryController.setIngredient("Owl Feather"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook4;   //set the theory book to the theory book of the ingredient
-
 			}
 		});
 		bookMap.put("Owl Feather", theoryBook4);
@@ -115,7 +107,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				theoryController.setIngredient("Snake Venom"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook5; //set the theory book to the theory book of the ingredient
 			}
 		});
 		bookMap.put("Snake Venom", theoryBook5);
@@ -131,7 +122,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				theoryController.setIngredient("Rat Tail"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook6; //set the theory book to the theory book of the ingredient
 			}
 		});
 		bookMap.put("Rat Tail", theoryBook6);
@@ -148,7 +138,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				theoryController.setIngredient("Spider Web"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook7; //set the theory book to the theory book of the ingredient
 
 			}
 		});
@@ -166,7 +155,6 @@ public class TheoryBoard extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				theoryController.setIngredient("Newt Eye"); //set the ingredient to the ingredient name of the theory
-                theoryBook = theoryBook8; //set the theory book to the theory book of the ingredient
 
 			}
 		});
@@ -185,6 +173,7 @@ public class TheoryBoard extends JPanel{
 
 	// add username of the player who endorsed the theory
 	public void addEndorsement(String ingredient, String player) {
+		theoryBook = bookMap.get(ingredient);
 		theoryBook.setText(theoryBook.getText().replace("</html>", "<br>" + player + "</html>"));
 	}
 

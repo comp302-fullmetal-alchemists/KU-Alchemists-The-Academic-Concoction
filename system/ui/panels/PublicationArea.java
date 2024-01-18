@@ -268,4 +268,5 @@ public class PublicationArea extends JPanel implements Observer{
             theoryBoard.addEndorsement(pack.split(",")[0], pack.split(",")[1]);
         }
     }
+
 }

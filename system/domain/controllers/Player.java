@@ -25,10 +25,10 @@ public class Player {
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
         GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(this);
-        GameBoardController.getInstance().getGameLog().recordLogSilent(this, "KU Alchemist", name, "Game has started!", 0);
+        GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
 
     }
-
+     
     public void setPlayerUI(Observer observer) {
     	this.playerUI = observer;
         for(GameAction g: GameBoardController.getInstance().getGameLog().getGameActionsOf(this)) {

@@ -47,5 +47,4 @@ public interface IClientAdapter {
 
     void reportDebunkTheoryToServer(Alchemy alchemy, String ingredient, String playerName, String ownerName);
 
-
 }
