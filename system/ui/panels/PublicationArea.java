@@ -232,15 +232,15 @@ public class PublicationArea extends JPanel implements Observer{
               JOptionPane.showMessageDialog(this, "Not enough gold");
         }
          else if (msg.contains("THEORY_PUBLISHED")) {
-              JOptionPane.showMessageDialog(this, "Theory published");
+              //JOptionPane.showMessageDialog(this, "Theory published");
               //create theory book
-              String alchemyName = String.format("Alchemy %d", publicationAreaController.getAlchemyIndex());
-              theoryBoard.createTheoryBook(alchemyName, GameBoardController.getInstance().getPlayer().getName());
+              String pack = msg.split(":")[1];
+              theoryBoard.createTheoryBook(pack.split(",")[0], pack.split(",")[1], pack.split(",")[2]);
         }
         else if (msg.contains("THEORY_DEBUNKED")) {
-            JOptionPane.showMessageDialog(this, "Theory debunked");
-            String alchemyName = String.format("Alchemy %d", publicationAreaController.getAlchemyIndex());
-            theoryBoard.createTheoryBook(alchemyName, GameBoardController.getInstance().getPlayer().getName());
+            //JOptionPane.showMessageDialog(this, "Theory debunked");
+            String pack = msg.split(":")[1];
+            theoryBoard.createTheoryBook(pack.split(",")[0], pack.split(",")[1], pack.split(",")[2]);
         }
         else if (msg.contains("THEORY_NOT_DEBUNKED")) {
             JOptionPane.showMessageDialog(this, "Theory not debunked");
@@ -262,9 +262,10 @@ public class PublicationArea extends JPanel implements Observer{
             JOptionPane.showMessageDialog(this, "Cannot endorse your own theory");
         }
         else if (msg.contains("THEORY_ENDORSED")){
-            JOptionPane.showMessageDialog(this, "Theory endorsed");
+            //JOptionPane.showMessageDialog(this, "Theory endorsed");
             // add username of the player who endorsed the theory
-            theoryBoard.addEndorsement(GameBoardController.getInstance().getPlayer().getName());
+            String pack = msg.split(":")[1];
+            theoryBoard.addEndorsement(pack.split(",")[0], pack.split(",")[1]);
         }
     }
 }

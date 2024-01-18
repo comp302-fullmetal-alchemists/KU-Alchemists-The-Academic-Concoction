@@ -1,5 +1,6 @@
 package system.domain.controllers;
 
+import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.util.IngredientFactory;
 
@@ -23,18 +24,24 @@ public class Player {
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
         this.inventory = new InventoryController();
+        GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(this);
+        GameBoardController.getInstance().getGameLog().recordLogSilent(this, "KU Alchemist", name, "Game has started!", 0);
+
     }
 
     public void setPlayerUI(Observer observer) {
     	this.playerUI = observer;
-        GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
-
+        for(GameAction g: GameBoardController.getInstance().getGameLog().getGameActionsOf(this)) {
+            appendToGameLog(g.toString());
+        }
     }
     
     /**********Getters and Setters******************/
 
     public void appendToGameLog(String text) {
-        playerUI.update("GAMELOG:"+text);
+        if (playerUI != null) {
+            playerUI.update("GAMELOG:"+text);
+        }
     }
 
     public void setName(String name) {
@@ -47,6 +54,10 @@ public class Player {
 
     public Boolean isInTurn() {
         return turn;
+    }
+
+    public int getTurn() {
+        return turnsLeft;
     }
 
     public void changeTurn() {

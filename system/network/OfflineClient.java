@@ -5,9 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import system.domain.Alchemy;
 import system.domain.IngredientCard;
+import system.domain.Theory;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
+import system.domain.controllers.GameLogController;
 import system.domain.controllers.Player;
 import system.domain.util.IngredientFactory;
 
@@ -17,10 +20,12 @@ public class OfflineClient implements IClientAdapter {
     private List<Player> players;
     private int playerNum;
     private int currentPlayer;
+    private GameLogController gamelog;
     
     public OfflineClient(OfflineServer server) {
         this.server = server;
         this.players = new ArrayList<Player>();
+        this.gamelog = GameBoardController.getInstance().getGameLog();
     }
 
     
@@ -69,7 +74,6 @@ public class OfflineClient implements IClientAdapter {
         for (Player p: players) {
             p.getInventory().initializeIngredients(IngredientFactory.getInstance().createIngredient(random.nextInt(8)), 
                                                    IngredientFactory.getInstance().createIngredient(random.nextInt(8)));
-            GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(p);
         }
         GameBoardController.getInstance().initializeTheBoard();
         Collections.shuffle(players);
@@ -118,5 +122,48 @@ public class OfflineClient implements IClientAdapter {
     public void takeIngredientIndex(int index) {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
+
+
+    @Override
+    public void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName) {
+        for (Player p: players) {
+            if (!p.getName().equals(playerName)) {
+                gamelog.recordLog(p, "Academy", p.getName(), String.format("%s published the Theory with %s and %s!", playerName, ingredient, alchemy.toString()), 2);
+            }
+        }
+    }
+
+    @Override
+    public void reportEndorseTheoryToServer(String ingredient, String playerName, String ownerName) {
+        for (Player p: players) {
+            if (!p.getName().equals(playerName)) {
+                if (p.getName().equals(ownerName)) {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s paid 1 gold to endorse your theory!", playerName), 2);
+                    p.getInventory().updateGold(1);
+                }
+                else {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", playerName, ownerName, ingredient), 2);
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void reportDebunkTheoryToServer(Alchemy alchemy, String ingredient, String playerName, String ownerName) {
+        for (Player p: players) {
+            if (!p.getName().equals(playerName)) {
+                if (p.getName().equals(ownerName)) {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
+                }
+                else {
+                    gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked the Theory of %s about %s!", playerName, ownerName, ingredient), 0);
+
+                }
+            }
+        }
+    }
+
+
 
 }

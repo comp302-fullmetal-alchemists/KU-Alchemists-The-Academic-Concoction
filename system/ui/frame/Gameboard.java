@@ -119,7 +119,7 @@ public class Gameboard extends JFrame implements Observer{
 		playerPane.addPlayerDashboard(gameController.getPlayer());
 		playerPane.changeView(gameController.getPlayer().getName());
 	}
-	
+
 	public void changePlayer() {
 		playerPane.addPlayerDashboard(gameController.getPlayer());
 		JOptionPane.showMessageDialog(this, String.format("It is now %s's turn", gameController.getPlayer().getName()));

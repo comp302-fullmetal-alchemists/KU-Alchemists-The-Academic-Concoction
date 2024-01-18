@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import system.domain.Alchemy;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
@@ -209,6 +210,24 @@ public class OnlineClient extends Thread implements IClientAdapter {
     @Override
     public void takeIngredientIndex(int index) {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
+    }
+
+    @Override
+    public void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reportPublishTheoryToServer'");
+    }
+
+    @Override
+    public void reportEndorseTheoryToServer(String ingredient, String playerName, String ownerName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reportEndorseTheoryToServer'");
+    }
+
+    @Override
+    public void reportDebunkTheoryToServer(Alchemy alchemy, String ingredient, String playerName, String ownerName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reportDebunkTheoryToServer'");
     }
 
 }
