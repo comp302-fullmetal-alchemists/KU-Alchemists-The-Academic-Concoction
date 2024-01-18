@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import system.domain.interfaces.Observer;
 import system.network.IClientAdapter;
 import system.network.IServerAdapter;
 import system.network.OfflineClient;
@@ -17,6 +18,7 @@ public class WelcomeController {
 
     public WelcomeController() {
         System.out.println(System.getProperty("os.name"));
+
     }
 
     public void offlineHostingMode(int numberOfPlayers) {
@@ -45,9 +47,12 @@ public class WelcomeController {
             GameBoardController.getInstance().setClientAdapter(client);
             Thread clientThread = new Thread((Runnable) client);
             clientThread.start();
-        } catch (IOException e) { 
-            e.printStackTrace();
         }
+        catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        
     }
 
     public void authentication() {
@@ -127,5 +132,11 @@ public class WelcomeController {
         }
         return null;
     }
+
+    public IServerAdapter getServer() {
+        return server;
+    }
+
+    
 
 }

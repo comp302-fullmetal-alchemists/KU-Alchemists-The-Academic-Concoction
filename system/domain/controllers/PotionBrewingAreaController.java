@@ -107,6 +107,10 @@ public class PotionBrewingAreaController implements Collector{
     
 
     public void sellPotion(){
+        if (mediator.getPlayer().getRound() == 1) {
+            potionBrewingUI.update("NO_SELL_FIRST_ROUND");
+            return;
+        }
         if(potionToSell != null){//If there is a potion to sell
             if (potionToSell.getStatus().substring(potionToSell.getStatus().length() - 1).equals("+")){ //if its positive give 3 golds
                 offer = 3;
