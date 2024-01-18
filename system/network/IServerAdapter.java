@@ -30,4 +30,6 @@ public interface IServerAdapter {
     void requestIngredient();
 
     void stopServer();
+
+    Integer getClientSize();
 }

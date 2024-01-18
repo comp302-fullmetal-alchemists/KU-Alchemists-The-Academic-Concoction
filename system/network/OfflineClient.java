@@ -172,4 +172,10 @@ public class OfflineClient implements IClientAdapter {
     }
 
 
+    @Override
+    public void reportExitGameToServer() {
+        System.exit(0);
+    }
+
+
 }

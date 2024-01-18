@@ -114,4 +114,9 @@ public class OfflineServer implements IServerAdapter {
         throw new UnsupportedOperationException("Unimplemented method 'stopServer'");
     }
 
+    @Override
+    public Integer getClientSize() {
+        return clients.size();
+    }
+
 }

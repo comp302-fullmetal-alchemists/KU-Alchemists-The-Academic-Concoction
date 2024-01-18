@@ -45,11 +45,14 @@ public class OnlineServer extends Thread implements IServerAdapter {
     }
 
     public void stopServer() {
-        running = false;
         try {
-            for (ClientHandler client: clients) {
-                client.clientSocket.close();
-            }
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            running = false;
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,17 +116,18 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 }
     
             } catch (IOException e) {
-                System.out.println("Exception in ClientHandler: " + e.getMessage());
-                e.printStackTrace();
+                System.out.println("[SERVER] Exception in ClientHandler: " + e.getMessage());
+                //e.printStackTrace();
             } finally {
                 try {
                     clientSocket.close();
+                    removeClient(this);
+                    if (clients.isEmpty()) stopServer();
                 } catch (IOException ex) {
                     System.out.println("Exception while closing client socket: " + ex.getMessage());
                     ex.printStackTrace();
                 }
-                server.removeClient(this);
-                System.out.println("ClientHandler terminated for client: " + clientSocket);
+                System.out.println("[SERVER] ClientHandler terminated for client: " + clientSocket);
             }
         }
 
@@ -165,6 +169,9 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 else if (message.contains("endorse")) {
                     reportEndorseTheoryToClients(message);
                 }
+                else if (message.contains("exit_game")) {
+                    reportClientsToExit();
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -181,6 +188,23 @@ public class OnlineServer extends Thread implements IServerAdapter {
     @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = clients.size();
+    }
+
+    @Override
+    public Integer getClientSize() {
+        return clients.size();
+    }
+
+    public void reportClientsToExit() {
+        for (ClientHandler client: clients) {
+            try {
+                client.getWriter().writeUTF("exit_game");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+        }
+        //stopServer();
     }
 
     private void reportPublishTheoryToClients(String message) {

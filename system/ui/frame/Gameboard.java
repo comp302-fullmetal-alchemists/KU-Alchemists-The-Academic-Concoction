@@ -98,8 +98,12 @@ public class Gameboard extends JFrame implements Observer{
 				dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 				dialog.setVisible(true);
 				if (pane.getValue() == "Yes") {
-					GameBoardController.getInstance().getClientAdapter().reportExitGameToServer();
-					System.exit(0);
+					if (GameBoardController.getInstance().getClientAdapter() != null) {
+						GameBoardController.getInstance().getClientAdapter().reportExitGameToServer();
+					}
+					else {
+						System.exit(0);
+					}
 				}
 			}
 		});
@@ -127,7 +131,9 @@ public class Gameboard extends JFrame implements Observer{
 		else if (msg.equals("AUTHENTICATION")) {
 			showAuthenticationPanel();
 		}
-		
+		else if (msg.equals("NEW_GAME")) {
+			showWelcomePagePanel();
+		}
 	}
 	
 	public void clear() {

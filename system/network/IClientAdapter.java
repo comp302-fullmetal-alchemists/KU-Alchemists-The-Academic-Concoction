@@ -46,6 +46,9 @@ public interface IClientAdapter {
     void reportEndorseTheoryToServer(String ingredient, String playerName, String ownerName);
 
     void reportDebunkTheoryToServer(Alchemy alchemy, String ingredient, String playerName, String ownerName);
+    
     void closeResources();
+
+    void reportExitGameToServer();
 
 }

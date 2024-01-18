@@ -115,6 +115,10 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.contains("endorse")) {
                     addEndorsedTheory(message);
                 }
+                else if (message.equals("exit_game")) {
+                    closeResources();
+                    System.exit(0);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -308,10 +312,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
     public void reportExitGameToServer() {
         try {
             toServer.writeUTF("exit_game");
-            socket.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 }

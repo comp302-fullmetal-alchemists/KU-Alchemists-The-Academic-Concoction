@@ -15,7 +15,6 @@ import system.network.OnlineServer;
 public class WelcomeController {
 
     private IServerAdapter server;
-    private int player_count = 0;
     private Observer observer;
 
     public WelcomeController() {
@@ -28,9 +27,6 @@ public class WelcomeController {
         server.setPlayerNumber(numberOfPlayers);
     }
 
-    public int getPlayerCount(){
-        return player_count;
-    }
     public void onlineHostingMode(int Port) {
         try {
             this.server = new OnlineServer(Port);
@@ -133,11 +129,6 @@ public class WelcomeController {
             }
         }
         return null;
-    }
-
-    public void incrementPlayerCount(){
-        player_count++;
-        observer.update("PLAYER_JOINED") ;
     }
 
     public IServerAdapter getServer() {
