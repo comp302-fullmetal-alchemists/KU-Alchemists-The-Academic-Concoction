@@ -1,6 +1,7 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
+import system.network.OnlineClient;
 import system.ui.frame.Gameboard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
@@ -65,11 +66,12 @@ public class PlayerDashboard extends JPanel implements Observer {
         lblInventory.setBounds(22, 50, 88, 13);
         add(lblInventory);
         
-        //USER IN TEXT GİRDİĞİ YER
-        userInputField = new JTextField("write message");
-        userInputField.setBounds(22, 466, 88, 25); // Adjust the position and size as needed
-        userInputField.setFont(new Font("Arial", Font.PLAIN, 20));
-        userInputField.addKeyListener(new KeyAdapter() {
+        if (GameBoardController.getInstance().getClientAdapter().getMode().equals("Online")) {
+            //USER IN TEXT GİRDİĞİ YER
+            userInputField = new JTextField("write message");
+            userInputField.setBounds(22, 466, 88, 25); // Adjust the position and size as needed
+            userInputField.setFont(new Font("Arial", Font.PLAIN, 20));
+            userInputField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -80,7 +82,9 @@ public class PlayerDashboard extends JPanel implements Observer {
                 }
             }
         });
-        add(userInputField);
+            add(userInputField);
+        }
+        
 
         gameLogDisplayInit();
         add(gameLogDisplay);

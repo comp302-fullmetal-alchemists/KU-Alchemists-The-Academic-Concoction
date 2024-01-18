@@ -355,4 +355,9 @@ public class OnlineClient extends Thread implements IClientAdapter {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String getMode() {
+        return "Online";
+    }
 }

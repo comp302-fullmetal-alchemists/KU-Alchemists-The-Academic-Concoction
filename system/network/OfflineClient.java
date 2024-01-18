@@ -217,5 +217,11 @@ public class OfflineClient implements IClientAdapter {
         }
         GameBoardController.getInstance().showEndgameScreen(message);
     }
+
+
+    @Override
+    public String getMode() {
+        return "Offline";
+    }
     
 }

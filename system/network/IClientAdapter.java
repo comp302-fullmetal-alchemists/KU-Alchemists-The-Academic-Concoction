@@ -50,4 +50,6 @@ public interface IClientAdapter {
 
     void send(String string);
 
+    Object getMode();
+
 }
