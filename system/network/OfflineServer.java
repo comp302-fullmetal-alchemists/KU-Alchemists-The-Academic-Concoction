@@ -107,4 +107,11 @@ public class OfflineServer implements IServerAdapter {
         else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
     }
 
+
+    @Override
+    public void stopServer() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stopServer'");
+    }
+
 }

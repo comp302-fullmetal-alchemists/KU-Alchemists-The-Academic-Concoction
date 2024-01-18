@@ -123,7 +123,8 @@ public class OnlineClient extends Thread implements IClientAdapter {
         // Add other message handling logic here
     }
 
-    private void closeResources() {
+    @Override
+    public void closeResources() {
         try {
 
             if (socket != null) {

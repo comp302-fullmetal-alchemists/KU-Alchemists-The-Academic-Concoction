@@ -166,4 +166,10 @@ public class OfflineClient implements IClientAdapter {
 
 
 
+    public void closeResources() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'closeResources'");
+    }
+
+
 }

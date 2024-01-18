@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import system.domain.controllers.GameBoardController;
+
 import java.util.ArrayList;
 
 public class OnlineServer extends Thread implements IServerAdapter {
@@ -25,6 +28,8 @@ public class OnlineServer extends Thread implements IServerAdapter {
     private BufferedReader fromServer;
     private List<String> usernames;
     private List<Integer> ingredientPile;
+    private GameBoardController gameBoardController;
+    private volatile boolean running = true;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -39,8 +44,20 @@ public class OnlineServer extends Thread implements IServerAdapter {
         Collections.shuffle(ingredientPile);
     }
 
+    public void stopServer() {
+        running = false;
+        try {
+            for (ClientHandler client: clients) {
+                client.clientSocket.close();
+            }
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void run() {
-        while (true) {
+        while (running) {
             try {
                 if (clients.size() < MAX_CLIENTS) {
                     System.out.println("[SERVER] Waiting for clients on port " + serverSocket.getLocalPort() + "...");
@@ -48,15 +65,19 @@ public class OnlineServer extends Thread implements IServerAdapter {
                     System.out.println("[SERVER] Client connected: " + clientSocket);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                     clients.add(clientHandler);
+                    //gameBoardController.getWelcomeController().setPlayer
                     clientExecutor.execute(clientHandler);
                 }
             } catch (IOException e) {
-                if (!serverSocket.isClosed()) {
-                    e.printStackTrace();
+                if (!running) {
+                    System.out.println("[SERVER] Server stopped.");
+                    break;
                 }
+                e.printStackTrace();
             }
         }
     }
+
 
 
 
