@@ -1,4 +1,5 @@
 package system.ui.panels;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
@@ -40,11 +41,11 @@ public class PublicationArea extends JPanel implements Observer{
         setBackground(new Color(58, 77, 108));
         //create back button
         this.back = createNavButton("village", "Back to the village");
-        back.setBounds(31, 25, 99, 101);
+        back.setBounds(58, 643, 174, 41);
         add(back);
 
         //create alchemy buttons 1 to 8
-        alchemy1 = new JButton("Alchemy 1");
+        alchemy1 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy1.png")));
 		alchemy1.addActionListener(new ActionListener() {
             //set alchemy to alchemy 1 after clicking
 
@@ -52,11 +53,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(1);
 			}
 		});
-		alchemy1.setBounds(183, 25, 95, 39);
+		alchemy1.setBounds(83, 25, 75, 75);
 
 		add(alchemy1);
 
-		alchemy2 = new JButton("Alchemy 2");
+		alchemy2 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy2.png")));
 		alchemy2.addActionListener(new ActionListener() {
             //set alchemy to alchemy 2 after clicking
 
@@ -64,11 +65,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(2);
 			}
 		});
-		alchemy2.setBounds(330, 25, 95, 39);
+		alchemy2.setBounds(238, 25, 75, 75);
 
 		add(alchemy2);
 
-		alchemy3 = new JButton("Alchemy 3");
+		alchemy3 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy3.png")));
 		alchemy3.addActionListener(new ActionListener() {
             //set alchemy to alchemy 3 after clicking
 
@@ -76,11 +77,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(3);
 			}
 		});
-		alchemy3.setBounds(478, 25, 95, 39);
+		alchemy3.setBounds(415, 25, 75, 75);
 
 		add(alchemy3);
 
-		alchemy4 = new JButton("Alchemy 4");
+		alchemy4 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy4.png")));
 		alchemy4.addActionListener(new ActionListener() {
             //set alchemy to alchemy 4 after clicking
 
@@ -88,11 +89,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(4);
 			}
 		});
-		alchemy4.setBounds(624, 25, 95, 39);
+		alchemy4.setBounds(587, 25, 75, 75);
 
 		add(alchemy4);
 
-		alchemy5 = new JButton("Alchemy 5");
+		alchemy5 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy5.png")));
 		alchemy5.addActionListener(new ActionListener() {
             //set alchemy to alchemy 5 after clicking
 
@@ -100,11 +101,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(5);
 			}
 		});
-		alchemy5.setBounds(183, 87, 95, 39);
+		alchemy5.setBounds(83, 137, 75, 75);
 
 		add(alchemy5);
 
-		alchemy6 = new JButton("Alchemy 6");
+		alchemy6 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy6.png")));
 		alchemy6.addActionListener(new ActionListener() {
             //set alchemy to alchemy 6 after clicking
 
@@ -112,11 +113,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(6);
 			}
 		});
-		alchemy6.setBounds(330, 87, 95, 39);
+		alchemy6.setBounds(238, 137, 75, 75);
 
 		add(alchemy6);
 
-		alchemy7 = new JButton("Alchemy 7");
+		alchemy7 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy7.png")));
 		alchemy7.addActionListener(new ActionListener() {
             //set alchemy to alchemy 7 after clicking
 
@@ -124,11 +125,11 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(7);
 			}
 		});
-		alchemy7.setBounds(478, 87, 95, 39);
+		alchemy7.setBounds(415, 137, 75, 75);
 
 		add(alchemy7);
 
-		alchemy8 = new JButton("Alchemy 8");
+		alchemy8 = new JButton(new ImageIcon(getClass().getResource("/resources/alchemy8.png")));
 		alchemy8.addActionListener(new ActionListener() {
             //set alchemy to alchemy 8 after clicking
 
@@ -136,25 +137,25 @@ public class PublicationArea extends JPanel implements Observer{
                 publicationAreaController.setAlchemy(8);
 			}
 		});
-		alchemy8.setBounds(624, 87, 95, 39);
+		alchemy8.setBounds(587, 137, 75, 75);
 		add(alchemy8);
 
         //create theory board inside publication area
 
 
         this.theoryBoard = new TheoryBoard();
-        theoryBoard.setBounds(31, 136, 688, 487);
+        theoryBoard.setBounds(58, 249, 629, 382);
         add(theoryBoard);
 
         //create submit button
 
         this.submitButton = new JButton("Submit");
-        submitButton.setBounds(225, 643, 128, 31);
+        submitButton.setBounds(261, 643, 128, 41);
         addActiontoButton(submitButton);
         add(submitButton);
 
         this.debunkButton = new JButton("Debunk");
-        debunkButton.setBounds(375, 643, 128, 31);
+        debunkButton.setBounds(406, 643, 128, 41);
         debunkButton.addActionListener(
             new ActionListener() {
                 @Override
@@ -167,7 +168,7 @@ public class PublicationArea extends JPanel implements Observer{
 
         // create endorse button
         JButton endorseButton = new JButton("Endorse");
-        endorseButton.setBounds(525, 643, 128, 31);
+        endorseButton.setBounds(559, 643, 128, 41);
         endorseButton.addActionListener(
             new ActionListener() {
                 @Override
@@ -180,7 +181,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 
         this.theoryController = GameBoardController.getInstance().getTheoryController();
-        theoryController.setObserver(this);
+
     }
 
 
@@ -277,5 +278,4 @@ public class PublicationArea extends JPanel implements Observer{
             JOptionPane.showMessageDialog(this, "Cannot debunk theory until final round");
         }
     }
-
 }

@@ -26,6 +26,7 @@ public class TheoryBoard extends JPanel{
 
     public TheoryBoard(){
         super();
+        setBackground(new Color(58, 77, 108));
         setLayout(null);
         this.theoryController = GameBoardController.getInstance().getTheoryController();
         //create theory books
@@ -35,7 +36,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook1.setBackground(new Color(204, 204, 255));
 		theoryBook1.setOpaque(true);
 		theoryBook1.setHorizontalAlignment(SwingConstants.CENTER);
-		theoryBook1.setBounds(32, 53, 100, 118);
+		theoryBook1.setBounds(62, 20, 90, 150);
 		// set a photo for the theory book
 		theoryBook1.setIcon(new ImageIcon(getClass().getResource("/resources/theory.png")));
 		//theoryBook1.setBounds(32, 53, 150, 140);
@@ -54,7 +55,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook2.setOpaque(true);
 		theoryBook2.setBackground(new Color(204, 204, 255));
 		theoryBook2.setHorizontalAlignment(SwingConstants.CENTER);
-		theoryBook2.setBounds(200, 53, 100, 118);
+		theoryBook2.setBounds(194, 20, 90, 150);
         theoryBook2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -70,7 +71,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook3.setOpaque(true);
 		theoryBook3.setBackground(new Color(204, 204, 255));
 		theoryBook3.setHorizontalAlignment(SwingConstants.CENTER);
-		theoryBook3.setBounds(361, 53, 100, 118);
+		theoryBook3.setBounds(326, 20, 90, 150);
         theoryBook3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -86,7 +87,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook4.setBackground(new Color(204, 204, 255));
 		theoryBook4.setOpaque(true);
 		theoryBook4.setHorizontalAlignment(SwingConstants.CENTER);
-		theoryBook4.setBounds(538, 53, 100, 118);
+		theoryBook4.setBounds(458, 20, 90, 150);
         theoryBook4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -102,7 +103,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook5.setBackground(new Color(204, 204, 255));
 		theoryBook5.setOpaque(true);
 		theoryBook5.setHorizontalAlignment(SwingConstants.CENTER);
-		theoryBook5.setBounds(32, 259, 100, 118);
+		theoryBook5.setBounds(62, 207, 90, 150);
         theoryBook5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -117,7 +118,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook6.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook6.setBackground(new Color(204, 204, 255));
 		theoryBook6.setOpaque(true);
-		theoryBook6.setBounds(200, 259, 100, 118);
+		theoryBook6.setBounds(194, 207, 90, 150);
         theoryBook6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -133,7 +134,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook7.setBackground(new Color(204, 204, 255));
 		theoryBook7.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook7.setOpaque(true);
-		theoryBook7.setBounds(361, 259, 100, 118);
+		theoryBook7.setBounds(326, 207, 90, 150);
         theoryBook7.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -150,7 +151,7 @@ public class TheoryBoard extends JPanel{
 		theoryBook8.setHorizontalAlignment(SwingConstants.CENTER);
 		theoryBook8.setBackground(new Color(204, 204, 255));
 		theoryBook8.setOpaque(true);
-		theoryBook8.setBounds(535, 259, 100, 118);
+		theoryBook8.setBounds(458, 207, 90, 150);
         theoryBook8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
