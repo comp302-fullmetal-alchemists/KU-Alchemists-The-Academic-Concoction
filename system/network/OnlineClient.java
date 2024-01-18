@@ -302,4 +302,15 @@ public class OnlineClient extends Thread implements IClientAdapter {
             }
         }
     }
+
+    @Override
+    public void reportExitGameToServer() {
+        try {
+            toServer.writeUTF("exit_game");
+            socket.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

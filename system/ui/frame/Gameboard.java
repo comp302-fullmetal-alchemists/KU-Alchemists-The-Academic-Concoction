@@ -87,6 +87,24 @@ public class Gameboard extends JFrame implements Observer{
 			}
 		});
 		menuBar.add(pauseButton);
+
+		JButton exitButton = new JButton("Exit Game");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String options[] = {"Yes", "No"};
+				JOptionPane pane = new JOptionPane("Are you sure you want to exit?", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options , null);
+				JDialog dialog = pane.createDialog(null, "Exit Game");
+				dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+				dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+				dialog.setVisible(true);
+				if (pane.getValue() == "Yes") {
+					GameBoardController.getInstance().getClientAdapter().reportExitGameToServer();
+					System.exit(0);
+				}
+			}
+		});
+		menuBar.add(exitButton);
+
 		validate();
 		repaint();
 	}
