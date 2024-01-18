@@ -1,26 +1,23 @@
 package system.ui.frame;
 
 import java.awt.Dialog;
-import java.awt.EventQueue;
-
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JMenuBar;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import system.ui.panels.AuthenticationPanel;
+import system.ui.panels.EndGamePanel;
 import system.ui.panels.HelpScreenPanel;
 import system.ui.panels.HostingScreen;
 import system.ui.panels.OnlineGamePanel;
 import system.ui.panels.WaitingScreen;
 import system.ui.panels.WelcomePagePanel;
-
-import javax.swing.JMenuBar;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
 public class Gameboard extends JFrame implements Observer{
@@ -35,6 +32,9 @@ public class Gameboard extends JFrame implements Observer{
 	OnlineGamePanel onlinePanel;
 	WaitingScreen waitingScreen;
 	HostingScreen hostingScreen;
+	EndGamePanel endGamePanel;
+	PlayerContentPane playerContentPane;
+	GameContentPane gameContentPane;
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,6 +134,9 @@ public class Gameboard extends JFrame implements Observer{
 		else if (msg.equals("NEW_GAME")) {
 			showWelcomePagePanel();
 		}
+		else if(msg.equals("END_GAME")){
+			showEndGamePanel();
+		}
 	}
 	
 	public void clear() {
@@ -203,5 +206,15 @@ public class Gameboard extends JFrame implements Observer{
 		revalidate();
 		repaint();
 	}
+	public void showEndGamePanel() {
+		getContentPane().remove(playerContentPane);
+		getContentPane().remove(gameContentPane);
+		getContentPane().add(endGamePanel);
+		setVisible(true);
+		revalidate();
+		repaint();
+	}
+
+
 
 }

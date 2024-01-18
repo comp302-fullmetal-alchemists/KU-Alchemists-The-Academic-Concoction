@@ -1,7 +1,7 @@
 package system.network;
 
 import system.domain.controllers.GameBoardController;
-
+import system.domain.interfaces.Observer;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class OfflineServer implements IServerAdapter {
     private int currentClient = 0;
     private List<OfflineClient> clients;
     private List<Integer> ingredients;
-
+    private Observer observer;
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
@@ -91,8 +91,21 @@ public class OfflineServer implements IServerAdapter {
 
     @Override
     public void newRound() {
-        currentClient = 0;
-        rounds += 1;
+        if(rounds <= 3){
+            currentClient = 0;
+            rounds += 1;
+        }
+        else{
+            //offline clientstan winner() çağır
+           for(OfflineClient c: clients){
+                c.winner();
+                observer.update("END_GAME");
+                
+           }
+            //display Game over screen 
+            //announce game over call calculate Final score func.
+        }
+        
         //if round is 3 call a function to finish game
         if (rounds == 3) {
             //endgame
@@ -121,5 +134,7 @@ public class OfflineServer implements IServerAdapter {
     public Integer getClientSize() {
         return clients.size();
     }
+
+
 
 }
