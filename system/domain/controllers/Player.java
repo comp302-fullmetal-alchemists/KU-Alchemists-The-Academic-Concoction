@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private Boolean turn;
     private int turnsLeft;
+    private int round;
     private Icon token;
     private int reputationPoint;
     private int sicknessPoint;
@@ -23,6 +24,7 @@ public class Player {
         this.token = token;
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
+        this.round = 0;
         this.inventory = new InventoryController();
         GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(this);
         GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
@@ -63,6 +65,7 @@ public class Player {
     public void changeTurn() {
         if (!turn) {
             turnsLeft = 3;
+            round += 1;
         }
         turn = !turn;
     }
@@ -88,6 +91,10 @@ public class Player {
 
     public int getSickness(){
         return sicknessPoint;
+    }
+
+    public int getRound() {
+        return round;
     }
     
     public InventoryController getInventory() {

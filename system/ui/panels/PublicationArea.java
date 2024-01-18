@@ -267,6 +267,15 @@ public class PublicationArea extends JPanel implements Observer{
             String pack = msg.split(":")[1];
             theoryBoard.addEndorsement(pack.split(",")[0], pack.split(",")[1]);
         }
+        else if (msg.contains("CANNOT_PUBLISH_THEORY_IN_ROUND_1")) {
+            JOptionPane.showMessageDialog(this, "Cannot publish theory in round 1, wait for round 2");
+        }
+        else if (msg.contains("CANNOT_ENDORSE_THEORY_UNTIL_FINAL_ROUND")) {
+            JOptionPane.showMessageDialog(this, "Cannot endorse theory until final round");
+        }
+        else if (msg.contains("CANNOT_DEBUNK_THEORY_UNTIL_FINAL_ROUND")) {
+            JOptionPane.showMessageDialog(this, "Cannot debunk theory until final round");
+        }
     }
 
 }

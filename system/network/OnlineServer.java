@@ -30,6 +30,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
     private List<Integer> ingredientPile;
     private GameBoardController gameBoardController;
     private volatile boolean running = true;
+    private List<String> scoreList;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -37,6 +38,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
         this.clients = Collections.synchronizedList(new ArrayList<ClientHandler>());
         fromServer = new BufferedReader(new InputStreamReader(System.in));
         usernames = new ArrayList<String>();
+        scoreList = new ArrayList<String>();
         ingredientPile = new ArrayList<Integer>();
         for (int i = 0; i < 24; i++) {
             ingredientPile.add(i % 8);
@@ -68,7 +70,6 @@ public class OnlineServer extends Thread implements IServerAdapter {
                     System.out.println("[SERVER] Client connected: " + clientSocket);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                     clients.add(clientHandler);
-                    //gameBoardController.getWelcomeController().setPlayer
                     clientExecutor.execute(clientHandler);
                 }
             } catch (IOException e) {
@@ -172,6 +173,12 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 else if (message.contains("exit_game")) {
                     reportClientsToExit();
                 }
+                else if (message.contains("my_score:")) {
+                    scoreList.add(message);
+                    if (scoreList.size() == clients.size()) {
+                        showEndgameScreen();
+                    }
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -179,6 +186,30 @@ public class OnlineServer extends Thread implements IServerAdapter {
         }
 
         
+
+        private void showEndgameScreen() {
+            String winner = "";
+            int maxScore = 0;
+            for (String score: scoreList) {
+                String[] scoreSplit = score.split(":");
+                if (Integer.parseInt(scoreSplit[2]) > maxScore) {
+                    maxScore = Integer.parseInt(scoreSplit[2]);
+                    winner = scoreSplit[1];
+                }
+            }
+
+            String message = "show_endgame_screen:" + winner +":" + maxScore;
+            for (String score : scoreList) {
+                message += ":" + score;
+            }
+            for (ClientHandler client: clients) {
+                try {
+                    client.getWriter().writeUTF(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         public DataOutputStream getWriter() {
             return writer;
@@ -313,6 +344,15 @@ public class OnlineServer extends Thread implements IServerAdapter {
     public void newRound() {
         currentClient = 0;
         rounds += 1;
+        if (rounds == 3) {
+            for (ClientHandler client: clients) {
+                try {
+                    client.getWriter().writeUTF("calculate_final_score");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

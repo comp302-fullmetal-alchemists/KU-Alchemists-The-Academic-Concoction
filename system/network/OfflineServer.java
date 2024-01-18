@@ -94,6 +94,9 @@ public class OfflineServer implements IServerAdapter {
         currentClient = 0;
         rounds += 1;
         //if round is 3 call a function to finish game
+        if (rounds == 3) {
+            //endgame
+        }
     }
 
     @Override

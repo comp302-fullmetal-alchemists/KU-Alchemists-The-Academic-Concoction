@@ -116,6 +116,19 @@ public class OnlineClient extends Thread implements IClientAdapter {
                     closeResources();
                     System.exit(0);
                 }
+                else if (message.equals("calculate_final_score")) {
+                    //calculate final score and send it to server
+                    //message olarak player name and score 
+                    //my_score:player_name:score
+                    /* 
+                    Player p = GameBoardController.getInstance().getPlayer();
+                    String score = String.format("my_score:%s:%d", p.getName(), p.getScore());
+                    toServer.writeUTF(score);
+                    */
+                }
+                else if (message.contains("show_endgame_screen")) {
+                    
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
