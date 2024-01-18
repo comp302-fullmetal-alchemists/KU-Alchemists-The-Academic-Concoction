@@ -1,18 +1,14 @@
 package system.network;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import system.domain.Alchemy;
-import system.domain.Theory;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.GameLogController;
@@ -23,17 +19,18 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private Socket socket;
     private DataInputStream fromServer;
     private DataOutputStream toServer;
-    private BufferedReader fromUser;
     private GameLogController gamelog;
     
     private static final String LOCALHOST = "127.0.0.1"; 
 
     public OnlineClient(String ip, int port) throws IOException {
         this.gamelog = GameBoardController.getInstance().getGameLog();
+        if (ip.equals("")) {
+            ip = LOCALHOST;
+        }
         this.socket = new Socket(ip, port);
         this.fromServer = new DataInputStream(socket.getInputStream());
         this.toServer = new DataOutputStream(socket.getOutputStream());
-        this.fromUser = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("[CLIENT] Connected to server on port " + port);
     }
 
@@ -124,7 +121,6 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 e.printStackTrace();
             }
         
-        // Add other message handling logic here
     }
 
     @Override

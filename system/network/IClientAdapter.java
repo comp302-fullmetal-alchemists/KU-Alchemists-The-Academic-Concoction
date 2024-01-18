@@ -1,9 +1,6 @@
 package system.network;
 
 import system.domain.Alchemy;
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
-import system.domain.Theory;
 import system.domain.controllers.Player;
 
 import java.util.List;

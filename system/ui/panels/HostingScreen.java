@@ -89,6 +89,9 @@ public class HostingScreen extends JPanel {
     }
 
     private void updatePlayerCountLabel() {
+        if (controller.getServer() == null) {
+            return;
+        }
         int playerCount = controller.getServer().getClientSize();
         playerCountLabel.setText("Current number of players: " + playerCount);
     }
