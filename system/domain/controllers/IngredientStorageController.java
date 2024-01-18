@@ -119,6 +119,7 @@ public class IngredientStorageController implements Collector{
                 for (ArtifactCard ac: artifactPile) {
                     if (cardName.equals(ac.getName())) {
                          card = ac;
+                         
                     }
                 }
                 mediator.getPlayer().getInventory().updateGold(-3);

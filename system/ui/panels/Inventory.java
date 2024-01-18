@@ -307,7 +307,7 @@ public class Inventory extends JPanel implements Observer {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     Inventory.this.invController.sendArtifactCard(artifactName);;
-                    System.out.printf("artifact Clicked: %s\n", artifactName); //Testing RM LATER
+                    System.out.printf("Using Artifact:%s\n", artifactName); //Testing RM LATER
                 }
                 }); 
 

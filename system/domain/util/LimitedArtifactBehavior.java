@@ -28,6 +28,8 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
             System.out.println("Using artifact: Printing Press");
             theoryController.printingPressButton();
 
+            ingredientStorage.getIngredientStorageUI().update(String.format("PRINTING_PRESS"));
+
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {

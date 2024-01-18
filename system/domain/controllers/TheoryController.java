@@ -65,13 +65,7 @@ public class TheoryController {
         //publish the theory
         else{
 
-            // check if the player has the Printing Press card in their inventory first
-            /*Boolean containsCard = false;
-            for (ArtifactCard ac : GameBoardController.getInstance().getPlayer().getInventory().getArtifactCards()) {
-                if (ac.getName().equals("Printing Press")) {
-                    containsCard = true;
-                }
-            }*/
+            // check if the player used the Printing Press Artifact card first 
             if (printingPress) {
                 this.printingPress = false;
             }
@@ -189,6 +183,10 @@ public class TheoryController {
         return;
     }
 
+    public Observer getTheoryUI() {
+        return theoryUI;
+    }
+
 
     public List<Theory> getTheories() {
         return theories;
@@ -197,6 +195,8 @@ public class TheoryController {
     public void getTrueAlchemy() {
         
     }
+
+    
 
    
     

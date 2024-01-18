@@ -202,9 +202,10 @@ public class IngredientStorage extends JPanel implements Observer {
         }
 
         else if (msg.contains("PRINTING_PRESS")) {
-            showMessageDialog(String.format("You have drawn the Printing Press card!"));
+            showMessageDialog(String.format("You have used the Printing Press card! Your next theory will be published free of charge."));
 
         }
+    
 
         else if (msg.contains("WISDOM_IDOL")) {
             showMessageDialog(String.format("You have drawn the Wiadom Idol card!"));
