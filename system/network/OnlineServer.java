@@ -21,7 +21,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
     private final ServerSocket serverSocket;
     private int playerNum;
-    private int rounds = 0;
+    private int rounds = 2;
     private final ExecutorService clientExecutor;
     private List<ClientHandler> clients;
     private int currentClient = 0;
