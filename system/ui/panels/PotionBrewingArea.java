@@ -2,6 +2,7 @@ package system.ui.panels;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,11 +29,13 @@ public class PotionBrewingArea extends JPanel implements Observer {
     String activeText = "Make Potion";
     private JLabel lblIng1;
     private JLabel lblIng2;
+    private JComboBox<String> testSubjectBox;
     private JLabel lblPotion;
     private String ingDefault = "<html>Give<br>Ingredient</html>";
     private JButton sellPotionBtn;
     private String[] offerStrings = {"You get 1 gold - Your potion is a gamble of curse, calm or charm.", "You get 2 golds - Your potion contains no malevolence.", "You get 3 golds - Your potion is assured of goodly nature."};
     private JLabel adventurerInfo;
+    private String[] subjects = {"Student", "Yourself"};
 
 	public PotionBrewingArea() {
         super();
@@ -84,12 +87,13 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		makePotionBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (pbaController.isActive()) {
+					pbaController.setTestingSubject((String) testSubjectBox.getSelectedItem());
                     pbaController.makePotion();
                 }
 			}
 		});
 		
-		makePotionBtn.setBounds(73, 246, 160, 21);
+		makePotionBtn.setBounds(73, 304, 160, 21);
 		add(makePotionBtn);
 		
 		JLabel makePotionLabel = new JLabel("Brew Potions");
@@ -140,6 +144,19 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		lblPotion.setBackground(Color.LIGHT_GRAY);
 		lblPotion.setBounds(476, 315, 54, 54);
 		add(lblPotion);
+		
+		
+		testSubjectBox = new JComboBox<String>(subjects);
+
+		testSubjectBox.setBounds(73, 237, 160, 21);
+		testSubjectBox.setSelectedIndex(0);
+		add(testSubjectBox);
+		
+		JLabel subjectLabel = new JLabel("Test Subject");
+		subjectLabel.setForeground(Color.LIGHT_GRAY);
+		subjectLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		subjectLabel.setBounds(73, 214, 160, 13);
+		add(subjectLabel);
 		
     }
 	
@@ -216,6 +233,9 @@ public class PotionBrewingArea extends JPanel implements Observer {
             lblPotion.setText("Select a Potion");
 			lblPotion.setIcon(null);
             lblPotion.setBackground(Color.LIGHT_GRAY);
+        }
+        else if (msg.contains("STUDENT_SICK")) {
+        	showMessageDialog("You have made your student sick, you must pay for its treatment!");
         }
 		else if (msg.contains("NO_SELL_FIRST_ROUND")) {
 			showMessageDialog("You cannot sell potions in the first round, wait for second round.");

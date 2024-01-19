@@ -1,6 +1,8 @@
 package system.domain.interfaces;
 
 import system.domain.controllers.Player;
+import system.domain.IngredientCard;
+import system.domain.Potion;
 
 public interface Mediator {
 	
