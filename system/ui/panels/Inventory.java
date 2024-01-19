@@ -343,6 +343,7 @@ public class Inventory extends JPanel implements Observer {
     		artifactLabel.setBackground(new Color(49, 81, 50));
     		artifactLabel.setForeground(Color.LIGHT_GRAY);
     		artifactLabel.setBounds(x0 + 83*i, 3, 60, 100);
+            artifactLabel.setToolTipText(artifactName);
  
             artifactLabel.addMouseListener(new MouseAdapter() {
                 @Override
