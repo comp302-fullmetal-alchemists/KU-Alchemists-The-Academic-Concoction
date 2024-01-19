@@ -1,6 +1,7 @@
 package system.ui.panels;
 
 import javax.swing.ImageIcon;
+import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -12,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.SwingConstants;
-
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
 import system.domain.controllers.GameBoardController;
@@ -146,17 +146,23 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		add(lblPotion);
 		
 		
-		testSubjectBox = new JComboBox<String>(subjects);
+		/*testSubjectBox = new JComboBox<String>(subjects);
 
 		testSubjectBox.setBounds(73, 237, 160, 21);
 		testSubjectBox.setSelectedIndex(0);
-		add(testSubjectBox);
+		add(testSubjectBox);*/
 		
 		JLabel subjectLabel = new JLabel("Test Subject");
 		subjectLabel.setForeground(Color.LIGHT_GRAY);
 		subjectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		subjectLabel.setBounds(73, 214, 160, 13);
 		add(subjectLabel);
+		
+		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/resources/potion.png"));
+		Image scaledImage = originalIcon.getImage().getScaledInstance(728, 193, java.awt.Image.SCALE_SMOOTH);
+		JLabel lbl_potion = new JLabel(new ImageIcon(scaledImage));
+		lbl_potion.setBounds(10, 497, 728, 193);
+		add(lbl_potion);
 		
     }
 	
