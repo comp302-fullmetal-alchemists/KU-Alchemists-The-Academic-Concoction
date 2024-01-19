@@ -24,12 +24,14 @@ public class PotionBrewingAreaController implements Collector{
     private ArrayList<String> students;
     private IngredientCard ing1;
     private IngredientCard ing2;
+    private String testingSubject = "player";
     private Potion potionToSell;
     private Observer potionBrewingUI;
     private Mediator mediator;
     private GameLogController gameLog;
     private Boolean active = false;
     private int offer;
+
 
     public PotionBrewingAreaController() {
         this.gameLog = GameBoardController.getInstance().getGameLog();
@@ -39,6 +41,10 @@ public class PotionBrewingAreaController implements Collector{
 
     public void setObserver(Observer observer){
         this.potionBrewingUI = observer;
+    }
+    
+    public void setTestingSubject(String subject) {
+    	this.testingSubject = subject;
     }
 
     
@@ -50,7 +56,9 @@ public class PotionBrewingAreaController implements Collector{
         if (ing1 != null && ing2 != null) {
             Potion brewed = new Potion(ing1, ing2);
             mediator.sendToPlayer(brewed);
+            mediator.getPlayer().getResultsTriangle().newResult(ing1, ing2, brewed);
             potionBrewingUI.update(String.format("BREWED_POTION:%s", brewed.getStatus()));
+            makeExperiment(brewed);
 
             //GAMELOG RECORDS LOG: When a player brews a potion
             gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Everyone", String.format("Brewed potion %s", brewed.getStatus()), 0);
@@ -64,11 +72,21 @@ public class PotionBrewingAreaController implements Collector{
         }
     }
 
-    public void chooseExperiment() {
-        return;
-    }
-
-    public void makeExperiment() {
+    public void makeExperiment(Potion potion) {
+    	if (testingSubject.equals("Student")) {
+    		if(potion.getStatus().contains("-")) {
+    			mediator.getPlayer().getInventory().updateGold(-1);
+    			potionBrewingUI.update("STUDENT_SICK");
+    		}
+    	}
+    	else if (testingSubject.equals("Yourself")) {
+    		if (potion.getStatus().contains("-")) {
+    			mediator.getPlayer().updateSickness(1);
+    		}
+    		else if (potion.getStatus().contains("+")) {
+    			mediator.getPlayer().updateSickness(-1);
+    		}
+    	}
         return;
     }
 
@@ -142,7 +160,7 @@ public class PotionBrewingAreaController implements Collector{
     /* 
      * Collector interface works with mediator, they make taking objects from players easier while maintaining
      * low coupling. When a collector like potionBrewingArea is opened, player can send ingredients and potions to
-     * it by clicking those objects from its inventory.
+     * it by clicking those objects from )its inventory.
      * PotionBrewing area handles the objects it receives accordingly.
      * */
     @Override
@@ -153,15 +171,13 @@ public class PotionBrewingAreaController implements Collector{
 	            ing1 = ing;
 	
 	            potionBrewingUI.update(String.format("NEW_INGREDIENT1:%s", ing.getName()));
-	            return true;
             }
             else if (ing2 == null) {
 	            ing2 = ing;
 	
 	            potionBrewingUI.update(String.format("NEW_INGREDIENT2:%s", ing.getName()));
-	            return true;
             }
-            return false;
+            return true;
         }
 
         if (item instanceof Potion) { //if the clicked item is a potion
@@ -188,8 +204,10 @@ public class PotionBrewingAreaController implements Collector{
         active = false;
     }
 
+    
     @Override
     public boolean isActive() {
         return active;
     }
+    
 }

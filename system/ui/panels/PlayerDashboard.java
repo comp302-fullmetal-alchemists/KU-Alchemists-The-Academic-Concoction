@@ -1,9 +1,6 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
-import system.network.OnlineClient;
-import system.ui.frame.Gameboard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
@@ -20,6 +17,7 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class PlayerDashboard extends JPanel implements Observer {
     
@@ -131,9 +129,18 @@ public class PlayerDashboard extends JPanel implements Observer {
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
         }
+        else if (msg.contains("CHAT")) {
+            appendToGameLog(msg);
+        }
         else if (msg.contains("REPUTATION:")) {
-     //   else if (msg.contains("REPUTATION")) {
+            
             lblReputation.setText("Reputation: " + player.getReputation());
+        }
+        else if (msg.contains("SICKNESS")) {
+            lblSickness.setText("Sickness: "  + player.getSickness());
+        }
+        else if (msg.contains("SURGERY")) {
+        	JOptionPane.showMessageDialog(this, "You are in critical condition and in need of a surgery!");
         }
     }
 }   
