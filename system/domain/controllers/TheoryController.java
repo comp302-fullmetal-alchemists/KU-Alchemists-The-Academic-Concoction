@@ -4,7 +4,7 @@ import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
 import system.domain.util.IngredientFactory;
-
+import system.domain.ArtifactCard;
 
 import system.network.IClientAdapter;
 
@@ -37,14 +37,17 @@ public class TheoryController {
     }
 
     public void setIngredient(String ingredient) {
+        //sets the ingredient
         this.ingredient = ingredient;
     }
 
     public String getIngredient() {
+        //gets the ingredient
         return ingredient;
     }
 
     public void publishTheory(Alchemy alchemy, String ingredient, String authorName) {
+        //to make every player has the same theories when server says someone published theory, clients use this method to create same theory
         Theory theory = new Theory(alchemy, ingredient, authorName);
         theories.add(theory);
         theoryUI.update(String.format("THEORY_PUBLISHED:%s,%s,%s", alchemy.toString(), ingredient, authorName));
@@ -53,10 +56,12 @@ public class TheoryController {
 
 
     public void publishTheory(Alchemy alchemy) {
+        //round is checked
         if (mediator.getPlayer().getRound() == 1) {
             theoryUI.update("CANNOT_PUBLISH_THEORY_IN_ROUND_1");
             return;
         }
+        //check whether ingredient is chosen or not
         if (ingredient == null) {
             theoryUI.update("NO_INGREDIENT_CHOSEN");
             return;
@@ -95,13 +100,15 @@ public class TheoryController {
     }
 
     public void endorseTheory(String ingredient, String endorserName) {
+        //to make every player has the same theory board when server says someone endorse theory, clients use this method to endorse same theory
         Theory theory = getTheoryOfIngredient(ingredient);
         theory.endorsed(endorserName);
         theoryUI.update(String.format("THEORY_ENDORSED:%s,%s", ingredient, endorserName));
     }
 
     public void endorseTheory() {
-        if (mediator.getPlayer().getRound() != 3) {
+        //check if the player is in the final round
+        if (mediator.getPlayer().getRound() < 2) {
             theoryUI.update("CANNOT_ENDORSE_THEORY_UNTIL_FINAL_ROUND");
             return;
         }
@@ -113,6 +120,7 @@ public class TheoryController {
         try {
             for (Theory theory : theories) {
                 if (theory.getIngredient().equals(ingredient)) {
+                    //check if the theory is already endorsed
                     if (theory.isEndorsed()) {
                         theoryUI.update("THEORY_ALREADY_ENDORSED");
                         return;
@@ -122,6 +130,7 @@ public class TheoryController {
                         theoryUI.update("NOT_ENOUGH_GOLD");
                         return;
                     }
+                    //check if the player is the owner of the theory
                     else if(theory.getOwner().equals(mediator.getPlayer().getName())) {
                         theoryUI.update("CANNOT_ENDORSE_YOUR_OWN_THEORY");
                         return;
@@ -155,6 +164,7 @@ public class TheoryController {
     }
 
     public void debunkTheory(Alchemy alchemy, String ingredient, String debunkerName) {
+        //to make every player has the same theory board when server says someone debunk theory, clients use this method to debunk same theory
         Theory theory = getTheoryOfIngredient(ingredient);
         theory.setAlchemy(alchemy);
         theory.setOwner(debunkerName);
@@ -163,7 +173,8 @@ public class TheoryController {
     }
 
     public void debunkTheory(Alchemy alchemy) {
-        if (mediator.getPlayer().getRound() != 3) {
+        //check if the player is in the final round
+        if (mediator.getPlayer().getRound() < 2) {
             theoryUI.update("CANNOT_DEBUNK_THEORY_UNTIL_FINAL_ROUND");
             return;
         }
@@ -174,7 +185,7 @@ public class TheoryController {
         }
         try {
             Theory theory = getTheoryOfIngredient(ingredient);
-
+            //check whether theory is debunked or not
             if (theory == null) {
                 theoryUI.update("NO_THEORY_CHOSEN");
                 return;
