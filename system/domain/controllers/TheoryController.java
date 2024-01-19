@@ -101,7 +101,7 @@ public class TheoryController {
     }
 
     public void endorseTheory() {
-        if (mediator.getPlayer().getRound() < 2) {
+        if (mediator.getPlayer().getRound() != 3) {
             theoryUI.update("CANNOT_ENDORSE_THEORY_UNTIL_FINAL_ROUND");
             return;
         }
@@ -163,7 +163,7 @@ public class TheoryController {
     }
 
     public void debunkTheory(Alchemy alchemy) {
-        if (mediator.getPlayer().getRound() < 2) {
+        if (mediator.getPlayer().getRound() != 3) {
             theoryUI.update("CANNOT_DEBUNK_THEORY_UNTIL_FINAL_ROUND");
             return;
         }

@@ -214,6 +214,7 @@ public class OfflineClient implements IClientAdapter {
         String message = "show_endgame_screen";
         for (String score: scoreList) {
             message += ":" + score ;
+            System.out.println(score);
         }
         GameBoardController.getInstance().showEndgameScreen(message);
     }
