@@ -24,14 +24,15 @@ public class EndGamePanel extends JPanel {
     // Method to initialize components
     private void initializeComponents() {
         JLabel gameOverLbl = new JLabel("GAME OVER!");
-        gameOverLbl.setFont(new Font("Noteworthy", Font.BOLD | Font.ITALIC, 23));
+        gameOverLbl.setFont(new Font("Noteworthy", Font.BOLD | Font.ITALIC, 80));
         gameOverLbl.setForeground(Color.WHITE);
-        gameOverLbl.setBounds(133, 6, 242, 38);
+        gameOverLbl.setBounds(350, 70, 600, 150);
         add(gameOverLbl);
 
         JLabel winnerLbl = new JLabel("WINNER!!!!");
         winnerLbl.setForeground(Color.WHITE);
-        winnerLbl.setBounds(18, 70, 122, 16);
+        winnerLbl.setBounds(530, 200, 240, 80);
+        winnerLbl.setFont(new Font("Noteworthy", Font.BOLD | Font.ITALIC, 40));
         add(winnerLbl);
 
         updateScoreLabels();
@@ -39,23 +40,40 @@ public class EndGamePanel extends JPanel {
 
     // Method to update the score labels
     private void updateScoreLabels() {
-        int yPos = 98; // Starting Y position for the first score label
-        int yIncrement = 30; 
-
         if (!winnerList.isEmpty()) {
-            for (Entry<String, Integer> entry : winnerList.entrySet()) {
+            int lstlength = winnerList.size();
+            int xpos = 1300 / (lstlength);
+            int count=0;  
+            //print the lstlength
+            System.out.println(lstlength);
+            System.out.println(xpos);
+
+            for (Entry<String, Integer> entry : winnerList.entrySet()){
                 String winnerName = entry.getKey().split(",")[0];
                 Integer tokenIndex = Integer.parseInt(entry.getKey().split(",")[1]);
-                JLabel playerScoreLbl = new JLabel(winnerName + " Score: " + entry.getValue()); 
-                playerScoreLbl.setForeground(Color.WHITE);
-                playerScoreLbl.setBounds(18, yPos, 200, 16);
-                add(playerScoreLbl); 
-                JLabel lblToken = new JLabel("");
-                lblToken.setBounds(100, yPos, 60, 60);
-                lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + tokenIndex + ".png")).getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)));
-                add(lblToken);
-            
-                yPos += yIncrement; 
+                JLabel playerScoreLbl = new JLabel(winnerName + " Score: " + entry.getValue());
+                if (count==0){
+                    playerScoreLbl.setBounds(600, 280, 100, 50);
+                    playerScoreLbl.setForeground(Color.WHITE);
+                    add(playerScoreLbl);
+                    JLabel lblToken = new JLabel("");
+                    lblToken.setBounds(550, 330, 200, 200);
+                    lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + tokenIndex + ".png")).getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH)));
+                    add(lblToken);
+                }
+
+                else{
+                    playerScoreLbl.setBounds(xpos-50, 530, 100, 50);
+                    playerScoreLbl.setForeground(Color.WHITE);
+                    add(playerScoreLbl);
+                    JLabel lblToken = new JLabel("");
+                    lblToken.setBounds(xpos-50, 570, 100, 100);
+                    lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + tokenIndex + ".png")).getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH)));
+                    add(lblToken);
+                    xpos += 1300 / (lstlength + 1);
+                }
+                count++;
+
             }
         }
     }
