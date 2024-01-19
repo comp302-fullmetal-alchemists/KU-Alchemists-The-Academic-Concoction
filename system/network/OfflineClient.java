@@ -1,18 +1,12 @@
 package system.network;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import system.domain.Alchemy;
-import system.domain.ArtifactCard;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.GameLogController;
@@ -159,6 +153,12 @@ public class OfflineClient implements IClientAdapter {
         for (Player p: players) {
             if (!p.getName().equals(playerName)) {
                 if (p.getName().equals(ownerName)) {
+                    if (p.getInventory().getWisdomIdol()) {
+                        p.getInventory().setWisdomIdol(false);
+                    }
+                    else {
+                        p.updateReputation(-1);
+                    }
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
                     p.updateReputation(-1);
                 }
@@ -191,7 +191,7 @@ public class OfflineClient implements IClientAdapter {
     }
 
     public void endGame() {
-        System.out.println("adsgfdhfjgj");
+        
         List<String> scoreList = new ArrayList<String>();
         for (Player p: players) {
             String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));

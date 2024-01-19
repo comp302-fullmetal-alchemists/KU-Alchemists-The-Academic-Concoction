@@ -17,6 +17,7 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class PlayerDashboard extends JPanel implements Observer {
     
@@ -35,45 +36,43 @@ public class PlayerDashboard extends JPanel implements Observer {
         setBackground(new Color(58, 77, 108));
         setLayout(null);
 
-        this.setBounds(150, 150, 335, 700);
+        this.setBounds(150, 150, 410, 700);
         this.player = player;
         this.playerLabel = new JLabel(player.getName());
-        playerLabel.setForeground(Color.LIGHT_GRAY);
-        //playerLabel.setBounds(157, 5, 81, 16);
-        playerLabel.setBounds(99, 5, 81, 16);
+        playerLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+        playerLabel.setForeground(Color.WHITE);
+        playerLabel.setBounds(118, 5, 88, 33);
         add(playerLabel);
 
         this.inventory = new Inventory(player.getInventory());
-        inventory.setBounds(22, 63, 290, 390);
+        inventory.setBounds(22, 63, 420, 480);
         add(inventory);
         
         JLabel lblNewLabel = new JLabel("Player name:");
-        lblNewLabel.setForeground(Color.LIGHT_GRAY);
-        //lblNewLabel.setBounds(80, 5, 110, 16);
-        lblNewLabel.setBounds(22, 5, 110, 16);
+        lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+        lblNewLabel.setForeground(Color.WHITE);
+        lblNewLabel.setBounds(20, 5, 125, 33);
         add(lblNewLabel);
 
         lblReputation = new JLabel("Reputation: " + player.getReputation());
-        lblReputation.setForeground(Color.LIGHT_GRAY);
-        //lblReputation.setBounds(53, 31, 88, 16);
-        lblReputation.setBounds(22, 31, 88, 16);
+        lblReputation.setForeground(Color.WHITE);
+        lblReputation.setBounds(128, 41, 88, 16);
         add(lblReputation);
 
         lblSickness = new JLabel("Sickness: "  + player.getSickness()  );
-        lblSickness.setForeground(Color.LIGHT_GRAY);
-        //lblSickness.setBounds(190, 31, 88, 16);
-        lblSickness.setBounds(140, 31, 88, 16);
+        lblSickness.setForeground(Color.WHITE);
+        lblSickness.setBounds(225, 41, 88, 16);
         add(lblSickness);
 
         lblToken = new JLabel("");
-        lblToken.setBounds(250, 5, 60, 60);
+        lblToken.setBounds(332, 5, 60, 60);
         lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + player.getTokenIndex() + ".png")).getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)));
         add(lblToken);
   
-        JLabel lblInventory = new JLabel("Inventory");
+        /*JLabel lblInventory = new JLabel("Inventory");
         lblInventory.setForeground(Color.LIGHT_GRAY);
         lblInventory.setBounds(22, 50, 88, 13);
-        add(lblInventory);
+        add(lblInventory);*/
         
         if (GameBoardController.getInstance().getClientAdapter().getMode().equals("Online")) {
             //USER IN TEXT GİRDİĞİ YER
@@ -99,8 +98,8 @@ public class PlayerDashboard extends JPanel implements Observer {
         add(gameLogDisplay);
         
         JLabel lblGameLog = new JLabel("Game Log");
-        lblGameLog.setForeground(Color.LIGHT_GRAY);
-        lblGameLog.setBounds(22, 464, 88, 13);
+        lblGameLog.setForeground(Color.WHITE);
+        lblGameLog.setBounds(24, 552, 88, 15);
         add(lblGameLog);
 
         player.setPlayerUI(this);
@@ -120,7 +119,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.gameLogDisplayText = new JTextArea(5,35);
         gameLogDisplayText.setEditable(false);
         this.gameLogDisplay = new JScrollPane(gameLogDisplayText);
-        gameLogDisplay.setBounds(22, 477, 290, 210);
+        gameLogDisplay.setBounds(24, 574, 380, 103);
 
         gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }
@@ -133,8 +132,15 @@ public class PlayerDashboard extends JPanel implements Observer {
         else if (msg.contains("CHAT")) {
             appendToGameLog(msg);
         }
-        else if (msg.contains("REPUTATION")) {
+        else if (msg.contains("REPUTATION:")) {
+            
             lblReputation.setText("Reputation: " + player.getReputation());
+        }
+        else if (msg.contains("SICKNESS")) {
+            lblSickness.setText("Sickness: "  + player.getSickness());
+        }
+        else if (msg.contains("SURGERY")) {
+        	JOptionPane.showMessageDialog(this, "You are in critical condition and in need of a surgery!");
         }
     }
 }   

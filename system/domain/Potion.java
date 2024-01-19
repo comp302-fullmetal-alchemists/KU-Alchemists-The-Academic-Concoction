@@ -1,7 +1,7 @@
 package system.domain;
 
 import java.util.ArrayList;
-import system.domain.controllers.GameBoardController;
+
 
 public class Potion {
 

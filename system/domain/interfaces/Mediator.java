@@ -2,6 +2,7 @@ package system.domain.interfaces;
 
 import system.domain.controllers.Player;
 
+
 public interface Mediator {
 	
 	/* 

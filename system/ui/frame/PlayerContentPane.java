@@ -28,6 +28,8 @@ public class PlayerContentPane extends JPanel {
             playerNames.add(player.getName());
 
             add(playerDB, player.getName());
+            revalidate();
+            repaint();
         }
     }
 

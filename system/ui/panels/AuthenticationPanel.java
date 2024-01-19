@@ -117,13 +117,11 @@ public class AuthenticationPanel extends JPanel implements Observer {
 				//get the username and token from the text fields and combo boxes
 	                String player1username = username1.getText();
 					int tokenIndex = token1.getSelectedIndex() + 1;
-	                //Icon player1token = (Icon) token1.getSelectedItem();
 					//call the login method from the authentication controller
 	                authController.login(player1username, tokenIndex);
 	            
 			}
 		});
-		/*loginButton.setBounds(1105, 747, 166, 46); */
 		loginButton.setBounds(978, 600, 166, 42);
 		add(loginButton);
 		
@@ -133,7 +131,6 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		txtrAGameBy.setForeground(Color.WHITE);
 		txtrAGameBy.setFont(new Font("Luminari", Font.ITALIC, 18));
 		txtrAGameBy.setBackground(new Color(58, 77, 108));
-		/*txtrAGameBy.setBounds(1004, 803, 468, 32);*/
 		txtrAGameBy.setBounds(880, 660, 300, 32);
     	txtrAGameBy.setEditable(false);
 		add(txtrAGameBy);
