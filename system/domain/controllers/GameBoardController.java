@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import system.domain.ArtifactCard;
+import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
 import system.network.IClientAdapter;
@@ -175,7 +176,15 @@ public class GameBoardController {
             int amount = (player.getInventory().getGold() / 3) ;
             finalScore += amount ;
             player.getInventory().updateGold(- (amount * 3)) ;
-            
+        }
+
+        for (Theory t: GameBoardController.getInstance().getTheoryController().getTheories()) {
+            if (t.getEndorser().equals(player.getName())) {
+                finalScore += 1;
+            }
+            else if (t.isDebunked() && t.getOwner().equals(player.getName())) {
+                finalScore += 1;
+            }
         }
         return finalScore;
     }
