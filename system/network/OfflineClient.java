@@ -128,6 +128,20 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
+    @Override
+    public int getIngredientFromPile() {
+        return server.getIngredientFromPile();
+    }
+
+    public void peek3Ingredients(){
+        List<Integer> topIngredients = server.peek3Ingredients();
+        GameBoardController.getInstance().getIngredientStorageController().elixirOfInsight(topIngredients);
+
+    }
+
+    public void rewriteIng(String serverMsg){
+        server.rewriteIng(serverMsg);
+    }
 
     @Override
     public void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName) {
@@ -159,6 +173,12 @@ public class OfflineClient implements IClientAdapter {
         for (Player p: players) {
             if (!p.getName().equals(playerName)) {
                 if (p.getName().equals(ownerName)) {
+                    if (p.getInventory().getWisdomIdol()) {
+                        p.getInventory().setWisdomIdol(false);
+                    }
+                    else {
+                        p.updateReputation(-1);
+                    }
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
                     p.updateReputation(-1);
                 }

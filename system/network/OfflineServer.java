@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class OfflineServer implements IServerAdapter {
 
     private int rounds = 0;
@@ -15,10 +16,13 @@ public class OfflineServer implements IServerAdapter {
     private List<OfflineClient> clients;
     private List<Integer> ingredients;
     private Observer observer;
+    private List<Integer> elixirIngredients;
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
         ingredients = new ArrayList<Integer>();
+        elixirIngredients = new ArrayList<Integer>();
+
         for (int i = 0; i < 24; i++) {
             ingredients.add(i % 8);
         }
@@ -107,8 +111,13 @@ public class OfflineServer implements IServerAdapter {
 
     @Override 
     public void requestIngredient() {
-        if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
-        else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
+        //if (elixirIngredients.isEmpty()){
+            if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
+            else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
+        //}
+        //else{
+          //  clients.get(currentClient).takeIngredientIndex(elixirIngredients.remove(0));
+        //}
     }
 
 
@@ -125,4 +134,37 @@ public class OfflineServer implements IServerAdapter {
 
 
 
+    public List<Integer> peek3Ingredients(){
+        return ingredients.subList(0, 3);
+    }
+
+    public void rewriteIng(String serverMsg){
+        int[] rewriteIndex = new int[3];
+        for(int i = 0; i< 3; i++){
+            rewriteIndex[i] = Integer.parseInt(serverMsg.substring(i,i+1));
+        }
+
+        ingredients.add(0, rewriteIndex[0]);
+        ingredients.add(1, rewriteIndex[1]);
+        ingredients.add(2, rewriteIndex[2]);
+        ingredients.remove(3);
+        ingredients.remove(4);
+        ingredients.remove(5);
+
+    }
+    
+
+    public int getIngredientFromPile() { //Used for elixir of insight artifact card. Just gets ingredients from list
+        if (ingredients.isEmpty()) {
+            //No ingredient;
+            return -1;
+        }
+        else {
+            return ingredients.remove(0);
+        }
+    }
+
+    public void setElixirIngredients (List<Integer> elixirList) {
+        List<Integer> elixirIngredients = new ArrayList<Integer>(elixirList);
+    }
 }

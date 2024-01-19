@@ -136,6 +136,8 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 }
                 else if (message.equals("server_full")) {
                     GameBoardController.getInstance().showError(message);
+                else if (message.contains("elixir")){
+                    showTopIng(message.split(":")[1]);
                 }
 
             } catch (Exception e) {
@@ -332,7 +334,12 @@ public class OnlineClient extends Thread implements IClientAdapter {
             GameBoardController.getInstance().getTheoryController().debunkTheory(alchemy, ingredient, debunkerName);
             if (p.getName().equals(ownerName)) {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", debunkerName, ingredient), 0);
-                p.updateReputation(-1);
+                if (p.getInventory().getWisdomIdol()) {
+                    p.getInventory().setWisdomIdol(false);
+                }
+                else {
+                    p.updateReputation(-1);
+                }
             }
             else {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", debunkerName, ownerName, ingredient), 2);
@@ -348,10 +355,9 @@ public class OnlineClient extends Thread implements IClientAdapter {
         }
     }
 
-    @Override
-    public void send(String msg) {
+    public void peek3Ingredients(){
         try {
-            toServer.writeUTF(msg);
+            toServer.writeUTF("PEEK");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -361,5 +367,23 @@ public class OnlineClient extends Thread implements IClientAdapter {
     @Override
     public String getMode() {
         return "Online";
+    }
+    
+    public void showTopIng(String msg) {
+        List<Integer> elixirIndex = new ArrayList<Integer>();
+        for(int i = 0; i< 3; i++){
+            elixirIndex.add(Integer.parseInt(msg.substring(i,i+1)));
+        }
+        GameBoardController.getInstance().getIngredientStorageController().elixirOfInsight(elixirIndex);
+
+    }
+
+    public void rewriteIng(String servermsg) {
+        try {
+            toServer.writeUTF("REWRITE:" + servermsg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

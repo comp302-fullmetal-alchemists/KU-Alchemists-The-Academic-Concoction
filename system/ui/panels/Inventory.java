@@ -1,5 +1,6 @@
 package system.ui.panels;
 
+import system.domain.IngredientCard;
 import system.domain.controllers.InventoryController;
 import system.domain.interfaces.Observer;
 
@@ -200,7 +201,7 @@ public class Inventory extends JPanel implements Observer {
         add(lblArtifact);
         
         artifactPanel = new JPanel();
-        artifactPanel.setBounds(10, 210, 270, 70);
+        artifactPanel.setBounds(10, 215, 270, 70);
         artifactPanel.setLayout(null);
         add(artifactPanel);
         
@@ -283,6 +284,11 @@ public class Inventory extends JPanel implements Observer {
     	artifacts.add(text);
     	updateArtifacts();
     }
+
+    public void removeArtifactFromInventory(String text) {
+        artifacts.remove(text);
+        updateArtifacts();
+    }
  
     public void updateArtifacts() {
     	artifactPanel.removeAll();
@@ -290,11 +296,21 @@ public class Inventory extends JPanel implements Observer {
     	int x0 = 6;
     	for (int i = 0; i < artifacts.size(); i++) {
     		JLabel artifactLabel = new JLabel(artifactNameToLabelText(artifacts.get(i)));
+            String artifactName = artifacts.get(i);
     		artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
     		artifactLabel.setOpaque(true);
     		artifactLabel.setBackground(new Color(49, 81, 50));
     		artifactLabel.setForeground(Color.LIGHT_GRAY);
     		artifactLabel.setBounds(x0 + 66*i, 3, 60, 64);
+ 
+            artifactLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    Inventory.this.invController.sendArtifactCard(artifactName);;
+                    System.out.printf("Using Artifact:%s\n", artifactName); //Testing RM LATER
+                }
+                }); 
+
     		artifactPanel.add(artifactLabel);
     	}
     	artifactPanel.revalidate();
@@ -368,5 +384,9 @@ public class Inventory extends JPanel implements Observer {
         else if (msg.contains("GOLD_UPDATE")) {
         	updateGold();
         }
+        else if (msg.contains("REMOVED_ARTIFACT_CARD")) {
+            removeArtifactFromInventory(msg.split(":")[1]);
+        }
+        
     }
 }

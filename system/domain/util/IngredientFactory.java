@@ -31,6 +31,7 @@ public class IngredientFactory{
 	public void setAlchemyMap(List<Integer> alchemyIndex) {
         for (int i = 0; i < 8; i++) {
             alchemyMap.put(ingredients[i], Alchemy.getAlchemy(alchemyIndex.get(i)));
+			System.out.println(ingredients[i]+ "  "+  Alchemy.getAlchemy(alchemyIndex.get(i)));
         }
     }
 	

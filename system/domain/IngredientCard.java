@@ -33,4 +33,17 @@ public class IngredientCard extends Cards{
 		return -1;
 	}
 
+    public static String getIngredientName(int index) {
+        return ingredients[index];
+    }
+
+    public static int getIngredientIndex(String ingredient) {
+        for (int i = 0; i < 8; i++) {
+            if (ingredients[i].equals(ingredient)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
