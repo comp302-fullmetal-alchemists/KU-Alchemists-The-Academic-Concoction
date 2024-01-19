@@ -145,6 +145,12 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 else if (message.contains("endorse")) {
                     reportEndorseTheoryToClients(message);
                 }
+                else if (message.contains("PEEK")){
+                    sendTopIngredients();
+                }
+                else if (message.contains("REWRITE")){
+                    rewriteIng(message.split(":")[1]);
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -161,6 +167,15 @@ public class OnlineServer extends Thread implements IServerAdapter {
     @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = clients.size();
+    }
+
+    private void sendTopIngredients() {
+        try {
+            clients.get(currentClient).getWriter().writeUTF("elixir:" + ingredientPile.subList(0,3).toString());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void reportPublishTheoryToClients(String message) {
@@ -273,21 +288,25 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
     @Override
     public void requestIngredient() {
-        try {
-            if (ingredientPile.isEmpty()) {
-                clients.get(currentClient).getWriter().writeUTF("empty_ingredient_pile");
+        if (elixirIngredients.isEmpty()){
+            try {
+                if (ingredientPile.isEmpty()) {
+                    clients.get(currentClient).getWriter().writeUTF("empty_ingredient_pile");
+                }
+                else {
+                    clients.get(currentClient).getWriter().writeUTF("ingredient:"+ingredientPile.remove(0));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            else {
-                clients.get(currentClient).getWriter().writeUTF("ingredient:"+ingredientPile.remove(0));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-  
+        else{
+            clients.get(currentClient).takeIngredientIndex(elixirIngredients.remove(0));
+
+        }
+    
     }
 
-    //METHOD IS NOT ONLINE
-    //TODO THIS METHOD ONLINE
     public int getIngredientFromPile() { //Used for elixir of insight artifact card. Just gets ingredients from list
             if (ingredientPile.isEmpty()) {
                 //No ingredient;
@@ -298,6 +317,21 @@ public class OnlineServer extends Thread implements IServerAdapter {
             }
     }
 
-    public setelixirofinsight (List<Integer> elixirList) {
-            this.elixirIngredients = elixirList;
+    public void setElixirIngredients (List<Integer> elixirList) {
+        List<Integer> elixirIngredients = new ArrayList<Integer>(elixirList);
     }
+
+    public void rewriteIng(String msg) {
+        int[] rewriteIndex = new int[3];
+        for(int i = 0; i< 3; i++){
+            rewriteIndex[i] = Integer.parseInt(msg.substring(i,i+1));
+        }
+
+        ingredientPile.add(0, rewriteIndex[0]);
+        ingredientPile.add(1, rewriteIndex[1]);
+        ingredientPile.add(2, rewriteIndex[2]);
+        ingredientPile.remove(3);
+        ingredientPile.remove(4);
+        ingredientPile.remove(5);
+    }
+}

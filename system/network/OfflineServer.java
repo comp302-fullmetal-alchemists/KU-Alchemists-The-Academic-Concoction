@@ -15,6 +15,7 @@ public class OfflineServer implements IServerAdapter {
     private int currentClient = 0;
     private List<OfflineClient> clients;
     private List<Integer> ingredients;
+    private List<Integer> elixirIngredients;
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
@@ -105,18 +106,34 @@ public class OfflineServer implements IServerAdapter {
 
     @Override 
     public void requestIngredient() {
-        if (elixirIngredients.isEmpty()){
+        //if (elixirIngredients.isEmpty()){
             if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
             else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
-        }
-        else{
-            clients.get(currentClient).takeIngredientIndex(elixirIngredients.remove(0));
-        }
+        //}
+        //else{
+          //  clients.get(currentClient).takeIngredientIndex(elixirIngredients.remove(0));
+        //}
     }
 
-    public void addElixirIngredient(int rand_int){
-        elixirIngredients.add(rand_int);
+    public List<Integer> peek3Ingredients(){
+        return ingredients.subList(0, 3);
     }
+
+    public void rewriteIng(String serverMsg){
+        int[] rewriteIndex = new int[3];
+        for(int i = 0; i< 3; i++){
+            rewriteIndex[i] = Integer.parseInt(serverMsg.substring(i,i+1));
+        }
+
+        ingredients.add(0, rewriteIndex[0]);
+        ingredients.add(1, rewriteIndex[1]);
+        ingredients.add(2, rewriteIndex[2]);
+        ingredients.remove(3);
+        ingredients.remove(4);
+        ingredients.remove(5);
+
+    }
+    
 
     public int getIngredientFromPile() { //Used for elixir of insight artifact card. Just gets ingredients from list
         if (ingredients.isEmpty()) {
@@ -126,5 +143,9 @@ public class OfflineServer implements IServerAdapter {
         else {
             return ingredients.remove(0);
         }
+    }
+
+    public void setElixirIngredients (List<Integer> elixirList) {
+        List<Integer> elixirIngredients = new ArrayList<Integer>(elixirList);
     }
 }

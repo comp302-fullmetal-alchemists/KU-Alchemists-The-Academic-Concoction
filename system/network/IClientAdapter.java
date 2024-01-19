@@ -39,7 +39,11 @@ public interface IClientAdapter {
 
     int getIngredientFromPile();
 
-    void addElixirIngredient(int ingNum);
+    void peek3Ingredients();
+
+    void rewriteIng(String serverMsg);
+
+    //void addElixirIngredient(int ingNum);
 
     void emptyPile();
 

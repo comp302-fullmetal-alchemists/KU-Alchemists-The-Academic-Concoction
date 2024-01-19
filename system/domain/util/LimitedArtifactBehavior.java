@@ -45,20 +45,7 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
             }
        }
         else if (ac.getCardName().equals("Elixir of Insight")) {
-            String cardNames = "";        
-            Random rand = new Random();
-            for (int i = 0; i < 3; i++) {
-                // Generate random integers in range 0 to 7
-                int rand_int = rand.nextInt(8);
-                GameBoardController.getInstance().getClientAdapter().addElixirIngredient(rand_int);
-                cardNames += IngredientFactory.getInstance().getIngredients()[rand_int] + ", ";
-                System.out.printf("cards: %s\n", cardNames);
-            }
-
-            
-            
-            ingredientStorage.getIngredientStorageUI().update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
-            return 1;
+            GameBoardController.getInstance().getClientAdapter().peek3Ingredients();
        }
 
         else if (ac.getCardName().equals("Wisdom Idol")) {

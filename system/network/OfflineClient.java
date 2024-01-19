@@ -128,9 +128,14 @@ public class OfflineClient implements IClientAdapter {
         return server.getIngredientFromPile();
     }
 
-    @Override
-    public void addElixirIngredient(int ingNum){
-        server.addElixirIngredient(ingNum);
+    public void peek3Ingredients(){
+        List<Integer> topIngredients = server.peek3Ingredients();
+        GameBoardController.getInstance().getIngredientStorageController().elixirOfInsight(topIngredients);
+
+    }
+
+    public void rewriteIng(String serverMsg){
+        server.rewriteIng(serverMsg);
     }
 
     @Override

@@ -115,6 +115,9 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.contains("endorse")) {
                     addEndorsedTheory(message);
                 }
+                else if (message.contains("elixir")){
+                    showTopIng(message.split(":")[1]);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -305,6 +308,33 @@ public class OnlineClient extends Thread implements IClientAdapter {
             else {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", debunkerName, ownerName, ingredient), 2);
             }
+        }
+    }
+
+    public void peek3Ingredients(){
+        try {
+            toServer.writeUTF("PEEK");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void showTopIng(String msg) {
+        List<Integer> elixirIndex = new ArrayList<Integer>();
+        for(int i = 0; i< 3; i++){
+            elixirIndex.add(Integer.parseInt(msg.substring(i,i+1)));
+        }
+        GameBoardController.getInstance().getIngredientStorageController().elixirOfInsight(elixirIndex);
+
+    }
+
+    public void rewriteIng(String servermsg) {
+        try {
+            toServer.writeUTF("REWRITE:" + servermsg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
