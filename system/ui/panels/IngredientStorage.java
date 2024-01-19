@@ -45,6 +45,7 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifact;
     private JPanel artifactPanel;
     private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
+    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad Stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
     private List<String> elixirIngredients = new ArrayList<>();;
 
     
@@ -302,6 +303,15 @@ public class IngredientStorage extends JPanel implements Observer {
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
             System.out.printf(msg);
             showPopupAndWait(msg);
+            for(int j = 0; j < 3; j++){
+                System.out.printf("items: %s\n", elixirIngredients.get(j));
+                // for(int i = 0; i < 8; i++){
+                //     if(ingredients[i] == elixirIngredients[j]){
+                //         OFFLINESERVER.elixirIngredients[0] = i; //FIX FOR ONLNIE AND OFFLINE, add to their elixir ingredients like this
+                //     }
+                // }
+            }
+            
             //CONVERT INGREDIENT TO INTEGER, PUT TO SERVER.elixirIngredients
         }
         else if (msg.contains("MAGIC_MORTAR_NULL")) {

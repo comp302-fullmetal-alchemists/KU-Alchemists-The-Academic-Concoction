@@ -54,6 +54,8 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
                 cardNames += IngredientFactory.getInstance().getIngredients()[rand_int] + ", ";
                 System.out.printf("cards: %s\n", cardNames);
             }
+
+            
             
             ingredientStorage.getIngredientStorageUI().update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
             return 1;
