@@ -146,11 +146,11 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		add(lblPotion);
 		
 		
-		/*testSubjectBox = new JComboBox<String>(subjects);
+		testSubjectBox = new JComboBox<String>(subjects);
 
 		testSubjectBox.setBounds(73, 237, 160, 21);
 		testSubjectBox.setSelectedIndex(0);
-		add(testSubjectBox);*/
+		add(testSubjectBox);
 		
 		JLabel subjectLabel = new JLabel("Test Subject");
 		subjectLabel.setForeground(Color.LIGHT_GRAY);
