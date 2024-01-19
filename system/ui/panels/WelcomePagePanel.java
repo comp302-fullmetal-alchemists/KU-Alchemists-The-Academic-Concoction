@@ -9,14 +9,11 @@ import javax.swing.JTextField;
 
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.WelcomeController;
-import system.domain.interfaces.Observer;
 import system.ui.frame.Gameboard;
-import system.network.*;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.awt.Font;
 
 public class WelcomePagePanel extends JPanel { //class ismi değiştir

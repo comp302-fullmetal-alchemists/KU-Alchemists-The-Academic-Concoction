@@ -241,7 +241,7 @@ public class GameBoardController {
     }
 
     public void showError(String string) {
-        // TODO Auto-generated method stub
+        
         gameboardUI.update(string);
     }
 
