@@ -7,9 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import system.domain.Alchemy;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
@@ -332,7 +329,12 @@ public class OnlineClient extends Thread implements IClientAdapter {
             GameBoardController.getInstance().getTheoryController().debunkTheory(alchemy, ingredient, debunkerName);
             if (p.getName().equals(ownerName)) {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", debunkerName, ingredient), 0);
-                p.updateReputation(-1);
+                if (p.getInventory().getWisdomIdol()) {
+                    p.getInventory().setWisdomIdol(false);
+                }
+                else {
+                    p.updateReputation(-1);
+                }
             }
             else {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", debunkerName, ownerName, ingredient), 2);

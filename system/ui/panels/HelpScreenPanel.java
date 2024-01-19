@@ -17,6 +17,11 @@ public class HelpScreenPanel extends JPanel {
         "KuAlchemists Help Center\n\n" +
         "Welcome to KuAlchemists! This is a brief overview of the game's features:\n\n" +
 
+        "There are 2 modes of the game: Offline and Online.\n" +
+        "For offline mode please choose your player count and start to have fun!\n" +
+        "For online mode, please enter your host's port and IP to join a game.\n" + 
+        "To host a game, enter a port number and click the host game button.\n\n" +
+
         "Getting Started\n" +
         "Explore an exciting world filled with magic and adventures!\n" +
         "2. Controls:Use the mouse or touchpad to click on buttons.\n" +

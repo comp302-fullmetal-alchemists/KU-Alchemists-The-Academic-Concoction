@@ -1,8 +1,7 @@
 package system.domain.controllers;
 
-import system.domain.interfaces.Collector;
+
 import system.domain.interfaces.Observer;
-import system.domain.interfaces.Mediator;
 import system.domain.DeductionGrid;
 import system.domain.ResultsTriangle;
 

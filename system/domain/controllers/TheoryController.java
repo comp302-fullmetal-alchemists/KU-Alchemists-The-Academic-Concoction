@@ -4,6 +4,8 @@ import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
 import system.domain.util.IngredientFactory;
+
+
 import system.network.IClientAdapter;
 
 import java.util.List;
@@ -73,7 +75,13 @@ public class TheoryController {
             }
             //publish the theory
             else{
-                mediator.getPlayer().getInventory().updateGold(-1);
+                // check if the player used the Printing Press Artifact card first 
+                if (mediator.getPlayer().getInventory().getPrintingPress()) {
+                    mediator.getPlayer().getInventory().setPrintingPress(false);
+                }
+                else if (!mediator.getPlayer().getInventory().getPrintingPress()) {
+                    mediator.getPlayer().getInventory().updateGold(-1);
+                }
                 publishTheory(alchemy, ingredient, mediator.getPlayer().getName());
                 gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Academy", String.format("Published the Theory with %s and %s!", ingredient, alchemy.toString()), 2);
                 GameBoardController.getInstance().getClientAdapter().reportPublishTheoryToServer(alchemy, ingredient, mediator.getPlayer().getName());
@@ -179,6 +187,14 @@ public class TheoryController {
                     String owner = theory.getOwner();
                     debunkTheory(alchemy, ingredient, mediator.getPlayer().getName());
                     //GAMELOG RECORDS LOG FOR DEBUNKER
+
+                    /* 
+                    if (GameBoardController.getInstance().getPlayer().getInventory()) {
+                        GameBoardController.getInstance().getPlayer().getInventory().updateGold(2);
+
+                    }
+                    GameBoardController.getInstance().getPlayer().getInventory().updateGold(2);
+                    */
                     gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Academy", String.format("Debunked the theory of %s!", owner), 0);
                     GameBoardController.getInstance().getClientAdapter().reportDebunkTheoryToServer(alchemy, ingredient, mediator.getPlayer().getName(), owner);
 
@@ -204,6 +220,10 @@ public class TheoryController {
             theoryUI.update("UNAUTHORIZED_ACTION");
         }
         
+    }
+
+    public Observer getTheoryUI() {
+        return theoryUI;
     }
 
 

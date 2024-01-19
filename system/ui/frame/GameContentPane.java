@@ -2,7 +2,6 @@ package system.ui.frame;
 
 import system.ui.panels.*;
 import javax.swing.JPanel;
-
 import java.awt.CardLayout;
 
 public class GameContentPane extends JPanel {
