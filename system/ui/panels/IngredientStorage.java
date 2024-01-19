@@ -36,6 +36,12 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifact;
     private JPanel artifactPanel;
     private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
+    private String[] effects = {"to keep one of the ingredients that you have already used", 
+    "to view the top three cards of the ingredient deck and rearrange them in any order.", 
+    "next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", 
+    "to publish a theory free of charge",
+    "allows you to not lose any reputation points even if your theory is debunked. You gain 1 reputation point if you keep it in your inventory until the end."};
+
     private JLabel lblNewLabel_1;
     private JLabel lblNewLabel_2;
     private JLabel lblNewLabel_3;
@@ -105,7 +111,12 @@ public class IngredientStorage extends JPanel implements Observer {
            artifactLabel.setBackground(new Color(117, 67, 108));
            artifactLabel.setForeground(Color.WHITE);
            artifactLabel.setBounds(currentX, y, labelWidth, labelHeight);
+         
+           artifactLabel.setToolTipText(effects[i]);
+        
+         
            artifactPanel.add(artifactLabel);
+
 
 
            JButton buyButton = new JButton("Buy");

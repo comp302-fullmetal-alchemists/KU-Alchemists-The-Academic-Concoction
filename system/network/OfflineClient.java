@@ -197,7 +197,7 @@ public class OfflineClient implements IClientAdapter {
     }
 
     public void endGame() {
-        System.out.println("adsgfdhfjgj");
+        
         List<String> scoreList = new ArrayList<String>();
         for (Player p: players) {
             String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
