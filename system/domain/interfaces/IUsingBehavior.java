@@ -9,6 +9,6 @@ public interface IUsingBehavior {
      * by the LimitedArtifactUsage class and UnlimitedArtifactUsage class. According to their usage differences 
 	 * */
 	
-    void useArtifact(ArtifactCard ac);
+    int useArtifact(ArtifactCard ac);
 
 }

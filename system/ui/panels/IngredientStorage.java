@@ -304,6 +304,9 @@ public class IngredientStorage extends JPanel implements Observer {
             showPopupAndWait(msg);
             //CONVERT INGREDIENT TO INTEGER, PUT TO SERVER.elixirIngredients
         }
+        else if (msg.contains("MAGIC_MORTAR_NULL")) {
+            showMessageDialog(String.format("You have to use a ingredient card first!"));
+        }
 
         else if (msg.contains("MAGIC_MORTAR")) {
             showMessageDialog(String.format("You have used the Magic Mortar card! You got the ingredient %s!", msg.split(":")[1]));

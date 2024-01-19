@@ -6,7 +6,7 @@ import system.domain.controllers.*;
 
 public class UnlimitedArtifactBehavior implements IUsingBehavior{
     @Override
-    public void useArtifact(ArtifactCard ac) {
+    public int useArtifact(ArtifactCard ac) {
         if (ac.getCardName().equals("Discount Card")) {
 
         IngredientStorageController ingController = GameBoardController.getInstance().getIngredientStorageController();
@@ -16,5 +16,6 @@ public class UnlimitedArtifactBehavior implements IUsingBehavior{
         }
          ingController.getIngredientStorageUI().update(String.format("DISCOUNT_CARD"));
        }
+       return 1;
     }
 }

@@ -205,8 +205,9 @@ public class InventoryController {
     public void sendArtifactCard(String artifactName) {
         for (ArtifactCard artifact: artifactCards){
             if (artifact.getName().equals(artifactName)) {
-                artifact.performUseArtifact();
-                removeArtifact(artifact);
+                if (artifact.performUseArtifact() == 1){
+                    removeArtifact(artifact);
+                }
                 break;
             }
         }

@@ -19,7 +19,7 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
     
 
     @Override
-    public void useArtifact(ArtifactCard ac) {
+    public int useArtifact(ArtifactCard ac) {
         
         IngredientStorageController ingredientStorage = GameBoardController.getInstance().getIngredientStorageController();
         InventoryController inventoryController = GameBoardController.getInstance().getPlayer().getInventory();
@@ -29,15 +29,20 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
             inventoryController.setPrintingPress(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("PRINTING_PRESS"));
-
+            return 1;
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {
             IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
-            inventoryController.addIngredient(lastIngredientCard);
-
-            ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard.getCardName()));
-
+            if(lastIngredientCard == null){
+                ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR_NULL"));
+                return -1;
+            }
+            else{
+                inventoryController.addIngredient(lastIngredientCard);
+                ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard.getCardName()));
+                return 1;
+            }
        }
         else if (ac.getCardName().equals("Elixir of Insight")) {
             String cardNames = "";        
@@ -51,15 +56,15 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
             }
             
             ingredientStorage.getIngredientStorageUI().update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
+            return 1;
        }
 
         else if (ac.getCardName().equals("Wisdom Idol")) {
             inventoryController.setWisdomIdol(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("WISDOM_IDOL"));
-
-        
+            return 1;
         }
-        
+        return 1;
     }
     
     
