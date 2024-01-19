@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Cursor;
 
 
 public class DeductionBoard extends JPanel implements Observer{
@@ -23,6 +24,7 @@ public class DeductionBoard extends JPanel implements Observer{
     private JButton back;
     private JButton navBtn;
     private JLabel deductionGrid;
+    private JLabel lblResults;
     private DeductionBoardController dbController;
     private JLabel[][] markers = new JLabel[8][8];
     
@@ -125,6 +127,15 @@ public class DeductionBoard extends JPanel implements Observer{
         lblIng8.setOpaque(true);
         lblIng8.setBounds(646, 320, 90, 20);
         add(lblIng8);
+        
+        lblResults = new JLabel("<html> Your Results: </html>");
+        lblResults.setHorizontalTextPosition(SwingConstants.CENTER);
+        lblResults.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        lblResults.setHorizontalAlignment(SwingConstants.CENTER);
+        lblResults.setVerticalAlignment(SwingConstants.TOP);
+        lblResults.setOpaque(true);
+        lblResults.setBounds(106, 81, 540, 225);
+        add(lblResults);
     
     }
     
@@ -140,6 +151,7 @@ public class DeductionBoard extends JPanel implements Observer{
     			markers[i][j].setText("");
     		}
     	}
+    	lblResults.setText("<html> Your Results: </html>");
     }
 
     
@@ -148,14 +160,19 @@ public class DeductionBoard extends JPanel implements Observer{
     		markers[loc / 8][loc % 8].setText("X");
     	}
     }
+    
+    public void addResults() {
+    	for (String result: dbController.getResultList()) {
+    		lblResults.setText(lblResults.getText().replace("</html>", "<br>" + result + " </html>"));
+    	}
+    }
 
 	@Override
 	public void update(String msg) {
 		if (msg.contains("OPENED")) {
 			markGrid();
-            System.out.println(dbController.getResultList());
+			addResults();
 		}
 
 	}
-	
 }

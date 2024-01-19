@@ -1,6 +1,8 @@
 package system.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ResultsTriangle {
@@ -39,12 +41,12 @@ public class ResultsTriangle {
 		return results.get(sorted); //this may still be null, maybe I can check these conditions and throw an exception idk.
 	}
 	
-	public String getResultList() {
-		String resultsStr = "";
+	public List<String> getResultList() {
+		List<String> resultsList = new ArrayList<String>();
 		for (String[] ings: results.keySet()) {
-			resultsStr += String.format("%s + %s = %s\n", ings[0], ings[1], results.get(ings).getStatus());
+			resultsList.add(String.format("%s    +    %s    =    %s\n", ings[0], ings[1], results.get(ings).getStatus()));
 		}
-		return resultsStr;
+		return resultsList;
 	}
 	
 	
