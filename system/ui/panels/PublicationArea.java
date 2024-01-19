@@ -144,7 +144,7 @@ public class PublicationArea extends JPanel implements Observer{
 
 
         this.theoryBoard = new TheoryBoard();
-        theoryBoard.setBounds(58, 249, 629, 382);
+        theoryBoard.setBounds(58, 249, 650, 382);
         add(theoryBoard);
 
         //create submit button
