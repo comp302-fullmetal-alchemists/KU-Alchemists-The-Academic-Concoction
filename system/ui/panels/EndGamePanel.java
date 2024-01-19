@@ -53,7 +53,7 @@ public class EndGamePanel extends JPanel {
                 Integer tokenIndex = Integer.parseInt(entry.getKey().split(",")[1]);
                 JLabel playerScoreLbl = new JLabel(winnerName + " Score: " + entry.getValue());
                 if (count==0){
-                    playerScoreLbl.setBounds(600, 280, 100, 50);
+                    playerScoreLbl.setBounds(600, 280, 200, 50);
                     playerScoreLbl.setForeground(Color.WHITE);
                     add(playerScoreLbl);
                     JLabel lblToken = new JLabel("");
@@ -63,7 +63,7 @@ public class EndGamePanel extends JPanel {
                 }
 
                 else{
-                    playerScoreLbl.setBounds(xpos-50, 530, 100, 50);
+                    playerScoreLbl.setBounds(xpos-50, 530, 200, 50);
                     playerScoreLbl.setForeground(Color.WHITE);
                     add(playerScoreLbl);
                     JLabel lblToken = new JLabel("");

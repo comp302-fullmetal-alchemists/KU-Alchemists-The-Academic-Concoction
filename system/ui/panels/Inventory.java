@@ -376,13 +376,13 @@ public class Inventory extends JPanel implements Observer {
     	for (int i = 0; i < potions2.size(); i++) {
     		String status = potions2.get(i);
             System.out.println("/resources/" + status.toLowerCase() + ".png");
-    		JLabel potionLabel = new JLabel((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
+    		JLabel potionLabel = new JLabel();
     		potionLabel.setHorizontalAlignment(SwingConstants.CENTER);
     		potionLabel.setOpaque(true);
 
             potionLabel.setIcon(new ImageIcon(getClass().getResource("/resources/" + status.toLowerCase() + ".png")));
 
-    		potionLabel.setBounds(x0 + 66*i, 3, 50, 54);
+    		potionLabel.setBounds(x0 + 66*i, 3, 54, 54);
             potionLabel.setToolTipText(status);
     		potionLabel.addMouseListener(new MouseAdapter() {
             	@Override

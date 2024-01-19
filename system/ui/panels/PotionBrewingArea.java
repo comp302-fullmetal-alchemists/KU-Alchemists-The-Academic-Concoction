@@ -61,7 +61,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		lblIng1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIng1.setOpaque(true);
 		lblIng1.setBackground(Color.LIGHT_GRAY);
-		lblIng1.setBounds(73, 100, 57, 96);
+		lblIng1.setBounds(73, 100, 60, 100);
 		add(lblIng1);
 		
 		lblIng2 = new JLabel(ingDefault);
@@ -138,7 +138,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 				});
 		lblPotion.setOpaque(true);
 		lblPotion.setBackground(Color.LIGHT_GRAY);
-		lblPotion.setBounds(476, 315, 100, 100);
+		lblPotion.setBounds(476, 315, 54, 54);
 		add(lblPotion);
 		
     }
@@ -198,6 +198,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         else if (msg.contains("SOLD_POTION")) {
             lblPotion.setText("Select a Potion");
             lblPotion.setBackground(Color.LIGHT_GRAY);
+			lblPotion.setIcon(null);
             showMessageDialog(offerStrings[Integer.parseInt(msg.split(":")[1]) - 1]);//gets the offer and shows the message dialog according to that offer value.
         }
 
@@ -213,6 +214,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("DISCARD_POTION")) {
             lblPotion.setText("Select a Potion");
+			lblPotion.setIcon(null);
             lblPotion.setBackground(Color.LIGHT_GRAY);
         }
 		else if (msg.contains("NO_SELL_FIRST_ROUND")) {
