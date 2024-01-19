@@ -123,6 +123,15 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
+    @Override
+    public int getIngredientFromPile() {
+        return server.getIngredientFromPile();
+    }
+
+    @Override
+    public void addElixirIngredient(int ingNum){
+        server.addElixirIngredient(ingNum);
+    }
 
     @Override
     public void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName) {

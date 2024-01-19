@@ -7,12 +7,10 @@ import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 
+import javax.swing.*;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,6 +21,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+
 
 public class IngredientStorage extends JPanel implements Observer {
     
@@ -163,6 +166,37 @@ public class IngredientStorage extends JPanel implements Observer {
     }
     
 
+    public void popUpElixir(String msg) {
+        // Extract items from the msg string
+        String[] items = msg.substring(msg.indexOf(":") + 1).trim().split(",\\s*");
+
+        // Create a frame
+        JFrame f = new JFrame("Elixir of Insight");
+
+        // Create a DefaultListModel and add items
+        DefaultListModel<String> model = new DefaultListModel<>();
+        Arrays.stream(items).forEach(model::addElement);
+
+        // Create a JList and set its model
+        JList<String> list = new JList<>(model);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setDragEnabled(true);
+        list.setDropMode(DropMode.INSERT);
+
+        // Use the default TransferHandler for list items
+        list.setTransferHandler(new TransferHandler("text"));
+
+        // Create and set up the content pane
+        f.getContentPane().setLayout(new BorderLayout());
+        f.getContentPane().add(new JScrollPane(list), BorderLayout.CENTER);
+        f.setSize(300, 300);
+
+        // Position the frame in the center of the screen
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+    }
+
+
     public void clear() {
     	if (ingController.hasIngToSell()) ingController.discardIngToSell();
         ingController.deactivate();
@@ -188,7 +222,9 @@ public class IngredientStorage extends JPanel implements Observer {
             showMessageDialog(String.format("You have drawn %s!", msg.split(":")[1]));
         }
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
-            showMessageDialog(String.format("You have used the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
+            System.out.printf(msg);
+            popUpElixir(msg);
+            //showMessageDialog(String.format("You have used the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
 
         else if (msg.contains("MAGIC_MORTAR")) {

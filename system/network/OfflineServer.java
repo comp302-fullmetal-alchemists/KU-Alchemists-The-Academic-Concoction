@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class OfflineServer implements IServerAdapter {
 
     private int rounds = 0;
@@ -14,11 +15,13 @@ public class OfflineServer implements IServerAdapter {
     private int currentClient = 0;
     private List<OfflineClient> clients;
     private List<Integer> ingredients;
-
+    private List<Integer> elixirIngredients;
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
         ingredients = new ArrayList<Integer>();
+        elixirIngredients = new ArrayList<Integer>();
+
         for (int i = 0; i < 24; i++) {
             ingredients.add(i % 8);
         }
@@ -103,8 +106,26 @@ public class OfflineServer implements IServerAdapter {
 
     @Override 
     public void requestIngredient() {
-        if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
-        else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
+        if (elixirIngredients.isEmpty()){
+            if (ingredients.isEmpty()) clients.get(currentClient).emptyPile();
+            else clients.get(currentClient).takeIngredientIndex(ingredients.remove(0));
+        }
+        else{
+            clients.get(currentClient).takeIngredientIndex(elixirIngredients.remove(0));
+        }
     }
 
+    public void addElixirIngredient(int rand_int){
+        elixirIngredients.add(rand_int);
+    }
+
+    public int getIngredientFromPile() { //Used for elixir of insight artifact card. Just gets ingredients from list
+        if (ingredients.isEmpty()) {
+            //No ingredient;
+            return -1;
+        }
+        else {
+            return ingredients.remove(0);
+        }
+    }
 }

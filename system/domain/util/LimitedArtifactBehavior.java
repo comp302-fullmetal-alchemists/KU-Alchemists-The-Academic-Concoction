@@ -1,5 +1,6 @@
 package system.domain.util;
 
+import java.util.Random;
 import system.domain.interfaces.IUsingBehavior;
 
 import javax.management.openmbean.InvalidOpenTypeException;
@@ -39,9 +40,14 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
        }
         else if (ac.getCardName().equals("Elixir of Insight")) {
-            String cardNames = "";
-            for (int i = 0; i < (IngredientFactory.getInstance().getIngredients().length < 3? IngredientFactory.getInstance().getIngredients().length: 3); i++) {
-                cardNames += IngredientFactory.getInstance().getIngredients()[i] + ", ";
+            String cardNames = "";        
+            Random rand = new Random();
+            // Generate random integers in range 0 to 8
+            for (int i = 0; i < 3; i++) {
+                int rand_int = rand.nextInt(9);
+                GameBoardController.getInstance().getClientAdapter().addElixirIngredient(rand_int);
+                cardNames += IngredientFactory.getInstance().getIngredients()[rand_int] + ", ";
+                System.out.printf("cards: %s\n", cardNames);
             }
             
             ingredientStorage.getIngredientStorageUI().update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));

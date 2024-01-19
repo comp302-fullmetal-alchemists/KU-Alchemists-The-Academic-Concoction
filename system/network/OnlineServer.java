@@ -284,4 +284,16 @@ public class OnlineServer extends Thread implements IServerAdapter {
         }
   
     }
+
+    //METHOD IS NOT ONLINE
+    //TODO THIS METHOD ONLINE
+    public int getIngredientFromPile() { //Used for elixir of insight artifact card. Just gets ingredients from list
+            if (ingredientPile.isEmpty()) {
+                //No ingredient;
+                return -1;
+            }
+            else {
+                return ingredientPile.remove(0);
+            }
+        }
 }
