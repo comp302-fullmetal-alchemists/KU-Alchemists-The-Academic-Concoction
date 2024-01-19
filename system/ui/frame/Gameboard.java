@@ -47,7 +47,7 @@ public class Gameboard extends JFrame implements Observer{
 		this.setResizable(false);
 		welcomePage = new WelcomePagePanel(this);
 		endGamePanel = new EndGamePanel();
-		endGamePanel.setBounds(0, 0, 1200, 800);
+		endGamePanel.setBounds(0, 0, 1300, 800);
 		welcomePage.setBounds(0, 0, 1300, 800);
 		this.waitingScreen = new WaitingScreen(this);
 		waitingScreen.setBounds(0, 0, 1300, 800);

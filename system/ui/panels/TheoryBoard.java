@@ -39,6 +39,9 @@ public class TheoryBoard extends JPanel{
 		theoryBook1.setBounds(62, 20, 90, 150);
 		// set a photo for the theory book
 		theoryBook1.setIcon(new ImageIcon(getClass().getResource("/resources/theory.png")));
+		//theoryBook1.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/theorybook.png")).getImage().getScaledInstance(90, 150, java.awt.Image.SCALE_SMOOTH)));
+        //lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + player.getTokenIndex() + ".png")).getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)));
+		//theoryBook1.setIcon(new ImageIcon(getClass().getResource("/resources/theorybook.png")));
 		//theoryBook1.setBounds(32, 53, 150, 140);
         theoryBook1.addMouseListener(new MouseAdapter() {
 			@Override
