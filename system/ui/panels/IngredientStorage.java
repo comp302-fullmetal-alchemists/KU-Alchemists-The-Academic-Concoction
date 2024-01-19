@@ -241,14 +241,11 @@ public class IngredientStorage extends JPanel implements Observer {
     
 
         else if (msg.contains("WISDOM_IDOL")) {
-            showMessageDialog(String.format("You have used the Wisdom Idol card! Using this artifact, you do not not lose any reputation points even if your theory has been proven to be wrong. If you choose to keep this artifact until the end of the game, you gain an additional 1 reputation point."));
+            showMessageDialog(String.format("You have used the Wisdom Idol card! This card allows you to not lose any reputation points even if your theory is debunked. You gain 1 reputation point if you keep it in your inventory until the end."
+            ));
 
         }
 
-        else if (msg.contains("DISCOUNT_CARD")) {
-            showMessageDialog(String.format("You have used the Discount C card!"));
-
-        }
 
         else if (msg.contains("NEW_INGREDIENT")) {
             String ingName = msg.split(":")[1];
