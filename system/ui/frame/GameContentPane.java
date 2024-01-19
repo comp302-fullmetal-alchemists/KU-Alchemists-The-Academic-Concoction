@@ -1,6 +1,8 @@
 package system.ui.frame;
 
 import system.ui.panels.*;
+
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import java.awt.CardLayout;
