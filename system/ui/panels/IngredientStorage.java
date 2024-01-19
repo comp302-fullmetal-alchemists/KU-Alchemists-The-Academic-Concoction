@@ -9,6 +9,11 @@ import system.domain.interfaces.Observer;
 
 import javax.swing.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.*;
+import java.util.List;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
@@ -25,6 +30,8 @@ import java.util.Arrays;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.ArrayList;
+
 
 
 public class IngredientStorage extends JPanel implements Observer {
@@ -38,6 +45,7 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifact;
     private JPanel artifactPanel;
     private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
+    private List<String> elixirIngredients = new ArrayList<>();;
 
     
     public IngredientStorage() {
@@ -164,14 +172,31 @@ public class IngredientStorage extends JPanel implements Observer {
     	add(transmuteIngBtn);
         
     }
-    
 
-    public void popUpElixir(String msg) {
+    // Helper method to update elixirIngredients based on the model
+    private void updateElixirIngredients(DefaultListModel<String> model) {
+        elixirIngredients.clear();
+        for (int i = 0; i < model.getSize(); i++) {
+            // Assuming elixirIngredients should store the indices of ingredients
+            // You can convert the ingredient name to an index if needed
+            String ingredientName = model.getElementAt(i);
+            elixirIngredients.add(ingredientName);
+        }
+    }
+
+    public void showPopupAndWait(String msg) {
+        // Create a modal dialog
+        JDialog dialog = new JDialog();
+        dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setTitle("Elixir of Insight");
+
+        // Instruction label
+        JLabel instructions = new JLabel("<html><center>Select an ingredient and use the buttons to change its order in the pile.<br>Items on top of the pile can be rearranged using these buttons.</center></html>");
+        instructions.setHorizontalAlignment(JLabel.CENTER);
+        instructions.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         // Extract items from the msg string
         String[] items = msg.substring(msg.indexOf(":") + 1).trim().split(",\\s*");
-
-        // Create a frame
-        JFrame f = new JFrame("Elixir of Insight");
 
         // Create a DefaultListModel and add items
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -180,20 +205,73 @@ public class IngredientStorage extends JPanel implements Observer {
         // Create a JList and set its model
         JList<String> list = new JList<>(model);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setDragEnabled(true);
-        list.setDropMode(DropMode.INSERT);
 
-        // Use the default TransferHandler for list items
-        list.setTransferHandler(new TransferHandler("text"));
+        // Create buttons
+        JButton btnMoveUp = new JButton("Move Up");
+        JButton btnMoveDown = new JButton("Move Down");
+        JButton btnDone = new JButton("Done");
+
+    // Add action listener for Move Up button
+    btnMoveUp.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = list.getSelectedIndex();
+            if (selectedIndex > 0) {
+                String item = model.remove(selectedIndex);
+                model.add(selectedIndex - 1, item);
+                list.setSelectedIndex(selectedIndex - 1);
+                updateElixirIngredients(model); // Update elixirIngredients
+            }
+        }
+    });
+
+    // Add action listener for Move Down button
+    btnMoveDown.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = list.getSelectedIndex();
+            if (selectedIndex < model.getSize() - 1) {
+                String item = model.remove(selectedIndex);
+                model.add(selectedIndex + 1, item);
+                list.setSelectedIndex(selectedIndex + 1);
+                updateElixirIngredients(model); // Update elixirIngredients
+            }
+        }
+    });
+
+    // Add action listener for the Done button
+    btnDone.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            updateElixirIngredients(model); // Update elixirIngredients
+            System.out.println(list); // Print the list
+            dialog.dispose(); // Close the dialog
+        }
+    });
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(btnMoveUp);
+        buttonPanel.add(btnMoveDown);
+        buttonPanel.add(btnDone);
 
         // Create and set up the content pane
-        f.getContentPane().setLayout(new BorderLayout());
-        f.getContentPane().add(new JScrollPane(list), BorderLayout.CENTER);
-        f.setSize(300, 300);
+        dialog.getContentPane().setLayout(new BorderLayout());
+        dialog.getContentPane().add(instructions, BorderLayout.NORTH);
+        dialog.getContentPane().add(new JScrollPane(list), BorderLayout.CENTER);
+        dialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        dialog.setSize(300, 300);
 
-        // Position the frame in the center of the screen
-        f.setLocationRelativeTo(null);
-        f.setVisible(true);
+        // Position the dialog in the center of the screen
+        dialog.setLocationRelativeTo(null);
+
+        // Add a window listener to print the list when the dialog is closed
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                updateElixirIngredients(model); // Update elixirIngredients
+                System.out.println(list); // Print the list
+                dialog.dispose(); // Close the dialog
+            }
+        });
+
+        // Make the dialog visible
+        dialog.setVisible(true);
     }
 
 
@@ -223,8 +301,8 @@ public class IngredientStorage extends JPanel implements Observer {
         }
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
             System.out.printf(msg);
-            popUpElixir(msg);
-            //showMessageDialog(String.format("You have used the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
+            showPopupAndWait(msg);
+            //CONVERT INGREDIENT TO INTEGER, PUT TO SERVER.elixirIngredients
         }
 
         else if (msg.contains("MAGIC_MORTAR")) {
