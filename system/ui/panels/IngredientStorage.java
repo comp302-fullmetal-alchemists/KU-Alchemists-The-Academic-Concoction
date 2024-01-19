@@ -8,6 +8,7 @@ import system.domain.interfaces.Observer;
 
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -82,6 +83,7 @@ public class IngredientStorage extends JPanel implements Observer {
     	add(navBtn);
     	
     	lblIngToSell = new JLabel("<html>Select<br>Ingredient</html>");
+    	lblIngToSell.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
     	lblIngToSell.addMouseListener(new MouseAdapter() {
     		@Override
     		public void mouseClicked(MouseEvent e) {
@@ -91,7 +93,7 @@ public class IngredientStorage extends JPanel implements Observer {
     	lblIngToSell.setBackground(Color.LIGHT_GRAY);
     	lblIngToSell.setHorizontalAlignment(SwingConstants.CENTER);
     	lblIngToSell.setOpaque(true);
-    	lblIngToSell.setBounds(506, 117, 90, 96);
+    	lblIngToSell.setBounds(518, 133, 60, 100);
     	add(lblIngToSell);
     	
     	transmuteIngBtn = new JButton("Transmute Ingredient");
@@ -134,11 +136,11 @@ public class IngredientStorage extends JPanel implements Observer {
             showMessageDialog(String.format("You have drawn the elixir of insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
         else if (msg.contains("NEW_INGREDIENT")) {
-        	String[] ingName = msg.split(":")[1].split(" ");
-        	lblIngToSell.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
-        	lblIngToSell.setBackground(new Color(117, 67, 108));
+            String ingName = msg.split(":")[1];
+        	lblIngToSell.setIcon(new ImageIcon(getClass().getResource("/resources/" + ingName.toLowerCase() + ".png")));
         }
         else if (msg.contains("DISCARD_INGREDIENT")) {
+            lblIngToSell.setIcon(null);
         	lblIngToSell.setText("<html>Select<br>Ingredient</html>");
     		lblIngToSell.setBackground(Color.LIGHT_GRAY);
         }
@@ -146,6 +148,7 @@ public class IngredientStorage extends JPanel implements Observer {
         	showMessageDialog("Please select an ingredient to sell");
         }
         else if (msg.contains("CARD_SOLD")) {
+            lblIngToSell.setIcon(null);
         	lblIngToSell.setText("<html>Select<br>Ingredient</html>");
     		lblIngToSell.setBackground(Color.LIGHT_GRAY);
             showMessageDialog(String.format("You have sold %s!", msg.split(":")[1]));

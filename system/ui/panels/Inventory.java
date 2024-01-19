@@ -54,9 +54,19 @@ public class Inventory extends JPanel implements Observer {
     private JLabel lblIng6;
     private JLabel lblIng7;
     private JLabel lblIng8;
+    private HashMap<String, JLabel> ingMap = new HashMap<String, JLabel>();
+    private JLabel ingcountLbl1;
+    private JLabel ingcountLbl2;
+    private JLabel ingcountLbl3;
+    private JLabel ingcountLbl4;
+    private JLabel ingcountLbl5;
+    private JLabel ingcountLbl6;
+    private JLabel ingcountLbl7;
+    private JLabel ingcountLbl8;
 
     public Inventory(InventoryController invController) {
         super();
+        setBackground(new Color(58, 77, 108));
         this.invController = invController;
         invController.setObserver(this);
         this.ingredients = new HashMap<String, Integer>();
@@ -74,24 +84,60 @@ public class Inventory extends JPanel implements Observer {
         setLayout(null);
         
         lblGold = new JLabel("Gold:");
-        lblGold.setBounds(180, 10, 45, 13);
+        lblGold.setForeground(Color.WHITE);
+        lblGold.setBounds(300, 10, 45, 13);
         add(lblGold);
         
         lblPlayerGold = new JLabel(String.format("%d", invController.getGold()));
-        lblPlayerGold.setBounds(235, 10, 45, 13);
+        lblPlayerGold.setForeground(Color.WHITE);
+        lblPlayerGold.setBounds(357, 10, 45, 13);
         add(lblPlayerGold);
         
         
         lblIngredient = new JLabel("Ingredients:");
-        lblIngredient.setBounds(10, 25, 70, 13);
+        lblIngredient.setForeground(Color.WHITE);
+        lblIngredient.setBounds(10, 10, 98, 13);
         add(lblIngredient);
         
         ingPanel = new JPanel();
-        ingPanel.setBounds(10, 40, 270, 140);
+        ingPanel.setBounds(5, 24, 400, 224);
         add(ingPanel);
         ingPanel.setLayout(null);
+
+
+        ingcountLbl1 = new JLabel("0");
+        ingcountLbl1.setBounds(76, 6, 30, 30);
+        ingPanel.add(ingcountLbl1);
         
-        lblIng1 = new JLabel("<html>Solaris<br>Root<br>0</html>");
+        ingcountLbl2 = new JLabel("0");
+        ingcountLbl2.setBounds(174, 6, 30, 30);
+        ingPanel.add(ingcountLbl2);
+        
+        ingcountLbl3 = new JLabel("0");
+        ingcountLbl3.setBounds(272, 6, 30, 30);
+        ingPanel.add(ingcountLbl3);
+        
+        ingcountLbl4 = new JLabel("0");
+        ingcountLbl4.setBounds(370, 6, 30, 30);
+        ingPanel.add(ingcountLbl4);
+        
+        ingcountLbl5 = new JLabel("0");
+        ingcountLbl5.setBounds(76, 116, 30, 30);
+        ingPanel.add(ingcountLbl5);
+        
+        ingcountLbl6 = new JLabel("0");
+        ingcountLbl6.setBounds(174, 116, 30, 30);
+        ingPanel.add(ingcountLbl6);
+        
+        ingcountLbl7 = new JLabel("0");
+        ingcountLbl7.setBounds(272, 116, 30, 30);
+        ingPanel.add(ingcountLbl7);
+        
+        ingcountLbl8 = new JLabel("0");
+        ingcountLbl8.setBounds(370, 116, 30, 30);
+        ingPanel.add(ingcountLbl8);
+        
+        lblIng1 = new JLabel(new ImageIcon(getClass().getResource("/resources/solaris root.png")));
         lblIng1.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -101,10 +147,12 @@ public class Inventory extends JPanel implements Observer {
         lblIng1.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng1.setOpaque(true);
         lblIng1.setBackground(new Color(117, 67, 108));
-        lblIng1.setBounds(6, 4, 60, 64);
+        lblIng1.setBounds(4, 6, 60, 100);
+        lblIng1.setToolTipText("Solaris Root");
         ingPanel.add(lblIng1);
+        ingMap.put("Solaris Root", ingcountLbl1);
         
-        lblIng2 = new JLabel("<html>Bat<br>Wing<br>0</html>");
+        lblIng2 = new JLabel(new ImageIcon(getClass().getResource("/resources/bat wing.png")));
         lblIng2.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -114,10 +162,12 @@ public class Inventory extends JPanel implements Observer {
         lblIng2.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng2.setOpaque(true);
         lblIng2.setBackground(new Color(117, 67, 108));
-        lblIng2.setBounds(72, 4, 60, 64);
+        lblIng2.setBounds(102, 6, 60, 100);
+        lblIng2.setToolTipText("Bat Wing");
         ingPanel.add(lblIng2);
+        ingMap.put("Bat Wing", ingcountLbl2);
         
-        lblIng3 = new JLabel("<html>Toad<br>Stool<br>0</html>");
+        lblIng3 = new JLabel(new ImageIcon(getClass().getResource("/resources/toad stool.png")));
         lblIng3.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -127,10 +177,12 @@ public class Inventory extends JPanel implements Observer {
         lblIng3.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng3.setOpaque(true);
         lblIng3.setBackground(new Color(117, 67, 108));
-        lblIng3.setBounds(138, 4, 60, 64);
+        lblIng3.setBounds(200, 6, 60, 100);
+        lblIng3.setToolTipText("Toad Stool");
         ingPanel.add(lblIng3);
+        ingMap.put("Toad Stool", ingcountLbl3);
         
-        lblIng4 = new JLabel("<html>Owl<br>Feather<br>0</html>");
+        lblIng4 = new JLabel(new ImageIcon(getClass().getResource("/resources/owl feather.png")));
         lblIng4.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -140,10 +192,14 @@ public class Inventory extends JPanel implements Observer {
         lblIng4.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng4.setOpaque(true);
         lblIng4.setBackground(new Color(117, 67, 108));
-        lblIng4.setBounds(204, 4, 60, 64);
+        lblIng4.setBounds(298, 6, 60, 100);
+        lblIng4.setToolTipText("Owl Feather");
         ingPanel.add(lblIng4);
+        ingMap.put("Owl Feather", ingcountLbl4);
         
-        lblIng5 = new JLabel("<html>Snake<br>Venom<br>0</html>");
+        lblIng5 = new JLabel(new ImageIcon(getClass().getResource("/resources/snake venom.png")));
+        lblIng5.setBounds(4, 116, 60, 100);
+        ingPanel.add(lblIng5);
         lblIng5.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -153,10 +209,12 @@ public class Inventory extends JPanel implements Observer {
         lblIng5.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng5.setOpaque(true);
         lblIng5.setBackground(new Color(117, 67, 108));
-        lblIng5.setBounds(6, 72, 60, 64);
-        ingPanel.add(lblIng5);
+        lblIng5.setToolTipText("Snake Venom");
+        ingMap.put("Snake Venom", ingcountLbl5);
         
-        lblIng6 = new JLabel("<html>Rat<br>Tail<br>0</html>");
+        lblIng6 = new JLabel(new ImageIcon(getClass().getResource("/resources/rat tail.png")));
+        lblIng6.setBounds(102, 116, 60, 100);
+        ingPanel.add(lblIng6);
         lblIng6.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -166,10 +224,12 @@ public class Inventory extends JPanel implements Observer {
         lblIng6.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng6.setOpaque(true);
         lblIng6.setBackground(new Color(117, 67, 108));
-        lblIng6.setBounds(72, 72, 60, 64);
-        ingPanel.add(lblIng6);
+        lblIng6.setToolTipText("Rat Tail");
+        ingMap.put("Rat Tail", ingcountLbl6);  
         
-        lblIng7 = new JLabel("<html>Spider<br>Web<br>0</html>");
+        lblIng7 = new JLabel(new ImageIcon(getClass().getResource("/resources/spider web.png")));
+        lblIng7.setBounds(200, 116, 60, 100);
+        ingPanel.add(lblIng7);
         lblIng7.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -179,10 +239,12 @@ public class Inventory extends JPanel implements Observer {
         lblIng7.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng7.setOpaque(true);
         lblIng7.setBackground(new Color(117, 67, 108));
-        lblIng7.setBounds(138, 72, 60, 64);
-        ingPanel.add(lblIng7);
-        
-        lblIng8 = new JLabel("<html>Newt<br>Eye<br>0</html>");
+        lblIng1.setToolTipText("Spider Web");
+        ingMap.put("Spider Web", ingcountLbl7);
+
+        lblIng8 = new JLabel(new ImageIcon(getClass().getResource("/resources/newt eye.png")));
+        lblIng8.setBounds(298, 116, 60, 100);
+        ingPanel.add(lblIng8);
         lblIng8.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -192,24 +254,26 @@ public class Inventory extends JPanel implements Observer {
         lblIng8.setHorizontalAlignment(SwingConstants.CENTER);
         lblIng8.setOpaque(true);
         lblIng8.setBackground(new Color(117, 67, 108));
-        lblIng8.setBounds(204, 72, 60, 64);
-        ingPanel.add(lblIng8);
+        lblIng8.setToolTipText("Newt Eye");
+        ingMap.put("Newt Eye", ingcountLbl8);
         
         lblArtifact = new JLabel("Artifacts:");
-        lblArtifact.setBounds(10, 195, 70, 13);
+        lblArtifact.setForeground(Color.WHITE);
+        lblArtifact.setBounds(10, 255, 70, 13);
         add(lblArtifact);
         
         artifactPanel = new JPanel();
-        artifactPanel.setBounds(10, 210, 270, 70);
+        artifactPanel.setBounds(5, 274, 397, 132);
         artifactPanel.setLayout(null);
         add(artifactPanel);
         
         lblPotion = new JLabel("Potions:");
-        lblPotion.setBounds(10, 295, 70, 13);
+        lblPotion.setForeground(Color.WHITE);
+        lblPotion.setBounds(320, 410, 70, 13);
         add(lblPotion);
         
         potionPanel = new JPanel();
-        potionPanel.setBounds(10, 310, 270, 70);
+        potionPanel.setBounds(313, 429, 89, 216);
         potionPanel.setLayout(null);
         add(potionPanel);
         
@@ -227,33 +291,10 @@ public class Inventory extends JPanel implements Observer {
     }
     
     public void updateIng(String ingName) {
-    	JLabel ingLbl = null;
-    	if (ingName.equals("Solaris Root")) {
-    		ingLbl = lblIng1;
-    	}
-    	else if (ingName.equals("Bat Wing")) {
-    		ingLbl = lblIng2;
-    	}
-    	else if (ingName.equals("Toad Stool")) {
-    		ingLbl = lblIng3;
-    	}
-    	else if (ingName.equals("Owl Feather")) {
-    		ingLbl = lblIng4;
-    	}
-    	else if (ingName.equals("Snake Venom")) {
-    		ingLbl = lblIng5;
-    	}
-    	else if (ingName.equals("Rat Tail")) {
-    		ingLbl = lblIng6;
-    	}
-    	else if (ingName.equals("Spider Web")) {
-    		ingLbl = lblIng7;
-    	}
-    	else if (ingName.equals("Newt Eye")) {
-    		ingLbl = lblIng8;
-    	}
-    	String[] splitted = ingName.split(" ");
-    	ingLbl.setText("<html>" + splitted[0] + "<br>" + splitted[1] + "<br>" + ingredients.get(ingName) + "</html>");
+        
+        System.out.println(ingMap.get(ingName));
+        
+    	ingMap.get(ingName).setText(ingredients.get(ingName).toString());
     }
     
 
@@ -287,14 +328,15 @@ public class Inventory extends JPanel implements Observer {
     public void updateArtifacts() {
     	artifactPanel.removeAll();
     	artifactPanel.revalidate();
-    	int x0 = 6;
+    	int x0 = 4;
     	for (int i = 0; i < artifacts.size(); i++) {
-    		JLabel artifactLabel = new JLabel(artifactNameToLabelText(artifacts.get(i)));
+            
+    		JLabel artifactLabel = new JLabel(new ImageIcon(getClass().getResource("/resources/" + artifacts.get(i).toLowerCase() + ".png")));
     		artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
     		artifactLabel.setOpaque(true);
     		artifactLabel.setBackground(new Color(49, 81, 50));
     		artifactLabel.setForeground(Color.LIGHT_GRAY);
-    		artifactLabel.setBounds(x0 + 66*i, 3, 60, 64);
+    		artifactLabel.setBounds(x0 + 83*i, 3, 60, 100);
     		artifactPanel.add(artifactLabel);
     	}
     	artifactPanel.revalidate();
@@ -314,7 +356,7 @@ public class Inventory extends JPanel implements Observer {
     public void updatePotions() {
     	potionPanel.removeAll();
     	potionPanel.revalidate();
-    	int x0 = 6;
+    	
     	for (int i = 0; i < potions2.size(); i++) {
     		String status = potions2.get(i);
     		JLabel potionLabel = new JLabel((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
@@ -332,7 +374,7 @@ public class Inventory extends JPanel implements Observer {
     		else if (status.substring(0, status.length() - 1).equals("Blue")) {
     			potionLabel.setBackground(Color.BLUE);
     		}
-    		potionLabel.setBounds(x0 + 66*i, 3, 60, 64);
+    		potionLabel.setBounds(315, 430 + 66*i, 60, 64);
     		potionLabel.addMouseListener(new MouseAdapter() {
             	@Override
             	public void mouseClicked(MouseEvent e) {

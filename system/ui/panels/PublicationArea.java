@@ -149,7 +149,7 @@ public class PublicationArea extends JPanel implements Observer{
 
         //create submit button
 
-        this.submitButton = new JButton("Submit");
+        this.submitButton = new JButton("Publish");
         submitButton.setBounds(261, 643, 128, 41);
         addActiontoButton(submitButton);
         add(submitButton);
