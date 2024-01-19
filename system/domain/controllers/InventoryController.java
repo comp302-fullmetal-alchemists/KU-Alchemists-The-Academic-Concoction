@@ -3,8 +3,6 @@ package system.domain.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import system.domain.ArtifactCard;
-import system.domain.Cards;
-import system.domain.GameAction;
 import system.domain.IngredientCard;
 import system.domain.Potion;
 import system.domain.interfaces.Observer;
@@ -39,6 +37,7 @@ public class InventoryController {
     private int discountCard = -1;
     private boolean printingPress = false;
     private boolean wisdomIdol = false;
+    private boolean magicMortar = false;
 
 
     public InventoryController() {
@@ -48,6 +47,7 @@ public class InventoryController {
         this.potions = new ArrayList<Potion>();
         this.mediator = GameBoardController.getInstance().getMediator();
         this.gameLog = GameBoardController.getInstance().getGameLog();
+        
 
     }
 
@@ -76,9 +76,17 @@ public class InventoryController {
         return wisdomIdol;
     }
     
-
+    
     public void setWisdomIdol(boolean state) {
         this.wisdomIdol = state;
+    } 
+
+    public void setMagicMortar(boolean state) {
+        this.magicMortar = state;
+    }
+
+    public boolean getMagicMortar() {
+        return magicMortar;
     }
 
     public void setObserver(Observer observer) {
@@ -203,13 +211,16 @@ public class InventoryController {
     }
 
     public void sendArtifactCard(String artifactName) {
-        for (ArtifactCard artifact: artifactCards){
-            if (artifact.getName().equals(artifactName)) {
-                artifact.performUseArtifact();
-                removeArtifact(artifact);
-                break;
+        if (GameBoardController.getInstance().getPlayer().isInTurn()) {
+            for (ArtifactCard artifact: artifactCards){
+                if (artifact.getName().equals(artifactName)) {
+                    artifact.performUseArtifact();
+                    removeArtifact(artifact);
+                    break;
+                }
             }
         }
+
         //gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Used artifact %s", artifactName), 0);
 
     }

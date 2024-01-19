@@ -2,24 +2,16 @@ package system.ui.panels;
 
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.IngredientStorageController;
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
-
-
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.util.ArrayList;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
@@ -36,6 +28,12 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifact;
     private JPanel artifactPanel;
     private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
+    private String[] effects = {"to keep one of the ingredients that you have already used", 
+    "to view the top three cards of the ingredient deck and rearrange them in any order.", 
+    "next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", 
+    "to publish a theory free of charge",
+    "allows you to not lose any reputation points even if your theory is debunked. You gain 1 reputation point if you keep it in your inventory until the end."};
+
     private JLabel lblNewLabel_1;
     private JLabel lblNewLabel_2;
     private JLabel lblNewLabel_3;
@@ -105,7 +103,12 @@ public class IngredientStorage extends JPanel implements Observer {
            artifactLabel.setBackground(new Color(117, 67, 108));
            artifactLabel.setForeground(Color.WHITE);
            artifactLabel.setBounds(currentX, y, labelWidth, labelHeight);
+         
+           artifactLabel.setToolTipText(effects[i]);
+        
+         
            artifactPanel.add(artifactLabel);
+
 
 
            JButton buyButton = new JButton("Buy");
@@ -113,7 +116,7 @@ public class IngredientStorage extends JPanel implements Observer {
            buyButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e) {
                    System.out.println("Buying artifact: " + artifactName);
-                   ingController.buyArtifact2(artifactName);
+                   ingController.buyArtifact(artifactName);
                }
            });
            artifactPanel.add(buyButton);
@@ -224,11 +227,19 @@ public class IngredientStorage extends JPanel implements Observer {
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
             showMessageDialog(String.format("You have used the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
+        
+        else if (msg.contains("MAGIC_MORTAR_UNAVAILABLE")) {
+            showMessageDialog(String.format("Since you have not transmuted an ingredient yet, you can not use this card."));
+
+        }
 
         else if (msg.contains("MAGIC_MORTAR")) {
             showMessageDialog(String.format("You have used the Magic Mortar card! You got the ingredient %s!", msg.split(":")[1]));
 
         }
+
+    
+
 
         else if (msg.contains("DISCOUNT_CARD")) {
             showMessageDialog(String.format("You have used the Discount card! Your next artifact card will cost 2 gold less from the original price. After that every artifact card will cost you 1 gold less!"));
@@ -241,14 +252,11 @@ public class IngredientStorage extends JPanel implements Observer {
     
 
         else if (msg.contains("WISDOM_IDOL")) {
-            showMessageDialog(String.format("You have used the Wisdom Idol card! Using this artifact, you do not not lose any reputation points even if your theory has been proven to be wrong. If you choose to keep this artifact until the end of the game, you gain an additional 1 reputation point."));
+            showMessageDialog(String.format("You have used the Wisdom Idol card! This card allows you to not lose any reputation points even if your theory is debunked. You gain 1 reputation point if you keep it in your inventory until the end."
+            ));
 
         }
 
-        else if (msg.contains("DISCOUNT_CARD")) {
-            showMessageDialog(String.format("You have used the Discount C card!"));
-
-        }
 
         else if (msg.contains("NEW_INGREDIENT")) {
             String ingName = msg.split(":")[1];

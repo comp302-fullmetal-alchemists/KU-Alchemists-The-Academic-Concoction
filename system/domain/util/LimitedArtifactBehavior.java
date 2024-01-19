@@ -1,15 +1,10 @@
 package system.domain.util;
 
 import system.domain.interfaces.IUsingBehavior;
-
-import javax.management.openmbean.InvalidOpenTypeException;
-
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.IngredientStorageController;
-import system.domain.controllers.TheoryController;
-
 import system.domain.controllers.InventoryController;
 
 
@@ -32,12 +27,20 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {
-            IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
+            if (!(inventoryController.getLastIngredientCard() == null)) {
+                IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
             inventoryController.addIngredient(lastIngredientCard);
-
             ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard.getCardName()));
+            }
+            else {
+                ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR_UNAVAILABLE"));    
+                GameBoardController.getInstance().getPlayer().getInventory().addArtifact(ac);
+
+            }
 
        }
+  
+
         else if (ac.getCardName().equals("Elixir of Insight")) {
             String cardNames = "";
             for (int i = 0; i < (IngredientFactory.getInstance().getIngredients().length < 3? IngredientFactory.getInstance().getIngredients().length: 3); i++) {
@@ -53,8 +56,12 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
         
         }
+
+
         
     }
+
+    
     
     
 }

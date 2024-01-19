@@ -3,11 +3,15 @@ package system.ui.panels;
 
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JTextField;
 import system.domain.controllers.AuthenticationController;
+import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.Icon;
@@ -26,6 +30,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	private JTextField username1;
     private JComboBox token1;
 	private AuthenticationController authController;
+	private JButton loginButton;
 
 	/**
 	 * Create the panel.
@@ -105,7 +110,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		token1.setVisible(true);
 
 		//created a button for the players to login
-		JButton loginButton = new JButton("LOGIN");
+		this.loginButton = new JButton("LOGIN");
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 
 		loginButton.addActionListener(new ActionListener() {
@@ -113,13 +118,11 @@ public class AuthenticationPanel extends JPanel implements Observer {
 				//get the username and token from the text fields and combo boxes
 	                String player1username = username1.getText();
 					int tokenIndex = token1.getSelectedIndex() + 1;
-	                //Icon player1token = (Icon) token1.getSelectedItem();
 					//call the login method from the authentication controller
 	                authController.login(player1username, tokenIndex);
 	            
 			}
 		});
-		/*loginButton.setBounds(1105, 747, 166, 46); */
 		loginButton.setBounds(978, 600, 166, 42);
 		add(loginButton);
 		
@@ -129,7 +132,6 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		txtrAGameBy.setForeground(Color.WHITE);
 		txtrAGameBy.setFont(new Font("Luminari", Font.ITALIC, 18));
 		txtrAGameBy.setBackground(new Color(58, 77, 108));
-		/*txtrAGameBy.setBounds(1004, 803, 468, 32);*/
 		txtrAGameBy.setBounds(880, 660, 300, 32);
     	txtrAGameBy.setEditable(false);
 		add(txtrAGameBy);
@@ -157,9 +159,13 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	    }
 		else {
 			JOptionPane.showMessageDialog(this, "You have succesfully authenticated yourself! Please wait for other players.");
+			if (GameBoardController.getInstance().getClientAdapter().getMode().equals("Online")) {
+				loginButton.setEnabled(false);
+			}
 		}
 		username1.setText("");
 		token1.setSelectedIndex(0);
-
 	}
+
+	
 }

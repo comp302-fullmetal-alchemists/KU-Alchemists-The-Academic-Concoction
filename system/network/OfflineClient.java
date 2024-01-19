@@ -1,18 +1,12 @@
 package system.network;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import system.domain.Alchemy;
-import system.domain.ArtifactCard;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.GameLogController;
@@ -197,7 +191,7 @@ public class OfflineClient implements IClientAdapter {
     }
 
     public void endGame() {
-        System.out.println("adsgfdhfjgj");
+        
         List<String> scoreList = new ArrayList<String>();
         for (Player p: players) {
             String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
@@ -220,6 +214,7 @@ public class OfflineClient implements IClientAdapter {
         String message = "show_endgame_screen";
         for (String score: scoreList) {
             message += ":" + score ;
+            System.out.println(score);
         }
         GameBoardController.getInstance().showEndgameScreen(message);
     }

@@ -1,7 +1,10 @@
 package system.domain.controllers;
 
+import system.domain.DeductionGrid;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
+import system.domain.ResultsTriangle;
+
 
 public class Player {
     
@@ -12,6 +15,8 @@ public class Player {
     private int round;
     private int reputationPoint;
     private int sicknessPoint;
+    private ResultsTriangle resultsTriangle;
+    private DeductionGrid deductionGrid;
     private InventoryController inventory;
     private Observer playerUI;
 
@@ -23,6 +28,8 @@ public class Player {
         this.sicknessPoint = 0;
         this.round = 0;
         this.inventory = new InventoryController();
+        this.resultsTriangle = new ResultsTriangle();
+        this.deductionGrid = new DeductionGrid();
         GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(this);
         GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
 
@@ -103,15 +110,40 @@ public class Player {
     public InventoryController getInventory() {
         return inventory;
     }
+    
+    public ResultsTriangle getResultsTriangle() {
+    	return resultsTriangle;
+    }
 
+    public DeductionGrid getDeductionGrid() {
+    	return deductionGrid;
+    }
+    
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
-        playerUI.update("REPUTATION:"+reputationPoint);
+        playerUI.update("REPUTATION");
+    }
+    
+    public void performSurgery() {
+    	playerUI.update("SURGERY");
+    	sicknessPoint = 0;
+    	inventory.updateGold(-inventory.getGold());
+    	playerUI.update("SICKNESS");
     }
 
     public void updateSickness(int updateVal) {
-        sicknessPoint = sicknessPoint + updateVal;
+    	if (sicknessPoint != 0 || updateVal != -1) {
+	        sicknessPoint = sicknessPoint + updateVal;
+			playerUI.update("SICKNESS");
+    		if (sicknessPoint == 3) {
+    			performSurgery();
+    		}
+
+    	}
     }
+
+    
+  
 
 
 }

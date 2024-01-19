@@ -1,10 +1,6 @@
 package system.domain.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.Icon;
-import java.util.ArrayList;
 
 import system.domain.interfaces.Observer;
 

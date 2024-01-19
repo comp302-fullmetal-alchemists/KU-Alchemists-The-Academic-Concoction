@@ -2,7 +2,6 @@ package system.ui.frame;
 
 import system.ui.panels.*;
 import javax.swing.JPanel;
-
 import java.awt.CardLayout;
 
 public class GameContentPane extends JPanel {
@@ -35,8 +34,10 @@ public class GameContentPane extends JPanel {
     	if (ingredientStorage.isVisible()) ingredientStorage.clear();
     	else if (potionBrewingArea.isVisible()) potionBrewingArea.clear();
         else if (publicationArea.isVisible()) publicationArea.clear();
+        else if (deductionBoard.isVisible()) deductionBoard.clear();
         cards.show(this, cardName);
         if (cardName.equals("ingredientStorage")) ingredientStorage.activate();
         else if (cardName.equals("potionBrewingArea")) potionBrewingArea.activate();
+        else if (cardName.equals("deductionBoard")) deductionBoard.activate();
     }
 }

@@ -1,9 +1,6 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
-import system.network.OnlineClient;
-import system.ui.frame.Gameboard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
@@ -12,14 +9,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
 import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class PlayerDashboard extends JPanel implements Observer {
     
@@ -77,21 +78,43 @@ public class PlayerDashboard extends JPanel implements Observer {
         add(lblInventory);*/
         
         if (GameBoardController.getInstance().getClientAdapter().getMode().equals("Online")) {
-            //USER IN TEXT GİRDİĞİ YER
-            userInputField = new JTextField("write message");
-            userInputField.setBounds(22, 466, 88, 25); // Adjust the position and size as needed
-            userInputField.setFont(new Font("Arial", Font.PLAIN, 20));
-            userInputField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    // Get the user's input;
-                    String userInput = userInputField.getText();
-                    String message = player.getName() + ": " + userInput + "\n";
-                    GameBoardController.getInstance().getClientAdapter().send("CHAT:" + message);
+            // Create the userInputField
+            userInputField = new JTextField();
+            userInputField.setBounds(120, 552, 300, 20); // Adjust size and position as needed
+            userInputField.setFont(new Font("Arial", Font.PLAIN, 16));
+            
+            // Set placeholder text
+            userInputField.setText("Type your message here...");
+            userInputField.setForeground(Color.GRAY);
+            
+            // Add an ActionListener to handle user input
+            userInputField.addActionListener(e -> {
+                // Get the user's input;
+                String userInput = userInputField.getText();
+                String message = player.getName() + ": " + userInput + "\n";
+                GameBoardController.getInstance().getClientAdapter().send("CHAT:" + message);
+                userInputField.setText(""); // Clear the input field after sending
+            });
+            
+            // Add a FocusListener to clear the placeholder text when the field is focused
+            userInputField.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if (userInputField.getText().equals("Type your message here...")) {
+                        userInputField.setText("");
+                        userInputField.setForeground(Color.BLACK);
+                    }
                 }
-            }
-        });
+        
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if (userInputField.getText().isEmpty()) {
+                        userInputField.setText("Type your message here...");
+                        userInputField.setForeground(Color.GRAY);
+                    }
+                }
+            });
+            
             add(userInputField);
         }
         
@@ -131,9 +154,18 @@ public class PlayerDashboard extends JPanel implements Observer {
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
         }
+        else if (msg.contains("CHAT")) {
+            appendToGameLog(msg);
+        }
         else if (msg.contains("REPUTATION:")) {
-     //   else if (msg.contains("REPUTATION")) {
+            
             lblReputation.setText("Reputation: " + player.getReputation());
+        }
+        else if (msg.contains("SICKNESS")) {
+            lblSickness.setText("Sickness: "  + player.getSickness());
+        }
+        else if (msg.contains("SURGERY")) {
+        	JOptionPane.showMessageDialog(this, "You are in critical condition and in need of a surgery!");
         }
     }
 }   
