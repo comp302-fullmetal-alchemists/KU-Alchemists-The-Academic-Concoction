@@ -305,11 +305,13 @@ public class IngredientStorage extends JPanel implements Observer {
             showPopupAndWait(msg);
             for(int j = 0; j < 3; j++){
                 System.out.printf("items: %s\n", elixirIngredients.get(j));
-                // for(int i = 0; i < 8; i++){
-                //     if(ingredients[i] == elixirIngredients[j]){
-                //         OFFLINESERVER.elixirIngredients[0] = i; //FIX FOR ONLNIE AND OFFLINE, add to their elixir ingredients like this
-                //     }
-                // }
+                for(int i = 0; i < 8; i++){
+                    if(ingredients[i] == elixirIngredients.get(j)){
+
+                        GameBoardController.getInstance().getClientAdapter().
+                        //OFFLINESERVER.elixirIngredients[0] = i; //FIX FOR ONLNIE AND OFFLINE, add to their elixir ingredients like this
+                    }
+                }
             }
             
             //CONVERT INGREDIENT TO INTEGER, PUT TO SERVER.elixirIngredients

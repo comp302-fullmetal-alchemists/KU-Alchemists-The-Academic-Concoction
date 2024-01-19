@@ -25,6 +25,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
     private BufferedReader fromServer;
     private List<String> usernames;
     private List<Integer> ingredientPile;
+    private List<Integer> elixirIngredients;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -295,5 +296,8 @@ public class OnlineServer extends Thread implements IServerAdapter {
             else {
                 return ingredientPile.remove(0);
             }
-        }
-}
+    }
+
+    public setelixirofinsight (List<Integer> elixirList) {
+            this.elixirIngredients = elixirList;
+    }

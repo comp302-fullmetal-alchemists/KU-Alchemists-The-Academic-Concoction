@@ -15,7 +15,6 @@ public class OfflineServer implements IServerAdapter {
     private int currentClient = 0;
     private List<OfflineClient> clients;
     private List<Integer> ingredients;
-    private List<Integer> elixirIngredients;
 
     public OfflineServer() {
         this.clients = new ArrayList<OfflineClient>();
