@@ -14,7 +14,7 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
     
 
     @Override
-    public int useArtifact(ArtifactCard ac) {
+    public void useArtifact(ArtifactCard ac) {
         
         IngredientStorageController ingredientStorage = GameBoardController.getInstance().getIngredientStorageController();
         InventoryController inventoryController = GameBoardController.getInstance().getPlayer().getInventory();
@@ -24,7 +24,6 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
             inventoryController.setPrintingPress(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("PRINTING_PRESS"));
-            return 1;
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {
@@ -49,7 +48,6 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
         else if (ac.getCardName().equals("Wisdom Idol")) {
             inventoryController.setWisdomIdol(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("WISDOM_IDOL"));
-            return 1;
         }
 
 

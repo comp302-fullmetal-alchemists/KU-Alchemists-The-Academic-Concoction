@@ -115,8 +115,8 @@ public class IngredientStorage extends JPanel implements Observer {
 
            // Calculating the X position for this iteration
            int currentX = x + spacingX * i;
-
-           JLabel artifactLabel = new JLabel(new ImageIcon(getClass().getResource("/resources/" + artifacts[i].toLowerCase() + ".png")));
+            System.out.println(artifacts[i].toLowerCase());
+            JLabel artifactLabel = new JLabel(new ImageIcon(getClass().getResource("/resources/" + artifacts[i].toLowerCase() + ".png")));
            artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
            artifactLabel.setOpaque(true);
            artifactLabel.setBackground(new Color(117, 67, 108));
