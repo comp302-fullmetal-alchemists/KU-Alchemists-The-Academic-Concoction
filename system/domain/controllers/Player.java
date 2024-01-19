@@ -14,7 +14,8 @@ public class Player {
     private String name;
     private Boolean turn;
     private int turnsLeft;
-    private Icon token;
+    private int tokenIndex;
+    private int round;
     private int reputationPoint;
     private int sicknessPoint;
     private ResultsTriangle resultsTriangle;
@@ -22,12 +23,13 @@ public class Player {
     private InventoryController inventory;
     private Observer playerUI;
 
-    public Player(String name, Icon token) {
+    public Player(String name, int tokenIndex) {
         this.name = name;
         this.turn = false;
-        this.token = token;
+        this.tokenIndex = tokenIndex;
         this.reputationPoint = 0;
         this.sicknessPoint = 0;
+        this.round = 0;
         this.inventory = new InventoryController();
         this.resultsTriangle = new ResultsTriangle();
         this.deductionGrid = new DeductionGrid();
@@ -51,6 +53,12 @@ public class Player {
         }
     }
 
+    public void appendToChatLog(String text) {
+        if (playerUI != null) {
+            playerUI.update(text);
+        }
+    }
+
     public void setName(String name) {
 		this.name = name;
 	}
@@ -70,6 +78,7 @@ public class Player {
     public void changeTurn() {
         if (!turn) {
             turnsLeft = 3;
+            round += 1;
         }
         turn = !turn;
     }
@@ -81,12 +90,12 @@ public class Player {
         }
     }
 
-	public void setToken(Icon token) {
-		this.token = token;
+	public void setToken(int tokenIndex) {
+		this.tokenIndex = tokenIndex;
 	}
     
-    public Icon getToken() {
-        return token;
+    public int getTokenIndex() {
+        return tokenIndex;
     }
 
     public int getReputation() {
@@ -95,6 +104,10 @@ public class Player {
 
     public int getSickness(){
         return sicknessPoint;
+    }
+
+    public int getRound() {
+        return round;
     }
     
     public InventoryController getInventory() {

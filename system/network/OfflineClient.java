@@ -1,13 +1,18 @@
 package system.network;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import system.domain.Alchemy;
-import system.domain.IngredientCard;
-import system.domain.Theory;
+import system.domain.ArtifactCard;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.GameLogController;
@@ -155,6 +160,7 @@ public class OfflineClient implements IClientAdapter {
             if (!p.getName().equals(playerName)) {
                 if (p.getName().equals(ownerName)) {
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
+                    p.updateReputation(-1);
                 }
                 else {
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked the Theory of %s about %s!", playerName, ownerName, ingredient), 0);
@@ -166,4 +172,56 @@ public class OfflineClient implements IClientAdapter {
 
 
 
+    public void closeResources() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'closeResources'");
+    }
+
+
+    @Override
+    public void reportExitGameToServer() {
+        System.exit(0);
+    }
+
+
+    @Override
+    public void send(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'send'");
+    }
+
+    public void endGame() {
+        System.out.println("adsgfdhfjgj");
+        List<String> scoreList = new ArrayList<String>();
+        for (Player p: players) {
+            String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
+            scoreList.add(score);
+        }
+        Collections.sort(scoreList, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String[] score1 = s1.split(":");
+                String[] score2 = s2.split(":");
+
+                // Convert score[2] to integer for comparison
+                int score1Int = Integer.parseInt(score1[2]);
+                int score2Int = Integer.parseInt(score2[2]);
+
+                // For descending order
+                return Integer.compare(score2Int, score1Int);
+            }
+        });
+        String message = "show_endgame_screen";
+        for (String score: scoreList) {
+            message += ":" + score ;
+        }
+        GameBoardController.getInstance().showEndgameScreen(message);
+    }
+
+
+    @Override
+    public String getMode() {
+        return "Offline";
+    }
+    
 }

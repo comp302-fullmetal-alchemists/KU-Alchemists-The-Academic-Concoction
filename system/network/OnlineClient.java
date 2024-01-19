@@ -1,18 +1,16 @@
 package system.network;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import system.domain.Alchemy;
-import system.domain.Theory;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.GameLogController;
@@ -23,18 +21,26 @@ public class OnlineClient extends Thread implements IClientAdapter {
     private Socket socket;
     private DataInputStream fromServer;
     private DataOutputStream toServer;
-    private BufferedReader fromUser;
     private GameLogController gamelog;
     
     private static final String LOCALHOST = "127.0.0.1"; 
 
-    public OnlineClient(String ip, int port) throws IOException {
+    public OnlineClient(String ip, int port) {
         this.gamelog = GameBoardController.getInstance().getGameLog();
-        this.socket = new Socket(ip, port);
-        this.fromServer = new DataInputStream(socket.getInputStream());
-        this.toServer = new DataOutputStream(socket.getOutputStream());
-        this.fromUser = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("[CLIENT] Connected to server on port " + port);
+        if (ip.equals("")) {
+            ip = LOCALHOST;
+        }
+        try {
+            this.socket = new Socket(ip, port);
+            this.fromServer = new DataInputStream(socket.getInputStream());
+            this.toServer = new DataOutputStream(socket.getOutputStream());
+            System.out.println("[CLIENT] Connected to server on port " + port);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("Can't connect to the server");
+            throw new RuntimeException("Can't connect to the server");
+        }
     }
 
     public void run() {
@@ -115,15 +121,46 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 else if (message.contains("endorse")) {
                     addEndorsedTheory(message);
                 }
+                else if (message.equals("exit_game")) {
+                    closeResources();
+                    System.exit(0);
+                }
+                else if (message.equals("calculate_final_score")) {
+                    calculateMyScore();
+                }
+                else if (message.contains("show_endgame_screen")) {
+                    showEndgameScreen(message);
+                }
+                else if (message.contains("CHAT:")) {
+                    gamelog.recordchat(message);
+                }
+                else if (message.equals("server_full")) {
+                    GameBoardController.getInstance().showError(message);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         
-        // Add other message handling logic here
     }
 
-    private void closeResources() {
+    private void showEndgameScreen(String message) {
+        GameBoardController.getInstance().showEndgameScreen(message);
+    }
+
+    private void calculateMyScore() {
+        Player p =  GameBoardController.getInstance().getPlayer();
+        String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
+        try {
+            toServer.writeUTF(score);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void closeResources() {
         try {
 
             if (socket != null) {
@@ -301,5 +338,28 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 gamelog.recordLog(p, "Academy", p.getName(), String.format("%s endorsed the Theory of %s about %s!", debunkerName, ownerName, ingredient), 2);
             }
         }
+    }
+
+    @Override
+    public void reportExitGameToServer() {
+        try {
+            toServer.writeUTF("exit_game");
+        } catch (IOException e) {
+        }
+    }
+
+    @Override
+    public void send(String msg) {
+        try {
+            toServer.writeUTF(msg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getMode() {
+        return "Online";
     }
 }

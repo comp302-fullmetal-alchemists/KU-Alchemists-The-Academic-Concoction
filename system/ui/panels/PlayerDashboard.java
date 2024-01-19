@@ -1,17 +1,24 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
+import system.network.OnlineClient;
+import system.ui.frame.Gameboard;
 import system.domain.IngredientCard;
+import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import java.awt.Font;
 
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -22,8 +29,10 @@ public class PlayerDashboard extends JPanel implements Observer {
     private JLabel playerLabel;
     private JTextArea gameLogDisplayText;
     private JScrollPane gameLogDisplay;
+    private JTextField userInputField;
     private JLabel lblReputation;
     private JLabel lblSickness;
+    private JLabel lblToken;
 
     public PlayerDashboard(Player player) {
         super();
@@ -34,7 +43,8 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.player = player;
         this.playerLabel = new JLabel(player.getName());
         playerLabel.setForeground(Color.LIGHT_GRAY);
-        playerLabel.setBounds(157, 5, 81, 16);
+        //playerLabel.setBounds(157, 5, 81, 16);
+        playerLabel.setBounds(99, 5, 81, 16);
         add(playerLabel);
 
         this.inventory = new Inventory(player.getInventory());
@@ -43,25 +53,52 @@ public class PlayerDashboard extends JPanel implements Observer {
         
         JLabel lblNewLabel = new JLabel("Player name:");
         lblNewLabel.setForeground(Color.LIGHT_GRAY);
-        lblNewLabel.setBounds(80, 5, 110, 16);
+        //lblNewLabel.setBounds(80, 5, 110, 16);
+        lblNewLabel.setBounds(22, 5, 110, 16);
         add(lblNewLabel);
 
         lblReputation = new JLabel("Reputation: " + player.getReputation());
         lblReputation.setForeground(Color.LIGHT_GRAY);
-        lblReputation.setBounds(53, 31, 88, 16);
+        //lblReputation.setBounds(53, 31, 88, 16);
+        lblReputation.setBounds(22, 31, 88, 16);
         add(lblReputation);
 
         lblSickness = new JLabel("Sickness: "  + player.getSickness()  );
         lblSickness.setForeground(Color.LIGHT_GRAY);
-        lblSickness.setBounds(190, 31, 88, 16);
+        //lblSickness.setBounds(190, 31, 88, 16);
+        lblSickness.setBounds(140, 31, 88, 16);
         add(lblSickness);
+
+        lblToken = new JLabel("");
+        lblToken.setBounds(250, 5, 60, 60);
+        lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + player.getTokenIndex() + ".png")).getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)));
+        add(lblToken);
   
         JLabel lblInventory = new JLabel("Inventory");
         lblInventory.setForeground(Color.LIGHT_GRAY);
         lblInventory.setBounds(22, 50, 88, 13);
         add(lblInventory);
         
-        //Scrollable GameLog inside players dashboard
+        if (GameBoardController.getInstance().getClientAdapter().getMode().equals("Online")) {
+            //USER IN TEXT GİRDİĞİ YER
+            userInputField = new JTextField("write message");
+            userInputField.setBounds(22, 466, 88, 25); // Adjust the position and size as needed
+            userInputField.setFont(new Font("Arial", Font.PLAIN, 20));
+            userInputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Get the user's input;
+                    String userInput = userInputField.getText();
+                    String message = player.getName() + ": " + userInput + "\n";
+                    GameBoardController.getInstance().getClientAdapter().send("CHAT:" + message);
+                }
+            }
+        });
+            add(userInputField);
+        }
+        
+
         gameLogDisplayInit();
         add(gameLogDisplay);
         

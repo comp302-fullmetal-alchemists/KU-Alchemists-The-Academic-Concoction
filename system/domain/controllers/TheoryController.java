@@ -51,6 +51,10 @@ public class TheoryController {
 
 
     public void publishTheory(Alchemy alchemy) {
+        if (mediator.getPlayer().getRound() == 1) {
+            theoryUI.update("CANNOT_PUBLISH_THEORY_IN_ROUND_1");
+            return;
+        }
         if (ingredient == null) {
             theoryUI.update("NO_INGREDIENT_CHOSEN");
             return;
@@ -89,6 +93,10 @@ public class TheoryController {
     }
 
     public void endorseTheory() {
+        if (mediator.getPlayer().getRound() < 2) {
+            theoryUI.update("CANNOT_ENDORSE_THEORY_UNTIL_FINAL_ROUND");
+            return;
+        }
         //check if the theory is already endorsed
         if (ingredient == null) {
             theoryUI.update("NO_THEORY_CHOSEN");
@@ -147,6 +155,10 @@ public class TheoryController {
     }
 
     public void debunkTheory(Alchemy alchemy) {
+        if (mediator.getPlayer().getRound() < 2) {
+            theoryUI.update("CANNOT_DEBUNK_THEORY_UNTIL_FINAL_ROUND");
+            return;
+        }
         //if the the theory which is going to be debunked is not current player's theory and the alchemy is not the same as the theory's alchemy
         if (ingredient == null) {
             theoryUI.update("NO_THEORY_CHOSEN");

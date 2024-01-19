@@ -5,30 +5,18 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-
-
 import java.awt.event.ActionListener;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import javax.swing.SwingConstants;
+
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
-import system.domain.Potion;
 import system.domain.controllers.GameBoardController;
-import system.domain.controllers.IngredientStorageController;
 import system.domain.interfaces.Observer;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.event.MouseAdapter;
-import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+
 
 public class PotionBrewingArea extends JPanel implements Observer {
 
@@ -246,6 +234,9 @@ public class PotionBrewingArea extends JPanel implements Observer {
         else if (msg.contains("STUDENT_SICK")) {
         	showMessageDialog("You have made your student sick, you must pay for its treatment!");
         }
+		else if (msg.contains("NO_SELL_FIRST_ROUND")) {
+			showMessageDialog("You cannot sell potions in the first round, wait for second round.");
+		}
 
     }
 }

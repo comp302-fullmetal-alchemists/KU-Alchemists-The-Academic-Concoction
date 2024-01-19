@@ -8,9 +8,13 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import system.domain.controllers.GameBoardController;
+
 import java.util.ArrayList;
 
 public class OnlineServer extends Thread implements IServerAdapter {
@@ -25,6 +29,9 @@ public class OnlineServer extends Thread implements IServerAdapter {
     private BufferedReader fromServer;
     private List<String> usernames;
     private List<Integer> ingredientPile;
+    private GameBoardController gameBoardController;
+    private volatile boolean running = true;
+    private List<String> scoreList;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -32,6 +39,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
         this.clients = Collections.synchronizedList(new ArrayList<ClientHandler>());
         fromServer = new BufferedReader(new InputStreamReader(System.in));
         usernames = new ArrayList<String>();
+        scoreList = new ArrayList<String>();
         ingredientPile = new ArrayList<Integer>();
         for (int i = 0; i < 24; i++) {
             ingredientPile.add(i % 8);
@@ -39,24 +47,41 @@ public class OnlineServer extends Thread implements IServerAdapter {
         Collections.shuffle(ingredientPile);
     }
 
+    public void stopServer() {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            running = false;
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void run() {
-        while (true) {
+        while (running) {
             try {
-                if (clients.size() < MAX_CLIENTS) {
+
                     System.out.println("[SERVER] Waiting for clients on port " + serverSocket.getLocalPort() + "...");
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("[SERVER] Client connected: " + clientSocket);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                     clients.add(clientHandler);
                     clientExecutor.execute(clientHandler);
-                }
             } catch (IOException e) {
-                if (!serverSocket.isClosed()) {
-                    e.printStackTrace();
+                if (!running) {
+                    System.out.println("[SERVER] Server stopped.");
+                    break;
                 }
+                e.printStackTrace();
             }
         }
     }
+
 
 
 
@@ -84,6 +109,10 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
                 writer.writeUTF("Welcome to the Server!");
 
+                if (clients.size() > MAX_CLIENTS) {
+                    writer.writeUTF("server_full");
+                    removeClient(this);
+                }
                 String clientMessage;
 
                 while (true) {
@@ -92,17 +121,18 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 }
     
             } catch (IOException e) {
-                System.out.println("Exception in ClientHandler: " + e.getMessage());
-                e.printStackTrace();
+                System.out.println("[SERVER] Exception in ClientHandler: " + e.getMessage());
+                //e.printStackTrace();
             } finally {
                 try {
                     clientSocket.close();
+                    removeClient(this);
+                    if (clients.isEmpty()) stopServer();
                 } catch (IOException ex) {
                     System.out.println("Exception while closing client socket: " + ex.getMessage());
                     ex.printStackTrace();
                 }
-                server.removeClient(this);
-                System.out.println("ClientHandler terminated for client: " + clientSocket);
+                System.out.println("[SERVER] ClientHandler terminated for client: " + clientSocket);
             }
         }
 
@@ -144,6 +174,20 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 else if (message.contains("endorse")) {
                     reportEndorseTheoryToClients(message);
                 }
+                else if (message.contains("exit_game")) {
+                    reportClientsToExit();
+                }
+                else if (message.contains("my_score")) {
+                    scoreList.add(message);
+                    if (scoreList.size() == clients.size()) {
+                        showEndgameScreen();
+                    }
+                }
+                else if (message.contains("CHAT:")) {
+                    for (ClientHandler client: clients) {
+                        client.getWriter().writeUTF(message);
+                    }
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -157,9 +201,56 @@ public class OnlineServer extends Thread implements IServerAdapter {
         }
     }
 
+    public void showEndgameScreen() {
+        Collections.sort(scoreList, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String[] score1 = s1.split(":");
+                String[] score2 = s2.split(":");
+
+                // Convert score[2] to integer for comparison
+                int score1Int = Integer.parseInt(score1[2]);
+                int score2Int = Integer.parseInt(score2[2]);
+
+                // For descending order
+                return Integer.compare(score2Int, score1Int);
+            }
+        });
+        String message = "show_endgame_screen";
+        for (String score: scoreList) {
+            message += ":" + score ;
+        }
+        for (ClientHandler client: clients) {
+            try {
+                client.getWriter().writeUTF(message);
+                System.out.println(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+      
+    }
+
     @Override
     public void setPlayerNumber(int playerNum) {
         this.playerNum = clients.size();
+    }
+
+    @Override
+    public Integer getClientSize() {
+        return clients.size();
+    }
+
+    public void reportClientsToExit() {
+        for (ClientHandler client: clients) {
+            try {
+                client.getWriter().writeUTF("exit_game");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+        }
+        //stopServer();
     }
 
     private void reportPublishTheoryToClients(String message) {
@@ -231,7 +322,9 @@ public class OnlineServer extends Thread implements IServerAdapter {
     @Override
     public void authorizeClient() {
         try {
-            clients.get(currentClient).getWriter().writeUTF("authorize");
+            if (rounds != 3) {
+                clients.get(currentClient).getWriter().writeUTF("authorize");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -268,6 +361,15 @@ public class OnlineServer extends Thread implements IServerAdapter {
     public void newRound() {
         currentClient = 0;
         rounds += 1;
+        if (rounds == 3) {
+            for (ClientHandler client: clients) {
+                try {
+                    client.getWriter().writeUTF("calculate_final_score");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
