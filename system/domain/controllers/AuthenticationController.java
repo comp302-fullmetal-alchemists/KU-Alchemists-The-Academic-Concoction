@@ -13,7 +13,7 @@ public class AuthenticationController {
     private static AuthenticationController instance;
     private Observer authenticationUI;
     private String tempUsername;
-    private Icon tempToken;
+    private int tempTokenIndex;
 
     public static AuthenticationController getInstance(){
         if (instance == null) {
@@ -29,14 +29,14 @@ public class AuthenticationController {
     
 
     // This method is called by the UI when the user clicks the login button
-    public void login(String username, Icon token){
+    public void login(String username, int tokenIndex){
         //checks whether username is empty
         if (username.equals("")){
             authenticationUI.update("Please fill all the fields");
         }
         else {
             this.tempUsername = username;
-            this.tempToken = token;
+            this.tempTokenIndex = tokenIndex;
             GameBoardController.getInstance().getClientAdapter().validateUserChoices(username);
         }
     }
@@ -46,7 +46,7 @@ public class AuthenticationController {
     }
 
     public void validUsername() {
-        Player player = new Player(tempUsername, tempToken);
+        Player player = new Player(tempUsername, tempTokenIndex);
         authenticationUI.update("VALID");
         GameBoardController.getInstance().getClientAdapter().registerPlayer(player);
     }

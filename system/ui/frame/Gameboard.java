@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 import system.domain.controllers.GameBoardController;
@@ -45,6 +46,8 @@ public class Gameboard extends JFrame implements Observer{
 		setSize(1300, 800);
 		this.setResizable(false);
 		welcomePage = new WelcomePagePanel(this);
+		endGamePanel = new EndGamePanel();
+		endGamePanel.setBounds(0, 0, 1200, 800);
 		welcomePage.setBounds(0, 0, 1300, 800);
 		this.waitingScreen = new WaitingScreen(this);
 		waitingScreen.setBounds(0, 0, 1300, 800);
@@ -137,6 +140,12 @@ public class Gameboard extends JFrame implements Observer{
 		else if(msg.equals("END_GAME")){
 			showEndGamePanel();
 		}
+		else if (msg.equals("Can't connect to the server")) {
+			JOptionPane.showMessageDialog(this, "Can't connect to the server");
+		}
+		else if (msg.equals("server_full")){
+			JOptionPane.showMessageDialog(this, "Server is full.");
+		}
 	}
 	
 	public void clear() {
@@ -208,8 +217,10 @@ public class Gameboard extends JFrame implements Observer{
 		repaint();
 	}
 	public void showEndGamePanel() {
-		getContentPane().remove(playerContentPane);
-		getContentPane().remove(gameContentPane);
+		// atadığın fşelddan info çek
+		HashMap<String, Integer> populatedWinnerList = GameBoardController.getInstance().getWinnerList();
+		endGamePanel.updateWinnerList(populatedWinnerList);
+		getContentPane().removeAll();
 		getContentPane().add(endGamePanel);
 		setVisible(true);
 		revalidate();

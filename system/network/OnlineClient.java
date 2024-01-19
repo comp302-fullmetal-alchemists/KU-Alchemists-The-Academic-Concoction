@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import system.domain.Alchemy;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;
@@ -23,15 +25,22 @@ public class OnlineClient extends Thread implements IClientAdapter {
     
     private static final String LOCALHOST = "127.0.0.1"; 
 
-    public OnlineClient(String ip, int port) throws IOException {
+    public OnlineClient(String ip, int port) {
         this.gamelog = GameBoardController.getInstance().getGameLog();
         if (ip.equals("")) {
             ip = LOCALHOST;
         }
-        this.socket = new Socket(ip, port);
-        this.fromServer = new DataInputStream(socket.getInputStream());
-        this.toServer = new DataOutputStream(socket.getOutputStream());
-        System.out.println("[CLIENT] Connected to server on port " + port);
+        try {
+            this.socket = new Socket(ip, port);
+            this.fromServer = new DataInputStream(socket.getInputStream());
+            this.toServer = new DataOutputStream(socket.getOutputStream());
+            System.out.println("[CLIENT] Connected to server on port " + port);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("Can't connect to the server");
+            throw new RuntimeException("Can't connect to the server");
+        }
     }
 
     public void run() {
@@ -117,23 +126,37 @@ public class OnlineClient extends Thread implements IClientAdapter {
                     System.exit(0);
                 }
                 else if (message.equals("calculate_final_score")) {
-                    //calculate final score and send it to server
-                    //message olarak player name and score 
-                    //my_score:player_name:score
-                    /* 
-                    Player p = GameBoardController.getInstance().getPlayer();
-                    String score = String.format("my_score:%s:%d", p.getName(), p.getScore());
-                    toServer.writeUTF(score);
-                    */
+                    calculateMyScore();
                 }
                 else if (message.contains("show_endgame_screen")) {
-                    
+                    showEndgameScreen(message);
+                }
+                else if (message.contains("CHAT:")) {
+                    gamelog.recordchat(message);
+                }
+                else if (message.equals("server_full")) {
+                    GameBoardController.getInstance().showError(message);
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         
+    }
+
+    private void showEndgameScreen(String message) {
+        GameBoardController.getInstance().showEndgameScreen(message);
+    }
+
+    private void calculateMyScore() {
+        Player p =  GameBoardController.getInstance().getPlayer();
+        String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
+        try {
+            toServer.writeUTF(score);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -328,5 +351,20 @@ public class OnlineClient extends Thread implements IClientAdapter {
             toServer.writeUTF("exit_game");
         } catch (IOException e) {
         }
+    }
+
+    @Override
+    public void send(String msg) {
+        try {
+            toServer.writeUTF(msg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getMode() {
+        return "Online";
     }
 }
