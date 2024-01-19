@@ -32,6 +32,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
     private GameBoardController gameBoardController;
     private volatile boolean running = true;
     private List<String> scoreList;
+    private List<Integer> elixirIngredients;
 
     public OnlineServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
@@ -188,6 +189,12 @@ public class OnlineServer extends Thread implements IServerAdapter {
                         client.getWriter().writeUTF(message);
                     }
                 }
+                else if (message.contains("PEEK")){
+                    sendTopIngredients();
+                }
+                else if (message.contains("REWRITE")){
+                    rewriteIng(message.split(":")[1]);
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -250,7 +257,15 @@ public class OnlineServer extends Thread implements IServerAdapter {
             }
             
         }
-        //stopServer();
+    }
+
+    private void sendTopIngredients() {
+        try {
+            clients.get(currentClient).getWriter().writeUTF("elixir:" + ingredientPile.subList(0,3).toString());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void reportPublishTheoryToClients(String message) {
@@ -384,6 +399,34 @@ public class OnlineServer extends Thread implements IServerAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-  
+    
+    }
+
+    public int getIngredientFromPile() { //Used for elixir of insight artifact card. Just gets ingredients from list
+            if (ingredientPile.isEmpty()) {
+                //No ingredient;
+                return -1;
+            }
+            else {
+                return ingredientPile.remove(0);
+            }
+    }
+
+    public void setElixirIngredients (List<Integer> elixirList) {
+        List<Integer> elixirIngredients = new ArrayList<Integer>(elixirList);
+    }
+
+    public void rewriteIng(String msg) {
+        int[] rewriteIndex = new int[3];
+        for(int i = 0; i< 3; i++){
+            rewriteIndex[i] = Integer.parseInt(msg.substring(i,i+1));
+        }
+
+        ingredientPile.add(0, rewriteIndex[0]);
+        ingredientPile.add(1, rewriteIndex[1]);
+        ingredientPile.add(2, rewriteIndex[2]);
+        ingredientPile.remove(3);
+        ingredientPile.remove(4);
+        ingredientPile.remove(5);
     }
 }

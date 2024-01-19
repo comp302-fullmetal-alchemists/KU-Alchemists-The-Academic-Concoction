@@ -93,7 +93,6 @@ public class IngredientStorageController implements Collector{
                 for (ArtifactCard ac: artifactPile) {
                     if (cardName.equals(ac.getName())) {
                          card = ac;
-                         
                     }
                 }
                
@@ -165,6 +164,23 @@ public class IngredientStorageController implements Collector{
     }
 
     
+
+    public void elixirOfInsight(List<Integer> topIngredients) {
+        String msg = "ELIXIR_OF_INSIGHT:";
+        for(int ingInt: topIngredients){
+            msg += IngredientCard.getIngredientName(ingInt);
+            msg += ", ";
+        }
+        ingredientStorageUI.update(msg);
+    }
+
+    public void rewriteIng(List<String> elixirIngredients) {
+        String serverMsg = "";
+        for(String e: elixirIngredients){
+            serverMsg += IngredientCard.getIngredientIndex(e);
+            }
+        GameBoardController.getInstance().getClientAdapter().rewriteIng(serverMsg);
+    }
 
     public Observer getIngredientStorageUI() {
         return this.ingredientStorageUI;

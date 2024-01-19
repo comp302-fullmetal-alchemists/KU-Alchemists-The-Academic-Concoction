@@ -123,6 +123,16 @@ public class OfflineClient implements IClientAdapter {
     }
 
 
+    public void peek3Ingredients(){
+        List<Integer> topIngredients = server.peek3Ingredients();
+        GameBoardController.getInstance().getIngredientStorageController().elixirOfInsight(topIngredients);
+
+    }
+
+    public void rewriteIng(String serverMsg){
+        server.rewriteIng(serverMsg);
+    }
+
     @Override
     public void reportPublishTheoryToServer(Alchemy alchemy, String ingredient, String playerName) {
         for (Player p: players) {

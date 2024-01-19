@@ -1,5 +1,6 @@
 package system.domain.util;
 
+import java.util.Random;
 import system.domain.interfaces.IUsingBehavior;
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
@@ -23,7 +24,6 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
 
             inventoryController.setPrintingPress(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("PRINTING_PRESS"));
-
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {
@@ -42,19 +42,12 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
   
 
         else if (ac.getCardName().equals("Elixir of Insight")) {
-            String cardNames = "";
-            for (int i = 0; i < (IngredientFactory.getInstance().getIngredients().length < 3? IngredientFactory.getInstance().getIngredients().length: 3); i++) {
-                cardNames += IngredientFactory.getInstance().getIngredients()[i] + ", ";
-            }
-            
-            ingredientStorage.getIngredientStorageUI().update(String.format("ELIXIR_OF_INSIGHT: %s", cardNames));
+            GameBoardController.getInstance().getClientAdapter().peek3Ingredients();
        }
 
         else if (ac.getCardName().equals("Wisdom Idol")) {
             inventoryController.setWisdomIdol(true);
             ingredientStorage.getIngredientStorageUI().update(String.format("WISDOM_IDOL"));
-
-        
         }
 
 

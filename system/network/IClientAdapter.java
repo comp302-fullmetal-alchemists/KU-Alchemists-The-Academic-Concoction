@@ -34,6 +34,10 @@ public interface IClientAdapter {
     // clientAdapter talks to server to get the relevant information on gameobjects
     void requestIngredient();
 
+    void peek3Ingredients();
+
+    void rewriteIng(String serverMsg);
+
     void emptyPile();
 
     void takeIngredientIndex(int index);

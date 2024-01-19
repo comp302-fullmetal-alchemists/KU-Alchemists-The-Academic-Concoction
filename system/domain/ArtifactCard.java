@@ -46,7 +46,6 @@ public class ArtifactCard extends Cards{
 
     public void performUseArtifact() {
         usingBehavior.useArtifact(this);
-        
     }
 
     
