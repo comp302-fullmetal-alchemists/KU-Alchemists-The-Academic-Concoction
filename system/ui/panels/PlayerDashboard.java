@@ -1,9 +1,6 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
-import system.network.OnlineClient;
-import system.ui.frame.Gameboard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 
@@ -132,6 +129,9 @@ public class PlayerDashboard extends JPanel implements Observer {
     public void update(String msg) {//Observer messager
         if (msg.contains("GAMELOG")) {
         	appendToGameLog(msg.split(":")[1]);
+        }
+        else if (msg.contains("CHAT")) {
+            appendToGameLog(msg);
         }
         else if (msg.contains("REPUTATION")) {
             lblReputation.setText("Reputation: " + player.getReputation());
