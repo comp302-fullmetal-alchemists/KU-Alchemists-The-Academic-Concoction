@@ -159,6 +159,7 @@ public class DeductionBoard extends JPanel implements Observer{
 	public void update(String msg) {
 		if (msg.contains("OPENED")) {
 			markGrid();
+            System.out.println(dbController.getResultList());
 		}
 
 	}
