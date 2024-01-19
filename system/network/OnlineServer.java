@@ -188,6 +188,7 @@ public class OnlineServer extends Thread implements IServerAdapter {
                     for (ClientHandler client: clients) {
                         client.getWriter().writeUTF(message);
                     }
+                }
                 else if (message.contains("PEEK")){
                     sendTopIngredients();
                 }
@@ -256,7 +257,8 @@ public class OnlineServer extends Thread implements IServerAdapter {
             }
             
         }
-        //stopServer();
+    }
+
     private void sendTopIngredients() {
         try {
             clients.get(currentClient).getWriter().writeUTF("elixir:" + ingredientPile.subList(0,3).toString());
@@ -387,21 +389,15 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
     @Override
     public void requestIngredient() {
-        if (elixirIngredients.isEmpty()){
-            try {
-                if (ingredientPile.isEmpty()) {
-                    clients.get(currentClient).getWriter().writeUTF("empty_ingredient_pile");
-                }
-                else {
-                    clients.get(currentClient).getWriter().writeUTF("ingredient:"+ingredientPile.remove(0));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            if (ingredientPile.isEmpty()) {
+                clients.get(currentClient).getWriter().writeUTF("empty_ingredient_pile");
             }
-        }
-        else{
-            clients.get(currentClient).takeIngredientIndex(elixirIngredients.remove(0));
-
+            else {
+                clients.get(currentClient).getWriter().writeUTF("ingredient:"+ingredientPile.remove(0));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     
     }

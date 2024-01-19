@@ -128,10 +128,6 @@ public class OfflineClient implements IClientAdapter {
         GameBoardController.getInstance().getIngredientStorageController().takeIngredient(IngredientFactory.getInstance().createIngredient(index));
     }
 
-    @Override
-    public int getIngredientFromPile() {
-        return server.getIngredientFromPile();
-    }
 
     public void peek3Ingredients(){
         List<Integer> topIngredients = server.peek3Ingredients();

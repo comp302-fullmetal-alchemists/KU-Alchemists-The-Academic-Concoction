@@ -136,6 +136,7 @@ public class OnlineClient extends Thread implements IClientAdapter {
                 }
                 else if (message.equals("server_full")) {
                     GameBoardController.getInstance().showError(message);
+                }
                 else if (message.contains("elixir")){
                     showTopIng(message.split(":")[1]);
                 }
@@ -143,8 +144,9 @@ public class OnlineClient extends Thread implements IClientAdapter {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
         
-    }
+    
 
     private void showEndgameScreen(String message) {
         GameBoardController.getInstance().showEndgameScreen(message);
@@ -370,9 +372,10 @@ public class OnlineClient extends Thread implements IClientAdapter {
     }
     
     public void showTopIng(String msg) {
+        System.out.println(msg);
         List<Integer> elixirIndex = new ArrayList<Integer>();
         for(int i = 0; i< 3; i++){
-            elixirIndex.add(Integer.parseInt(msg.substring(i,i+1)));
+            elixirIndex.add(Integer.parseInt(msg.substring(3*i+1,3*i+2)));
         }
         GameBoardController.getInstance().getIngredientStorageController().elixirOfInsight(elixirIndex);
 
@@ -381,6 +384,16 @@ public class OnlineClient extends Thread implements IClientAdapter {
     public void rewriteIng(String servermsg) {
         try {
             toServer.writeUTF("REWRITE:" + servermsg);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void send(String msg) {
+        try {
+            toServer.writeUTF(msg);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
