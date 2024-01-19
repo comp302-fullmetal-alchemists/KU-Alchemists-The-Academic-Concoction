@@ -83,7 +83,8 @@ public class Alchemy {
         return null;
     }
 
-    public Integer findAlchemyIndex(String alchemy) {
+
+    public static Integer findAlchemyIndex(String alchemy) {
         for (int i = 0; i < 8; i++) {
             if (alchemy.equals(Alchemy.getAlchemy(i).toString())) {
                 return i + 1;
