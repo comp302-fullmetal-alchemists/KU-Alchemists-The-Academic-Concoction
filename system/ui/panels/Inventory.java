@@ -387,5 +387,6 @@ public class Inventory extends JPanel implements Observer {
         else if (msg.contains("REMOVED_ARTIFACT_CARD")) {
             removeArtifactFromInventory(msg.split(":")[1]);
         }
+        
     }
 }
