@@ -1,5 +1,6 @@
 package system.ui.panels;
 
+import system.domain.IngredientCard;
 import system.domain.controllers.InventoryController;
 import system.domain.interfaces.Observer;
 
@@ -324,19 +325,33 @@ public class Inventory extends JPanel implements Observer {
     	artifacts.add(text);
     	updateArtifacts();
     }
+
+    public void removeArtifactFromInventory(String text) {
+        artifacts.remove(text);
+        updateArtifacts();
+    }
  
     public void updateArtifacts() {
     	artifactPanel.removeAll();
     	artifactPanel.revalidate();
     	int x0 = 4;
     	for (int i = 0; i < artifacts.size(); i++) {
-            
+            String artifactName = artifacts.get(i);
     		JLabel artifactLabel = new JLabel(new ImageIcon(getClass().getResource("/resources/" + artifacts.get(i).toLowerCase() + ".png")));
     		artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
     		artifactLabel.setOpaque(true);
     		artifactLabel.setBackground(new Color(49, 81, 50));
     		artifactLabel.setForeground(Color.LIGHT_GRAY);
     		artifactLabel.setBounds(x0 + 83*i, 3, 60, 100);
+ 
+            artifactLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    Inventory.this.invController.sendArtifactCard(artifactName);;
+                    System.out.printf("Using Artifact:%s\n", artifactName); //Testing RM LATER
+                }
+                }); 
+
     		artifactPanel.add(artifactLabel);
     	}
     	artifactPanel.revalidate();
@@ -410,5 +425,9 @@ public class Inventory extends JPanel implements Observer {
         else if (msg.contains("GOLD_UPDATE")) {
         	updateGold();
         }
+        else if (msg.contains("REMOVED_ARTIFACT_CARD")) {
+            removeArtifactFromInventory(msg.split(":")[1]);
+        }
+        
     }
 }

@@ -158,6 +158,12 @@ public class OfflineClient implements IClientAdapter {
         for (Player p: players) {
             if (!p.getName().equals(playerName)) {
                 if (p.getName().equals(ownerName)) {
+                    if (p.getInventory().getWisdomIdol()) {
+                        p.getInventory().setWisdomIdol(false);
+                    }
+                    else {
+                        p.updateReputation(-1);
+                    }
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
                 }
                 else {
