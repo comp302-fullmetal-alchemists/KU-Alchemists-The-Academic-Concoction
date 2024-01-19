@@ -97,7 +97,7 @@ public class Inventory extends JPanel implements Observer {
         
         lblIngredient = new JLabel("Ingredients:");
         lblIngredient.setForeground(Color.WHITE);
-        lblIngredient.setBounds(10, 10, 98, 13);
+        lblIngredient.setBounds(10, 8, 98, 13);
         add(lblIngredient);
         
         ingPanel = new JPanel();
@@ -264,17 +264,17 @@ public class Inventory extends JPanel implements Observer {
         add(lblArtifact);
         
         artifactPanel = new JPanel();
-        artifactPanel.setBounds(5, 274, 397, 132);
+        artifactPanel.setBounds(5, 274, 397, 110);
         artifactPanel.setLayout(null);
         add(artifactPanel);
         
         lblPotion = new JLabel("Potions:");
         lblPotion.setForeground(Color.WHITE);
-        lblPotion.setBounds(320, 410, 70, 13);
+        lblPotion.setBounds(10, 387, 70, 13);
         add(lblPotion);
         
         potionPanel = new JPanel();
-        potionPanel.setBounds(313, 429, 89, 216);
+        potionPanel.setBounds(5, 406, 397, 62);
         potionPanel.setLayout(null);
         add(potionPanel);
         
@@ -371,7 +371,7 @@ public class Inventory extends JPanel implements Observer {
     public void updatePotions() {
     	potionPanel.removeAll();
     	potionPanel.revalidate();
-    	
+    	int x0 = 4;
     	for (int i = 0; i < potions2.size(); i++) {
     		String status = potions2.get(i);
     		JLabel potionLabel = new JLabel((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
@@ -389,7 +389,7 @@ public class Inventory extends JPanel implements Observer {
     		else if (status.substring(0, status.length() - 1).equals("Blue")) {
     			potionLabel.setBackground(Color.BLUE);
     		}
-    		potionLabel.setBounds(315, 430 + 66*i, 60, 64);
+    		potionLabel.setBounds(x0 + 66*i, 3, 50, 54);
     		potionLabel.addMouseListener(new MouseAdapter() {
             	@Override
             	public void mouseClicked(MouseEvent e) {

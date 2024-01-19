@@ -159,9 +159,9 @@ public class Gameboard extends JFrame implements Observer{
         getContentPane().remove(authPanel);
         this.gamePane = new GameContentPane();
 		this.playerPane = new PlayerContentPane();
-        playerPane.setBounds(832,32, 600, 700);
-		playerPane.setSize(700, 800);
-        gamePane.setBounds(37,32,752, 700); 
+        playerPane.setBounds(821, 32, 450, 700);
+		playerPane.setSize(450, 700);
+        gamePane.setBounds(37, 32, 752, 700); 
         getContentPane().setLayout(null);
         getContentPane().add(gamePane);
         getContentPane().add(playerPane);

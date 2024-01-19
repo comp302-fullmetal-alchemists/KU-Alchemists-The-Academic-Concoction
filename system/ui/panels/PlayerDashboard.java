@@ -38,7 +38,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         add(playerLabel);
 
         this.inventory = new Inventory(player.getInventory());
-        inventory.setBounds(22, 63, 420, 619);
+        inventory.setBounds(22, 63, 420, 480);
         add(inventory);
         
         JLabel lblNewLabel = new JLabel("Player name:");
@@ -63,7 +63,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         
         JLabel lblGameLog = new JLabel("Game Log");
         lblGameLog.setForeground(Color.WHITE);
-        lblGameLog.setBounds(22, 464, 88, 13);
+        lblGameLog.setBounds(24, 552, 88, 15);
         add(lblGameLog);
 
         player.setPlayerUI(this);
@@ -83,7 +83,7 @@ public class PlayerDashboard extends JPanel implements Observer {
         this.gameLogDisplayText = new JTextArea(5,35);
         gameLogDisplayText.setEditable(false);
         this.gameLogDisplay = new JScrollPane(gameLogDisplayText);
-        gameLogDisplay.setBounds(22, 477, 290, 210);
+        gameLogDisplay.setBounds(24, 574, 380, 103);
 
         gameLogDisplay.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     }

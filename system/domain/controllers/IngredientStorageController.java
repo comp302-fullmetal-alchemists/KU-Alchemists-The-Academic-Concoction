@@ -56,7 +56,7 @@ public class IngredientStorageController implements Collector{
     public void transmuteIngredient() {
         try {
             if (ingToSell != null) {
-                mediator.getPlayer().getInventory().updateGold(2);
+                mediator.getPlayer().getInventory().updateGold(1);
                 ingredientStorageUI.update(String.format("CARD_SOLD:%s", ingToSell.getName()));
                 //GAME LOG RECORDS: When a ingredient card is sold to the bank. (Transmute ingredient)
                 gameLog.recordLog(mediator.getPlayer(), mediator.getPlayer().getName(), "Bank",  String.format("Ingredient Sold %s", ingToSell.getName()), 0);
