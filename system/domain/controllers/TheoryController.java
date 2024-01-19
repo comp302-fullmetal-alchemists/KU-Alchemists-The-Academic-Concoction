@@ -4,7 +4,7 @@ import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.interfaces.Observer;
 import system.domain.util.IngredientFactory;
-import system.domain.ArtifactCard;
+
 
 import system.network.IClientAdapter;
 

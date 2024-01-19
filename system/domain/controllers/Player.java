@@ -1,13 +1,10 @@
 package system.domain.controllers;
 
-import system.domain.interfaces.Mediator;
 import system.domain.DeductionGrid;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.ResultsTriangle;
-import system.domain.util.IngredientFactory;
 
-import javax.swing.Icon;
 
 public class Player {
     

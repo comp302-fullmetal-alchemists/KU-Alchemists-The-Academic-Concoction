@@ -1,25 +1,18 @@
 package system.ui.panels;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-
 import system.domain.controllers.DeductionBoardController;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import system.ui.frame.GameContentPane;
-
 import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.HashMap;
-
 import javax.swing.SwingConstants;
 import java.awt.Font;
 

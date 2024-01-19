@@ -1,6 +1,5 @@
 package system.domain;
 
-import system.domain.controllers.Player;
 
 public class Theory {
         // for each theory there is an alchemy and an ingredient and also an owner

@@ -2,24 +2,16 @@ package system.ui.panels;
 
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.IngredientStorageController;
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
-
-
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.util.ArrayList;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
@@ -124,7 +116,7 @@ public class IngredientStorage extends JPanel implements Observer {
            buyButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e) {
                    System.out.println("Buying artifact: " + artifactName);
-                   ingController.buyArtifact2(artifactName);
+                   ingController.buyArtifact(artifactName);
                }
            });
            artifactPanel.add(buyButton);

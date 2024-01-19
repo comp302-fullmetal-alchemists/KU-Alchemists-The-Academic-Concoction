@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import system.domain.controllers.GameBoardController;
+
 
 public class EndGamePanel extends JPanel {
 

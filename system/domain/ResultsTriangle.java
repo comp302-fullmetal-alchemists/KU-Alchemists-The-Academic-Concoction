@@ -2,7 +2,6 @@ package system.domain;
 
 import java.util.HashMap;
 
-import system.domain.util.IngredientFactory;
 
 public class ResultsTriangle {
 	

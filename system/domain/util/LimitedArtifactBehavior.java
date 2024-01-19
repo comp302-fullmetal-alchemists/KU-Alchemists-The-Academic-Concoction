@@ -1,15 +1,10 @@
 package system.domain.util;
 
 import system.domain.interfaces.IUsingBehavior;
-
-import javax.management.openmbean.InvalidOpenTypeException;
-
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.IngredientStorageController;
-import system.domain.controllers.TheoryController;
-
 import system.domain.controllers.InventoryController;
 
 

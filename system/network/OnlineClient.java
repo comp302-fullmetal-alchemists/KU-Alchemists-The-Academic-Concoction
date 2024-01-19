@@ -7,9 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import system.domain.Alchemy;
 import system.domain.controllers.AuthenticationController;
 import system.domain.controllers.GameBoardController;

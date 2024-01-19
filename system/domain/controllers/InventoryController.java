@@ -3,8 +3,6 @@ package system.domain.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import system.domain.ArtifactCard;
-import system.domain.Cards;
-import system.domain.GameAction;
 import system.domain.IngredientCard;
 import system.domain.Potion;
 import system.domain.interfaces.Observer;
@@ -213,13 +211,16 @@ public class InventoryController {
     }
 
     public void sendArtifactCard(String artifactName) {
-        for (ArtifactCard artifact: artifactCards){
-            if (artifact.getName().equals(artifactName)) {
-                artifact.performUseArtifact();
-                removeArtifact(artifact);
-                break;
+        if (GameBoardController.getInstance().getPlayer().isInTurn()) {
+            for (ArtifactCard artifact: artifactCards){
+                if (artifact.getName().equals(artifactName)) {
+                    artifact.performUseArtifact();
+                    removeArtifact(artifact);
+                    break;
+                }
             }
         }
+
         //gameLog.recordLogSilent(GameBoardController.getInstance().getPlayer(), "KU Alchemist", GameBoardController.getInstance().getPlayer().getName(),  String.format("Used artifact %s", artifactName), 0);
 
     }
