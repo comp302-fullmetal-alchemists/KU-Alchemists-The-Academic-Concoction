@@ -48,4 +48,9 @@ public class IngredientFactory{
 		return createIngredient(ingredients[index]);
 	}
 
+	public String[] getIngredients() {
+        return ingredients;
+    }
+
 }
+

@@ -32,5 +32,6 @@ public class ArtifactFactory {
         Collections.shuffle(artifactPile);
         return artifactPile;
     }
+    
 }
 
