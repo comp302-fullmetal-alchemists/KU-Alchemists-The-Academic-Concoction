@@ -230,7 +230,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
     		lblIng2.setBackground(Color.LIGHT_GRAY);
         }
         else if (msg.contains("DISCARD_POTION")) {
-            lblPotion.setText("Select a Potion");
+            lblPotion.setText("Select");
 			lblPotion.setIcon(null);
             lblPotion.setBackground(Color.LIGHT_GRAY);
         }

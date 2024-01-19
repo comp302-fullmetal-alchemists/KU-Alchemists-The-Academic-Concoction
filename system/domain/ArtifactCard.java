@@ -48,4 +48,6 @@ public class ArtifactCard extends Cards{
         usingBehavior.useArtifact(this);
         
     }
+
+    
 }

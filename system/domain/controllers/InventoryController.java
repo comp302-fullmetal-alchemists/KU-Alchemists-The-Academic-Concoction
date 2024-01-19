@@ -39,6 +39,7 @@ public class InventoryController {
     private int discountCard = -1;
     private boolean printingPress = false;
     private boolean wisdomIdol = false;
+    private boolean magicMortar = false;
 
 
     public InventoryController() {
@@ -48,6 +49,7 @@ public class InventoryController {
         this.potions = new ArrayList<Potion>();
         this.mediator = GameBoardController.getInstance().getMediator();
         this.gameLog = GameBoardController.getInstance().getGameLog();
+        
 
     }
 
@@ -76,9 +78,17 @@ public class InventoryController {
         return wisdomIdol;
     }
     
-
+    
     public void setWisdomIdol(boolean state) {
         this.wisdomIdol = state;
+    } 
+
+    public void setMagicMortar(boolean state) {
+        this.magicMortar = state;
+    }
+
+    public boolean getMagicMortar() {
+        return magicMortar;
     }
 
     public void setObserver(Observer observer) {

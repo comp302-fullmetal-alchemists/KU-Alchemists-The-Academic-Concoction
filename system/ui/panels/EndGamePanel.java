@@ -30,7 +30,7 @@ public class EndGamePanel extends JPanel {
         gameOverLbl.setBounds(350, 70, 600, 150);
         add(gameOverLbl);
 
-        JLabel winnerLbl = new JLabel("WINNER!!!!");
+        JLabel winnerLbl = new JLabel("WINNER");
         winnerLbl.setForeground(Color.WHITE);
         winnerLbl.setBounds(530, 200, 240, 80);
         winnerLbl.setFont(new Font("Noteworthy", Font.BOLD | Font.ITALIC, 40));
@@ -61,6 +61,7 @@ public class EndGamePanel extends JPanel {
                     lblToken.setBounds(550, 330, 200, 200);
                     lblToken.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/token" + tokenIndex + ".png")).getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH)));
                     add(lblToken);
+                    count++;
                 }
 
                 else{

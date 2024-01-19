@@ -235,11 +235,19 @@ public class IngredientStorage extends JPanel implements Observer {
         else if (msg.contains("ELIXIR_OF_INSIGHT")) {
             showMessageDialog(String.format("You have used the Elixir of Insight card! The last 3 cards in the ingredient pile:  %s!", msg.substring(19)));
         }
+        
+        else if (msg.contains("MAGIC_MORTAR_UNAVAILABLE")) {
+            showMessageDialog(String.format("Since you have not transmuted an ingredient yet, you can not use this card."));
+
+        }
 
         else if (msg.contains("MAGIC_MORTAR")) {
             showMessageDialog(String.format("You have used the Magic Mortar card! You got the ingredient %s!", msg.split(":")[1]));
 
         }
+
+    
+
 
         else if (msg.contains("DISCOUNT_CARD")) {
             showMessageDialog(String.format("You have used the Discount card! Your next artifact card will cost 2 gold less from the original price. After that every artifact card will cost you 1 gold less!"));
