@@ -16,8 +16,9 @@ public class EndGamePanel extends JPanel {
 
     public EndGamePanel() {
         winnerList = new HashMap<>(); // Initialize an empty HashMap
-        setBackground(new Color(58, 77, 108));
         setLayout(null);
+        setBackground(new Color(58, 77, 108));
+        
         initializeComponents(); // Initialize UI components
     }
 
