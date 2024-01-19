@@ -177,19 +177,8 @@ public class PotionBrewingArea extends JPanel implements Observer {
         }
         else if (msg.contains("NEW_POTION")) {
         	String status = msg.split(":")[1];
-            lblPotion.setText((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
-            if (status.equals("neutral")) {
-            	lblPotion.setBackground(Color.LIGHT_GRAY);
-    		}
-    		else if (status.substring(0, status.length() - 1).equals("Red")) {
-    			lblPotion.setBackground(Color.RED);
-    		}
-    		else if (status.substring(0, status.length() - 1).equals("Green")) {
-    			lblPotion.setBackground(Color.GREEN);
-    		}
-    		else if (status.substring(0, status.length() - 1).equals("Blue")) {
-    			lblPotion.setBackground(Color.BLUE);
-    		}
+			lblPotion.setIcon(new ImageIcon(getClass().getResource("/resources/" + status.toLowerCase() + ".png")));
+			
         }
         else if (msg.contains("ABSENT_INGREDIENTS")) {
             showMessageDialog("Please fill ingredients");
