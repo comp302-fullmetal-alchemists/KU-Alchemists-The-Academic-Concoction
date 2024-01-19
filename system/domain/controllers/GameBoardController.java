@@ -179,8 +179,10 @@ public class GameBoardController {
         }
 
         for (Theory t: GameBoardController.getInstance().getTheoryController().getTheories()) {
-            if (t.getEndorser().equals(player.getName())) {
-                finalScore += 1;
+            if (t.isEndorsed()){
+                if(t.getEndorser().equals(player.getName())){
+                    finalScore += 2;
+                }
             }
             else if (t.isDebunked() && t.getOwner().equals(player.getName())) {
                 finalScore += 1;
