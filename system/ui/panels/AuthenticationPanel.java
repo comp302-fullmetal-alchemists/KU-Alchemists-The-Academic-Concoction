@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JTextField;
 import system.domain.controllers.AuthenticationController;
+import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.Icon;
@@ -158,7 +159,9 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	    }
 		else {
 			JOptionPane.showMessageDialog(this, "You have succesfully authenticated yourself! Please wait for other players.");
-			loginButton.setEnabled(false);
+			if (GameBoardController.getInstance().getClientAdapter().getMode().equals("Online")) {
+				loginButton.setEnabled(false);
+			}
 		}
 		username1.setText("");
 		token1.setSelectedIndex(0);
