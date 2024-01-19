@@ -3,58 +3,42 @@ package system.domain.controllers;
 import system.domain.interfaces.Collector;
 import system.domain.interfaces.Observer;
 import system.domain.interfaces.Mediator;
+import system.domain.DeductionGrid;
 import system.domain.ResultsTriangle;
 
-public class DeductionBoardController implements Collector{
+import java.util.List;
+
+public class DeductionBoardController {
 
     //build: deduction grid
 
     //function: markDeductionGrid() when user learns an alchemy formula
-	private int[][] deductionGrid;
 	private Observer deductionBoardUI;
-	private Mediator mediator;
-	private boolean active = false;
-	
-	public DeductionBoardController() {
-		this.deductionGrid = new int[8][8];
-		this.mediator = GameBoardController.getInstance().getMediator();
-	}
+	private ResultsTriangle resultsTrig;
+	private DeductionGrid deductionGrid;
+	public DeductionBoardController() {}
 
 	public void setObserver(Observer observer) {
 		this.deductionBoardUI = observer;
 	}
-
-	@Override
-	public <T> boolean collectItem(T item) {
-		if (item instanceof ResultsTriangle) {
-			ResultsTriangle trig = (ResultsTriangle) item;
-			deductionBoardUI.update(trig.getResultList());
-			return true;
-		}
-		return false;
-		
-	}
-
-	@Override
-	public void activate() {
-		mediator.connectCollector(this);
-        active = true;
-        mediator.getPlayer().sendResults();
-	}
-
-	@Override
-	public void deactivate() {
-		mediator.disconnectCollector();
-        active = false;
-	}
-
-	@Override
-	public boolean isActive() {
-		 return active;
+	
+	public void pull() {
+		resultsTrig = GameBoardController.getInstance().getPlayer().getResultsTriangle();
+		deductionGrid = GameBoardController.getInstance().getPlayer().getDeductionGrid();
+		deductionBoardUI.update("OPENED");
 	}
 	
-
-
-
+	public String getResultList() {
+		return resultsTrig.getResultList();
+	}
+	
+	public List<Integer> getMarkers() {
+		return deductionGrid.getMarkers();
+	}
+	
+	public void markGrid(int i, int j, int val) {
+		deductionGrid.mark(i, j, val);
+	}
+	
 
 }

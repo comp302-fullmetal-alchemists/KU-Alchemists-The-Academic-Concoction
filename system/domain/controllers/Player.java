@@ -1,6 +1,7 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Mediator;
+import system.domain.DeductionGrid;
 import system.domain.GameAction;
 import system.domain.interfaces.Observer;
 import system.domain.ResultsTriangle;
@@ -17,19 +18,19 @@ public class Player {
     private int reputationPoint;
     private int sicknessPoint;
     private ResultsTriangle resultsTriangle;
+    private DeductionGrid deductionGrid;
     private InventoryController inventory;
     private Observer playerUI;
-    private Mediator mediator;
 
     public Player(String name, Icon token) {
         this.name = name;
         this.turn = false;
         this.token = token;
         this.reputationPoint = 0;
-        this.sicknessPoint = 2;
+        this.sicknessPoint = 0;
         this.inventory = new InventoryController();
         this.resultsTriangle = new ResultsTriangle();
-        this.mediator = GameBoardController.getInstance().getMediator();
+        this.deductionGrid = new DeductionGrid();
         GameBoardController.getInstance().getGameLog().GameLogControllerInitPlayer(this);
         GameBoardController.getInstance().getGameLog().recordLog(this, "KU Alchemist", name, "Game has started!", 0);
 
@@ -99,7 +100,15 @@ public class Player {
     public InventoryController getInventory() {
         return inventory;
     }
+    
+    public ResultsTriangle getResultsTriangle() {
+    	return resultsTriangle;
+    }
 
+    public DeductionGrid getDeductionGrid() {
+    	return deductionGrid;
+    }
+    
     public void updateReputation(int updateVal) {
         reputationPoint = reputationPoint + updateVal;
         playerUI.update("REPUTATION");
@@ -122,14 +131,9 @@ public class Player {
 
     	}
     }
+
     
-    public ResultsTriangle getResultsTriangle() {
-    	return resultsTriangle;
-    }
-    
-    public void sendResults() {
-    	mediator.sendToCollector(resultsTriangle);
-    }
+  
 
 
 }
