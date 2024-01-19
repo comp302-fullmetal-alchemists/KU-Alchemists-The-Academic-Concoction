@@ -1,9 +1,6 @@
 package system.ui.panels;
 
 import system.domain.interfaces.Observer;
-import system.network.OnlineClient;
-import system.ui.frame.Gameboard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.Player;
 

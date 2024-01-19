@@ -3,6 +3,9 @@ package system.ui.panels;
 
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
@@ -26,6 +29,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	private JTextField username1;
     private JComboBox token1;
 	private AuthenticationController authController;
+	private JButton loginButton;
 
 	/**
 	 * Create the panel.
@@ -105,7 +109,7 @@ public class AuthenticationPanel extends JPanel implements Observer {
 		token1.setVisible(true);
 
 		//created a button for the players to login
-		JButton loginButton = new JButton("LOGIN");
+		this.loginButton = new JButton("LOGIN");
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 
 		loginButton.addActionListener(new ActionListener() {
@@ -157,9 +161,11 @@ public class AuthenticationPanel extends JPanel implements Observer {
 	    }
 		else {
 			JOptionPane.showMessageDialog(this, "You have succesfully authenticated yourself! Please wait for other players.");
+			loginButton.setEnabled(false);
 		}
 		username1.setText("");
 		token1.setSelectedIndex(0);
-
 	}
+
+	
 }
