@@ -28,7 +28,7 @@ public class DeductionBoardController {
 		deductionBoardUI.update("OPENED");
 	}
 	
-	public String getResultList() {
+	public List<String> getResultList() {
 		return resultsTrig.getResultList();
 	}
 	
