@@ -1,5 +1,6 @@
 package system.network;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -165,6 +166,7 @@ public class OfflineClient implements IClientAdapter {
                         p.updateReputation(-1);
                     }
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked your Theory about %s!", playerName, ingredient), 0);
+                    p.updateReputation(-1);
                 }
                 else {
                     gamelog.recordLog(p, "Academy", p.getName(), String.format("%s debunked the Theory of %s about %s!", playerName, ownerName, ingredient), 0);
@@ -186,76 +188,46 @@ public class OfflineClient implements IClientAdapter {
     public void reportExitGameToServer() {
         System.exit(0);
     }
-    public int calculateFinalScore(Player player) {
-    
-        //to do: get rep, gold, artifact from player's inventory
-            int finalScore = 0;
-            //10 points for each rep points
-            if(player.getReputation() >= 0){
-                finalScore += (player.getReputation() * 10) ;
-            }
-            
-           //trade each artifact with 2 golds
-           Iterator<ArtifactCard> iterator = player.getInventory().getArtifactCards().iterator();
-           while (iterator.hasNext()) {
-               ArtifactCard a = iterator.next();
-               player.getInventory().updateGold(2);
-               iterator.remove(); // Remove the artifact after trading for gold
-           }
-            
-            //1 point for 3 gold  
-            if(player.getInventory().getGold() > 0){
-                int amount = (player.getInventory().getGold() / 3) ;
-                finalScore += amount ;
-                player.getInventory().updateGold(- (amount * 3)) ;
-                
-            }
-            return finalScore;
+
+
+    @Override
+    public void send(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'send'");
+    }
+
+    public void endGame() {
+        System.out.println("adsgfdhfjgj");
+        List<String> scoreList = new ArrayList<String>();
+        for (Player p: players) {
+            String score = String.format("my_score:%s,%d:%d", p.getName(), p.getTokenIndex(), GameBoardController.getInstance().calculateFinalScore(p));
+            scoreList.add(score);
         }
+        Collections.sort(scoreList, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String[] score1 = s1.split(":");
+                String[] score2 = s2.split(":");
 
+                // Convert score[2] to integer for comparison
+                int score1Int = Integer.parseInt(score1[2]);
+                int score2Int = Integer.parseInt(score2[2]);
 
-
-       
-        public HashMap<Player, Integer> winner(){
-            //hashmap player ve score
-            HashMap<Player, Integer> scores = new HashMap<>();
-            for(Player p : players ){
-                int score = calculateFinalScore(p);
-                scores.put(p, score);
-                //onlineda goldu da çağır!
-
+                // For descending order
+                return Integer.compare(score2Int, score1Int);
             }
+        });
+        String message = "show_endgame_screen";
+        for (String score: scoreList) {
+            message += ":" + score ;
+        }
+        GameBoardController.getInstance().showEndgameScreen(message);
+    }
 
-            //score map oluştur sonra onu sortla (compare to kullan collections sort kullan)
-            List<Map.Entry<Player, Integer>> scores_values = new ArrayList<>(scores.entrySet());
-            
 
-            Collections.sort(scores_values, new Comparator<Map.Entry<Player, Integer>>() {
-                @Override
-                public int compare(Map.Entry<Player, Integer> player1, Map.Entry<Player, Integer> player2) {
-                    int scoreCompare = player2.getValue().compareTo(player1.getValue()); 
+    @Override
+    public String getMode() {
+        return "Offline";
+    }
     
-                    // compare gold if final scores are equal
-                    if (scoreCompare == 0) {
-                        int goldComparison = player1.getKey().getInventory().getGold() - player2.getKey().getInventory().getGold();
-                        return goldComparison;
-                    }
-    
-                    return scoreCompare;
-                }
-            });
-
-            
-            HashMap<Player, Integer> scores_sorted = new HashMap<>();
-             for(Entry<Player, Integer> p : scores_values){
-                scores_sorted.put(p.getKey(), p.getValue());
-             }
-            
-            return scores_sorted;
-
-            }
-            
-
-
-            
 }

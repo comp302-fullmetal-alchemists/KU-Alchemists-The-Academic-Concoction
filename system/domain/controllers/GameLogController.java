@@ -35,4 +35,9 @@ public class GameLogController {
     }
 
 
+    public void recordchat(String message) {
+        Player player = GameBoardController.getInstance().getPlayer();
+        player.appendToChatLog(message);
+    }
+
 }

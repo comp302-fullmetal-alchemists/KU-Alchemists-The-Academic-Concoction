@@ -48,4 +48,8 @@ public interface IClientAdapter {
 
     void reportExitGameToServer();
 
+    void send(String string);
+
+    Object getMode();
+
 }

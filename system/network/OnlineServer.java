@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,14 +65,13 @@ public class OnlineServer extends Thread implements IServerAdapter {
     public void run() {
         while (running) {
             try {
-                if (clients.size() < MAX_CLIENTS) {
+
                     System.out.println("[SERVER] Waiting for clients on port " + serverSocket.getLocalPort() + "...");
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("[SERVER] Client connected: " + clientSocket);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                     clients.add(clientHandler);
                     clientExecutor.execute(clientHandler);
-                }
             } catch (IOException e) {
                 if (!running) {
                     System.out.println("[SERVER] Server stopped.");
@@ -109,6 +109,10 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
                 writer.writeUTF("Welcome to the Server!");
 
+                if (clients.size() > MAX_CLIENTS) {
+                    writer.writeUTF("server_full");
+                    removeClient(this);
+                }
                 String clientMessage;
 
                 while (true) {
@@ -173,10 +177,15 @@ public class OnlineServer extends Thread implements IServerAdapter {
                 else if (message.contains("exit_game")) {
                     reportClientsToExit();
                 }
-                else if (message.contains("my_score:")) {
+                else if (message.contains("my_score")) {
                     scoreList.add(message);
                     if (scoreList.size() == clients.size()) {
                         showEndgameScreen();
+                    }
+                }
+                else if (message.contains("CHAT:")) {
+                    for (ClientHandler client: clients) {
+                        client.getWriter().writeUTF(message);
                     }
                 }
                 
@@ -187,33 +196,39 @@ public class OnlineServer extends Thread implements IServerAdapter {
 
         
 
-        private void showEndgameScreen() {
-            String winner = "";
-            int maxScore = 0;
-            for (String score: scoreList) {
-                String[] scoreSplit = score.split(":");
-                if (Integer.parseInt(scoreSplit[2]) > maxScore) {
-                    maxScore = Integer.parseInt(scoreSplit[2]);
-                    winner = scoreSplit[1];
-                }
-            }
-
-            String message = "show_endgame_screen:" + winner +":" + maxScore;
-            for (String score : scoreList) {
-                message += ":" + score;
-            }
-            for (ClientHandler client: clients) {
-                try {
-                    client.getWriter().writeUTF(message);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
         public DataOutputStream getWriter() {
             return writer;
         }
+    }
+
+    public void showEndgameScreen() {
+        Collections.sort(scoreList, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String[] score1 = s1.split(":");
+                String[] score2 = s2.split(":");
+
+                // Convert score[2] to integer for comparison
+                int score1Int = Integer.parseInt(score1[2]);
+                int score2Int = Integer.parseInt(score2[2]);
+
+                // For descending order
+                return Integer.compare(score2Int, score1Int);
+            }
+        });
+        String message = "show_endgame_screen";
+        for (String score: scoreList) {
+            message += ":" + score ;
+        }
+        for (ClientHandler client: clients) {
+            try {
+                client.getWriter().writeUTF(message);
+                System.out.println(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+      
     }
 
     @Override
@@ -307,7 +322,9 @@ public class OnlineServer extends Thread implements IServerAdapter {
     @Override
     public void authorizeClient() {
         try {
-            clients.get(currentClient).getWriter().writeUTF("authorize");
+            if (rounds != 3) {
+                clients.get(currentClient).getWriter().writeUTF("authorize");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
