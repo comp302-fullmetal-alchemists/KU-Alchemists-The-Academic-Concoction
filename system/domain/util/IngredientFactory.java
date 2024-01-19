@@ -1,11 +1,8 @@
 package system.domain.util;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import system.domain.Alchemy;
 import system.domain.IngredientCard;
 
@@ -48,4 +45,9 @@ public class IngredientFactory{
 		return createIngredient(ingredients[index]);
 	}
 
+	public String[] getIngredients() {
+        return ingredients;
+    }
+
 }
+

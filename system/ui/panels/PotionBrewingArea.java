@@ -1,5 +1,7 @@
 package system.ui.panels;
 
+import javax.swing.ImageIcon;
+import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -11,11 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.SwingConstants;
-
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.PotionBrewingAreaController;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
+import java.awt.Font;
 
 
 public class PotionBrewingArea extends JPanel implements Observer {
@@ -43,7 +45,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
         
         
 		navBtn = new JButton("Back to the village");
-		navBtn.setBounds(279, 10, 160, 21);
+		navBtn.setBounds(255, 10, 184, 32);
 		navBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((GameContentPane) PotionBrewingArea.this.getParent()).changeView("village");
@@ -62,7 +64,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		lblIng1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIng1.setOpaque(true);
 		lblIng1.setBackground(Color.LIGHT_GRAY);
-		lblIng1.setBounds(28, 98, 90, 96);
+		lblIng1.setBounds(73, 100, 60, 100);
 		add(lblIng1);
 		
 		lblIng2 = new JLabel(ingDefault);
@@ -75,7 +77,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		lblIng2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIng2.setOpaque(true);
 		lblIng2.setBackground(Color.LIGHT_GRAY);
-		lblIng2.setBounds(188, 98, 90, 96);
+		lblIng2.setBounds(173, 98, 60, 100);
 		add(lblIng2);
 		
 		
@@ -95,14 +97,16 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		add(makePotionBtn);
 		
 		JLabel makePotionLabel = new JLabel("Brew Potions");
+		makePotionLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		makePotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		makePotionLabel.setForeground(Color.LIGHT_GRAY);
+		makePotionLabel.setForeground(Color.WHITE);
 		makePotionLabel.setBounds(73, 61, 160, 13);
 		add(makePotionLabel);
 		
 		JLabel sellPotionLabel = new JLabel("Sell a Potion");
+		sellPotionLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		sellPotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		sellPotionLabel.setForeground(Color.LIGHT_GRAY);
+		sellPotionLabel.setForeground(Color.WHITE);
 		sellPotionLabel.setBounds(433, 61, 160, 13);
 		add(sellPotionLabel);
 		
@@ -124,7 +128,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		        "Present thy potions and claim thy reward!</html>");
 		adventurerInfo.setBounds(410, 98, 225,181);
         adventurerInfo.setOpaque(true);
-        adventurerInfo.setBackground(Color.LIGHT_GRAY);
+        adventurerInfo.setBackground(Color.WHITE);
 		add(adventurerInfo);
 		
 		lblPotion = new JLabel("Select a Potion");
@@ -138,7 +142,7 @@ public class PotionBrewingArea extends JPanel implements Observer {
 				});
 		lblPotion.setOpaque(true);
 		lblPotion.setBackground(Color.LIGHT_GRAY);
-		lblPotion.setBounds(482, 304, 90, 96);
+		lblPotion.setBounds(476, 315, 54, 54);
 		add(lblPotion);
 		
 		
@@ -153,6 +157,12 @@ public class PotionBrewingArea extends JPanel implements Observer {
 		subjectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		subjectLabel.setBounds(73, 214, 160, 13);
 		add(subjectLabel);
+		
+		ImageIcon originalIcon = new ImageIcon(getClass().getResource("/resources/potion.png"));
+		Image scaledImage = originalIcon.getImage().getScaledInstance(728, 193, java.awt.Image.SCALE_SMOOTH);
+		JLabel lbl_potion = new JLabel(new ImageIcon(scaledImage));
+		lbl_potion.setBounds(10, 497, 728, 193);
+		add(lbl_potion);
 		
     }
 	
@@ -175,30 +185,23 @@ public class PotionBrewingArea extends JPanel implements Observer {
     @Override
     public void update(String msg) {//messager for observer
         if (msg.contains("NEW_INGREDIENT1")) {
-        	String[] ingName = msg.split(":")[1].split(" ");
-        	lblIng1.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
-        	lblIng1.setBackground(new Color(117, 67, 108));
+        	//String[] ingName = msg.split(":")[1].split(" ");
+        	//lblIng1.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
+        	//lblIng1.setBackground(new Color(117, 67, 108));
+			String ingName = msg.split(":")[1];
+        	lblIng1.setIcon(new ImageIcon(getClass().getResource("/resources/" + ingName.toLowerCase() + ".png")));
         }
         else if (msg.contains("NEW_INGREDIENT2")) {
-        	String[] ingName = msg.split(":")[1].split(" ");
-        	lblIng2.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
-        	lblIng2.setBackground(new Color(117, 67, 108));
+        	//String[] ingName = msg.split(":")[1].split(" ");
+        	//lblIng2.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
+        	//lblIng2.setBackground(new Color(117, 67, 108));
+			String ingName = msg.split(":")[1];
+        	lblIng2.setIcon(new ImageIcon(getClass().getResource("/resources/" + ingName.toLowerCase() + ".png")));
         }
         else if (msg.contains("NEW_POTION")) {
         	String status = msg.split(":")[1];
-            lblPotion.setText((status.equals("neutral")? "neuter": status.substring(status.length() - 1)));
-            if (status.equals("neutral")) {
-            	lblPotion.setBackground(Color.LIGHT_GRAY);
-    		}
-    		else if (status.substring(0, status.length() - 1).equals("Red")) {
-    			lblPotion.setBackground(Color.RED);
-    		}
-    		else if (status.substring(0, status.length() - 1).equals("Green")) {
-    			lblPotion.setBackground(Color.GREEN);
-    		}
-    		else if (status.substring(0, status.length() - 1).equals("Blue")) {
-    			lblPotion.setBackground(Color.BLUE);
-    		}
+			lblPotion.setIcon(new ImageIcon(getClass().getResource("/resources/" + status.toLowerCase() + ".png")));
+			
         }
         else if (msg.contains("ABSENT_INGREDIENTS")) {
             showMessageDialog("Please fill ingredients");
@@ -207,6 +210,8 @@ public class PotionBrewingArea extends JPanel implements Observer {
             showMessageDialog("Please select potion to sell");
         }
         else if (msg.contains("BREWED_POTION")) {
+			lblIng1.setIcon(null);
+			lblIng2.setIcon(null);
             lblIng1.setText(ingDefault);
     		lblIng1.setBackground(Color.LIGHT_GRAY);
             lblIng2.setText(ingDefault);
@@ -216,19 +221,23 @@ public class PotionBrewingArea extends JPanel implements Observer {
         else if (msg.contains("SOLD_POTION")) {
             lblPotion.setText("Select a Potion");
             lblPotion.setBackground(Color.LIGHT_GRAY);
+			lblPotion.setIcon(null);
             showMessageDialog(offerStrings[Integer.parseInt(msg.split(":")[1]) - 1]);//gets the offer and shows the message dialog according to that offer value.
         }
 
         else if (msg.contains("DISCARD_INGREDIENT1")) {
-            lblIng1.setText(ingDefault);
+			lblIng1.setIcon(null);
+			lblIng1.setText(ingDefault);
     		lblIng1.setBackground(Color.LIGHT_GRAY);
         }
         else if (msg.contains("DISCARD_INGREDIENT2")) {
+			lblIng2.setIcon(null);
             lblIng2.setText(ingDefault);
     		lblIng2.setBackground(Color.LIGHT_GRAY);
         }
         else if (msg.contains("DISCARD_POTION")) {
-            lblPotion.setText("Select a Potion");
+            lblPotion.setText("Select");
+			lblPotion.setIcon(null);
             lblPotion.setBackground(Color.LIGHT_GRAY);
         }
         else if (msg.contains("STUDENT_SICK")) {

@@ -1,25 +1,19 @@
 package system.ui.panels;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-
 import system.domain.controllers.DeductionBoardController;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 import system.ui.frame.GameContentPane;
-
 import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.HashMap;
-
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
@@ -48,9 +42,9 @@ public class DeductionBoard extends JPanel implements Observer{
         navBtn.setBounds(10, 10, 150, 30);
         add(navBtn);
         
-        deductionGrid = new JLabel();
-        deductionGrid.setIcon(new ImageIcon(getClass().getResource("/resources/deductionBoard.png")));
-
+        ImageIcon icon = new ImageIcon(getClass().getResource("/resources/deductionBoard.png"));
+        Image scaledImage = icon.getImage().getScaledInstance(720, 360, java.awt.Image.SCALE_SMOOTH);
+        JLabel deductionGrid = new JLabel(new ImageIcon(scaledImage));
         deductionGrid.setBounds(16, 340, 720, 360);
         add(deductionGrid);
         deductionGrid.setLayout(null);

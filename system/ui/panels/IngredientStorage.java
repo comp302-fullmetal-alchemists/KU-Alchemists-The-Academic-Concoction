@@ -2,8 +2,6 @@ package system.ui.panels;
 
 import system.ui.frame.GameContentPane;
 import system.domain.controllers.IngredientStorageController;
-import system.domain.ArtifactCard;
-import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.interfaces.Observer;
 
@@ -17,11 +15,14 @@ import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
@@ -45,8 +46,18 @@ public class IngredientStorage extends JPanel implements Observer {
     private JLabel lblArtifact;
     private JPanel artifactPanel;
     private String[] artifacts = {"Magic Mortar", "Elixir of Insight", "Discount Card", "Printing Press", "Wisdom Idol"};
-    private String[] ingredients = {"Solaris Root", "Bat Wing", "Toad Stool", "Owl Feather", "Snake Venom", "Rat Tail", "Spider Web", "Newt Eye"};
     private List<String> elixirIngredients = new ArrayList<>();;
+    private String[] effects = {"to keep one of the ingredients that you have already used", 
+    "to view the top three cards of the ingredient deck and rearrange them in any order.", 
+    "next artifact costs 2 gold less. After that, artifacts cost you 1 gold less.", 
+    "to publish a theory free of charge",
+    "allows you to not lose any reputation points even if your theory is debunked. You gain 1 reputation point if you keep it in your inventory until the end."};
+
+    private JLabel lblNewLabel_1;
+    private JLabel lblNewLabel_2;
+    private JLabel lblNewLabel_3;
+    private JLabel lblNewLabel_4;
+    private JLabel lblNewLabel_5;
 
     
     public IngredientStorage() {
@@ -77,10 +88,13 @@ public class IngredientStorage extends JPanel implements Observer {
         add(lblIngPile);
 
         lblArtifact = new JLabel("Artifacts:");
-        lblArtifact.setBounds(140, 500, 550, 90);
+        lblArtifact.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+        lblArtifact.setForeground(Color.WHITE);
+        lblArtifact.setBounds(111, 336, 550, 90);
         add(lblArtifact);
         artifactPanel = new JPanel();
-        artifactPanel.setBounds(150, 550, 550, 90);
+        artifactPanel.setBackground(new Color(58, 77, 108));
+        artifactPanel.setBounds(121, 426, 550, 149);
         artifactPanel.setLayout(null);
         add(artifactPanel);
 
@@ -90,9 +104,9 @@ public class IngredientStorage extends JPanel implements Observer {
 
        int x = 6; // Initial X position
        int y = 4; // Y position 
-       int labelWidth = 100; // Width of the label
-       int labelHeight = 60; // Height of the label
-       int buttonWidth = 100; // Width of the button
+       int labelWidth = 60; // Width of the label
+       int labelHeight = 100; // Height of the label
+       int buttonWidth = 60; // Width of the button
        int buttonHeight = 20; // Height of the button
        int spacingX = 110; // Horizontal spacing between items
 
@@ -102,14 +116,18 @@ public class IngredientStorage extends JPanel implements Observer {
            // Calculating the X position for this iteration
            int currentX = x + spacingX * i;
 
-
-           JLabel artifactLabel = new JLabel("<html>" + artifactName.replaceAll(" ", "<br>") + "</html>");
+           JLabel artifactLabel = new JLabel(new ImageIcon(getClass().getResource("/resources/" + artifacts[i].toLowerCase() + ".png")));
            artifactLabel.setHorizontalAlignment(SwingConstants.CENTER);
            artifactLabel.setOpaque(true);
            artifactLabel.setBackground(new Color(117, 67, 108));
            artifactLabel.setForeground(Color.WHITE);
            artifactLabel.setBounds(currentX, y, labelWidth, labelHeight);
+         
+           artifactLabel.setToolTipText(effects[i]);
+        
+         
            artifactPanel.add(artifactLabel);
+
 
 
            JButton buyButton = new JButton("Buy");
@@ -117,7 +135,7 @@ public class IngredientStorage extends JPanel implements Observer {
            buyButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent e) {
                    System.out.println("Buying artifact: " + artifactName);
-                   ingController.buyArtifact2(artifactName);
+                   ingController.buyArtifact(artifactName);
                }
            });
            artifactPanel.add(buyButton);
@@ -128,7 +146,7 @@ public class IngredientStorage extends JPanel implements Observer {
 
         
         
-        lblArtifactPile = new JLabel("Buy Artifact");
+      /*   lblArtifactPile = new JLabel("Buy Artifact");
         lblArtifactPile.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -140,7 +158,7 @@ public class IngredientStorage extends JPanel implements Observer {
     	lblArtifactPile.setBackground(Color.LIGHT_GRAY);
     	lblArtifactPile.setBounds(111, 370, 150, 160);
     	add(lblArtifactPile);
-    	
+    	*/
     	navBtn = new JButton("Back to the village");
     	navBtn.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
@@ -151,6 +169,7 @@ public class IngredientStorage extends JPanel implements Observer {
     	add(navBtn);
     	
     	lblIngToSell = new JLabel("<html>Select<br>Ingredient</html>");
+    	lblIngToSell.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
     	lblIngToSell.addMouseListener(new MouseAdapter() {
     		@Override
     		public void mouseClicked(MouseEvent e) {
@@ -160,7 +179,7 @@ public class IngredientStorage extends JPanel implements Observer {
     	lblIngToSell.setBackground(Color.LIGHT_GRAY);
     	lblIngToSell.setHorizontalAlignment(SwingConstants.CENTER);
     	lblIngToSell.setOpaque(true);
-    	lblIngToSell.setBounds(506, 117, 90, 96);
+    	lblIngToSell.setBounds(518, 133, 60, 100);
     	add(lblIngToSell);
     	
     	transmuteIngBtn = new JButton("Transmute Ingredient");
@@ -171,6 +190,31 @@ public class IngredientStorage extends JPanel implements Observer {
     	});
     	transmuteIngBtn.setBounds(473, 256, 159, 21);
     	add(transmuteIngBtn);
+    	
+    	lblNewLabel_1 = new JLabel("Magic Mortar");
+    	lblNewLabel_1.setForeground(Color.WHITE);
+    	lblNewLabel_1.setBounds(121, 410, 92, 16);
+    	add(lblNewLabel_1);
+    	
+    	lblNewLabel_2 = new JLabel("Elixir of Insight");
+    	lblNewLabel_2.setForeground(Color.WHITE);
+    	lblNewLabel_2.setBounds(214, 410, 106, 16);
+    	add(lblNewLabel_2);
+    	
+    	lblNewLabel_3 = new JLabel("Discount Card");
+    	lblNewLabel_3.setForeground(Color.WHITE);
+    	lblNewLabel_3.setBounds(328, 410, 92, 16);
+    	add(lblNewLabel_3);
+    	
+    	lblNewLabel_4 = new JLabel("Printing Press");
+    	lblNewLabel_4.setForeground(Color.WHITE);
+    	lblNewLabel_4.setBounds(446, 410, 92, 16);
+    	add(lblNewLabel_4);
+    	
+    	lblNewLabel_5 = new JLabel("Wisdom Idol");
+    	lblNewLabel_5.setForeground(Color.WHITE);
+    	lblNewLabel_5.setBounds(557, 410, 92, 16);
+    	add(lblNewLabel_5);
         
     }
 
@@ -310,11 +354,19 @@ public class IngredientStorage extends JPanel implements Observer {
         else if (msg.contains("MAGIC_MORTAR_NULL")) {
             showMessageDialog(String.format("You have to use a ingredient card first!"));
         }
+        
+        else if (msg.contains("MAGIC_MORTAR_UNAVAILABLE")) {
+            showMessageDialog(String.format("Since you have not transmuted an ingredient yet, you can not use this card."));
+
+        }
 
         else if (msg.contains("MAGIC_MORTAR")) {
             showMessageDialog(String.format("You have used the Magic Mortar card! You got the ingredient %s!", msg.split(":")[1]));
 
         }
+
+    
+
 
         else if (msg.contains("DISCOUNT_CARD")) {
             showMessageDialog(String.format("You have used the Discount card! Your next artifact card will cost 2 gold less from the original price. After that every artifact card will cost you 1 gold less!"));
@@ -326,21 +378,18 @@ public class IngredientStorage extends JPanel implements Observer {
         }
     
         else if (msg.contains("WISDOM_IDOL")) {
-            showMessageDialog(String.format("You have used the Wisdom Idol card! Using this artifact, you do not not lose any reputation points even if your theory has been proven to be wrong. If you choose to keep this artifact until the end of the game, you gain an additional 1 reputation point."));
+            showMessageDialog(String.format("You have used the Wisdom Idol card! This card allows you to not lose any reputation points even if your theory is debunked. You gain 1 reputation point if you keep it in your inventory until the end."
+            ));
 
         }
 
-        else if (msg.contains("DISCOUNT_CARD")) {
-            showMessageDialog(String.format("You have used the Discount C card!"));
-
-        }
 
         else if (msg.contains("NEW_INGREDIENT")) {
-        	String[] ingName = msg.split(":")[1].split(" ");
-        	lblIngToSell.setText("<html>" + ingName[0] + "<br>" + ingName[1] + "</html>");
-        	lblIngToSell.setBackground(new Color(117, 67, 108));
+            String ingName = msg.split(":")[1];
+        	lblIngToSell.setIcon(new ImageIcon(getClass().getResource("/resources/" + ingName.toLowerCase() + ".png")));
         }
         else if (msg.contains("DISCARD_INGREDIENT")) {
+            lblIngToSell.setIcon(null);
         	lblIngToSell.setText("<html>Select<br>Ingredient</html>");
     		lblIngToSell.setBackground(Color.LIGHT_GRAY);
         }
@@ -348,6 +397,7 @@ public class IngredientStorage extends JPanel implements Observer {
         	showMessageDialog("Please select an ingredient to sell");
         }
         else if (msg.contains("CARD_SOLD")) {
+            lblIngToSell.setIcon(null);
         	lblIngToSell.setText("<html>Select<br>Ingredient</html>");
     		lblIngToSell.setBackground(Color.LIGHT_GRAY);
             showMessageDialog(String.format("You have sold %s!", msg.split(":")[1]));

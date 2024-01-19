@@ -39,23 +39,23 @@ public class Gameboard extends JFrame implements Observer{
 
 	public Gameboard() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(70, 50, 650, 400);
+		setBounds(70, 50, 1300, 800);
 		this.gameController = GameBoardController.getInstance();
 		gameController.setObserver(this);
 		this.authPanel = new AuthenticationPanel();
-		setSize(1200, 800);
+		setSize(1300, 800);
 		this.setResizable(false);
 		welcomePage = new WelcomePagePanel(this);
 		endGamePanel = new EndGamePanel();
-		endGamePanel.setBounds(0, 0, 1200, 800);
-		welcomePage.setBounds(0, 0, 1200, 800);
+		endGamePanel.setBounds(0, 0, 1300, 800);
+		welcomePage.setBounds(0, 0, 1300, 800);
 		this.waitingScreen = new WaitingScreen(this);
-		waitingScreen.setBounds(0, 0, 1200, 800);
+		waitingScreen.setBounds(0, 0, 1300, 800);
 		this.hostingScreen = new HostingScreen(this);
-		hostingScreen.setBounds(0, 0, 1200, 800);
+		hostingScreen.setBounds(0, 0, 1300, 800);
 		setVisible(true);
 		setResizable(false);
-		welcomePage.setBounds(0, 0, 1200, 800);
+		welcomePage.setBounds(0, 0, 1300, 800);
 		setVisible(true);
 		setResizable(false);
 		getContentPane().add(welcomePage);
@@ -168,8 +168,9 @@ public class Gameboard extends JFrame implements Observer{
         getContentPane().remove(authPanel);
         this.gamePane = new GameContentPane();
 		this.playerPane = new PlayerContentPane();
-        playerPane.setBounds(832,32, 335, 700);
-        gamePane.setBounds(37,32,752, 700); 
+        playerPane.setBounds(821, 32, 450, 700);
+		playerPane.setSize(450, 700);
+        gamePane.setBounds(37, 32, 752, 700); 
         getContentPane().setLayout(null);
         getContentPane().add(gamePane);
         getContentPane().add(playerPane);
@@ -183,7 +184,7 @@ public class Gameboard extends JFrame implements Observer{
 		getContentPane().add(authPanel);
 		authPanel.setBounds(600, 153, 0, 0);
 		authPanel.setLayout(null);
-		setSize(1200, 800);
+		setSize(1300, 800);
 		this.setResizable(false);
 		setVisible(true);
 		revalidate();

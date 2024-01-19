@@ -2,15 +2,10 @@ package system.domain.util;
 
 import java.util.Random;
 import system.domain.interfaces.IUsingBehavior;
-
-import javax.management.openmbean.InvalidOpenTypeException;
-
 import system.domain.ArtifactCard;
 import system.domain.IngredientCard;
 import system.domain.controllers.GameBoardController;
 import system.domain.controllers.IngredientStorageController;
-import system.domain.controllers.TheoryController;
-
 import system.domain.controllers.InventoryController;
 
 
@@ -33,17 +28,20 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
        }
        
         else if (ac.getCardName().equals("Magic Mortar")) {
-            IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
-            if(lastIngredientCard == null){
-                ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR_NULL"));
-                return -1;
+            if (!(inventoryController.getLastIngredientCard() == null)) {
+                IngredientCard lastIngredientCard = inventoryController.getLastIngredientCard();
+            inventoryController.addIngredient(lastIngredientCard);
+            ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard.getCardName()));
             }
-            else{
-                inventoryController.addIngredient(lastIngredientCard);
-                ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR: %s", lastIngredientCard.getCardName()));
-                return 1;
+            else {
+                ingredientStorage.getIngredientStorageUI().update(String.format("MAGIC_MORTAR_UNAVAILABLE"));    
+                GameBoardController.getInstance().getPlayer().getInventory().addArtifact(ac);
+
             }
+
        }
+  
+
         else if (ac.getCardName().equals("Elixir of Insight")) {
             GameBoardController.getInstance().getClientAdapter().peek3Ingredients();
        }
@@ -53,8 +51,12 @@ public class LimitedArtifactBehavior implements IUsingBehavior{
             ingredientStorage.getIngredientStorageUI().update(String.format("WISDOM_IDOL"));
             return 1;
         }
-        return 1;
+
+
+        
     }
+
+    
     
     
 }

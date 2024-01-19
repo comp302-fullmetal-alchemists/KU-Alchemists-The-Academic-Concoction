@@ -1,17 +1,11 @@
 package system.domain.controllers;
 
 import system.domain.interfaces.Observer;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import system.domain.ArtifactCard;
+import system.domain.Theory;
 import system.domain.interfaces.Mediator;
 import system.domain.util.ConcreteMediator;
 import system.network.IClientAdapter;
@@ -159,6 +153,11 @@ public class GameBoardController {
     
         //to do: get rep, gold, artifact from player's inventory
         int finalScore = 0;
+        for (ArtifactCard ac: player.getInventory().getArtifactCards()) {
+            if (ac.getName().equals("Wisdom Idol")) {
+                player.updateReputation(1);
+            }
+        }
         //10 points for each rep points
         if(player.getReputation() >= 0){
             finalScore += (player.getReputation() * 10) ;
@@ -177,52 +176,18 @@ public class GameBoardController {
             int amount = (player.getInventory().getGold() / 3) ;
             finalScore += amount ;
             player.getInventory().updateGold(- (amount * 3)) ;
-            
+        }
+
+        for (Theory t: GameBoardController.getInstance().getTheoryController().getTheories()) {
+            if (t.getEndorser().equals(player.getName())) {
+                finalScore += 1;
+            }
+            else if (t.isDebunked() && t.getOwner().equals(player.getName())) {
+                finalScore += 1;
+            }
         }
         return finalScore;
     }
-
-    /* 
-    public HashMap<Player, Integer> winner(){
-        //hashmap player ve score
-        HashMap<Player, Integer> scores = new HashMap<>();
-        for(Player p : players ){
-            int score = calculateFinalScore(p);
-            scores.put(p, score);
-            //onlineda goldu da çağır!
-
-        }
-
-        //score map oluştur sonra onu sortla (compare to kullan collections sort kullan)
-        List<Map.Entry<Player, Integer>> scores_values = new ArrayList<>(scores.entrySet());
-        
-
-        Collections.sort(scores_values, new Comparator<Map.Entry<Player, Integer>>() {
-            @Override
-            public int compare(Map.Entry<Player, Integer> player1, Map.Entry<Player, Integer> player2) {
-                int scoreCompare = player2.getValue().compareTo(player1.getValue()); 
-
-                // compare gold if final scores are equal
-                if (scoreCompare == 0) {
-                    int goldComparison = player1.getKey().getInventory().getGold() - player2.getKey().getInventory().getGold();
-                    return goldComparison;
-                }
-
-                return scoreCompare;
-            }
-        });
-
-        
-        HashMap<Player, Integer> scores_sorted = new HashMap<>();
-            for(Entry<Player, Integer> p : scores_values){
-            scores_sorted.put(p.getKey(), p.getValue());
-            }
-        
-        return scores_sorted;
-
-        }
-        */
-
 
     public void showEndgameScreen(String message) {
         //splitle ve bilgiyi al
