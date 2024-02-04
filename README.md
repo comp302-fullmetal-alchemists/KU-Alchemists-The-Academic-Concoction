@@ -8,7 +8,7 @@ KU Alchemists: The Academic Concoction immerses players in the fascinating world
 
 ### Objective
 
-The main objective of KU Alchemists is to explore and implement various software design patterns, ensure strict adherence to the Model-View-ViewModel (MVVM) architectural pattern, and familiarize ourselves with Agile Development methodologies. This project serves as a testament to our growth as software engineers and our capability to work collaboratively on complex software projects.
+The main objective of KU Alchemists is to explore and implement various software design patterns, ensure strict adherence to the Model-View-ViewModel (MVVM) architectural pattern, and familiarize ourselves with Agile Development methodologies. This project serves as a testament to our growth as computer engineering students and our capability to work collaboratively on complex software projects.
 
 ### Features
 
